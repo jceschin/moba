@@ -11,3 +11,5 @@ server.get("/test", (req, res) => {
 server.listen(3001, () => {
     console.log("running test!");
   });
+
+  module.exports = server;
