@@ -80,17 +80,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontWeight: 'normal',
-    top: 119
+    top: 70
   },
   balance: {
     fontSize: 36,
     textAlign: 'center',
     fontWeight: 'bold',
-    top: 171
+    top: 100
   },
   options: {
     flexDirection: 'row',
-    top: 240,
+    top: 140,
     justifyContent: 'space-between',
     paddingLeft: 18,
     paddingRight: 18
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   movsContainer: {
-    top: 265,
+    top: 160,
     backgroundColor: 'white',
     height: '100%',
     borderTopLeftRadius: 10,
