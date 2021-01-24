@@ -9,7 +9,7 @@ server.get("/test", (req, res) => {
   });
 
 server.listen(3001, () => {
-    console.log("running test!");
+    console.log("Server running on 3001");
   });
 
   module.exports = server;
