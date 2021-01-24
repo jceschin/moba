@@ -11,12 +11,18 @@ apiEndpoints:
   test:
     host: localhost
     paths: '/test'
+  users:
+    host: localhost
+    paths: ['/users', '/users/*']
+    
 ##################################################################################################
 serviceEndpoints:
   httpbin:
     url: 'https://httpbin.org'
   testing:
     url: 'http://localhost:3001'
+  usersService:
+    url: 'http://localhost:8000'
 ##################################################################################################
 policies:
   - basic-auth
@@ -49,5 +55,16 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: testing 
+              changeOrigin: true
+##################################################################################################
+  usersPipeline:
+    apiEndpoints:
+      - users
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: usersService 
               changeOrigin: true
 ##################################################################################################
