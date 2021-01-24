@@ -15,11 +15,12 @@ module.exports = (sequelize) => {
             type: DataTypes.DECIMAL(15,2),
             defaultValue: 0
         },
-        // UTC format
-        opening_date: {
+        
+         opening_date: {
             type: DataTypes.DATE,
             defaultValue: new Date(formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss'))
         },
+
         card_id: {
             type: DataTypes.INTEGER,
             allowNull: false
