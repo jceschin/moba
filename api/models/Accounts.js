@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
         },
         // UTC format      ROMPE, CHECKEAR
        /*  opening_date: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.DATE,
             defaultValue: formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss')
         }, */
         card_id: {
