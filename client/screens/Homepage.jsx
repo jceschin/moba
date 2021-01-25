@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
+import HomeNavbar from './screens/HomeNavbar';
 
 const Homepage = () => {
   return (
@@ -12,54 +13,82 @@ const Homepage = () => {
     end={{ x: 1, y: 1 }}
     >
       <ScrollView>
-        <Text style={styles.accountOwner}>Juan Ceschin</Text>
-        <Text style={styles.balanceTag}>Money</Text>
-        <Text style={styles.balance}>US$ 5,000</Text>
-        <View style={styles.options}>
-          <View>
-            <AntDesign name="plus" size={24} color="black" style={styles.optionIcon}/>
-            <Text style={styles.option}>Add Money</Text>
+        <View style={styles.mainContainer}>
+
+          <View style={styles.upperContainer}>
+            <Text style={styles.accountOwner}>Juan Ceschin</Text>
+            <Text style={styles.balanceTag}>Money</Text>
+            <Text style={styles.balance}>US$ 5,000</Text>
+            <View style={styles.options}>
+              <View>
+                <AntDesign name="plus" size={24} color="black" style={styles.optionIcon}/>
+                <Text style={styles.option}>Add Money</Text>
+              </View>
+              <View>
+                <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon}/>
+                <Text style={styles.option}>Transfer</Text>
+              </View>
+              <View>
+                <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
+                <Text style={styles.option}>Settings</Text>
+              </View>
+            </View>
           </View>
-          <View>
-            <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon}/>
-            <Text style={styles.option}>Transfer</Text>
-          </View>
-          <View>
-            <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
-            <Text style={styles.option}>Settings</Text>
+
+          <View style={styles.movsContainer}>
+            <Text style={styles.movsHeader}>Last Movements</Text>
+            <View style={styles.mov}>
+              <View style={styles.movDateContainer}>
+                <Text style={styles.movDate}>January 2021</Text>
+              </View>
+              <View style={styles.movDetails}>
+                <Text style={styles.movType}>Type of transfer</Text>
+                <Text style={styles.movAmount}>US$999.99</Text>
+              </View>
+            </View>
+            <View style={styles.mov}>
+              <View style={styles.movDateContainer}>
+                <Text style={styles.movDate}>January 2021</Text>
+              </View>
+              <View style={styles.movDetails}>
+                <Text style={styles.movType}>Type of transfer</Text>
+                <Text style={styles.movAmount}>US$999.99</Text>
+              </View>
+            </View>
+            <View style={styles.mov}>
+              <View style={styles.movDateContainer}>
+                <Text style={styles.movDate}>January 2021</Text>
+              </View>
+              <View style={styles.movDetails}>
+                <Text style={styles.movType}>Type of transfer</Text>
+                <Text style={styles.movAmount}>US$999.99</Text>
+              </View>
+            </View>
+            <View style={styles.mov}>
+              <View style={styles.movDateContainer}>
+                <Text style={styles.movDate}>January 2021</Text>
+              </View>
+              <View style={styles.movDetails}>
+                <Text style={styles.movType}>Type of transfer</Text>
+                <Text style={styles.movAmount}>US$999.99</Text>
+              </View>
+            </View>
+            <View style={styles.mov}>
+              <View style={styles.movDateContainer}>
+                <Text style={styles.movDate}>January 2021</Text>
+              </View>
+              <View style={styles.movDetails}>
+                <Text style={styles.movType}>Type of transfer</Text>
+                <Text style={styles.movAmount}>US$999.99</Text>
+              </View>
+            </View>
           </View>
         </View>
-        <View style={styles.movsContainer}>
-          <Text style={styles.movsHeader}>Last Movements</Text>
-          <View style={styles.mov}>
-            <View style={styles.movDateContainer}>
-              <Text style={styles.movDate}>January 2021</Text>
-            </View>
-            <View style={styles.movDetails}>
-              <Text style={styles.movType}>Type of transfer</Text>
-              <Text style={styles.movAmount}>US$999.99</Text>
-            </View>
-          </View>
-          <View style={styles.mov}>
-            <View style={styles.movDateContainer}>
-              <Text style={styles.movDate}>January 2021</Text>
-            </View>
-            <View style={styles.movDetails}>
-              <Text style={styles.movType}>Type of transfer</Text>
-              <Text style={styles.movAmount}>US$999.99</Text>
-            </View>
-          </View>
-          <View style={styles.mov}>
-            <View style={styles.movDateContainer}>
-              <Text style={styles.movDate}>January 2021</Text>
-            </View>
-            <View style={styles.movDetails}>
-              <Text style={styles.movType}>Type of transfer</Text>
-              <Text style={styles.movAmount}>US$999.99</Text>
-            </View>
-          </View>
-        </View>
+
       </ScrollView>
+
+      <HomeNavbar/>
+      
     </LinearGradient>
   )
 }
@@ -69,6 +98,19 @@ export default Homepage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
+  movsContainer: {
+    top: 160,
+    minHeight: 290,
+    backgroundColor: 'white',
+    height: '100%',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   accountOwner: {
     fontSize: 36,
@@ -102,13 +144,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5
   },
-  movsContainer: {
-    top: 160,
-    backgroundColor: 'white',
-    height: '100%',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
   movsHeader: {
     marginTop: 36,
     fontSize: 18,
@@ -123,14 +158,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'left',
     fontWeight: 'normal',
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-    borderStyle: 'solid',
     marginBottom: 5
   },
   movDateContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: 'grey',
+    borderBottomColor: 'rgba(167, 167, 167, 0.83)',
     borderStyle: 'solid',
     paddingLeft: 18,
     paddingRight: 18
