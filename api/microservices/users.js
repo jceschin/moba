@@ -45,7 +45,7 @@ server.get("/users", (req, res) => {
     });
 });
 
-//Get One Users
+//Get One Users from dni or email
 
 server.get("/users/:dni_email", (req, res) => {
   User.findOne({
@@ -70,6 +70,27 @@ server.get("/users/:dni_email", (req, res) => {
 server.get("/users/auth/login", (req, res) => {
   res.sendStatus(200);
 });
+
+// Update Users from dni
+
+server.put('/users/:dni', (req, res) => {
+
+	Users.update(req.body,
+
+		{
+			where: { dni: req.params.dni }
+		}
+	)
+	.then((users) => {
+
+        console.log(users)
+		res.status(200).send(users);
+
+	})
+	.catch(err => { res.status(404).send(err) });
+})
+
+
 
 server.listen(8000, () => {
   console.log("Users microservice running on 8000");

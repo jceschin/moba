@@ -1,32 +1,32 @@
-const { formatDate } = require('date-utils-2020')
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
+const { formatDate } = require("date-utils-2020");
 
 module.exports = (sequelize) => {
+  const Account = sequelize.define("account", {
+    cvu: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+    },
 
-    const Account = sequelize.define('account', {
+    balance: {
+      type: DataTypes.DECIMAL(15, 2),
+      defaultValue: 0,
+    },
 
-        cvu: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true
-        },
+    opening_date: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(formatDate(new Date(), "yyyy/MM/dd hh:mm:ss")),
+    },
 
-        balance: {
-            type: DataTypes.DECIMAL(15,2),
-            defaultValue: 0
-        },
-        // UTC format
-        opening_date: {
-            type: DataTypes.DATE,
-            defaultValue: new Date(formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss'))
-        },
-        card_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        card_expiration: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        }
-    }) 
-}
+    card_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    card_expiration: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  });
+};
