@@ -1,5 +1,5 @@
-/* import { formatDate } from 'date-utils-2020' */   //Rompe, checkear
 const { DataTypes } = require('sequelize');
+const {formatDate} = require('date-utils-2020')
 
 module.exports = (sequelize) => {
 
@@ -15,11 +15,12 @@ module.exports = (sequelize) => {
             type: DataTypes.DECIMAL(15,2),
             defaultValue: 0
         },
-        // UTC format      ROMPE, CHECKEAR
-       /*  opening_date: {
+        
+         opening_date: {
             type: DataTypes.DATE,
-            defaultValue: formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss')
-        }, */
+            defaultValue: new Date(formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss'))
+        },
+
         card_id: {
             type: DataTypes.INTEGER,
             allowNull: false
