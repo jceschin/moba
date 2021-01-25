@@ -6,6 +6,7 @@ const {conn} = require('./db.js')
 require('./microservices/users.js')  //Uncomment requires for run all the microservices
 require('./microservices/auth.js')
 
+require('./microservices/accounts.js')
 
 conn.sync({ force: true })
 .then(() => {

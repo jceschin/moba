@@ -15,7 +15,9 @@ apiEndpoints:
     methods: 'GET,POST,PUT,PATCH,DELETE' 
     host: localhost
     paths: ['/users/', '/users/*']
-  
+  accounts:
+    host: localhost
+    paths: ['/accounts', '/accounts/*']
     
 ##################################################################################################
 serviceEndpoints:
@@ -24,6 +26,8 @@ serviceEndpoints:
   usersService:
     url: 'http://localhost:8000'
   authService:
+    url: 'http://localhost:8002'
+  accountsService:
     url: 'http://localhost:8001'
 ##################################################################################################
 policies:
@@ -64,3 +68,14 @@ pipelines:
             serviceEndpoint: authService
             changeOrigin : true
 #################################################################################################
+  accountsPipeline:
+    apiEndpoints:
+      - accounts
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: accountsService 
+              changeOrigin: true
+##################################################################################################
