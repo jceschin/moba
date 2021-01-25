@@ -8,11 +8,7 @@ const server = express();
 
 const morgan = require("morgan");
 
-const jwt = require("jsonwebtoken");
-
 const { Op } = require("sequelize");
-
-
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -65,10 +61,6 @@ server.get("/users/:dni_email", (req, res) => {
     .catch((err) => {
       res.status(404).send(err);
     });
-});
-
-server.get("/users/auth/login", (req, res) => {
-  res.sendStatus(200);
 });
 
 server.listen(8000, () => {

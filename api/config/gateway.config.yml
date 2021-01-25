@@ -10,7 +10,7 @@ apiEndpoints:
     paths: '/ip'
   auth:
     host: localhost
-    paths: '/auth'
+    paths: ['/auth/', '/auth/*']
   users:
     methods: 'GET,POST,PUT,PATCH,DELETE' 
     host: localhost
