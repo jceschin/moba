@@ -4,12 +4,14 @@ var morgan = require('morgan')
 
 server.use(morgan('dev'))
 
-server.get("/test", (req, res) => {
-    res.json({ test: "OK" });
+
+
+server.get("/auth", (req, res) => {
+    res.send('AUTHORIZED')
   });
 
-server.listen(3001, () => {
-    console.log("Server running on 3001");
+server.listen(8002, () => {
+    console.log("Auth microservice running on 8002");
   });
 
   module.exports = server;
