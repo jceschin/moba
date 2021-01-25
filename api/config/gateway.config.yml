@@ -8,63 +8,59 @@ apiEndpoints:
   api:
     host: localhost
     paths: '/ip'
-  test:
+  auth:
     host: localhost
-    paths: '/test'
+    paths: '/auth'
   users:
+    methods: 'GET,POST,PUT,PATCH,DELETE' 
     host: localhost
-    paths: ['/users', '/users/*']
+    paths: ['/users/', '/users/*']
+  
     
 ##################################################################################################
 serviceEndpoints:
   httpbin:
     url: 'https://httpbin.org'
-  testing:
-    url: 'http://localhost:3001'
   usersService:
     url: 'http://localhost:8000'
+  authService:
+    url: 'http://localhost:8001'
 ##################################################################################################
 policies:
   - basic-auth
   - cors
   - expression
   - key-auth
-  - log
   - oauth2
   - proxy
   - rate-limit
+  - log
+  - jwt
+  - request-transformer
 pipelines:
-##################################################################################################
-  ipPipeline:
-    apiEndpoints:
-      - api
-    policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
-      - proxy:
-          - action:
-              serviceEndpoint: httpbin 
-              changeOrigin: true
-##################################################################################################
-  testPipeline:
-    apiEndpoints:
-      - test
-    policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
-      - proxy:
-          - action:
-              serviceEndpoint: testing 
-              changeOrigin: true
 ##################################################################################################
   usersPipeline:
     apiEndpoints:
       - users
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
       - proxy:
           - action:
               serviceEndpoint: usersService 
               changeOrigin: true
 ##################################################################################################
+  authPipeline:
+    apiEndpoints:
+      - auth
+    policies:
+      - log:
+        - action:
+            message: "header===> ${req.header.authorization}"
+      - jwt:
+        - action:
+            secretOrPublicKey: 'mobaAuth'
+            checkCredentialExistence: false
+      - proxy:
+        - action:
+            serviceEndpoint: authService
+            changeOrigin : true
+#################################################################################################
