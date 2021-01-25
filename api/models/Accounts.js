@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const {formatDate} = require('date-utils-2020')
+const { formatDate } = require('date-utils-2020');
 
 module.exports = (sequelize) => {
 
@@ -25,9 +25,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+
         card_expiration: {
             type: DataTypes.INTEGER,
             allowNull: false
         }
-    }) 
+    })
 }
