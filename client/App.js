@@ -3,6 +3,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import LandingPage from './screens/LandingPage';
 import Homepage from './screens/Homepage';
+import HomeNavbar from './screens/HomeNavbar';
+import MyAccount from './screens/MyAccount';
 
 export default function App() {
 
@@ -10,9 +12,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="LandingPage">
+      <Drawer.Navigator initialRouteName="Homepage">
         <Drawer.Screen name="LandingPage" component={LandingPage} />
         <Drawer.Screen name="Homepage" component={Homepage} />
+        <Drawer.Screen name="HomeNavbar" component={HomeNavbar} />
+        <Drawer.Screen name="MyAccount" component={MyAccount} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
