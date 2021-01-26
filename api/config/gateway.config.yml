@@ -9,7 +9,6 @@ apiEndpoints:
     host: localhost
     paths: '/ip'
   auth:
-    host: localhost
     paths: ['/auth/', '/auth/*']
   users:
     methods: 'GET,POST,PUT,PATCH,DELETE' 
@@ -47,6 +46,13 @@ pipelines:
     apiEndpoints:
       - users
     policies:
+      - log:
+        - action:
+            message: "header===> ${req.header.authorization}"
+      # - jwt:
+      #   - action:
+      #       secretOrPublicKey: 'mobaAuth'
+      #       checkCredentialExistence: false
       - proxy:
           - action:
               serviceEndpoint: usersService 
@@ -56,13 +62,6 @@ pipelines:
     apiEndpoints:
       - auth
     policies:
-      - log:
-        - action:
-            message: "header===> ${req.header.authorization}"
-      - jwt:
-        - action:
-            secretOrPublicKey: 'mobaAuth'
-            checkCredentialExistence: false
       - proxy:
         - action:
             serviceEndpoint: authService
