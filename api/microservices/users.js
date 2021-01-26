@@ -75,7 +75,7 @@ server.get("/users/auth/login", (req, res) => {
 
 server.put('/users/:dni', (req, res) => {
 
-	Users.update(req.body,
+	User.update(req.body,
 
 		{
 			where: { dni: req.params.dni }
