@@ -13,10 +13,13 @@ apiEndpoints:
   users:
     methods: 'GET,POST,PUT,PATCH,DELETE' 
     host: localhost
-    paths: ['/users/', '/users/*']
-  accounts:
+    paths: ['/users', '/users/*']
+  account:
     host: localhost
     paths: ['/accounts', '/accounts/*']
+  admin:
+    host: localhost
+    paths: '/admin/*'
     
 ##################################################################################################
 serviceEndpoints:
@@ -26,8 +29,10 @@ serviceEndpoints:
     url: 'http://localhost:8000'
   authService:
     url: 'http://localhost:8002'
-  accountsService:
+  accountService:
     url: 'http://localhost:8001'
+  adminService:
+    url: 'http://localhost:8003'
 ##################################################################################################
 policies:
   - basic-auth
@@ -57,6 +62,7 @@ pipelines:
           - action:
               serviceEndpoint: usersService 
               changeOrigin: true
+
 ##################################################################################################
   authPipeline:
     apiEndpoints:
@@ -66,15 +72,26 @@ pipelines:
         - action:
             serviceEndpoint: authService
             changeOrigin : true
-#################################################################################################
-  accountsPipeline:
+##################################################################################################
+  accountPipeline:
     apiEndpoints:
-      - accounts
+      - account
     policies:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
           - action:
-              serviceEndpoint: accountsService 
+              serviceEndpoint: accountService 
+              changeOrigin: true
+##################################################################################################
+  adminPipeline:
+    apiEndpoints:
+      - admin
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: adminService 
               changeOrigin: true
 ##################################################################################################

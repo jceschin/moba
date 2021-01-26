@@ -54,9 +54,24 @@ server.get("/users/:dni_email", (req, res) => {
 
 // Update Users from dni
 
-server.put("/users/:dni", (req, res) => {
-  Users.update(
-    req.body,
+
+server.put('/users/:dni', (req, res) => {
+
+	User.update(req.body,
+
+		{
+			where: { dni: req.params.dni }
+		}
+	)
+	.then((users) => {
+
+        console.log(users)
+		res.status(200).send(users);
+
+	})
+	.catch(err => { res.status(404).send(err) });
+})
+
 
     {
       where: { dni: req.params.dni },
