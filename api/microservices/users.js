@@ -2,7 +2,7 @@ const express = require('express')
 
 const bodyParser = require('body-parser')
 
-const { Users} = require('../db');
+const { User } = require('../db');
 
 const server = express()
 
@@ -19,7 +19,7 @@ server.use(morgan('dev'))
 
 server.post("/users", (req,res,next) => {
 
-    Users.create(req.body)
+    User.create(req.body)
 
     .then((users) =>{
 
@@ -34,7 +34,7 @@ server.post("/users", (req,res,next) => {
 
 server.get('/users', (req, res) => {
 
-    Users.findAll()
+    User.findAll()
     
 	.then((users) => {
 
@@ -48,7 +48,7 @@ server.get('/users', (req, res) => {
 
 server.get('/users/:dni_email', (req, res) => {
 
-	Users.findOne({
+	User.findOne({
 
 		where: {
             [Op.or]: [
@@ -73,7 +73,7 @@ server.get('/users/:dni_email', (req, res) => {
 
 server.put('/users/:dni', (req, res) => {
 
-	Users.update(req.body,
+	User.update(req.body,
 
 		{
 			where: { dni: req.params.dni }

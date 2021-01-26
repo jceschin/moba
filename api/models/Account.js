@@ -3,7 +3,7 @@ const { formatDate } = require('date-utils-2020');
 
 module.exports = (sequelize) => {
 
-    const Accounts = sequelize.define('accounts', {
+    const Account = sequelize.define('account', {
 
         cvu: {
             type: DataTypes.INTEGER,

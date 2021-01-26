@@ -14,9 +14,12 @@ apiEndpoints:
   users:
     host: localhost
     paths: ['/users', '/users/*']
-  accounts:
+  account:
     host: localhost
     paths: ['/accounts', '/accounts/*']
+  admin:
+    host: localhost
+    paths: '/admin/*'
     
 ##################################################################################################
 serviceEndpoints:
@@ -26,8 +29,10 @@ serviceEndpoints:
     url: 'http://localhost:3001'
   usersService:
     url: 'http://localhost:8000'
-  accountsService:
+  accountService:
     url: 'http://localhost:8001'
+  adminService:
+    url: 'http://localhost:8003'
 ##################################################################################################
 policies:
   - basic-auth
@@ -73,14 +78,25 @@ pipelines:
               serviceEndpoint: usersService 
               changeOrigin: true
 ##################################################################################################
-  accountsPipeline:
+  accountPipeline:
     apiEndpoints:
-      - accounts
+      - account
     policies:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
           - action:
-              serviceEndpoint: accountsService 
+              serviceEndpoint: accountService 
+              changeOrigin: true
+##################################################################################################
+  adminPipeline:
+    apiEndpoints:
+      - admin
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: adminService 
               changeOrigin: true
 ##################################################################################################
