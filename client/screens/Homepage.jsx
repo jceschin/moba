@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
 import HomeNavbar from './HomeNavbar';
@@ -21,16 +21,22 @@ const Homepage = () => {
             <Text style={styles.balance}>US$ 5,000</Text>
             <View style={styles.options}>
               <View>
-                <AntDesign name="plus" size={24} color="black" style={styles.optionIcon}/>
-                <Text style={styles.option}>Add Money</Text>
+                <TouchableOpacity>
+                  <AntDesign name="plus" size={24} color="black" style={styles.optionIcon}/>
+                  <Text style={styles.option}>Add Money</Text>
+                </TouchableOpacity>
               </View>
               <View>
-                <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon}/>
-                <Text style={styles.option}>Transfer</Text>
+                <TouchableOpacity>
+                  <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon}/>
+                  <Text style={styles.option}>Transfer</Text>
+                </TouchableOpacity>
               </View>
               <View>
-                <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
-                <Text style={styles.option}>Settings</Text>
+                <TouchableOpacity>
+                  <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
+                  <Text style={styles.option}>Settings</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
