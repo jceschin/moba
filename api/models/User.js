@@ -59,7 +59,15 @@ module.exports = (sequelize) =>{
 
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
+            get() {
+                return () => this.getDataValue('password')
+            }
+        },
+        salt: {
+            type: DataTypes.STRING,
+            get() {
+                return() => this.getDataValue('salt')
+            }
         },
 
         account_status: {
