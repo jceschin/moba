@@ -31,7 +31,7 @@ serviceEndpoints:
   authService:
     url: 'http://localhost:8001'
   accountService:
-    url: 'http://localhost:8001'
+    url: 'http://localhost:8004'
   adminService:
     url: 'http://localhost:8003'
 ##################################################################################################
