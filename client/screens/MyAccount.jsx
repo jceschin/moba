@@ -76,14 +76,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     paddingLeft: 18,
-    paddingRight: 18
+    paddingRight: 18,
+    top: 24
   },
   greeting: {
-    textAlign: 'center',
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
-    top: 24
   },
   whiteContainer: {
     top: 30,

@@ -17,7 +17,7 @@ const Homepage = () => {
 
           <View style={styles.upperContainer}>
             <Text style={styles.accountOwner}>Juan Ceschin</Text>
-            <Text style={styles.balanceTag}>Money</Text>
+            <Text style={styles.balanceTag}>Balance</Text>
             <Text style={styles.balance}>US$ 5,000</Text>
             <View style={styles.options}>
               <View>
@@ -122,19 +122,19 @@ const styles = StyleSheet.create({
     fontSize: 36,
     textAlign: 'center',
     fontWeight: 'bold',
-    top: 31
+    marginTop: 31
   },
   balanceTag: {
     fontSize: 20,
     textAlign: 'center',
     fontWeight: 'normal',
-    top: 70
+    marginTop: 46
   },
   balance: {
     fontSize: 36,
     textAlign: 'center',
     fontWeight: 'bold',
-    top: 100
+    marginTop: 52
   },
   options: {
     flexDirection: 'row',
@@ -152,13 +152,14 @@ const styles = StyleSheet.create({
   },
   movsHeader: {
     marginTop: 36,
+    marginBottom: 15,
     fontSize: 18,
     textAlign: 'center',
     fontWeight: 'normal'
   },
   mov: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 15,
   },
   movDate: {
     fontSize: 18,
