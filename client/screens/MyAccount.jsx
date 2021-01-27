@@ -28,23 +28,33 @@ const MyAccount = () => {
               <View style={styles.options}>
                 <View style={styles.option}>
                   <MaterialIcons name="credit-card" size={18} color="black" />
-                  <Text style={styles.optionName}>Credit Cards</Text>
+                    <TouchableOpacity>
+                      <Text style={styles.optionName}>Credit Cards</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.option}>
                   <Ionicons name="add-circle-outline" size={18} color="black" />
-                  <Text style={styles.optionName}>Add Money</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.optionName}>Add Money</Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.option}>
                   <MaterialIcons name="compare-arrows" size={18} color="black" />
-                  <Text style={styles.optionName}>Transfers</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.optionName}>Transfers</Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.option}>
                   <Feather name="activity" size={18} color="black" />
-                  <Text style={styles.optionName}>Activity</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.optionName}>Activity</Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.option}>
                   <AntDesign name="contacts" size={18} color="black" />
-                  <Text style={styles.optionName}>Contacts</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.optionName}>Contacts</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
 
@@ -52,15 +62,21 @@ const MyAccount = () => {
                 <View style={styles.options}>
                   <View style={styles.option}>
                     <MaterialCommunityIcons name="account-settings-outline" size={18} color="black" />
+                    <TouchableOpacity>
                     <Text style={styles.optionName}>Profile</Text>
+                  </TouchableOpacity>
                   </View>
                   <View style={styles.option}>
                     <Feather name="help-circle" size={18} color="black" />
-                    <Text style={styles.optionName}>Help</Text>
+                    <TouchableOpacity>
+                      <Text style={styles.optionName}>Help</Text>
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.option}>
                     <MaterialCommunityIcons name="logout-variant" size={18} color="black" />
-                    <Text style={styles.optionName}>Log Out</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('LandingPage')}>
+                      <Text style={styles.optionName}>Log Out</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
             </View>
