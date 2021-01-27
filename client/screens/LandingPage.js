@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 
-const LandingPage = () => {
+const LandingPage = ({ navigation }) => {
   return (
     <LinearGradient
       style={styles.container}
@@ -10,28 +11,30 @@ const LandingPage = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <View style={styles.subcontainer}>
-        <Text style={styles.title}>
-          Welcome to MOBA
+      <Animatable.View animation='fadeIn' style={styles.animate}>
+        <View style={styles.subcontainer}>
+          <Text style={styles.title}>
+            Welcome to MOBA
             </Text>
-        <Text style={styles.subtitle}>
-          Your finances simple and fast.
-          Open your account now.
+          <Text style={styles.subtitle}>
+            Your finances simple and fast.
+            {"\n"}
+            Open your account now.
             </Text>
-      </View>
-      <View style={styles.buttoncontainer}>
-        <TouchableOpacity style={styles.buttons}>
-          <Text style={styles.btncontent}>
-            Log In
+        </View>
+        <View style={styles.buttoncontainer}>
+          <TouchableOpacity style={styles.buttons}>
+            <Text style={styles.btncontent}>
+              Log In
               </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttons}>
-          <Text style={styles.btncontent}>
-            Create Account
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons} onPress={() => navigation.jumpTo('RegisterPage')}>
+            <Text style={styles.btncontent}>
+              Create Account
               </Text>
-        </TouchableOpacity>
-      </View>
-
+          </TouchableOpacity>
+        </View>
+      </Animatable.View>
     </LinearGradient>
   );
 }
@@ -43,6 +46,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     justifyContent: 'center',
+  },
+  animate: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    marginBottom: 0,
+    marginTop: 0,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   subcontainer: {
     flex: 1,
@@ -66,7 +78,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
     lineHeight: 42,
     fontSize: 36,
-    width: 239,
     height: 42
   },
   subtitle: {
@@ -79,7 +90,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     lineHeight: 21,
-    width: 200,
     height: 63,
   },
   buttons: {
