@@ -44,7 +44,6 @@ server.post("/send-email", (req, res) => {
   });
 });
 
-
 server.listen(8005, () => {
   console.log("Server running on 8005");
 });
