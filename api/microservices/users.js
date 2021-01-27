@@ -62,18 +62,20 @@ server.get("/users/:dni_email", Verifytoken, isAdmin, (req, res) => {
 server.put('/users/:dni', (req, res) => {
 
 	User.update(req.body,
-    {
-      where: { dni: req.params.dni }
-    }
-  )
-    .then((users) => {
-      console.log(users);
-      res.status(200).send(users);
-    })
-    .catch((err) => {
-      res.status(404).send(err);
-    });
-});
+
+		{
+			where: { dni: req.params.dni }
+		}
+	)
+	.then((users) => {
+
+        console.log(users)
+		res.status(200).send(users);
+
+	})
+	.catch(err => { res.status(404).send(err) });
+})
+
 
 //LOGOUT
 

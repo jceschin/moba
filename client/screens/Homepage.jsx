@@ -2,15 +2,15 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
-import HomeNavbar from './screens/HomeNavbar';
+import HomeNavbar from './HomeNavbar';
 
 const Homepage = () => {
   return (
     <LinearGradient
-    style={styles.container}
-    colors={['rgba(140, 165, 253, 1)', 'rgba(243, 129, 245, 0.77)']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
+      style={styles.container}
+      colors={['rgba(140, 165, 253, 1)', 'rgba(243, 129, 245, 0.77)']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
     >
       <ScrollView>
         <View style={styles.mainContainer}>
@@ -21,15 +21,15 @@ const Homepage = () => {
             <Text style={styles.balance}>US$ 5,000</Text>
             <View style={styles.options}>
               <View>
-                <AntDesign name="plus" size={24} color="black" style={styles.optionIcon}/>
+                <AntDesign name="plus" size={24} color="black" style={styles.optionIcon} />
                 <Text style={styles.option}>Add Money</Text>
               </View>
               <View>
-                <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon}/>
+                <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon} />
                 <Text style={styles.option}>Transfer</Text>
               </View>
               <View>
-                <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
+                <Feather name="settings" size={24} color="black" style={styles.optionIcon} />
                 <Text style={styles.option}>Settings</Text>
               </View>
             </View>
@@ -87,8 +87,8 @@ const Homepage = () => {
 
       </ScrollView>
 
-      <HomeNavbar/>
-      
+      <HomeNavbar />
+
     </LinearGradient>
   )
 }
