@@ -3,14 +3,18 @@ const nodemailer = require("nodemailer");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const server = express();
+const cors = require("cors");
 
 // middlewares
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
+server.use(cors({origin: "http://localhost:19006", credentials: true}));
 
 server.post("/send-email", (req, res) => {
-  const { email } = req.body;
+  const  email  = req.body.email;
+  
+ 
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -26,7 +30,7 @@ server.post("/send-email", (req, res) => {
     from: "noreplymoba@gmail.com",
     to: email,
     subject: "Confirmacion Email",
-    html: `Su cuenta para la aplicacion moba se a confirmado. Pulse el siguiente enlace para confirmar la direcion de correo electronico. <br />
+    html: `Su cuenta para la aplicación moba se ha confirmado. Pulse el siguiente enlace para confirmar la dirección de correo electronico. <br />
      <a href= ${linkRedirect}> seguir el proceso </a>`,
   };
 
@@ -39,6 +43,7 @@ server.post("/send-email", (req, res) => {
     }
   });
 });
+
 
 server.listen(8005, () => {
   console.log("Server running on 8005");

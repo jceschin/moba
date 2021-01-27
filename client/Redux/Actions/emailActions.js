@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 
-export const enviarEmail = (email) => async() => {
+export const enviarEmail = (state) => async() => {
     try {
-        const result = await axios.post('http://localhost:8005/send-email', email);
+       axios.post('http://localhost:8005/send-email', state);
      
     } catch (error) {
         console.log(error)
