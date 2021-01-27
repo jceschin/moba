@@ -2,7 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const LandingPage = () => {
+const LandingPage = (props) => {
+
+ const createAccount = () => {
+   props.navigation.navigate('CreateAccount')
+ }
+
   return (
     <LinearGradient
       style={styles.container}
@@ -25,7 +30,7 @@ const LandingPage = () => {
             Log In
               </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttons}>
+        <TouchableOpacity style={styles.buttons} onPress={() => createAccount()}>
           <Text style={styles.btncontent}>
             Create Account
               </Text>
