@@ -82,12 +82,19 @@ pipelines:
     apiEndpoints:
       - account
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      - log:
+        - action:
+            message: "header===> ${req.header.authorization}"
+      # - jwt:
+      #   - action:
+      #       secretOrPublicKey: 'mobaAuth'
+      #       checkCredentialExistence: false
       - proxy:
           - action:
               serviceEndpoint: accountService 
               changeOrigin: true
+
+
 ##################################################################################################
   adminPipeline:
     apiEndpoints:
@@ -100,7 +107,11 @@ pipelines:
               serviceEndpoint: adminService 
               changeOrigin: true
 ##################################################################################################
+<<<<<<< HEAD
 adminPipeline:
+=======
+emailPipeline:
+>>>>>>> 34737a4eb228a5853bf983f96eabe7c218485b0e
     apiEndpoints:
       - email
     policies:

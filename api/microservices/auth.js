@@ -5,7 +5,7 @@ const { User } = require("../db");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-const cors = require('cors')
+const cors = require("cors");
 var Strategy = require("passport-local").Strategy;
 
 server.use(morgan("dev"));
@@ -19,15 +19,15 @@ passport.use(
   "localStrategy",
   new Strategy(
     {
-      usernameField: "email",
+      usernameField: "username",
       passwordField: "password",
       session: false,
     },
-    function (email, password, done) {
+    function (username, password, done) {
       console.log("LOGIN CALLED");
       User.findOne({
         where: {
-          email,
+          username,
         },
       })
         .then((user) => {
@@ -49,8 +49,7 @@ passport.use(
 
 //Create Users
 
-
-server.post('/auth/singup', (req, res, next) => {
+server.post("/auth/singup", (req, res, next) => {
   User.create(req.body)
 
     .then((users) => {
@@ -63,7 +62,7 @@ server.post('/auth/singup', (req, res, next) => {
 
 //login user
 
-server.post('/auth/login', (req, res, next) => {
+server.post("/auth/login", (req, res, next) => {
   passport.authenticate("localStrategy", (err, user, fail) => {
     if (err) {
       return res.send(err);
@@ -81,7 +80,6 @@ server.post('/auth/login', (req, res, next) => {
     res.json({ data: { token: token } });
   })(req, res, next);
 });
-
 
 server.listen(8002, () => {
   console.log("Auth microservice running on 8002");
