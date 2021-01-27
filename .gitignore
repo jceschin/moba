@@ -1,5 +1,10 @@
-client/package-lock.json
+node_modules/
+jspm_packages/
 node_modules
+package-lock.jsonnode_modules/
+jspm_packages/
+node_modules
+package-lock.json
 /package.json
 package.json
 # dependencies

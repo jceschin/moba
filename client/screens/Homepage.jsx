@@ -7,10 +7,10 @@ import HomeNavbar from './HomeNavbar';
 const Homepage = () => {
   return (
     <LinearGradient
-    style={styles.container}
-    colors={['rgba(140, 165, 253, 1)', 'rgba(243, 129, 245, 0.77)']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
+      style={styles.container}
+      colors={['rgba(140, 165, 253, 1)', 'rgba(243, 129, 245, 0.77)']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
     >
       <ScrollView>
         <View style={styles.mainContainer}>
@@ -93,8 +93,8 @@ const Homepage = () => {
 
       </ScrollView>
 
-      <HomeNavbar/>
-      
+      <HomeNavbar />
+
     </LinearGradient>
   )
 }
