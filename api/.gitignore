@@ -3,3 +3,5 @@ node_modules/
 jspm_packages/
 .env
 node_modules
+package-lock.json
+package-lock.json/
