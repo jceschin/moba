@@ -107,11 +107,7 @@ pipelines:
               serviceEndpoint: adminService 
               changeOrigin: true
 ##################################################################################################
-<<<<<<< HEAD
-adminPipeline:
-=======
 emailPipeline:
->>>>>>> 34737a4eb228a5853bf983f96eabe7c218485b0e
     apiEndpoints:
       - email
     policies:
