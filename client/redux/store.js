@@ -5,9 +5,8 @@ import thunk from 'redux-thunk';
 
 const reduxStore = createStore(
 
-    rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
-
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
 
 );
 
