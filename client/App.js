@@ -26,29 +26,18 @@ export default function App() {
   const store = generateStore()
 
   return (
-<<<<<<< HEAD
-    <Provider store= {store}>
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Homepage">
-        <Drawer.Screen name="LandingPage" component={LandingPage} />
-        <Drawer.Screen name="CreateAccount" component={CreateAccount} />
-        <Drawer.Screen name="Homepage" component={Homepage} />
-        <Drawer.Screen name="HomeNavbar" component={HomeNavbar} />
-        <Drawer.Screen name="MyAccount" component={MyAccount} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-    </Provider>
-=======
     <Provider store={reduxStore}>
       <NavigationContainer>
         <Drawer.Navigator initialRouteName='LandingPage'>
           <Drawer.Screen name='LandingPage' component={LandingPage} />
-        <Drawer.Screen name="CreateAccount" component={CreateAccount} />
+          <Drawer.Screen name="CreateAccount" component={CreateAccount} />
           <Drawer.Screen name='RegisterPage' component={RegisterPage} />
           <Drawer.Screen name='LastRegisterPage' component={LastRegisterPage} />
           <Drawer.Screen name="Homepage" component={Homepage} />
+          <Drawer.Screen name="HomeNavbar" component={HomeNavbar} />
+          <Drawer.Screen name="MyAccount" component={MyAccount} />
         </Drawer.Navigator>
       </NavigationContainer>
->>>>>>> main
+    </Provider>  
   );
 }
