@@ -20,12 +20,9 @@ apiEndpoints:
   admin:
     host: localhost
     paths: '/admin/*'
-<<<<<<< HEAD
   mail:
     host: localhost
     paths: '/email/*'
-=======
->>>>>>> 399f36004a2e2b618529c15015b27faf5b05776e
     
 ##################################################################################################
 serviceEndpoints:
@@ -39,11 +36,8 @@ serviceEndpoints:
     url: 'http://localhost:8004'
   adminService:
     url: 'http://localhost:8003'
-<<<<<<< HEAD
   emailService:
     url: 'http://localhost:8005'
-=======
->>>>>>> 399f36004a2e2b618529c15015b27faf5b05776e
 ##################################################################################################
 policies:
   - basic-auth
@@ -59,7 +53,6 @@ policies:
 pipelines:
 ##################################################################################################
   usersPipeline:
-<<<<<<< HEAD
     apiEndpoints:
       - users
     policies:
@@ -88,10 +81,6 @@ pipelines:
   accountPipeline:
     apiEndpoints:
       - account
-=======
-    apiEndpoints:
-      - users
->>>>>>> 399f36004a2e2b618529c15015b27faf5b05776e
     policies:
       - log:
         - action:
@@ -102,61 +91,30 @@ pipelines:
       #       checkCredentialExistence: false
       - proxy:
           - action:
-<<<<<<< HEAD
               serviceEndpoint: accountService 
-=======
-              serviceEndpoint: usersService 
->>>>>>> 399f36004a2e2b618529c15015b27faf5b05776e
               changeOrigin: true
 
+
 ##################################################################################################
-  authPipeline:
-    apiEndpoints:
-      - auth
-    policies:
-      - proxy:
-        - action:
-            serviceEndpoint: authService
-            changeOrigin : true
-##################################################################################################
-<<<<<<< HEAD
   adminPipeline:
     apiEndpoints:
       - admin
-=======
-  accountPipeline:
-    apiEndpoints:
-      - account
->>>>>>> 399f36004a2e2b618529c15015b27faf5b05776e
     policies:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
           - action:
-<<<<<<< HEAD
               serviceEndpoint: adminService 
               changeOrigin: true
 ##################################################################################################
-adminPipeline:
+emailPipeline:
     apiEndpoints:
       - email
-=======
-              serviceEndpoint: accountService 
-              changeOrigin: true
-##################################################################################################
-  adminPipeline:
-    apiEndpoints:
-      - admin
->>>>>>> 399f36004a2e2b618529c15015b27faf5b05776e
     policies:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
           - action:
-<<<<<<< HEAD
               serviceEndpoint: emailService 
-=======
-              serviceEndpoint: adminService 
->>>>>>> 399f36004a2e2b618529c15015b27faf5b05776e
               changeOrigin: true
 ##################################################################################################
