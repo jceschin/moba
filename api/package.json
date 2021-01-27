@@ -25,7 +25,8 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
-    "kill-port": "^1.6.1"
+    "kill-port": "^1.6.1",
+    "sequelize-cli": "^6.2.0"
   },
   "scripts": {
     "start": "nodemon — exec babel-node server.js"

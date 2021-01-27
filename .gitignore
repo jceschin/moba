@@ -1,4 +1,26 @@
 node_modules/
 jspm_packages/
 node_modules
+package-lock.jsonnode_modules/
+jspm_packages/
+node_modules
 package-lock.json
+/package.json
+package.json
+# dependencies
+/node_modules
+.env
+package-lock.json
+node_modules/**/*
+.expo/*
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# macOS
+.DS_Store
