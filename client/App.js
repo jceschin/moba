@@ -17,13 +17,11 @@ import MyAccount from './screens/MyAccount';
 import { Provider } from 'react-redux';
 import reduxStore from './redux/store';
 
-/* let store = reduxStore();  */
 
 
 export default function App() {
 
   const Drawer = createDrawerNavigator();
-  const store = generateStore()
 
   return (
     <Provider store={reduxStore}>

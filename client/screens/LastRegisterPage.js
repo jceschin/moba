@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { Autocompleter } from '@usig-gcba/autocompleter';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
@@ -13,6 +14,25 @@ import { createNewUser } from '../redux/actions/user';
 const LastRegisterPage = ({ navigation }) => {
 
   const { handleSubmit, control, errors } = useForm();
+  const { state, setState } = useState({
+    autocompleter: '',
+    showMap: false,
+    loading: false,
+    x: null,
+    y: null,
+    input: '',
+    error: null,
+    suggestions: [],
+    selectedSuggestion: null,
+    direccionesCaba: true,
+    direccionesAmba: true,
+    lugares: true,
+    deficit: true,
+    catastro: true,
+    long: 3,
+    pause: 300,
+    maxSugg: 10
+  })
 
   const dispatch = useDispatch();
 
