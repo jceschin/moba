@@ -76,7 +76,7 @@ server.post("/auth/login", (req, res, next) => {
       iat: Date.now(),
       username: user.username,
     };
-    const token = jwt.sign(JSON.stringify(payload), "mobaAuth");
+    const token = jwt.sign(payload, "mobaAuth");
     res.json({ data: { token: token } });
   })(req, res, next);
 });

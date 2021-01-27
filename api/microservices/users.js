@@ -12,6 +12,8 @@ const { Op } = require("sequelize");
 
 const jwt = require('jsonwebtoken');
 
+const {Verifytoken, isAdmin} = require('../middlewares')
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
@@ -34,7 +36,7 @@ server.get("/users", (req, res) => {
 
 //Get One Users from dni or email
 
-server.get("/users/:dni_email", (req, res) => {
+server.get("/users/:dni_email", Verifytoken, isAdmin, (req, res) => {
   User.findOne({
     where: {
       [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }],
