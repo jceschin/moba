@@ -2,13 +2,15 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
-const { User } = require("../db");
+const { User, Blacklist } = require("../db");
 
 const server = express();
 
 const morgan = require("morgan");
 
 const { Op } = require("sequelize");
+
+const jwt = require('jsonwebtoken');
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -70,6 +72,17 @@ server.put('/users/:dni', (req, res) => {
       res.status(404).send(err);
     });
 });
+
+//LOGOUT
+
+server.post('/users/logout', (req,res) => {
+  const token = req.headers.authorization.split(" ")[1]
+  Blacklist.create({token})
+  .then((forbiddenToken) => {
+    res.send(forbiddenToken)
+  })
+
+})
 
 server.listen(8000, () => {
   console.log("Users microservice running on 8000");
