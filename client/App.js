@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import LandingPage from './screens/LandingPage';
 import RegisterPage from './screens/RegisterPage';
 import LastRegisterPage from './screens/LastRegisterPage';
+import CreateAccount from './screens/CreateAccount';
 import Homepage from './screens/Homepage';
 
 // REDUX
@@ -18,17 +19,18 @@ import reduxStore from './redux/store';
 export default function App() {
 
   const Drawer = createDrawerNavigator();
+  const store = generateStore()
 
   return (
     <Provider store={reduxStore}>
       <NavigationContainer>
         <Drawer.Navigator initialRouteName='LandingPage'>
           <Drawer.Screen name='LandingPage' component={LandingPage} />
+        <Drawer.Screen name="CreateAccount" component={CreateAccount} />
           <Drawer.Screen name='RegisterPage' component={RegisterPage} />
           <Drawer.Screen name='LastRegisterPage' component={LastRegisterPage} />
           <Drawer.Screen name="Homepage" component={Homepage} />
         </Drawer.Navigator>
       </NavigationContainer>
-    </Provider>
   );
 }
