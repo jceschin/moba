@@ -2,7 +2,13 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) =>{
 
-    const Users = sequelize.define('users', {
+    const User = sequelize.define('user', {
+
+        username:{
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false
+        },
 
         name:{
             type: DataTypes.STRING, 
@@ -59,7 +65,15 @@ module.exports = (sequelize) =>{
 
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
+            get() {
+                return () => this.getDataValue('password')
+            }
+        },
+        salt: {
+            type: DataTypes.STRING,
+            get() {
+                return() => this.getDataValue('salt')
+            }
         },
 
         account_status: {

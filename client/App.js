@@ -5,6 +5,7 @@ import LandingPage from './screens/LandingPage';
 import CreateAccount from './screens/CreateAccount';
 import {Provider} from 'react-redux';
 import generateStore from './store'
+import Homepage from './screens/Homepage';
 
 export default function App() {
 
@@ -17,6 +18,7 @@ export default function App() {
       <Drawer.Navigator initialRouteName="LandingPage">
         <Drawer.Screen name="LandingPage" component={LandingPage} />
         <Drawer.Screen name="CreateAccount" component={CreateAccount} />
+        <Drawer.Screen name="Homepage" component={Homepage} />
       </Drawer.Navigator>
     </NavigationContainer>
     </Provider>

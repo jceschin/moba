@@ -1,97 +1,78 @@
-const express = require('express')
+const express = require("express");
 
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 
-const { Users} = require('../db');
+const { User } = require("../db");
 
-const server = express()
+const server = express();
 
-const morgan = require('morgan')
+const morgan = require("morgan");
 
 const { Op } = require("sequelize");
 
 server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true}));
+server.use(bodyParser.urlencoded({ extended: true }));
 
-server.use(morgan('dev'))
+server.use(morgan("dev"));
 
-//Create Users
 
-server.post("/users", (req,res,next) => {
-
-    Users.create(req.body)
-
-    .then((users) =>{
-
-        res.status(201).send(users);
-        
-    })
-    .catch(err => { res.status(404).send(err) });
-
-});
 
 //Get all Users
 
-server.get('/users', (req, res) => {
+server.get("/users", (req, res) => {
+  User.findAll()
 
-    Users.findAll()
-    
-	.then((users) => {
-
-        res.send(users);
-        
-	})
-	.catch(err => { res.status(404).send(err) });
+    .then((users) => {
+      return res.send(users);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
 });
 
 //Get One Users from dni or email
 
-server.get('/users/:dni_email', (req, res) => {
+server.get("/users/:dni_email", (req, res) => {
+  User.findOne({
+    where: {
+      [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }],
+    },
+  })
 
-	Users.findOne({
+    .then((sizes) => {
+      if (!sizes) {
+        return res.sendStatus(404);
+      }
 
-		where: {
-            [Op.or]: [
-                { dni: req.params.dni_email },
-                { email: req.params.dni_email}
-            ]
-        },
-       
+      return res.send(sizes);
     })
 
-	.then((sizes) => {
-
-        res.send(sizes);
-        
-    })
-    
-	.catch(err => { res.status(404).send(err) });
+    .catch((err) => {
+      res.status(404).send(err);
+    });
 });
-
 
 // Update Users from dni
 
+
 server.put('/users/:dni', (req, res) => {
 
-	Users.update(req.body,
-
-		{
-			where: { dni: req.params.dni }
-		}
-	)
-	.then((users) => {
-
-        console.log(users)
-		res.status(200).send(users);
-
-	})
-	.catch(err => { res.status(404).send(err) });
-})
-
-
+	User.update(req.body,
+    {
+      where: { dni: req.params.dni }
+    }
+  )
+    .then((users) => {
+      console.log(users);
+      res.status(200).send(users);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+});
 
 server.listen(8000, () => {
-    console.log("Server running on 8000");
+  console.log("Users microservice running on 8000");
 });
 
 module.exports = server;
