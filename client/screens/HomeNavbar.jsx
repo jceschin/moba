@@ -8,11 +8,8 @@ const HomeNavbar = () => {
     
     return (
         <View style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity style={styles.icon}>
                 <AntDesign name="home" size={24} color="black"/>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Fontisto name="world-o" size={24} color="black" />
             </TouchableOpacity>
             <TouchableOpacity>
                 <MaterialCommunityIcons name="credit-card-multiple-outline" size={24} color="black" />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, MaterialIcons, Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -14,54 +14,57 @@ const MyAccount = () => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Feather name="arrow-left" size={24} color="white" />
-            </TouchableOpacity>
-            <Text style={styles.greeting}>Hello Juan!</Text>
-          </View>
-          <View style={styles.whiteContainer}>
-            <Text style={styles.accountTag}>Account</Text>
-            <View style={styles.options}>
-              <View style={styles.option}>
-                <MaterialIcons name="credit-card" size={24} color="black" />
-                <Text style={styles.optionName}>Credit Cards</Text>
-              </View>
-              <View style={styles.option}>
-                <Ionicons name="add-circle-outline" size={24} color="black" />
-                <Text style={styles.optionName}>Add Money</Text>
-              </View>
-              <View style={styles.option}>
-                <MaterialIcons name="compare-arrows" size={24} color="black" />
-                <Text style={styles.optionName}>Transfers</Text>
-              </View>
-              <View style={styles.option}>
-                <Feather name="activity" size={24} color="black" />
-                <Text style={styles.optionName}>Activity</Text>
-              </View>
-              <View style={styles.option}>
-                <AntDesign name="contacts" size={24} color="black" />
-                <Text style={styles.optionName}>Contacts</Text>
+          <ScrollView>
+            <View style={styles.header}>
+              <TouchableOpacity style={{position: 'absolute'}} onPress={() => navigation.goBack()}>
+                <Feather name="arrow-left" size={24} color="white"/>
+              </TouchableOpacity>
+              <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={styles.greeting}>Hello Juan!</Text>
               </View>
             </View>
-
-            <Text style={styles.settingsTag}>Account Settings</Text>
+            <View style={styles.whiteContainer}>
+              <Text style={styles.accountTag}>Account</Text>
               <View style={styles.options}>
                 <View style={styles.option}>
-                  <MaterialCommunityIcons name="account-settings-outline" size={24} color="black" />
-                  <Text style={styles.optionName}>Profile</Text>
+                  <MaterialIcons name="credit-card" size={18} color="black" />
+                  <Text style={styles.optionName}>Credit Cards</Text>
                 </View>
                 <View style={styles.option}>
-                  <Feather name="help-circle" size={24} color="black" />
-                  <Text style={styles.optionName}>Help</Text>
+                  <Ionicons name="add-circle-outline" size={18} color="black" />
+                  <Text style={styles.optionName}>Add Money</Text>
                 </View>
                 <View style={styles.option}>
-                  <MaterialCommunityIcons name="logout-variant" size={24} color="black" />
-                  <Text style={styles.optionName}>Log Out</Text>
+                  <MaterialIcons name="compare-arrows" size={18} color="black" />
+                  <Text style={styles.optionName}>Transfers</Text>
+                </View>
+                <View style={styles.option}>
+                  <Feather name="activity" size={18} color="black" />
+                  <Text style={styles.optionName}>Activity</Text>
+                </View>
+                <View style={styles.option}>
+                  <AntDesign name="contacts" size={18} color="black" />
+                  <Text style={styles.optionName}>Contacts</Text>
                 </View>
               </View>
-          </View>
 
+              <Text style={styles.settingsTag}>Account Settings</Text>
+                <View style={styles.options}>
+                  <View style={styles.option}>
+                    <MaterialCommunityIcons name="account-settings-outline" size={18} color="black" />
+                    <Text style={styles.optionName}>Profile</Text>
+                  </View>
+                  <View style={styles.option}>
+                    <Feather name="help-circle" size={18} color="black" />
+                    <Text style={styles.optionName}>Help</Text>
+                  </View>
+                  <View style={styles.option}>
+                    <MaterialCommunityIcons name="logout-variant" size={18} color="black" />
+                    <Text style={styles.optionName}>Log Out</Text>
+                  </View>
+                </View>
+            </View>
+          </ScrollView>
         </LinearGradient>
     )
 }
@@ -75,27 +78,27 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     flexDirection: 'row',
-    paddingLeft: 18,
-    paddingRight: 18,
+    marginLeft: 18,
+    marginRight: 18,
     top: 24
   },
   greeting: {
     color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: 'bold'
   },
   whiteContainer: {
-    top: 30,
+    top:50,
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    height: '100%',
+    height: '100%'
   },
   accountTag: {
     fontSize: 18,
     fontWeight: 'normal',
     color: '#A7A7A7',
-    marginTop: 85,
+    marginTop: 40,
     marginBottom: 25,
     paddingBottom: 15,
     paddingLeft: 18,

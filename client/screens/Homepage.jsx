@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   movsContainer: {
-    top: 160,
+    top: 70,
     minHeight: 290,
     backgroundColor: 'white',
     height: '100%',
@@ -128,17 +128,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontWeight: 'normal',
-    marginTop: 46
+    marginTop: 25
   },
   balance: {
     fontSize: 36,
     textAlign: 'center',
     fontWeight: 'bold',
-    marginTop: 52
+    marginTop: 30
   },
   options: {
     flexDirection: 'row',
-    top: 140,
+    top: 45,
     justifyContent: 'space-between',
     paddingLeft: 18,
     paddingRight: 18
