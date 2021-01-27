@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import enviarEmail from '../Redux'
+
 
 const CreateAccount = (props) => {
+
+  const dispatch = useDispatch();
 
   const [state, setstate] = useState({
     email: ''
@@ -14,11 +19,18 @@ const CreateAccount = (props) => {
     setstate({...state, [name]: value})
   }
 
+
   const createNewUser = () => {
+    const expReg = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+    const esValido = expReg.test(state.email);
     if(state.email === ''){
-      alert('Please provide an email')
+      alert('Please provide an email');
+      return;
+    } if (esValido === false){
+      alert('Please enter a valid email')
     } else {
-      props.navigation.navigate('Login')
+     dispatch(enviarEmail(state.email));
+      props.navigation.navigate('RegisterPage')
     }
   }
 
@@ -79,7 +91,7 @@ const styles = StyleSheet.create({
    textAlign:'center',
    fontSize: 20, 
    lineHeight: 23, 
-   marginTop: 67, 
+   marginTop: 40, 
    fontWeight: 'bold'
   },
   textLegend: {
@@ -87,7 +99,7 @@ const styles = StyleSheet.create({
     textAlign:'center', 
     fontSize: 18, 
     lineHeight: 21,
-    marginTop: 107
+    marginTop: 35
   },
   inputContainer: {
     position: 'absolute',
