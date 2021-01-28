@@ -39,15 +39,15 @@ server.get("/users", (req, res) => {
     });
 });
 
-//Get One Users from dni or email
+//Get One Users from dni, email, username
 
-server.get("/users/:dni_email", Verifytoken, isAdmin, (req, res) => {
+server.get("/users/:dni_email", Verifytoken, (req, res) => {
   User.findOne({
 
 		include: [Account],
 		
     where: {
-      [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }],
+      [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }, { username: req.params.dni_email }],
     },
   })
 
@@ -63,6 +63,7 @@ server.get("/users/:dni_email", Verifytoken, isAdmin, (req, res) => {
       res.status(404).send(err);
     });
 });
+
 
 // Update Users from dni
 

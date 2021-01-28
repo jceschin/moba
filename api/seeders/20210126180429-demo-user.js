@@ -14,7 +14,7 @@ module.exports = {
       dni: '1234567',
       phone: '12345678',
       birthdate: '12/12/12',
-      password: 'super123seguro',
+      password: 'f9e3eda0b9d1f03951d3b70e16617b85454b0a108a12208bb858373105cd4b8a',
       salt: 'sal',
       rol: 'admin',
       createdAt: new Date(),

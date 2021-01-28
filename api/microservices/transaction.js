@@ -173,7 +173,7 @@ server.get('/transaction/account/:cvu', (req, res, next) => {
 
 // Get all Transaction for account by dni or email
 
-server.get("/transaction/users/:dni_email", (req, res, next) => {
+server.get('/transaction/users/:dni_email', (req, res, next) => {
 
     Transaction.findAll({
 
@@ -184,7 +184,7 @@ server.get("/transaction/users/:dni_email", (req, res, next) => {
             
                 model: User,
                 where: {
-                    [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }]
+                    [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }, { username: req.params.dni_email }]
                 }
     
             }],
