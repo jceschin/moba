@@ -1,15 +1,19 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {enviarEmail} from '../../redux/actions/emailActions';
+import { validoEmail } from '../../redux/actions/emailActions';
 
 
 const CreateAccount = (props) => {
 
   const dispatch = useDispatch();
+  const validateEmail = useSelector(store => store.email.email);
+
+  console.log(validateEmail);
 
   const [state, setstate] = useState({
     email: ''
@@ -29,9 +33,16 @@ const CreateAccount = (props) => {
     } if (esValido === false){
       alert('Please enter a valid email')
     } else {
+      if(!validateEmail[0]){
       dispatch(enviarEmail(state));
+      dispatch(validoEmail(state));
       alert(' Please, check your email to continue with the registration process')
       // props.navigation.navigate('RegisterPage')
+      }else {
+        if(validateEmail.valide === false) {
+          
+        }
+      }
     }
   }
 

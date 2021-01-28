@@ -23,7 +23,7 @@ server.post("/send-email", (req, res) => {
     },
   });
 
-  const valideId = Math.floor(Math.random() * 100 + 54);
+  const valideId = Math.floor((Math.random() * 100) + 54);
   const host = req.get("host");
 
   Email.create({
@@ -58,7 +58,6 @@ server.post("/send-email", (req, res) => {
 server.get("/verify", (req, res) => {
   const { valideId } = req.query;
 
-  console.log(valideId);
 
   Email.findOne({
     where: {
@@ -82,12 +81,30 @@ server.get("/verify", (req, res) => {
       }
     })
     .then(result => {
-      res.json(result);
+      res.send();
     })
     .catch((err) => {
       console.log("No se encontro valideId: " + err);
     });
 });
+
+server.get("/email", (req, res) => {
+  const { email } = req.query;
+
+  Email.findOne({
+    where: {
+      email: email,
+    }
+  })
+  .then(result => {
+    if(!result) {
+      console.log("Email no encontrado");
+      res.status(404).send();
+    }else {
+      res.json(result);
+    }
+  })
+})
 
 server.listen(8005, () => {
   console.log("Server running on 8005");
