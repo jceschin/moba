@@ -28,20 +28,21 @@ server.post("/accounts", (req,res,next) => {
 
     .then((user) => {
 
-        Account.create({
-
-            cvu: req.body.cvu,
-            balance: req.body.balance,
-            card_id: req.body.card_id,
-            card_expiration: req.body.card_expiration,
-            userId: user.dataValues.id
+       return Account.create({
+           
+           cvu: req.body.cvu,
+           balance: req.body.balance,
+           card_id: req.body.card_id,
+           card_expiration: req.body.card_expiration,
+           userId: user.dataValues.id
 
         })
+       
 
     })
 
     .then((acc) => {
-
+        
 		res.status(200).send(acc);
 
     })
