@@ -1,39 +1,11 @@
-import React, { useEffect, useState } from 'react';
+
+import React from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
 import HomeNavbar from './HomeNavbar';
-import { useSelector } from "react-redux";
-import axios from "axios";
 
 const Homepage = () => {
-  const { user } = useSelector((state) => state);
-  const [info, setInfo] = useState([{
-    number: "",
-    amount: "",
-    description: "",
-    transaction_type: "",
-    status: "",
-    accounts: []
-
-  }])
-
-  useEffect(() => {
-    getInfo();
-  }, []);
-
-  async function getInfo() {
-    let response = await axios.get(`http://localhost:8080/transaction/users/${user.username}`);
-  
-    setInfo(response.data);
-  }
-
-  let account;
-
-  if (info[0].accounts[0]) {
-    account = info[0].accounts[0];
-  }
-
   return (
     <LinearGradient
       style={styles.container}
@@ -45,9 +17,9 @@ const Homepage = () => {
         <View style={styles.mainContainer}>
 
           <View style={styles.upperContainer}>
-            <Text style={styles.accountOwner}>{account && account.user.name} {account && account.user.surname}</Text>
+            <Text style={styles.accountOwner}>Juan Ceschin</Text>
             <Text style={styles.balanceTag}>Balance</Text>
-            <Text style={styles.balance}>US$ {account && account.balance}</Text>
+            <Text style={styles.balance}>US$ 5,000</Text>
             <View style={styles.options}>
               <View>
                 <TouchableOpacity>
