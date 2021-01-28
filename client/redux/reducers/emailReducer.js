@@ -1,7 +1,7 @@
 import { VALIDAR_EMAIL } from "../types/emailTypes";
 
 const initialState = {
-    email: [],
+    newEmail: [],
 };
 
 export function emailReducer(state = initialState, action) {
@@ -9,7 +9,8 @@ export function emailReducer(state = initialState, action) {
 
         case VALIDAR_EMAIL:
             return {
-                email: action.payload,
+                ...state,
+                newEmail: action.payload,
             };     
     
         default:
