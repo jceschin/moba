@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {enviarEmail} from '../Redux'
+import { enviarEmail } from '../Redux/Actions/emailActions';
 
 
 const CreateAccount = (props) => {
@@ -16,20 +16,20 @@ const CreateAccount = (props) => {
   })
 
   const handleChangeText = (name, value) => {
-    setstate({...state, [name]: value})
+    setstate({ ...state, [name]: value })
   }
-   
+
 
   const createNewUser = () => {
     const expReg = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
     const esValido = expReg.test(state.email);
-    if(state.email === ''){
+    if (state.email === '') {
       alert('Please provide an email');
       return;
-    } if (esValido === false){
+    } if (esValido === false) {
       alert('Please enter a valid email')
     } else {
-     dispatch(enviarEmail(state));
+      dispatch(enviarEmail(state));
       // props.navigation.navigate('RegisterPage')
     }
   }
@@ -41,33 +41,33 @@ const CreateAccount = (props) => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-     <View style={{ marginTop: 16 , flex: 1 , flexDirection: 'row'}}>
-       <TouchableOpacity onPress={() =>  props.navigation.navigate('LandingPage')}>
-      <Icon name="arrow-left" color= '#FFFEFE' size={19} />
-      </TouchableOpacity>
-       <Text style={styles.textTitle}>
-         MOBA
-         </Text>
-         </View>
-        
-      <View style={styles.inputContainer}>
-     <View style={styles.input}>
-     <Text style={styles.textIndication}>
-          Enter your email
-            </Text>
-            <Text style={styles.textLegend}>
-          We are going to send you an email to start creating your account
-            </Text>
-         <TextInput style={{textAlign:'center', marginTop: 220}} placeholder="Email" onChangeText={(value) => handleChangeText('email', value) }/>
-     </View>
-      <View style={styles.buttoncontainer}>
-        <TouchableOpacity style={styles.buttons} onPress={() => createNewUser()}> 
-          <Text style={styles.btncontent}>
-            Send email
-              </Text>
+      <View style={{ marginTop: 16, flex: 1, flexDirection: 'row' }}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('LandingPage')}>
+          <Icon name="arrow-left" color='#FFFEFE' size={19} />
         </TouchableOpacity>
+        <Text style={styles.textTitle}>
+          MOBA
+         </Text>
       </View>
-     </View>
+
+      <View style={styles.inputContainer}>
+        <View style={styles.input}>
+          <Text style={styles.textIndication}>
+            Enter your email
+            </Text>
+          <Text style={styles.textLegend}>
+            We are going to send you an email to start creating your account
+            </Text>
+          <TextInput style={{ textAlign: 'center', marginTop: 220 }} placeholder="Email" onChangeText={(value) => handleChangeText('email', value)} />
+        </View>
+        <View style={styles.buttoncontainer}>
+          <TouchableOpacity style={styles.buttons} onPress={() => createNewUser()}>
+            <Text style={styles.btncontent}>
+              Send email
+              </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
     </LinearGradient>
   );
@@ -77,27 +77,27 @@ export default CreateAccount;
 
 const styles = StyleSheet.create({
   textTitle: {
-   fontFamily: 'Roboto',
-   fontSize: 18, 
-   lineHeight: 21, 
-   color: '#FFFEFE', 
-   flex: 2,
-   textAlign: 'center',
-   marginTop: 1,
-   fontWeight: 'bold'
+    fontFamily: 'Roboto',
+    fontSize: 18,
+    lineHeight: 21,
+    color: '#FFFEFE',
+    flex: 2,
+    textAlign: 'center',
+    marginTop: 1,
+    fontWeight: 'bold'
   },
   textIndication: {
-   fontFamily: 'Roboto',
-   textAlign:'center',
-   fontSize: 20, 
-   lineHeight: 23, 
-   marginTop: 40, 
-   fontWeight: 'bold'
+    fontFamily: 'Roboto',
+    textAlign: 'center',
+    fontSize: 20,
+    lineHeight: 23,
+    marginTop: 40,
+    fontWeight: 'bold'
   },
   textLegend: {
-    fontFamily: 'Roboto', 
-    textAlign:'center', 
-    fontSize: 18, 
+    fontFamily: 'Roboto',
+    textAlign: 'center',
+    fontSize: 18,
     lineHeight: 21,
     marginTop: 35
   },
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
-    input: {
-     borderBottomWidth: 1,
-     borderBottomColor: '#cccccc',
-    },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+  },
   container: {
     flex: 1,
     padding: 10,

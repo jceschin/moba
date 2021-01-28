@@ -7,7 +7,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 // REDUX 
 import { useDispatch } from 'react-redux';
-import { createNewUser } from '../redux/actions/user';
+import { createNewUser } from '../Redux/Actions/user';
 
 
 const RegisterPage = ({ navigation }) => {
@@ -18,6 +18,7 @@ const RegisterPage = ({ navigation }) => {
 
   const onSubmit = (user) => {
     dispatch(createNewUser(user));
+    navigation.jumpTo('LastRegisterPage');
   }
 
   return (
@@ -26,7 +27,7 @@ const RegisterPage = ({ navigation }) => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <TouchableOpacity onPress={() => navigation.jumpTo()} style={styles.back} >
+      <TouchableOpacity animation='fadeInUpBig' onPress={() => navigation.goBack()} style={styles.back} >
         <FontAwesome name="arrow-left" size={24} color="#fff" />
       </TouchableOpacity>
       <Animatable.View
@@ -117,7 +118,7 @@ const RegisterPage = ({ navigation }) => {
               {errors.Password && <Text style={styles.textError}>{errors.Password.message}</Text>}
             </View>
             <View style={styles.buttoncontainer}>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.jumpTo('LastRegisterPage')}>
+              <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text style={styles.btncontent}>
                   Continue
             </Text>

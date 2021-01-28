@@ -6,7 +6,7 @@ import {
   RECOVERY_USER,
   PASSWORD_RESET,
   CHANGE_USER_PASSWORD
-} from '../types/userTypes';
+} from '../Types/userTypes';
 
 const initialState = {
   user: {},

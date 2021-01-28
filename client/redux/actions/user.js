@@ -8,7 +8,7 @@ import {
     recoveryUser,
     passwordReset,
     changeUserPassword
-} from '../types/userTypes';
+} from '../Types/userTypes';
 
 export const createNewUser = (newUser) => {
     return async (dispatch) => {

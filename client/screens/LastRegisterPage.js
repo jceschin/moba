@@ -1,38 +1,47 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Autocompleter } from '@usig-gcba/autocompleter';
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome } from '@expo/vector-icons';
 
 // REDUX 
 import { useDispatch } from 'react-redux';
-import { createNewUser } from '../redux/actions/user';
+import { createNewUser } from '../Redux/Actions/user';
+import axios from 'axios';
 
 
 const LastRegisterPage = ({ navigation }) => {
 
   const { handleSubmit, control, errors } = useForm();
-  const { state, setState } = useState({
-    autocompleter: '',
-    showMap: false,
-    loading: false,
-    x: null,
-    y: null,
-    input: '',
-    error: null,
-    suggestions: [],
-    selectedSuggestion: null,
-    direccionesCaba: true,
-    direccionesAmba: true,
-    lugares: true,
-    deficit: true,
-    catastro: true,
-    long: 3,
-    pause: 300,
-    maxSugg: 10
-  })
+  const { state, setState } = useState(
+    {
+      searchKeyword: '',
+      searchResults: [],
+      isShowingResults: false
+    }
+  )
+
+  const API_KEY = 'AIzaSyDxpDcXAqm5pXWmfv26_wiD2yDR2U9mEsc';
+  const searchLocation = async (text) => {
+    setState({ searchKeyword: text });
+    axios
+      .request({
+        method: 'post',
+        url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${API_KEY}&input=${searchKeyword}`,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setState({
+          searchResults: response.data.predictions,
+          isShowingResults: true
+        });
+      })
+      .catch(e => {
+        console.log(e.response)
+      });
+
+  }
 
   const dispatch = useDispatch();
 
@@ -66,15 +75,31 @@ const LastRegisterPage = ({ navigation }) => {
                 control={control}
                 render={({ onChange, value }) => (
                   <TextInput style={styles.input}
-                    onChangeText={(text) => onChange(text)}
-                    value={value}
+                    onChangeText={(text) => onChange(searchLocation(text))}
+                    value={value.searchKeyword}
                     placeholder='Country'
                   />
                 )}
                 name='Country'
                 rules={{ required: true }}
                 defaultValue=''
-              />
+              /> {/* 
+              {state.isShowingResults && (
+                <FlatList
+                  data={state.searchResults}
+                  renderItem={(item, index) => {
+                    return (
+                      <TouchableOpacity onPress={() => state.setState({
+                        searchKeyword: item.description,
+                        isShowingResults: false
+                      })}>
+                        <Text>{item.description}</Text>
+                      </TouchableOpacity>
+                    )
+                  }}
+                  keyExtractor={(item) => item.id}
+                />
+              )} */}
               {errors.Country && <Text style={styles.textError}>Country is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
@@ -84,14 +109,30 @@ const LastRegisterPage = ({ navigation }) => {
                   <TextInput style={styles.input}
                     onChangeText={(text) => onChange(text)}
                     value={value}
-                    placeholder='Locality'
+                    placeholder='State'
                   />
                 )}
-                name='Locality'
+                name='State'
                 rules={{ required: true }}
                 defaultValue=''
               />
-              {errors.Locality && <Text style={styles.textError}>Locality is required.</Text>}
+              {errors.State && <Text style={styles.textError}>State is required.</Text>}
+            </View>
+            <View style={styles.inputcontainer}>
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput style={styles.input}
+                    onChangeText={(text) => onChange(text)}
+                    value={value}
+                    placeholder='City'
+                  />
+                )}
+                name='City'
+                rules={{ required: true }}
+                defaultValue=''
+              />
+              {errors.City && <Text style={styles.textError}>City is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
               <Controller
@@ -107,7 +148,7 @@ const LastRegisterPage = ({ navigation }) => {
                 rules={{ required: true }}
                 defaultValue=''
               />
-              {errors.Address && <Text style={styles.textError}>Address is required.</Text>}
+              {errors.Address && <Text style={styles.textError}>Adrress is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
               <Controller
