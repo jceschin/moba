@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {enviarEmail} from '../Redux/Actions/emailActions';
+import {enviarEmail} from '../../redux/actions/emailActions';
 
 
 const CreateAccount = (props) => {
