@@ -6,8 +6,9 @@ module.exports = (sequelize) => {
     const Transaction = sequelize.define('transaction', {
 
         number: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
         },
 
         amount: {
