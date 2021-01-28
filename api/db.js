@@ -64,6 +64,8 @@ User.encryptPassword = function(plainText, salt) {
       .digest('hex')
 }
 
+//console.log(crypto.createHash('RSA-SHA256').update('super123seguro').update('sal').digest('hex'))
+
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
       user.salt = User.generateSalt()
