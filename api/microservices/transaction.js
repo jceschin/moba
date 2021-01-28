@@ -153,7 +153,7 @@ server.get("/transaction/:number", (req, res, next) => {
 
 // Get all Transaction for account by cvu
 
-server.get("/transaction/account/:cvu", (req, res, next) => {
+server.get('/transaction/account/:cvu', (req, res, next) => {
 
     Transaction.findAll({
 

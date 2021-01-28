@@ -1,12 +1,14 @@
 const express = require("express");
 const server = express();
 var morgan = require("morgan");
-const { User } = require("../db");
+const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const cors = require("cors");
 var Strategy = require("passport-local").Strategy;
+const crypto = require('crypto')
+
 
 server.use(morgan("dev"));
 
@@ -52,9 +54,20 @@ passport.use(
 server.post("/auth/singup", (req, res, next) => {
   User.create(req.body)
 
-    .then((users) => {
-      res.status(201).send(users);
+    .then((user) => {
+      Account.create({
+        cvu: Math.floor(Math.random() * Math.pow(100,10)),
+        balance: 1000,
+        card_id: Math.floor(Math.random() * Math.pow(40,10)),
+        card_expiration: "9/9/25",
+        userId: user.dataValues.id
+      })
+      .then((acc) => {
+        res.status(200).send(acc);
+      })
     })
+
+
     .catch((err) => {
       res.status(404).send(err);
     });
