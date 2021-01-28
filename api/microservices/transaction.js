@@ -15,6 +15,9 @@ server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use(morgan("dev"));
 
+const cors = require("cors");
+server.use(cors());
+
 
 // Create Transaction
 
