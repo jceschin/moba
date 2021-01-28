@@ -78,10 +78,10 @@ server.post("/auth/singup", (req, res, next) => {
 server.post("/auth/login", (req, res, next) => {
   passport.authenticate("localStrategy", (err, user, fail) => {
     if (err) {
-      return res.send(err);
+      return res.status(401).send(err);
     }
     if (fail) {
-      return res.send(fail.message);
+      return res.status(401).send(fail.message);
     }
     console.log("login OK, generating token...");
     const payload = {
