@@ -21,14 +21,14 @@ export const createUser = (user) => {
 export const loginUser = (user) => {
     return {
         type: LOGIN_USER,
-        user
+        payload: user,
     };
 };
 
-export const logoutUser = (user) => {
+export const logoutUser = () => {
     return {
         type: LOGOUT_USER,
-        user
+        payload: null
     }
 }
 
