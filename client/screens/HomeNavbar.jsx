@@ -1,17 +1,27 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { AntDesign, Fontisto, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeNavbar = () => {
+    const navigation = useNavigation();
+    
     return (
         <View style={styles.container}>
-            <AntDesign name="home" size={24} color="black" />
-            <Fontisto name="world-o" size={24} color="black" />
-            <MaterialCommunityIcons name="credit-card-multiple-outline" size={24} color="black" />
-            <SimpleLineIcons name="menu" size={24} color="black" />
+            <TouchableOpacity style={styles.icon}>
+                <AntDesign name="home" size={24} color="black"/>
+            </TouchableOpacity>
+            <TouchableOpacity>
+                <MaterialCommunityIcons name="credit-card-multiple-outline" size={24} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('MyAccount')}>
+                <SimpleLineIcons name="menu" size={24} color="black" />
+            </TouchableOpacity>  
         </View>
     )
 }
+
+export default HomeNavbar;
 
 const styles = StyleSheet.create({
     container: {
@@ -26,5 +36,3 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     }
 })
-
-export default HomeNavbar;

@@ -76,9 +76,9 @@ module.exports = (sequelize) =>{
             }
         },
 
-        account_status: {
-            type: DataTypes.ENUM("registered", "verified", "admin"),
-            defaultValue: "registered",
+        rol: {
+            type: DataTypes.ENUM("user", "admin"),
+            defaultValue: "user",
         } 
     })
 }

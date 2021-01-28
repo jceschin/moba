@@ -2,13 +2,18 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
-const { User, Account } = require("../db");
+const { User, Account, Blacklist } = require("../db");
+
 
 const server = express();
 
 const morgan = require("morgan");
 
 const { Op } = require("sequelize");
+
+const jwt = require('jsonwebtoken');
+
+const {Verifytoken, isAdmin} = require('../middlewares')
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -36,7 +41,7 @@ server.get("/users", (req, res) => {
 
 //Get One Users from dni or email
 
-server.get("/users/:dni_email", (req, res) => {
+server.get("/users/:dni_email", Verifytoken, isAdmin, (req, res) => {
   User.findOne({
 
 		include: [Account],
@@ -78,6 +83,18 @@ server.put('/users/:dni', (req, res) => {
 	})
 	.catch(err => { res.status(404).send(err) });
 })
+
+//LOGOUT
+
+server.post('/users/logout', (req,res) => {
+  const token = req.headers.authorization.split(" ")[1]
+  Blacklist.create({token})
+  .then((forbiddenToken) => {
+    res.send(forbiddenToken)
+  })
+
+})
+
 
 server.listen(8000, () => {
   console.log("Users microservice running on 8000");
