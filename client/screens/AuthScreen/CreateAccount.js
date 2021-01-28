@@ -12,6 +12,8 @@ const CreateAccount = (props) => {
   const validateEmail = useSelector((store) => store.email.newEmail);
 
   console.log(validateEmail);
+  
+  const [interruptor, setinterruptor] = useState(false);
 
   const [state, setstate] = useState({
     email: "",
