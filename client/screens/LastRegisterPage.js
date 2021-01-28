@@ -1,22 +1,45 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { Autocompleter } from '@usig-gcba/autocompleter';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome } from '@expo/vector-icons';
 
+// REDUX 
+import { useDispatch } from 'react-redux';
+import { createNewUser } from '../redux/actions/user';
 
-const RegisterPage = ({ navigation }) => {
+
+const LastRegisterPage = ({ navigation }) => {
 
   const { handleSubmit, control, errors } = useForm();
+  const { state, setState } = useState({
+    autocompleter: '',
+    showMap: false,
+    loading: false,
+    x: null,
+    y: null,
+    input: '',
+    error: null,
+    suggestions: [],
+    selectedSuggestion: null,
+    direccionesCaba: true,
+    direccionesAmba: true,
+    lugares: true,
+    deficit: true,
+    catastro: true,
+    long: 3,
+    pause: 300,
+    maxSugg: 10
+  })
 
+  const dispatch = useDispatch();
 
-  const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-
-
-  const onSubmit = (data) => {
-    console.log('ESTO ES DATA', data);
+  const onSubmit = (user) => {
+    dispatch(createNewUser(user));
   }
+
 
   return (
     <LinearGradient style={styles.container}
@@ -24,8 +47,8 @@ const RegisterPage = ({ navigation }) => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <TouchableOpacity onPress={() => navigation.navigate('LandingPage')} style={styles.back} >
-        <FontAwesome name="angle-left" size={24} color="#fff" />
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back} >
+        <FontAwesome name="arrow-left" size={24} color="#fff" />
       </TouchableOpacity>
       <Animatable.View
         animation='fadeInUpBig'
@@ -33,7 +56,7 @@ const RegisterPage = ({ navigation }) => {
       >
         <View style={styles.header}>
           <Text style={styles.title}>
-            Create Account
+            Register
           </Text>
         </View>
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -41,99 +64,72 @@ const RegisterPage = ({ navigation }) => {
             <View style={styles.inputcontainer}>
               <Controller
                 control={control}
-                render={({ onChange, onBlur, value }) => (
+                render={({ onChange, value }) => (
                   <TextInput style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
+                    onChangeText={(text) => onChange(text)}
                     value={value}
-                    placeholder='Firstname'
-                    maxLength={20}
+                    placeholder='Country'
                   />
                 )}
-                name='Firstname'
+                name='Country'
                 rules={{ required: true }}
                 defaultValue=''
               />
-              {errors.Firstname && <Text style={{
-                color: 'red',
-                left: 8
-              }}>Firstname is required.</Text>}
+              {errors.Country && <Text style={styles.textError}>Country is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
               <Controller
                 control={control}
-                render={({ onChange, onBlur, value }) => (
+                render={({ onChange, value }) => (
                   <TextInput style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
+                    onChangeText={(text) => onChange(text)}
                     value={value}
-                    placeholder='Lastname'
-                    maxLength={20}
+                    placeholder='Locality'
                   />
                 )}
-                name='Lastname'
+                name='Locality'
                 rules={{ required: true }}
                 defaultValue=''
               />
-              {errors.Lastname && <Text style={{
-                color: 'red',
-                left: 8
-              }}>Lastname is required.</Text>}
+              {errors.Locality && <Text style={styles.textError}>Locality is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
               <Controller
                 control={control}
-                render={({ onChange, onBlur, value }) => (
+                render={({ onChange, value }) => (
                   <TextInput style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
+                    onChangeText={(text) => onChange(text)}
                     value={value}
-                    keyboardType='number-pad'
-                    placeholder='Phone Number'
-                    maxLength={30}
+                    placeholder='Address'
                   />
                 )}
-                name='PhoneNumber'
+                name='Address'
                 rules={{ required: true }}
                 defaultValue=''
               />
-              {errors.PhoneNumber && <Text style={{
-                color: 'red',
-                left: 8
-              }}>Phone is required.</Text>}
+              {errors.Address && <Text style={styles.textError}>Address is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
               <Controller
                 control={control}
-                render={({ onChange, onBlur, value }) => (
+                render={({ onChange, value }) => (
                   <TextInput style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
+                    onChangeText={(text) => onChange(text)}
                     value={value}
-                    textContentType="password"
-                    placeholder='Password'
-                    maxLength={40}
-                    secureTextEntry={true}
+                    placeholder='DNI, NIE or passport'
+                    maxLength={8}
                   />
                 )}
-                name='Password'
-                rules={{ required: true }, {
-                  pattern: {
-                    value: strongRegex,
-                    message: 'Password most contain at least one uppercase letter, one lowercase, one special character and one number'
-                  }
-                }}
+                name='DNI'
+                rules={{ required: true }}
                 defaultValue=''
               />
-              {errors.Password && <Text style={{
-                color: 'red',
-                left: 8
-              }}>Password is required.</Text>}
+              {errors.DNI && <Text style={styles.textError}>DNI is required.</Text>}
             </View>
             <View style={styles.buttoncontainer}>
               <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text style={styles.btncontent}>
-                  Continue
+                  Submit
             </Text>
               </TouchableOpacity>
             </View>
@@ -144,7 +140,7 @@ const RegisterPage = ({ navigation }) => {
   )
 }
 
-export default RegisterPage;
+export default LastRegisterPage;
 
 
 const styles = StyleSheet.create({
@@ -179,6 +175,10 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingVertical: 20
+  },
+  textError: {
+    color: 'red',
+    left: 8
   },
   subcontainer: {
     position: 'relative',
