@@ -22,13 +22,13 @@ module.exports = (sequelize) => {
         },
 
         transaction_type: {
-            type: DataTypes.ENUM("ARS", "USD"),
-            defaultValue: "ARS"
+            type: DataTypes.ENUM("charge", "transfer", "send"),
+            defaultValue: "send"
         },
 
         status: {
-            type: DataTypes.ENUM("sent", "cancelled", "confirmed"),
-            defaultValue: "sent"
+            type: DataTypes.ENUM("processing", "cancelled", "confirmed"),
+            defaultValue: "processing"
         }
     })
 };

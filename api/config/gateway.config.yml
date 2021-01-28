@@ -23,6 +23,10 @@ apiEndpoints:
   transaction:
     host: localhost
     paths: ['/transaction', '/transaction/*']
+  mail:
+    host: localhost
+    paths: '/email/*'
+
     
 ##################################################################################################
 serviceEndpoints:
@@ -38,6 +42,8 @@ serviceEndpoints:
     url: 'http://localhost:8003'
   transactionService:
     url: 'http://localhost:8001'
+  emailService:
+    url: 'http://localhost:8005'
 ##################################################################################################
 policies:
   - basic-auth
@@ -82,12 +88,19 @@ pipelines:
     apiEndpoints:
       - account
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      - log:
+        - action:
+            message: "header===> ${req.header.authorization}"
+      # - jwt:
+      #   - action:
+      #       secretOrPublicKey: 'mobaAuth'
+      #       checkCredentialExistence: false
       - proxy:
           - action:
               serviceEndpoint: accountService 
               changeOrigin: true
+
+
 ##################################################################################################
   adminPipeline:
     apiEndpoints:
@@ -109,5 +122,16 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: transactionService 
+              changeOrigin: true
+##################################################################################################
+emailPipeline:
+    apiEndpoints:
+      - email
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: emailService 
               changeOrigin: true
 ##################################################################################################

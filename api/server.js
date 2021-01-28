@@ -1,14 +1,15 @@
-const path = require('path');
-const gateway = require('express-gateway');
-const morgan = require('morgan')
+const path = require("path");
+const gateway = require("express-gateway");
+const morgan = require("morgan");
 
 const {conn} = require('./db.js')
 require('./microservices/users.js')  //Uncomment requires for run all the microservices
+require('./microservices/email.js')
 require('./microservices/auth.js')
 require('./microservices/transaction.js')
 
-require('./microservices/accounts.js')
-require('./microservices/admin.js')
+require("./microservices/accounts.js");
+require("./microservices/admin.js");
 
 conn.sync({ force: true })
 .then(() => {
@@ -17,3 +18,4 @@ conn.sync({ force: true })
   .run();
   console.log(`Connected to Database ${conn.config.database}, with user '${conn.config.username}' on port ${conn.config.port}`)
 })
+  
