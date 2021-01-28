@@ -58,7 +58,6 @@ server.get("/users/:dni_email", (req, res) => {
 server.put('/users/:dni', (req, res) => {
 
 	User.update(req.body,
-<<<<<<< HEAD
 
 		{
 			where: { dni: req.params.dni }
@@ -74,8 +73,6 @@ server.put('/users/:dni', (req, res) => {
 })
 /* 
 
-=======
->>>>>>> 34737a4eb228a5853bf983f96eabe7c218485b0e
     {
       where: { dni: req.params.dni }
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
-import HomeNavbar from './screens/HomeNavbar';
+import HomeNavbar from './HomeNavbar';
 
 const Homepage = () => {
   return (
