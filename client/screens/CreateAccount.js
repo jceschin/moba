@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {enviarEmail} from '../Redux'
+import {enviarEmail} from '../Redux/Actions/emailActions';
 
 
 const CreateAccount = (props) => {
@@ -29,7 +29,8 @@ const CreateAccount = (props) => {
     } if (esValido === false){
       alert('Please enter a valid email')
     } else {
-     dispatch(enviarEmail(state));
+      dispatch(enviarEmail(state));
+      alert(' Please, check your email to continue with the registration process')
       // props.navigation.navigate('RegisterPage')
     }
   }
