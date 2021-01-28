@@ -9,11 +9,13 @@ import { validoEmail } from '../../redux/actions/emailActions';
 
 
 const CreateAccount = (props) => {
-
+  
   const dispatch = useDispatch();
   const validateEmail = useSelector(store => store.email.email);
 
   console.log(validateEmail);
+  
+  const [interruptor, setinterruptor] = useState(false);
 
   const [state, setstate] = useState({
     email: ''
@@ -39,9 +41,9 @@ const CreateAccount = (props) => {
       alert(' Please, check your email to continue with the registration process')
       // props.navigation.navigate('RegisterPage')
       }else {
-        if(validateEmail.valide === false) {
-          
-        }
+        if(validateEmail.valide === true) {
+           props.navigation.navigate('RegisterPage')
+        } 
       }
     }
   }
