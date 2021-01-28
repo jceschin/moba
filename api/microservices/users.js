@@ -2,7 +2,7 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
-const { User } = require("../db");
+const { User, Account } = require("../db");
 
 const server = express();
 
@@ -20,7 +20,11 @@ server.use(morgan("dev"));
 //Get all Users
 
 server.get("/users", (req, res) => {
-  User.findAll()
+  User.findAll(
+    {
+			include: [Account],
+		}
+  )
 
     .then((users) => {
       return res.send(users);
@@ -34,6 +38,9 @@ server.get("/users", (req, res) => {
 
 server.get("/users/:dni_email", (req, res) => {
   User.findOne({
+
+		include: [Account],
+		
     where: {
       [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }],
     },

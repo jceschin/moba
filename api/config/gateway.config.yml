@@ -20,6 +20,9 @@ apiEndpoints:
   admin:
     host: localhost
     paths: '/admin/*'
+  transaction:
+    host: localhost
+    paths: ['/transaction', '/transaction/*']
     
 ##################################################################################################
 serviceEndpoints:
@@ -33,6 +36,8 @@ serviceEndpoints:
     url: 'http://localhost:8004'
   adminService:
     url: 'http://localhost:8003'
+  transactionService:
+    url: 'http://localhost:8001'
 ##################################################################################################
 policies:
   - basic-auth
@@ -93,5 +98,16 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: adminService 
+              changeOrigin: true
+##################################################################################################
+  transactionPipeline:
+    apiEndpoints:
+      - transaction
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: transactionService 
               changeOrigin: true
 ##################################################################################################
