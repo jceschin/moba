@@ -1,3 +1,4 @@
+  
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,7 +12,7 @@ import Homepage from './screens/Homepage';
 
 // REDUX
 import { Provider } from 'react-redux';
-import reduxStore from './redux/store';
+import reduxStore from './Redux/store';
 
 
 
