@@ -1,24 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome } from '@expo/vector-icons';
 
 // REDUX 
 import { useDispatch } from 'react-redux';
-import { createNewUser } from '../redux/actions/user';
+import { createNewUser } from '../Redux/Actions/user';
 
 
-const LastRegisterPage = ({ navigation }) => {
+const RegisterPage = ({ navigation }) => {
 
   const { handleSubmit, control, errors } = useForm();
 
-  const onSubmit = (data) => {
-    console.log('ESTO ES DATA', data);
-  }
-
   const dispatch = useDispatch();
+
+  const onSubmit = (user) => {
+    dispatch(createNewUser(user));
+  }
 
   return (
     <LinearGradient style={styles.container}
@@ -26,8 +26,8 @@ const LastRegisterPage = ({ navigation }) => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <TouchableOpacity onPress={() => navigation.navigate('RegisterPage')} style={styles.back} >
-        <FontAwesome name="angle-left" size={24} color="#fff" />
+      <TouchableOpacity onPress={() => navigation.jumpTo()} style={styles.back} >
+        <FontAwesome name="arrow-left" size={24} color="#fff" />
       </TouchableOpacity>
       <Animatable.View
         animation='fadeInUpBig'
@@ -35,56 +35,102 @@ const LastRegisterPage = ({ navigation }) => {
       >
         <View style={styles.header}>
           <Text style={styles.title}>
-            Register
+            Create Account
           </Text>
         </View>
-        <View style={styles.subcontainer}>
-          <View style={styles.inputcontainer}>
-            <Controller
-              defaultValue=''
-              name='Country'
-              control={control}
-              render={({ onChange, value }) => (
-                <TextInput style={styles.input}
-                  onChangeText={(text) => onChange(text)}
-                  value={value}
-                  placeholder='Country'
-                />
-              )}
-            />
-          </View>
-          <View style={styles.inputcontainer}>
-            <TextInput style={styles.input}
-              placeholder='Locality'
-              maxLength={40}
-            />
-          </View>
-          <View style={styles.inputcontainer}>
-            <TextInput style={styles.input}
-              placeholder='Address'
-              maxLength={40}
-            />
-          </View>
-          <View style={styles.inputcontainer}>
-            <TextInput style={styles.input}
-              placeholder='DNI, NIE or passport'
-              maxLength={40}
-            />
-          </View>
-          <View style={styles.buttoncontainer}>
-            <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-              <Text style={styles.btncontent}>
-                Submit
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={styles.subcontainer}>
+            <View style={styles.inputcontainer}>
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput style={styles.input}
+                    onChangeText={value => onChange(value)}
+                    value={value}
+                    placeholder='Firstname'
+                    maxLength={20}
+                  />
+                )}
+                name='Firstname'
+                rules={{ required: true }}
+                defaultValue=''
+              />
+              {errors.Firstname && <Text style={styles.textError}>Firstname is required.</Text>}
+            </View>
+            <View style={styles.inputcontainer}>
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput style={styles.input}
+                    onChangeText={value => onChange(value)}
+                    value={value}
+                    placeholder='Lastname'
+                    maxLength={20}
+                  />
+                )}
+                name='Lastname'
+                rules={{ required: true }}
+                defaultValue=''
+              />
+              {errors.Lastname && <Text style={styles.textError}>Lastname is required.</Text>}
+            </View>
+            <View style={styles.inputcontainer}>
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput style={styles.input}
+                    onChangeText={value => onChange(value)}
+                    value={value}
+                    keyboardType='number-pad'
+                    placeholder='Phone Number'
+                    maxLength={30}
+                  />
+                )}
+                name='PhoneNumber'
+                rules={{ required: true }}
+                defaultValue=''
+              />
+              {errors.PhoneNumber && <Text style={styles.textError}>Phone is required.</Text>}
+            </View>
+            <View style={styles.inputcontainer}>
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput style={styles.input}
+                    onChangeText={value => onChange(value)}
+                    value={value}
+                    textContentType="password"
+                    placeholder='Password'
+                    maxLength={40}
+                    secureTextEntry={true}
+                  />
+                )}
+                name='Password'
+                rules={{ required: 'Specify a password' }, {
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+                    message: 'Password most contain at least one uppercase letter, one lowercase, one special character and one number'
+                  }
+                }}
+                defaultValue=''
+              />
+              {errors.Password && <Text style={styles.textError}>{errors.Password.message}</Text>}
+            </View>
+            <View style={styles.buttoncontainer}>
+              <TouchableOpacity style={styles.button} onPress={() => navigation.jumpTo('LastRegisterPage')}>
+                <Text style={styles.btncontent}>
+                  Continue
             </Text>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </Animatable.View>
     </LinearGradient>
   )
 }
 
-export default LastRegisterPage;
+export default RegisterPage;
 
 
 const styles = StyleSheet.create({
@@ -116,6 +162,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontStyle: 'normal',
     fontWeight: 'bold',
+  },
+  contentContainer: {
+    paddingVertical: 20
+  },
+  textError: {
+    color: 'red',
+    left: 8
   },
   subcontainer: {
     position: 'relative',

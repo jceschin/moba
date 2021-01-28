@@ -1,36 +1,42 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
-import HomeNavbar from './screens/HomeNavbar';
+import HomeNavbar from './HomeNavbar';
 
 const Homepage = () => {
   return (
     <LinearGradient
-    style={styles.container}
-    colors={['rgba(140, 165, 253, 1)', 'rgba(243, 129, 245, 0.77)']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
+      style={styles.container}
+      colors={['rgba(140, 165, 253, 1)', 'rgba(243, 129, 245, 0.77)']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
     >
       <ScrollView>
         <View style={styles.mainContainer}>
 
           <View style={styles.upperContainer}>
             <Text style={styles.accountOwner}>Juan Ceschin</Text>
-            <Text style={styles.balanceTag}>Money</Text>
+            <Text style={styles.balanceTag}>Balance</Text>
             <Text style={styles.balance}>US$ 5,000</Text>
             <View style={styles.options}>
               <View>
-                <AntDesign name="plus" size={24} color="black" style={styles.optionIcon}/>
-                <Text style={styles.option}>Add Money</Text>
+                <TouchableOpacity>
+                  <AntDesign name="plus" size={24} color="black" style={styles.optionIcon}/>
+                  <Text style={styles.option}>Add Money</Text>
+                </TouchableOpacity>
               </View>
               <View>
-                <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon}/>
-                <Text style={styles.option}>Transfer</Text>
+                <TouchableOpacity>
+                  <MaterialIcons name="arrow-right-alt" size={24} color="black" style={styles.optionIcon}/>
+                  <Text style={styles.option}>Transfer</Text>
+                </TouchableOpacity>
               </View>
               <View>
-                <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
-                <Text style={styles.option}>Settings</Text>
+                <TouchableOpacity>
+                  <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
+                  <Text style={styles.option}>Settings</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -87,8 +93,8 @@ const Homepage = () => {
 
       </ScrollView>
 
-      <HomeNavbar/>
-      
+      <HomeNavbar />
+
     </LinearGradient>
   )
 }
@@ -105,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   movsContainer: {
-    top: 160,
+    top: 70,
     minHeight: 290,
     backgroundColor: 'white',
     height: '100%',
@@ -116,23 +122,23 @@ const styles = StyleSheet.create({
     fontSize: 36,
     textAlign: 'center',
     fontWeight: 'bold',
-    top: 31
+    marginTop: 31
   },
   balanceTag: {
     fontSize: 20,
     textAlign: 'center',
     fontWeight: 'normal',
-    top: 70
+    marginTop: 25
   },
   balance: {
     fontSize: 36,
     textAlign: 'center',
     fontWeight: 'bold',
-    top: 100
+    marginTop: 30
   },
   options: {
     flexDirection: 'row',
-    top: 140,
+    top: 45,
     justifyContent: 'space-between',
     paddingLeft: 18,
     paddingRight: 18
@@ -146,13 +152,14 @@ const styles = StyleSheet.create({
   },
   movsHeader: {
     marginTop: 36,
+    marginBottom: 15,
     fontSize: 18,
     textAlign: 'center',
     fontWeight: 'normal'
   },
   mov: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 15,
   },
   movDate: {
     fontSize: 18,
