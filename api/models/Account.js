@@ -5,6 +5,7 @@ module.exports = (sequelize) => {
   const Account = sequelize.define("account", {
     cvu: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
       unique: true,
     },
