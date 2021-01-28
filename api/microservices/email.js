@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
+const { Email } = require("../db");
 
 // middlewares
 server.use(morgan("dev"));
@@ -12,7 +13,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors(/* {origin: "http://localhost:19006", credentials: true} */));
 
 server.post("/send-email", (req, res) => {
-  const  email  = req.body.email;
+  const email = req.body.email;
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -22,26 +23,70 @@ server.post("/send-email", (req, res) => {
     },
   });
 
-  const rand = Math.floor((Math.random() * 100) + 54);
+  const valideId = Math.floor(Math.random() * 100 + 54);
+  const host = req.get("host");
 
-  const linkRedirect = "http://localhost:8080/auth/singup";
+  Email.create({
+    email: email,
+    valideId: valideId,
+  })
+    .then(() => {
+      const linkRedirect = `http://${host}/verify?valideId=${valideId}`;
 
-  const mailOptions = {
-    from: "noreplymoba@gmail.com",
-    to: email,
-    subject: "Confirmacion Email",
-    html: `Su cuenta para la aplicación moba se ha confirmado. Pulse el siguiente enlace para confirmar la dirección de correo electronico. <br />
-     <a href= ${linkRedirect}> seguir el proceso </a>`,
-  };
+      const mailOptions = {
+        from: "noreplymoba@gmail.com",
+        to: email,
+        subject: "Confirmacion Email",
+        html: `Su cuenta para la aplicación moba se ha confirmado. Pulse el siguiente enlace para confirmar la dirección de correo electronico. <br />
+       <a href= ${linkRedirect}> seguir el proceso </a>`,
+      };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if(error) {
-      res.status(500).json(error.message);
-    }else {
-      console.log("Email enviado");
-      res.status(200).jsonp(req.body);
-    }
-  });
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          res.status(500).json(error.message);
+        } else {
+          console.log("Email enviado");
+          res.status(200).jsonp(req.body);
+        }
+      });
+    })
+    .catch((err) => {
+      console.log("Error no se puede enviar el email: " + err);
+    });
+});
+
+server.get("/verify", (req, res) => {
+  const { valideId } = req.query;
+
+  console.log(valideId);
+
+  Email.findOne({
+    where: {
+      valideId: valideId,
+    },
+  })
+    .then((res) => {
+      console.log(res);
+      if (!res) {
+        console.log("No se pudo validar el email");
+        res.status(404).json("No se pudo validar el email");
+      } else {
+        Email.update(
+          {
+            valide: true,
+          },
+          {
+            where: { valideId: valideId },
+          }
+        );
+      }
+    })
+    .then(result => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log("No se encontro valideId: " + err);
+    });
 });
 
 server.listen(8005, () => {
