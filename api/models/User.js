@@ -45,13 +45,13 @@ module.exports = (sequelize) =>{
         },
 
         dni: {
-            type: DataTypes.REAL,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
 
         phone: {
-            type: DataTypes.REAL,
+            type: DataTypes.STRING,
             allowNull: false
         },
         
