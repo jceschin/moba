@@ -9,7 +9,6 @@ module.exports = (sequelize) => {
         },
         valideId: {
             type: DataTypes.INTEGER,
-            unique: true,
         },
         valide: {
             type: DataTypes.BOOLEAN,
