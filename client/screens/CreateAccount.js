@@ -29,7 +29,8 @@ const CreateAccount = (props) => {
     } if (esValido === false){
       alert('Please enter a valid email')
     } else {
-     dispatch(enviarEmail(state));
+      dispatch(enviarEmail(state));
+      alert(' Please, check your email to continue with the registration process')
       // props.navigation.navigate('RegisterPage')
     }
   }
