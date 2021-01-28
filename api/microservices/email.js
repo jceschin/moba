@@ -9,12 +9,10 @@ const cors = require("cors");
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(cors({origin: "http://localhost:19006", credentials: true}));
+server.use(cors(/* {origin: "http://localhost:19006", credentials: true} */));
 
 server.post("/send-email", (req, res) => {
   const  email  = req.body.email;
-  
- 
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -23,6 +21,8 @@ server.post("/send-email", (req, res) => {
       pass: "yelwfokrlczzdpoq",
     },
   });
+
+  const rand = Math.floor((Math.random() * 100) + 54);
 
   const linkRedirect = "http://localhost:8080/auth/singup";
 

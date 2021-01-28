@@ -58,24 +58,6 @@ server.get("/users/:dni_email", (req, res) => {
 server.put('/users/:dni', (req, res) => {
 
 	User.update(req.body,
-<<<<<<< HEAD
-
-		{
-			where: { dni: req.params.dni }
-		}
-	)
-	.then((users) => {
-
-        console.log(users)
-		res.status(200).send(users);
-
-	})
-	.catch(err => { res.status(404).send(err) });
-})
-/* 
-
-=======
->>>>>>> 34737a4eb228a5853bf983f96eabe7c218485b0e
     {
       where: { dni: req.params.dni }
     }
@@ -87,7 +69,7 @@ server.put('/users/:dni', (req, res) => {
     .catch((err) => {
       res.status(404).send(err);
     });
-}); */
+});
 
 server.listen(8000, () => {
   console.log("Users microservice running on 8000");
