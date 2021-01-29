@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import { loginStateUser } from "../../redux/Actions/user";
+import { loginStateUser } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 
 const LoginScreen = ({ navigation }) => {
