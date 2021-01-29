@@ -15,7 +15,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { logoutUserAction } from "../../redux/actions/user";
+import { logoutUserAction } from "../../redux/Actions/user";
 import { useDispatch } from "react-redux";
 
 const MyAccount = () => {
@@ -80,7 +80,7 @@ const MyAccount = () => {
 
           <Text style={styles.settingsTag}>Account Settings</Text>
           <View style={styles.options}>
-          
+
             <View style={styles.option}>
               <MaterialCommunityIcons
                 name="account-settings-outline"

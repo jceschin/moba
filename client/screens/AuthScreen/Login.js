@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import { loginStateUser } from "../../redux/actions/user";
+import { loginStateUser } from "../../redux/Actions/user";
 import { useDispatch, useSelector } from "react-redux";
 
 const LoginScreen = ({ navigation }) => {
@@ -159,8 +159,8 @@ const LoginScreen = ({ navigation }) => {
               {data.secureTextEntry ? (
                 <Feather name="eye-off" color="grey" size={20} />
               ) : (
-                <Feather name="eye" color="grey" size={20} />
-              )}
+                  <Feather name="eye" color="grey" size={20} />
+                )}
             </TouchableOpacity>
           </View>
           {data.isValidPassword ? null : (
