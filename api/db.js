@@ -32,7 +32,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 
-const {User, Account, Transaction, Blacklist} = sequelize.models;
+const { User, Account, Transaction, Blacklist } = sequelize.models;
 
 // Aca vendrian las relaciones
 
@@ -52,31 +52,31 @@ Transaction.belongsToMany(Account, { through: 'accounttransaction', foreignKey: 
 
 //ENCRYPTIONS
 
-User.generateSalt = function() {
+User.generateSalt = function () {
   return crypto.randomBytes(16).toString('base64')
 }
 
-User.encryptPassword = function(plainText, salt) {
+User.encryptPassword = function (plainText, salt) {
   return crypto
-      .createHash('RSA-SHA256')
-      .update(plainText)
-      .update(salt)
-      .digest('hex')
+    .createHash('RSA-SHA256')
+    .update(plainText)
+    .update(salt)
+    .digest('hex')
 }
 
 //console.log(crypto.createHash('RSA-SHA256').update('super123seguro').update('sal').digest('hex'))
 
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
-      user.salt = User.generateSalt()
-      console.log('salt', user.salt())
-      user.password = User.encryptPassword(user.password(), user.salt())
+    user.salt = User.generateSalt()
+    console.log('salt', user.salt())
+    user.password = User.encryptPassword(user.password(), user.salt())
   }
 }
 
 
 
-User.prototype.correctPassword = function(enteredPassword) {
+User.prototype.correctPassword = function (enteredPassword) {
   return User.encryptPassword(enteredPassword, this.salt()) === this.password()
 }
 

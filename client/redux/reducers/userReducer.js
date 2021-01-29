@@ -22,7 +22,7 @@ const userReducer = (state = initialState, action) => {
     case CREATE_USER:
       return {
         ...state,
-        user: [...state.user, action.user]
+        user: [state.user, action.user]
       };
       case AUTO_LOGIN:
       return {

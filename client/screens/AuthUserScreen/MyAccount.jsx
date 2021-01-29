@@ -80,7 +80,7 @@ const MyAccount = () => {
 
           <Text style={styles.settingsTag}>Account Settings</Text>
           <View style={styles.options}>
-          
+
             <View style={styles.option}>
               <MaterialCommunityIcons
                 name="account-settings-outline"

@@ -159,8 +159,8 @@ const LoginScreen = ({ navigation }) => {
               {data.secureTextEntry ? (
                 <Feather name="eye-off" color="grey" size={20} />
               ) : (
-                <Feather name="eye" color="grey" size={20} />
-              )}
+                  <Feather name="eye" color="grey" size={20} />
+                )}
             </TouchableOpacity>
           </View>
           {data.isValidPassword ? null : (

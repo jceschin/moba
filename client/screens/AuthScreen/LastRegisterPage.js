@@ -1,38 +1,46 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Autocompleter } from '@usig-gcba/autocompleter';
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome } from '@expo/vector-icons';
 
 // REDUX 
 import { useDispatch } from 'react-redux';
-import { createNewUser } from '../../redux/actions/user';
+import { createNewUser } from '../redux/actions/user';
+import axios from 'axios';
 
 
 const LastRegisterPage = ({ navigation }) => {
 
   const { handleSubmit, control, errors } = useForm();
-  const { state, setState } = useState({
-    autocompleter: '',
-    showMap: false,
-    loading: false,
-    x: null,
-    y: null,
-    input: '',
-    error: null,
-    suggestions: [],
-    selectedSuggestion: null,
-    direccionesCaba: true,
-    direccionesAmba: true,
-    lugares: true,
-    deficit: true,
-    catastro: true,
-    long: 3,
-    pause: 300,
-    maxSugg: 10
-  })
+  const [state, setState] = useState(
+    {
+      searchKeyword: '',
+      searchResults: [],
+      isShowingResults: false
+    }
+  )
+
+  const searchLocation = async (text) => {
+    setState({ searchKeyword: text });
+    axios
+      .request({
+        method: 'post',
+        url: `https://restcountries.eu/rest/v2/name/eesti/&${state.searchKeyword}`,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setState({
+          searchResults: response.data.name,
+          isShowingResults: true
+        });
+      })
+      .catch(e => {
+        console.log(e.response)
+      });
+
+  }
 
   const dispatch = useDispatch();
 
@@ -42,101 +50,39 @@ const LastRegisterPage = ({ navigation }) => {
 
 
   return (
-    <LinearGradient style={styles.container}
-      colors={['rgba(140, 165, 253, 1)', 'rgba(243, 129, 245, 0.77)']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back} >
-        <FontAwesome name="arrow-left" size={24} color="#fff" />
-      </TouchableOpacity>
-      <Animatable.View
-        animation='fadeInUpBig'
-        style={styles.section}
-      >
-        <View style={styles.header}>
-          <Text style={styles.title}>
-            Register
-          </Text>
-        </View>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <View style={styles.subcontainer}>
-            <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={(text) => onChange(text)}
-                    value={value}
-                    placeholder='Country'
-                  />
-                )}
-                name='Country'
-                rules={{ required: true }}
-                defaultValue=''
-              />
-              {errors.Country && <Text style={styles.textError}>Country is required.</Text>}
-            </View>
-            <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={(text) => onChange(text)}
-                    value={value}
-                    placeholder='Locality'
-                  />
-                )}
-                name='Locality'
-                rules={{ required: true }}
-                defaultValue=''
-              />
-              {errors.Locality && <Text style={styles.textError}>Locality is required.</Text>}
-            </View>
-            <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={(text) => onChange(text)}
-                    value={value}
-                    placeholder='Address'
-                  />
-                )}
-                name='Address'
-                rules={{ required: true }}
-                defaultValue=''
-              />
-              {errors.Address && <Text style={styles.textError}>Address is required.</Text>}
-            </View>
-            <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={(text) => onChange(text)}
-                    value={value}
-                    placeholder='DNI, NIE or passport'
-                    maxLength={8}
-                  />
-                )}
-                name='DNI'
-                rules={{ required: true }}
-                defaultValue=''
-              />
-              {errors.DNI && <Text style={styles.textError}>DNI is required.</Text>}
-            </View>
-            <View style={styles.buttoncontainer}>
-              <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-                <Text style={styles.btncontent}>
-                  Submit
-            </Text>
+    <View style={styles.inputcontainer}>
+      <TextInput style={styles.input}
+        onChangeText={(text) => searchLocation(text)}
+        value={state.searchKeyword}
+        placeholder='Country'
+      />
+      {/* <Controller
+        control={control}
+        render={({ onChange, value }) => (
+        )}
+        name='Country'
+        rules={{ required: true }}
+        defaultValue=''
+      /> */}
+      {state.isShowingResults && (
+        <FlatList
+          data={state.searchResults}
+          renderItem={(item, index) => {
+            return (
+              <TouchableOpacity onPress={() => state.setState({
+                searchKeyword: item.description,
+                isShowingResults: false
+              })}>
+                <Text>{item.description}</Text>
               </TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
-      </Animatable.View>
-    </LinearGradient>
+            )
+          }}
+          keyExtractor={(item) => item.id}
+          style={styles.searchResultsContainer}
+        />
+      )}
+      {errors.Country && <Text style={styles.textError}>Country is required.</Text>}
+    </View>
   )
 }
 
@@ -188,6 +134,14 @@ const styles = StyleSheet.create({
   inputcontainer: {
     width: 'auto',
     padding: 20,
+    zIndex: 10
+  },
+  searchResultsContainer: {
+    width: 340,
+    height: 200,
+    backgroundColor: '#fff',
+    position: 'absolute',
+    top: 50,
   },
   input: {
     padding: 6,

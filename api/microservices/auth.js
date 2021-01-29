@@ -11,7 +11,7 @@ const crypto = require('crypto')
 
 
 server.use(morgan("dev"));
-
+server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors())
@@ -44,6 +44,7 @@ passport.use(
           return done(null, user);
         })
         .catch((err) => {
+
           return done(err);
         });
     }
@@ -53,6 +54,7 @@ passport.use(
 //Create Users
 
 server.post("/auth/singup", (req, res, next) => {
+  console.log(req.body)
   User.create(req.body)
 
     .then((user) => {
@@ -70,6 +72,7 @@ server.post("/auth/singup", (req, res, next) => {
 
 
     .catch((err) => {
+      console.log(err)
       res.status(404).send(err);
     });
 });
