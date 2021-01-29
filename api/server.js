@@ -19,3 +19,4 @@ conn.sync({ force: true })
   console.log(`Connected to Database ${conn.config.database}, with user '${conn.config.username}' on port ${conn.config.port}`)
 })
   
+ 
