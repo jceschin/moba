@@ -85,13 +85,10 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const loginHandle = async (userName, password) => {
-    try {
-      await loginUser(data);
-      console.log("user", data);
-      navigation.navigate("AuthUserScreen", { screen: "Homepage" });
-    } catch (err) {
-      console.log("message", err);
+    if (data.username.length === 0 || data.password.length === 0) {
+      alert("Username or Password cannot be empty");
     }
+    await loginUser(data);
   };
 
   return (

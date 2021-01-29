@@ -1,10 +1,34 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
 import HomeNavbar from './HomeNavbar';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Homepage = () => {
+  const loggedUser = useSelector((state) => state.user);
+  const [transactions, setTransactions] = useState([]);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    getTransactions(loggedUser.username);
+    getUser(loggedUser.username);
+  }, []);
+
+  async function getTransactions(username) {
+    let response = await axios.get(`http://localhost:8080/transaction/users/${username}`);
+
+    setTransactions(response.data);
+  }
+
+  async function getUser(username) {
+    let response = await axios.get(`http://localhost:8080/users/${username}`);
+
+    setUser(response.data);
+  }
+
   return (
     <LinearGradient
       style={styles.container}
@@ -16,9 +40,13 @@ const Homepage = () => {
         <View style={styles.mainContainer}>
 
           <View style={styles.upperContainer}>
-            <Text style={styles.accountOwner}>Juan Ceschin</Text>
+            <Text style={styles.accountOwner}>{user.name} {user.surname}</Text>
             <Text style={styles.balanceTag}>Balance</Text>
-            <Text style={styles.balance}>US$ 5,000</Text>
+            {
+              user.account
+              ? <Text style={styles.balance}>US$ {user.account.balance}</Text>
+              : <Text style={styles.balance}>US$ 0</Text>
+            }
             <View style={styles.options}>
               <View>
                 <TouchableOpacity>
@@ -43,51 +71,33 @@ const Homepage = () => {
 
           <View style={styles.movsContainer}>
             <Text style={styles.movsHeader}>Last Movements</Text>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
+            {
+              transactions.map(t => {
+                return (
+                  <View style={styles.mov}>
+                    <View style={styles.movDateContainer}>
+                      <Text style={styles.movDate}>{t.date.substring(0, 10)}</Text>
+                    </View>
+                    <View style={styles.movDetails}>
+                      {
+                        t.type === 'sender'
+                        ? (
+                            <Text style={styles.movType}>Sended {t.description}</Text>
+                        )
+                        : <Text style={styles.movType}>Received US${t.amount}</Text>
+                      }
+                      {
+                        t.type === 'sender'
+                        ? (
+                            <Text style={styles.movType}>− US${t.amount}</Text>
+                        )
+                        : <Text style={styles.movType}>US${t.amount}</Text>
+                      }
+                    </View>
+                  </View>
+                )
+              })
+            }
           </View>
         </View>
 

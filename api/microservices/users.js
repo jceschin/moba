@@ -15,11 +15,13 @@ const jwt = require('jsonwebtoken');
 
 const {Verifytoken, isAdmin} = require('../middlewares')
 
+const cors = require('cors')
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use(morgan("dev"));
-
+server.use(cors())
 
 
 //Get all Users
@@ -39,15 +41,14 @@ server.get("/users", (req, res) => {
     });
 });
 
-//Get One Users from dni or email
-
-server.get("/users/:dni_email", Verifytoken, isAdmin, (req, res) => {
+//Get One Users from dni, email, username
+server.get("/users/:dni_email", (req, res) => {
   User.findOne({
 
 		include: [Account],
 		
     where: {
-      [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }],
+      [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }, { username: req.params.dni_email }],
     },
   })
 
@@ -63,6 +64,7 @@ server.get("/users/:dni_email", Verifytoken, isAdmin, (req, res) => {
       res.status(404).send(err);
     });
 });
+
 
 // Update Users from dni
 

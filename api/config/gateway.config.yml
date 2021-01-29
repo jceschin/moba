@@ -22,7 +22,7 @@ apiEndpoints:
     paths: '/admin/*'
   transaction:
     host: localhost
-    paths: ['/transaction', '/transaction/*']
+    paths: ['/transaction', '/transaction/*', '/transaction/users']
   mail:
     host: localhost
     paths: '/email/*'
@@ -64,11 +64,11 @@ pipelines:
     policies:
       - log:
         - action:
-            message: "header===> ${req.header.authorization}"
-      - jwt:
-        - action:
-            secretOrPublicKey: 'mobaAuth'
-            checkCredentialExistence: false
+            message: "header===> ${req.header}"
+      # - jwt:
+      #   - action:
+      #       secretOrPublicKey: 'mobaAuth'
+      #       checkCredentialExistence: false
       - proxy:
           - action:
               serviceEndpoint: usersService 
