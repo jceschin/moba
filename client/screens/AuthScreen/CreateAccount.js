@@ -34,20 +34,25 @@ const CreateAccount = (props) => {
       alert("Please enter a valid email");
     } else {
       if (validateEmail) {
-          if(validateEmail.email === estate.email){
+          if(validateEmail.email === state.email){
+            console.log(validateEmail.email);
+            console.log(state.email)
+            dispatch(validoEmail(state));
                 if (validateEmail.valide === false) {
-                    alert("Por favor valide su correo electronico");
-                    
+                  dispatch(validoEmail(state));
+                  console.log(validateEmail.valide)
+                  alert("Please, validate your email");
+                 
                 } else {
+                      ;
                       console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
                       props.navigation.navigate("RegisterPage");
                 }
           } else {
                   dispatch(enviarEmail(state));
                   dispatch(validoEmail(state));
-                  alert(
-                    " Please, check your email to continue with the registration process"
-                  );              
+                  alert( " Please, check your email to continue with the registration process"); 
+                  setinterruptor(true)             
             }          
        
       } else {
@@ -84,9 +89,21 @@ const CreateAccount = (props) => {
       <View style={styles.inputContainer}>
         <View style={styles.input}>
           <Text style={styles.textIndication}>Enter your email</Text>
-          <Text style={styles.textLegend}>
-            We are going to send you an email to start creating your account
-          </Text>
+          {validateEmail ? interruptor === false ?
+            <Text style={styles.textLegend}>
+           We are going to send you an email to start creating your account 
+            </Text> 
+               :
+             <Text style={styles.textValidate}>
+          Waiting for you to validate the email
+               </Text> 
+               : 
+             <Text style={styles.textLegend}>
+              fffffff
+             </Text>
+           } 
+
+
           <TextInput
             style={{ textAlign: "center", marginTop: 220 }}
             placeholder="Email"
@@ -94,12 +111,20 @@ const CreateAccount = (props) => {
           />
         </View>
         <View style={styles.buttoncontainer}>
-          <TouchableOpacity
+         { interruptor === false ? 
+         <TouchableOpacity
             style={styles.buttons}
             onPress={() => createNewUser()}
           >
             <Text style={styles.btncontent}>Send email</Text>
           </TouchableOpacity>
+               :
+          <TouchableOpacity
+            style={styles.buttons}
+            onPress={() => createNewUser()}
+          >
+            <Text style={styles.btncontent}>Continue</Text>
+          </TouchableOpacity>}
         </View>
       </View>
     </LinearGradient>
@@ -133,6 +158,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 21,
     marginTop: 35,
+  },
+  textValidate: {
+    fontFamily: "Roboto",
+    textAlign: "center",
+    fontSize: 25,
+    lineHeight: 21,
+    marginTop: 35,
+    color: "#663399",
+    fontWeight: "bold"
   },
   inputContainer: {
     position: "absolute",

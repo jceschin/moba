@@ -1,7 +1,7 @@
 import { VALIDAR_EMAIL } from "../types/emailTypes";
 
 const initialState = {
-    newEmail: [],
+    newEmail: {},
 };
 
 export function emailReducer(state = initialState, action) {
