@@ -34,7 +34,7 @@ const CreateAccount = (props) => {
       alert("Please enter a valid email");
     } else {
       if (validateEmail) {
-          if(validateEmail.email === estate.email){
+          if(validateEmail.email === state.email){
                 if (validateEmail.valide === false) {
                     alert("Por favor valide su correo electronico");
                     

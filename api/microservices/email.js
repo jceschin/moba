@@ -50,6 +50,9 @@ server.post("/send-email", (req, res) => {
         }
       });
     })
+    .then(result => {
+      res.json(result);
+    })
     .catch((err) => {
       console.log("Error no se puede enviar el email: " + err);
     });
