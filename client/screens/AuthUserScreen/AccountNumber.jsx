@@ -1,9 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
 
 const AccountNumber = () => {
+    const navigation = useNavigation();
+
     return (
         <LinearGradient
             style={styles.container}
@@ -13,7 +16,7 @@ const AccountNumber = () => {
         >
         <View style={styles.header}>
           <TouchableOpacity
-            style={{ position: "absolute" }}
+            // style={{ position: "absolute" }}
             onPress={() => navigation.goBack()}
           >
             <Feather name="arrow-left" size={24} color="white" />
