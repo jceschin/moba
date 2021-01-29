@@ -185,8 +185,11 @@ server.get("/transaction/users/:dni_email", (req, res, next) => {
       });
     })
     .then(() => {
-      res.send(sorted);
+      Accounttransaction.findAll({
+        where: { number: { [Op.or]: IDtransaction } },
+      }).then((data) => res.send(data));
     })
+
     .catch((err) => {
       res.status(404).send(err);
     });

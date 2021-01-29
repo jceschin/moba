@@ -64,11 +64,11 @@ pipelines:
     policies:
       - log:
         - action:
-            message: "header===> ${req.header.authorization}"
-      - jwt:
-        - action:
-            secretOrPublicKey: 'mobaAuth'
-            checkCredentialExistence: false
+            message: "header===> ${req.header}"
+      # - jwt:
+      #   - action:
+      #       secretOrPublicKey: 'mobaAuth'
+      #       checkCredentialExistence: false
       - proxy:
           - action:
               serviceEndpoint: usersService 
