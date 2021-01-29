@@ -1,24 +1,28 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
 import HomeNavbar from './HomeNavbar';
-import { useSelector, useDispatch } from 'react-redux';
-import getUserData from '../../redux/actions/user';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Homepage = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const username = user.username;
+  const loggedUser = useSelector((state) => state.user);
+  const [transactions, setTransactions] = useState([]);
 
-  function getUser(username) {
-    dispatch(getUserData(username));
+  useEffect(() => {
+    getUser(loggedUser.username);
+  }, []);
+
+  async function getUser(username) {
+    let response = await axios.get(`http://localhost:8080/transaction/users/${username}`);
+
+    setTransactions(response.data);
   }
-
-  const userData = getUser(username);
-
-  console.log(userData);
+  transactions.forEach((t) => {
+    console.log(typeof t.date);
+  })
 
   return (
     <LinearGradient
@@ -58,51 +62,33 @@ const Homepage = () => {
 
           <View style={styles.movsContainer}>
             <Text style={styles.movsHeader}>Last Movements</Text>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
-            <View style={styles.mov}>
-              <View style={styles.movDateContainer}>
-                <Text style={styles.movDate}>January 2021</Text>
-              </View>
-              <View style={styles.movDetails}>
-                <Text style={styles.movType}>Type of transfer</Text>
-                <Text style={styles.movAmount}>US$999.99</Text>
-              </View>
-            </View>
+            {
+              transactions.map(t => {
+                return (
+                  <View style={styles.mov}>
+                    <View style={styles.movDateContainer}>
+                      <Text style={styles.movDate}>{t.date.substring(0, 10)}</Text>
+                    </View>
+                    <View style={styles.movDetails}>
+                      {
+                        t.type === 'sender'
+                        ? (
+                            <Text style={styles.movType}>Sended {t.description}</Text>
+                        )
+                        : <Text style={styles.movType}>Received US${t.amount}</Text>
+                      }
+                      {
+                        t.type === 'sender'
+                        ? (
+                            <Text style={styles.movType}>− US${t.amount}</Text>
+                        )
+                        : <Text style={styles.movType}>US${t.amount}</Text>
+                      }
+                    </View>
+                  </View>
+                )
+              })
+            }
           </View>
         </View>
 
