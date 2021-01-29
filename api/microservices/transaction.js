@@ -187,6 +187,7 @@ server.get("/transaction/users/:dni_email", (req, res, next) => {
     .then(() => {
       res.send(sorted);
     })
+
     .catch((err) => {
       res.status(404).send(err);
     });
