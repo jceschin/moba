@@ -32,7 +32,7 @@ const MyAccount = () => {
       <ScrollView>
         <View style={styles.header}>
           <TouchableOpacity
-            style={{ position: "absolute" }}
+            // style={{ position: "absolute" }}
             onPress={() => navigation.goBack()}
           >
             <Feather name="arrow-left" size={24} color="white" />
