@@ -34,8 +34,6 @@ const RegisterPage = ({ navigation }) => {
 
   const onSubmit = () => {
     dispatch(createNewUser(data));
-    console.log('ESTO ES DATA EN EL DISPATCH', data)
-    /* navigation.jumpTo('LastRegisterPage'); */
   }
 
   return (

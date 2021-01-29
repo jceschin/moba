@@ -26,7 +26,7 @@ export default function App() {
           <Drawer.Screen name='LandingPage' component={LandingPage} />
           {/* <Drawer.Screen name="CreateAccount" component={CreateAccount} /> */}
           <Drawer.Screen name='RegisterPage' component={RegisterPage} />
-          <Drawer.Screen name='LastRegisterPage' component={LastRegisterPage} />
+          {/* <Drawer.Screen name='LastRegisterPage' component={LastRegisterPage} /> */}
           <Drawer.Screen name="Homepage" component={Homepage} />
         </Drawer.Navigator>
       </NavigationContainer>
