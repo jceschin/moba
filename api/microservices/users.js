@@ -15,11 +15,13 @@ const jwt = require('jsonwebtoken');
 
 const {Verifytoken, isAdmin} = require('../middlewares')
 
+const cors = require('cors')
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use(morgan("dev"));
-
+server.use(cors())
 
 
 //Get all Users
@@ -40,8 +42,7 @@ server.get("/users", (req, res) => {
 });
 
 //Get One Users from dni, email, username
-
-server.get("/users/:dni_email", Verifytoken, (req, res) => {
+server.get("/users/:dni_email", (req, res) => {
   User.findOne({
 
 		include: [Account],
