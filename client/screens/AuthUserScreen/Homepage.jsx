@@ -10,19 +10,24 @@ import axios from 'axios';
 const Homepage = () => {
   const loggedUser = useSelector((state) => state.user);
   const [transactions, setTransactions] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
+    getTransactions(loggedUser.username);
     getUser(loggedUser.username);
   }, []);
 
-  async function getUser(username) {
+  async function getTransactions(username) {
     let response = await axios.get(`http://localhost:8080/transaction/users/${username}`);
 
     setTransactions(response.data);
   }
-  transactions.forEach((t) => {
-    console.log(typeof t.date);
-  })
+
+  async function getUser(username) {
+    let response = await axios.get(`http://localhost:8080/users/${username}`);
+
+    setUser(response.data);
+  }
 
   return (
     <LinearGradient
@@ -35,9 +40,13 @@ const Homepage = () => {
         <View style={styles.mainContainer}>
 
           <View style={styles.upperContainer}>
-            <Text style={styles.accountOwner}>Juan Ceschin</Text>
+            <Text style={styles.accountOwner}>{user.name} {user.surname}</Text>
             <Text style={styles.balanceTag}>Balance</Text>
-            <Text style={styles.balance}>US$ 5,000</Text>
+            {
+              user.account
+              ? <Text style={styles.balance}>US$ {user.account.balance}</Text>
+              : <Text style={styles.balance}>US$ 0</Text>
+            }
             <View style={styles.options}>
               <View>
                 <TouchableOpacity>
