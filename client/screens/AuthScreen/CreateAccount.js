@@ -5,13 +5,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TextInput } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { enviarEmail } from "../../redux/actions/emailActions";
-import { validoEmail } from "../../redux/actions/emailActions";
 
 const CreateAccount = (props) => {
   const dispatch = useDispatch();
   const validateEmail = useSelector((store) => store.email.newEmail);
-
-  console.log(validateEmail);
   
   const [interruptor, setinterruptor] = useState(false);
 
@@ -35,22 +32,15 @@ const CreateAccount = (props) => {
     } else {
       if (validateEmail) {
           if(validateEmail.email === state.email){
-            console.log(validateEmail.email);
-            console.log(state.email)
-            dispatch(validoEmail(state));
                 if (validateEmail.valide === false) {
-                  dispatch(validoEmail(state));
-                  console.log(validateEmail.valide)
+                  console.log(validateEmail);
                   alert("Please, validate your email");
-                 
+                  window.location.reload();              
                 } else {
-                      ;
-                      console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
                       props.navigation.navigate("RegisterPage");
                 }
           } else {
                   dispatch(enviarEmail(state));
-                  dispatch(validoEmail(state));
                   alert( " Please, check your email to continue with the registration process"); 
                   setinterruptor(true)             
             }          
@@ -58,17 +48,12 @@ const CreateAccount = (props) => {
       } else {
        
         dispatch(enviarEmail(state));
-        dispatch(validoEmail(state));
         alert(
           " Please, check your email to continue with the registration process"
         );
       }
     }
   };
-
-  /* useEffect(() => {
-    createNewUser();
-  },[]) */
 
   return (
     <LinearGradient
