@@ -21,7 +21,7 @@ const CreateAccount = (props) => {
   };
 
   const createNewUser = () => {
-    const expReg = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+    const expReg = /\S+@\S+\.\S+/;
     const esValido = expReg.test(state.email);
     if (state.email === "") {
       alert("Please provide an email");

@@ -11,7 +11,7 @@ require('./microservices/transaction.js')
 require("./microservices/accounts.js");
 require("./microservices/admin.js");
 
-conn.sync({ force: true })
+conn.sync({ force: false })
 .then(() => {
   gateway()
   .load(path.join(__dirname, 'config'))
