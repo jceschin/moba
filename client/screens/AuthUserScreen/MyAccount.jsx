@@ -15,7 +15,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { logoutUserAction } from "../../redux/Actions/user";
+import { logoutUserAction } from "../../redux/actions/user";
 import { useDispatch } from "react-redux";
 
 const MyAccount = () => {
