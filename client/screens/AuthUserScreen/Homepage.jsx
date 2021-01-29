@@ -4,8 +4,22 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
 import HomeNavbar from './HomeNavbar';
+import { useSelector, useDispatch } from 'react-redux';
+import getUserData from '../../redux/actions/user';
 
 const Homepage = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const username = user.username;
+
+  function getUser(username) {
+    dispatch(getUserData(username));
+  }
+
+  const userData = getUser(username);
+
+  console.log(userData);
+
   return (
     <LinearGradient
       style={styles.container}
