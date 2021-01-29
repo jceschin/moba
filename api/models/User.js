@@ -1,22 +1,22 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = (sequelize) =>{
+module.exports = (sequelize) => {
 
     const User = sequelize.define('user', {
 
-        username:{
+        username: {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false
         },
 
-        name:{
-            type: DataTypes.STRING, 
+        name: {
+            type: DataTypes.STRING,
             allowNull: false
         },
 
-        surname:{
-            type: DataTypes.STRING, 
+        surname: {
+            type: DataTypes.STRING,
             allowNull: false
         },
 
@@ -34,13 +34,13 @@ module.exports = (sequelize) =>{
             allowNull: false
         },
 
-        city:{
-            type: DataTypes.STRING, 
+        city: {
+            type: DataTypes.STRING,
             allowNull: false
         },
 
-        state:{
-            type: DataTypes.STRING, 
+        state: {
+            type: DataTypes.STRING,
             allowNull: false
         },
 
@@ -54,7 +54,7 @@ module.exports = (sequelize) =>{
             type: DataTypes.REAL,
             allowNull: false
         },
-        
+
         birthdate: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -72,13 +72,13 @@ module.exports = (sequelize) =>{
         salt: {
             type: DataTypes.STRING,
             get() {
-                return() => this.getDataValue('salt')
+                return () => this.getDataValue('salt')
             }
         },
 
         account_status: {
             type: DataTypes.ENUM("registered", "verified", "admin"),
             defaultValue: "registered",
-        } 
+        }
     })
 }

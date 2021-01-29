@@ -9,7 +9,7 @@ const cors = require("cors");
 var Strategy = require("passport-local").Strategy;
 
 server.use(morgan("dev"));
-
+server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
@@ -41,6 +41,7 @@ passport.use(
           return done(null, user);
         })
         .catch((err) => {
+
           return done(err);
         });
     }
@@ -50,12 +51,14 @@ passport.use(
 //Create Users
 
 server.post("/auth/singup", (req, res, next) => {
+  console.log(req.body)
   User.create(req.body)
 
     .then((users) => {
       res.status(201).send(users);
     })
     .catch((err) => {
+      console.log(err)
       res.status(404).send(err);
     });
 });

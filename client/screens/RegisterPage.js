@@ -16,9 +16,26 @@ const RegisterPage = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const onSubmit = (user) => {
-    dispatch(createNewUser(user));
-    navigation.jumpTo('LastRegisterPage');
+  const [data, setData] = useState({
+    username: '',
+    email: '',
+    name: '',
+    surname: '',
+    birthdate: '',
+    state: '',
+    city: '',
+    address: '',
+    dni: '',
+    phone: '',
+    password: '',
+  })
+
+
+
+  const onSubmit = () => {
+    dispatch(createNewUser(data));
+    console.log('ESTO ES DATA EN EL DISPATCH', data)
+    /* navigation.jumpTo('LastRegisterPage'); */
   }
 
   return (
@@ -42,80 +59,91 @@ const RegisterPage = ({ navigation }) => {
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.subcontainer}>
             <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder='Firstname'
-                    maxLength={20}
-                  />
-                )}
-                name='Firstname'
-                rules={{ required: true }}
-                defaultValue=''
+              <TextInput style={styles.input}
+                onChangeText={text => setData({ username: text })}
+                value={data.username}
+                placeholder='Username'
+                maxLength={40}
               />
-              {errors.Firstname && <Text style={styles.textError}>Firstname is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder='Lastname'
-                    maxLength={20}
-                  />
-                )}
-                name='Lastname'
-                rules={{ required: true }}
-                defaultValue=''
+              <TextInput style={styles.input}
+                onChangeText={text => setData({ ...data, email: text })}
+                value={data.email}
+                placeholder='Email'
+                maxLength={40}
               />
-              {errors.Lastname && <Text style={styles.textError}>Lastname is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    keyboardType='number-pad'
-                    placeholder='Phone Number'
-                    maxLength={30}
-                  />
-                )}
-                name='PhoneNumber'
-                rules={{ required: true }}
-                defaultValue=''
+              <TextInput style={styles.input}
+                onChangeText={text => setData({ ...data, name: text })}
+                value={data.name}
+                placeholder='Firstname'
+                maxLength={20}
               />
-              {errors.PhoneNumber && <Text style={styles.textError}>Phone is required.</Text>}
             </View>
             <View style={styles.inputcontainer}>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput style={styles.input}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    textContentType="password"
-                    placeholder='Password'
-                    maxLength={40}
-                    secureTextEntry={true}
-                  />
-                )}
-                name='Password'
-                rules={{ required: 'Specify a password' }, {
-                  pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                    message: 'Password most contain at least one uppercase letter, one lowercase, one special character and one number'
-                  }
-                }}
-                defaultValue=''
+              <TextInput style={styles.input}
+                onChangeText={text => setData({ ...data, surname: text })}
+                value={data.surname}
+                placeholder='Lastname'
+                maxLength={20}
               />
-              {errors.Password && <Text style={styles.textError}>{errors.Password.message}</Text>}
+            </View>
+            <View style={styles.inputcontainer}>
+              <TextInput style={styles.input}
+                onChangeText={(text) => setData({ ...data, birthdate: text })}
+                value={data.birthdate}
+                placeholder='Birthdate'
+              />
+            </View>
+            <View style={styles.inputcontainer}>
+              <TextInput style={styles.input}
+                onChangeText={text => setData({ ...data, phone: text })}
+                value={data.phone}
+                keyboardType='number-pad'
+                placeholder='Phone Number'
+                maxLength={15}
+              />
+            </View>
+            <View style={styles.inputcontainer}>
+              <TextInput style={styles.input}
+                onChangeText={(text) => setData({ ...data, state: text })}
+                value={data.state}
+                placeholder='State'
+              />
+            </View>
+            <View style={styles.inputcontainer}>
+              <TextInput style={styles.input}
+                onChangeText={(text) => setData({ ...data, city: text })}
+                value={data.city}
+                placeholder='City'
+              />
+            </View>
+            <View style={styles.inputcontainer}>
+              <TextInput style={styles.input}
+                onChangeText={(text) => setData({ ...data, address: text })}
+                value={data.address}
+                placeholder='Address'
+              />
+            </View>
+            <View style={styles.inputcontainer}>
+              <TextInput style={styles.input}
+                onChangeText={(text) => setData({ ...data, dni: text })}
+                value={data.dni}
+                placeholder='DNI'
+                maxLength={8}
+              />
+            </View>
+            <View style={styles.inputcontainer}>
+              <TextInput style={styles.input}
+                onChangeText={text => setData({ ...data, password: text })}
+                value={data.password}
+                textContentType="password"
+                placeholder='Password'
+                maxLength={40}
+                secureTextEntry={true}
+              />
             </View>
             <View style={styles.buttoncontainer}>
               <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>

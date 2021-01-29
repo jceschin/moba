@@ -7,7 +7,7 @@ const crypto = require('crypto')
 const {
   DB_USER, DB_PASSWORD, DB_HOST,
 } = process.env;
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/mobadb`, {
+const sequelize = new Sequelize(`postgres://postgres:12345@localhost/mobadb`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
@@ -31,34 +31,34 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const {User} = sequelize.models;
+const { User } = sequelize.models;
 // Aca vendrian las relaciones
 
 //ENCRYPTIONS
 
-User.generateSalt = function() {
+User.generateSalt = function () {
   return crypto.randomBytes(16).toString('base64')
 }
 
-User.encryptPassword = function(plainText, salt) {
+User.encryptPassword = function (plainText, salt) {
   return crypto
-      .createHash('RSA-SHA256')
-      .update(plainText)
-      .update(salt)
-      .digest('hex')
+    .createHash('RSA-SHA256')
+    .update(plainText)
+    .update(salt)
+    .digest('hex')
 }
 
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
-      user.salt = User.generateSalt()
-      console.log('salt', user.salt())
-      user.password = User.encryptPassword(user.password(), user.salt())
+    user.salt = User.generateSalt()
+    console.log('salt', user.salt())
+    user.password = User.encryptPassword(user.password(), user.salt())
   }
 }
 
 
 
-User.prototype.correctPassword = function(enteredPassword) {
+User.prototype.correctPassword = function (enteredPassword) {
   return User.encryptPassword(enteredPassword, this.salt()) === this.password()
 }
 
