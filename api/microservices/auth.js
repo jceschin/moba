@@ -1,17 +1,20 @@
 const express = require("express");
 const server = express();
 var morgan = require("morgan");
-const { User } = require("../db");
+const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const cors = require("cors");
 var Strategy = require("passport-local").Strategy;
+const crypto = require('crypto')
+
 
 server.use(morgan("dev"));
 server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
+server.use(cors())
 
 server.use(passport.initialize());
 
@@ -54,9 +57,20 @@ server.post("/auth/singup", (req, res, next) => {
   console.log(req.body)
   User.create(req.body)
 
-    .then((users) => {
-      res.status(201).send(users);
+    .then((user) => {
+      Account.create({
+        cvu: Math.floor(Math.random() * Math.pow(100,10)),
+        balance: 1000,
+        card_id: Math.floor(Math.random() * Math.pow(40,10)),
+        card_expiration: "9/9/25",
+        userId: user.dataValues.id
+      })
+      .then((acc) => {
+        res.status(200).send(acc);
+      })
     })
+
+
     .catch((err) => {
       console.log(err)
       res.status(404).send(err);
@@ -68,10 +82,10 @@ server.post("/auth/singup", (req, res, next) => {
 server.post("/auth/login", (req, res, next) => {
   passport.authenticate("localStrategy", (err, user, fail) => {
     if (err) {
-      return res.send(err);
+      return res.status(401).send(err);
     }
     if (fail) {
-      return res.send(fail.message);
+      return res.status(401).send(fail.message);
     }
     console.log("login OK, generating token...");
     const payload = {
@@ -79,7 +93,7 @@ server.post("/auth/login", (req, res, next) => {
       iat: Date.now(),
       username: user.username,
     };
-    const token = jwt.sign(JSON.stringify(payload), "mobaAuth");
+    const token = jwt.sign(payload, "mobaAuth");
     res.json({ data: { token: token } });
   })(req, res, next);
 });

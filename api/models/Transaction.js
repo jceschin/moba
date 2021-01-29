@@ -6,8 +6,9 @@ module.exports = (sequelize) => {
     const Transaction = sequelize.define('transaction', {
 
         number: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
         },
 
         amount: {
@@ -16,18 +17,16 @@ module.exports = (sequelize) => {
         },
 
         description: {
-            type: DataTypes.TEXT,
+            type: DataTypes.STRING,
             allowNull: true
         },
 
         transaction_type: {
-            type: DataTypes.ENUM("charge", "transfer", "send"),
-            defaultValue: "send"
+            type: DataTypes.ENUM("charge", "transfer", "drawback"),
         },
 
         status: {
             type: DataTypes.ENUM("processing", "cancelled", "confirmed"),
-            defaultValue: "processing"
         }
     })
 };

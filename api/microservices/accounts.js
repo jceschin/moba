@@ -2,7 +2,8 @@ const express = require('express');
 const server = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const { Accounts } = require('../db');
+const { Account, User} = require('../db');
+const { Op } = require("sequelize");
 
 // middlewares
 server.use(morgan('dev'));
@@ -11,24 +12,54 @@ server.use(bodyParser.urlencoded({ extended: true}));
 
 //Create account
 
+//Pasar por body en el objeto una key "user", con dni o email, para generar la relacion
+
 server.post("/accounts", (req,res,next) => {
 
-    Accounts.create(req.body)
+    User.findOne({
+        
+        where: {
 
-    .then((accounts) =>{
+            [Op.or]: [{ dni: req.body.user }, { email: req.body.user }],
 
-        res.status(201).send(accounts);
+        },
 
     })
-    .catch(err => { res.status(404).send(err) });
 
+    .then((user) => {
+
+       return Account.create({
+           
+           cvu: req.body.cvu,
+           balance: req.body.balance,
+           card_id: req.body.card_id,
+           card_expiration: req.body.card_expiration,
+           userId: user.dataValues.id
+
+        })
+       
+
+    })
+
+    .then((acc) => {
+        
+		res.status(200).send(acc);
+
+    })
+    
+	.catch(err => { res.status(404).send(err) });
+  
 });
 
 // get all accounts
 
 server.get("/accounts", (req, res, next) => {
 
-    Accounts.findAll()
+    Account.findAll(
+        {
+			include: [User],
+		}
+    )
     .then((accounts) => {
         res.send(accounts);
     })
@@ -40,7 +71,10 @@ server.get("/accounts", (req, res, next) => {
 
 server.get("/accounts/:cvu", (req, res, next) => {
 
-    Accounts.findOne({
+    Account.findOne({
+
+        include: [User],
+
         where:{
             cvu: req.params.cvu
         }
@@ -53,7 +87,7 @@ server.get("/accounts/:cvu", (req, res, next) => {
 // update accounts by cvu
 
 server.put("/accounts/:cvu", (req, res) => {
-    Accounts.update(req.body,
+    Account.update(req.body,
         {
             where:  {cvu: req.params.cvu }
         }
@@ -61,6 +95,7 @@ server.put("/accounts/:cvu", (req, res) => {
     .then(account => res.status(200).send(account))
     .catch(err => { res.status(404).send(err) });
 });
+
 
 server.listen(8004, () => {
     console.log("Server running on 8004");

@@ -11,6 +11,10 @@ import {
 const initialState = {
   user: {},
   users: [],
+  userAUTH: [],
+  isLoading: true,
+  userToken: "",
+  isAuthenticated: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -19,6 +23,28 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: [state.user, action.user]
+      };
+      case AUTO_LOGIN:
+      return {
+        ...state,
+        userToken: action.token,
+        isLoading: false,
+        isAuthenticated: true,
+      };
+    case LOGOUT_USER:
+      return {
+        user: null,
+        userToken: null,
+        isLoading: false,
+        isAuthenticated: false,
+        state: undefined
+      };
+      case LOGIN_USER:
+      return {
+        ...state,
+        ...action.payload,
+        userToken: action.token,
+        isAuthenticated: true, 
       };
     default:
       return state;

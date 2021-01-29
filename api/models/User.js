@@ -45,13 +45,13 @@ module.exports = (sequelize) => {
         },
 
         dni: {
-            type: DataTypes.REAL,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
 
         phone: {
-            type: DataTypes.REAL,
+            type: DataTypes.STRING,
             allowNull: false
         },
 
@@ -76,9 +76,9 @@ module.exports = (sequelize) => {
             }
         },
 
-        account_status: {
-            type: DataTypes.ENUM("registered", "verified", "admin"),
-            defaultValue: "registered",
+        rol: {
+            type: DataTypes.ENUM("user", "admin"),
+            defaultValue: "user",
         }
     })
 }

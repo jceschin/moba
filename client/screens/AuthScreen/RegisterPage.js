@@ -7,7 +7,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 // REDUX 
 import { useDispatch } from 'react-redux';
-import { createNewUser } from '../Redux/Actions/user';
+import { createNewUser } from '../../redux/actions/user';
 
 
 const RegisterPage = ({ navigation }) => {

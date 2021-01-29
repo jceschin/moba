@@ -2,13 +2,18 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
-const { User } = require("../db");
+const { User, Account, Blacklist } = require("../db");
+
 
 const server = express();
 
 const morgan = require("morgan");
 
 const { Op } = require("sequelize");
+
+const jwt = require('jsonwebtoken');
+
+const {Verifytoken, isAdmin} = require('../middlewares')
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +25,11 @@ server.use(morgan("dev"));
 //Get all Users
 
 server.get("/users", (req, res) => {
-  User.findAll()
+  User.findAll(
+    {
+			include: [Account],
+		}
+  )
 
     .then((users) => {
       return res.send(users);
@@ -30,12 +39,15 @@ server.get("/users", (req, res) => {
     });
 });
 
-//Get One Users from dni or email
+//Get One Users from dni, email, username
 
-server.get("/users/:dni_email", (req, res) => {
+server.get("/users/:dni_email", Verifytoken, (req, res) => {
   User.findOne({
+
+		include: [Account],
+		
     where: {
-      [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }],
+      [Op.or]: [{ dni: req.params.dni_email }, { email: req.params.dni_email }, { username: req.params.dni_email }],
     },
   })
 
@@ -51,6 +63,7 @@ server.get("/users/:dni_email", (req, res) => {
       res.status(404).send(err);
     });
 });
+
 
 // Update Users from dni
 
@@ -70,6 +83,17 @@ server.put('/users/:dni', (req, res) => {
 
 	})
 	.catch(err => { res.status(404).send(err) });
+})
+
+//LOGOUT
+
+server.post('/users/logout', (req,res) => {
+  const token = req.headers.authorization.split(" ")[1]
+  Blacklist.create({token})
+  .then((forbiddenToken) => {
+    res.send(forbiddenToken)
+  })
+
 })
 
 

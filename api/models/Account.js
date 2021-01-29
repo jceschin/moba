@@ -4,7 +4,8 @@ const { formatDate } = require("date-utils-2020");
 module.exports = (sequelize) => {
   const Account = sequelize.define("account", {
     cvu: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
       unique: true,
     },
@@ -20,12 +21,12 @@ module.exports = (sequelize) => {
     },
 
     card_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
 
     card_expiration: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });

@@ -31,8 +31,24 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { User } = sequelize.models;
+
+const { User, Account, Transaction, Blacklist } = sequelize.models;
+
 // Aca vendrian las relaciones
+
+// User - Account 1x1
+
+User.hasOne(Account);
+
+Account.belongsTo(User);
+
+//Account - Transaccion mxm
+
+Account.belongsToMany(Transaction, { through: 'accounttransaction', foreignKey: 'cvu' });
+
+Transaction.belongsToMany(Account, { through: 'accounttransaction', foreignKey: 'number' });
+
+
 
 //ENCRYPTIONS
 
@@ -47,6 +63,8 @@ User.encryptPassword = function (plainText, salt) {
     .update(salt)
     .digest('hex')
 }
+
+//console.log(crypto.createHash('RSA-SHA256').update('super123seguro').update('sal').digest('hex'))
 
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
