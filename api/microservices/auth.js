@@ -60,7 +60,6 @@ server.post("/auth/singup", (req, res, next) => {
     .then((user) => {
       Account.create({
         cvu: Math.floor(Math.random() * Math.pow(100,10)),
-        balance: 1000,
         card_id: Math.floor(Math.random() * Math.pow(40,10)),
         card_expiration: "9/9/25",
         userId: user.dataValues.id
