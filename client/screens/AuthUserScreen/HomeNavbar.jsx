@@ -14,7 +14,7 @@ const HomeNavbar = () => {
                     <Text style={styles.tag}>Home</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('AccountNumber')}>
                 <View style={{alignItems: 'center'}}>
                     <MaterialCommunityIcons name="badge-account-horizontal-outline" size={24} color="black" />
                     <Text style={styles.tag}>Account</Text>
