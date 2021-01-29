@@ -7,7 +7,7 @@ module.exports = {
       [
         {
           cvu: "00001",
-          balance: "7500",
+          balance: "6000",
           opening_date: "10/10/21",
           card_id: "000000005",
           card_expiration: "1030",

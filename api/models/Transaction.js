@@ -8,7 +8,8 @@ module.exports = (sequelize) => {
         number: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true
+            autoIncrement: true,
+            unique: true,
         },
 
         amount: {

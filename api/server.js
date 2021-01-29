@@ -11,7 +11,7 @@ require('./microservices/transaction.js')
 require("./microservices/accounts.js");
 require("./microservices/admin.js");
 
-conn.sync({ force: false })
+conn.sync({ force: true })
 .then(() => {
   gateway()
   .load(path.join(__dirname, 'config'))
@@ -19,3 +19,4 @@ conn.sync({ force: false })
   console.log(`Connected to Database ${conn.config.database}, with user '${conn.config.username}' on port ${conn.config.port}`)
 })
   
+ 
