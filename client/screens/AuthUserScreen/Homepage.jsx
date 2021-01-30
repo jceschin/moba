@@ -4,10 +4,13 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
 import HomeNavbar from './HomeNavbar';
+import MyContacts from './MyContacts';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const Homepage = () => {
+  const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const [transactions, setTransactions] = useState([]);
   const [user, setUser] = useState({});
@@ -61,9 +64,9 @@ const Homepage = () => {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
                   <Feather name="settings" size={24} color="black" style={styles.optionIcon}/>
-                  <Text style={styles.option}>Settings</Text>
+                  <Text style={styles.option}>Send Money</Text>
                 </TouchableOpacity>
               </View>
             </View>

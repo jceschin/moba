@@ -4,6 +4,7 @@ import HomePage from "./Homepage";
 import HomeNavbar from "./HomeNavbar";
 import MyAccount from "./MyAccount";
 import AccountNumber from "./AccountNumber";
+import MyContacts from "./MyContacts";
 const Stack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => {
@@ -14,6 +15,7 @@ const RootStackScreen = ({ navigation }) => {
         <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
         <Stack.Screen name="MyAccount" component={MyAccount} />
         <Stack.Screen name="AccountNumber" component={AccountNumber} />
+        <Stack.Screen name="MyContacts" component={MyContacts} />
       </Stack.Navigator>
     </>
   );
