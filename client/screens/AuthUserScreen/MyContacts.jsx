@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import MyContact from './MyContact';
 
 const MyContacts = () => {
   const navigation = useNavigation();  
@@ -14,22 +15,34 @@ const MyContacts = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-        <View style={styles.header}>
-          <TouchableOpacity
-            // style={{ position: "absolute" }}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name="arrow-left" size={24} color="white" />
-          </TouchableOpacity>
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <Text style={styles.greeting}>Who do you want to send?</Text>
-          </View>
-        </View>
-        <View style={styles.whiteContainer}>
-            <Text style={styles.contactsTag}>Your contacts</Text>
-        </View>
+        <ScrollView>
+            <View style={styles.header}>
+                <TouchableOpacity
+                    // style={{ position: "absolute" }}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Feather name="arrow-left" size={24} color="white" />
+                </TouchableOpacity>
+                <View
+                    style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+                >
+                    <Text style={styles.greeting}>Who do you want to send?</Text>
+                </View>
+            </View>
+            <View style={styles.whiteContainer}>
+                <Text style={styles.contactsTag}>Your contacts</Text>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+                <MyContact/>
+            </View>
+        </ScrollView>
     </LinearGradient>
   );
 };

@@ -6,6 +6,7 @@ import MyAccount from "./MyAccount";
 import AccountNumber from "./AccountNumber";
 import MyContacts from "./MyContacts";
 import MyContact from "./MyContact";
+import SendMoney from "./SendMoney";
 const Stack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => {
@@ -18,6 +19,7 @@ const RootStackScreen = ({ navigation }) => {
         <Stack.Screen name="AccountNumber" component={AccountNumber} />
         <Stack.Screen name="MyContacts" component={MyContacts} />
         <Stack.Screen name="MyContact" component={MyContact} />
+        <Stack.Screen name="SendMoney" component={SendMoney} />
       </Stack.Navigator>
     </>
   );
