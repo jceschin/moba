@@ -107,12 +107,12 @@ const Homepage = () => {
                     </Text>
                   </View>
                   <View style={styles.movDetails}>
-                    {t.type === "sender" ? (
-                      <Text style={styles.movType}>Sended {t.description}</Text>
+                    {t.sender === loggedUser.username ? (
+                      <Text style={styles.movType}>You send US${t.amount} to {t.receiver}</Text>
                     ) : (
-                      <Text style={styles.movType}>Received US${t.amount}</Text>
+                      <Text style={styles.movType}>You received US${t.amount} from {t.sender}</Text>
                     )}
-                    {t.type === "sender" ? (
+                    {t.sender === loggedUser.username  ? (
                       <Text style={styles.movType}>− US${t.amount}</Text>
                     ) : (
                       <Text style={styles.movType}>US${t.amount}</Text>
