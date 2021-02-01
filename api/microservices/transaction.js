@@ -10,6 +10,8 @@ const morgan = require("morgan");
 
 const { Op } = require("sequelize");
 
+const { Verifytoken, isAdmin } = require("../middlewares");
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,7 +22,7 @@ server.use(cors());
 
 // Create Transaction
 
-server.post("/transaction", (req, res, next) => {
+server.post("/transaction", Verifytoken, (req, res, next) => {
   (async function () {
     try {
       //Account sender
@@ -112,7 +114,7 @@ server.post("/transaction", (req, res, next) => {
 
 // Get specific Transaction for number
 
-server.get("/transaction/:number", (req, res, next) => {
+server.get("/transaction/:number", Verifytoken, isAdmin, (req, res, next) => {
   Transaction.findOne({
     include: [Account],
 
@@ -128,7 +130,7 @@ server.get("/transaction/:number", (req, res, next) => {
 
 // Get all Transaction for account by cvu
 
-server.get("/transaction/account/:cvu", (req, res, next) => {
+server.get("/transaction/account/:cvu", Verifytoken, (req, res, next) => {
   Transaction.findAll({
     include: [
       {
@@ -144,58 +146,53 @@ server.get("/transaction/account/:cvu", (req, res, next) => {
     });
 });
 
-// Get all Transaction for account by dni or email
+// Get all Transaction for account by username, dni or email
 
-server.get("/transaction/users/:dni_email", (req, res, next) => {
-  var IDtransaction = [];
-  var sorted;
-  Transaction.findAll({
-    include: [
-      {
-        model: Account,
-        include: [
-          {
-            model: User,
-            where: {
-              [Op.or]: [
-                { dni: req.params.dni_email },
-                { email: req.params.dni_email },
-                { username: req.params.dni_email },
-              ],
-            },
-          },
-        ],
-      },
-    ],
+server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
+
+  User.findOne({
+    include: [{ model: Account, include: Transaction }],
+    where: {
+      [Op.or]: [
+        { dni: req.params.dni_email },
+        { email: req.params.dni_email },
+        { username: req.params.dni_email },
+      ],
+    },
   })
-    .then((transaction) => {
-      if (!transaction) {
+    .then((user) => {
+      var numberTrans = user.account.transactions.map((tr) => tr.number);
+      if (!numberTrans.length) {
         return res.sendStatus(404);
       }
-      transaction = transaction.filter((tr) => tr.accounts[0]);
-      sorted = transaction.map((tr) => {
-        var payload = {};
-        IDtransaction.push(tr.number);
-        payload.transactionID = tr.number;
-        payload.amount = tr.amount;
-        payload.description = tr.description;
-        payload.date = tr.createdAt;
-        payload.type = tr.accounts[0].accounttransaction.type;
-        return payload;
-      });
-    })
-    .then(() => {
-      res.send(sorted);
-    })
+      Transaction.findAll({
+        include: [{ model: Account, include: [{ model: User }] }],
+        where: { number: { [Op.or]: [numberTrans] } },
+      })
+        .then((data) => {
+          var sorted = data.map((dat, i) => {
+            var payload = {};
+            payload.transactionID = dat.number;
+            payload.amount = dat.amount;
+            payload.description = dat.description;
+            payload.date = dat.createdAt;
+            payload[dat.accounts[0].accounttransaction.type] =
+              dat.accounts[0].user.username;
+            payload[dat.accounts[1].accounttransaction.type] =
+              dat.accounts[1].user.username;
 
-    .catch((err) => {
-      res.status(404).send(err);
-    });
+            return payload;
+          });
+          res.send(sorted);
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => res.send(err));
 });
 
 // Get all Transaction status
 
-server.get("/transaction/status/:status", (req, res, next) => {
+server.get("/transaction/status/:status", Verifytoken, (req, res, next) => {
   Transaction.findAll({
     include: [
       {

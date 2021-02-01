@@ -7,43 +7,42 @@ admin:
 apiEndpoints:
   api:
     host: localhost
-    paths: '/ip'
+    paths: "/ip"
   auth:
-    paths: ['/auth/', '/auth/*']
+    paths: ["/auth/", "/auth/*"]
   users:
-    methods: 'GET,POST,PUT,PATCH,DELETE' 
+    methods: "GET,POST,PUT,PATCH,DELETE"
     host: localhost
-    paths: ['/users', '/users/*']
+    paths: ["/users", "/users/*"]
   account:
     host: localhost
-    paths: ['/accounts', '/accounts/*']
+    paths: ["/accounts", "/accounts/*"]
   admin:
     host: localhost
-    paths: '/admin/*'
+    paths: "/admin/*"
   transaction:
     host: localhost
-    paths: ['/transaction', '/transaction/*', '/transaction/users']
+    paths: ["/transaction", "/transaction/*", "/transaction/users"]
   mail:
     host: localhost
-    paths: '/email/*'
+    paths: "/email/*"
 
-    
 ##################################################################################################
 serviceEndpoints:
   httpbin:
-    url: 'https://httpbin.org'
+    url: "https://httpbin.org"
   usersService:
-    url: 'http://localhost:8000'
+    url: "http://localhost:8000"
   authService:
-    url: 'http://localhost:8002'
+    url: "http://localhost:8002"
   accountService:
-    url: 'http://localhost:8004'
+    url: "http://localhost:8004"
   adminService:
-    url: 'http://localhost:8003'
+    url: "http://localhost:8003"
   transactionService:
-    url: 'http://localhost:8001'
+    url: "http://localhost:8001"
   emailService:
-    url: 'http://localhost:8005'
+    url: "http://localhost:8005"
 ##################################################################################################
 policies:
   - basic-auth
@@ -57,81 +56,80 @@ policies:
   - jwt
   - request-transformer
 pipelines:
-##################################################################################################
+  ##################################################################################################
   usersPipeline:
     apiEndpoints:
       - users
     policies:
       - log:
-        - action:
-            message: "header===> ${req.header}"
+          - action:
+              message: "header===> ${req.headers.authorization}"
       # - jwt:
       #   - action:
       #       secretOrPublicKey: 'mobaAuth'
       #       checkCredentialExistence: false
       - proxy:
           - action:
-              serviceEndpoint: usersService 
+              serviceEndpoint: usersService
               changeOrigin: true
 
-##################################################################################################
+  ##################################################################################################
   authPipeline:
     apiEndpoints:
       - auth
     policies:
       - proxy:
-        - action:
-            serviceEndpoint: authService
-            changeOrigin : true
-##################################################################################################
+          - action:
+              serviceEndpoint: authService
+              changeOrigin: true
+  ##################################################################################################
   accountPipeline:
     apiEndpoints:
       - account
     policies:
       - log:
-        - action:
-            message: "header===> ${req.header.authorization}"
+          - action:
+              message: "header===> ${req.headers.authorization}"
       # - jwt:
       #   - action:
       #       secretOrPublicKey: 'mobaAuth'
       #       checkCredentialExistence: false
       - proxy:
           - action:
-              serviceEndpoint: accountService 
+              serviceEndpoint: accountService
               changeOrigin: true
 
-
-##################################################################################################
+  ##################################################################################################
   adminPipeline:
     apiEndpoints:
       - admin
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
       - proxy:
           - action:
-              serviceEndpoint: adminService 
+              serviceEndpoint: adminService
               changeOrigin: true
-##################################################################################################
+  ##################################################################################################
   transactionPipeline:
     apiEndpoints:
       - transaction
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
       - proxy:
           - action:
-              serviceEndpoint: transactionService 
+              serviceEndpoint: transactionService
               changeOrigin: true
 ##################################################################################################
 emailPipeline:
-    apiEndpoints:
-      - email
-    policies:
+  apiEndpoints:
+    - email
+  policies:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
-      - proxy:
-          - action:
-              serviceEndpoint: emailService 
-              changeOrigin: true
+    - proxy:
+        - action:
+            serviceEndpoint: emailService
+            changeOrigin: true
 ##################################################################################################

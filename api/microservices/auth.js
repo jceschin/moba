@@ -54,7 +54,6 @@ passport.use(
 //Create Users
 
 server.post("/auth/singup", (req, res, next) => {
-  console.log(req.body)
   User.create(req.body)
 
     .then((user) => {
