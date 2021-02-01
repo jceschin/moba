@@ -12,7 +12,7 @@ require("./microservices/admin.js");
 require("./microservices/contacts.js");
 
 
-conn.sync({ force: true })
+conn.sync({ force: false })
 .then(() => {
   gateway()
   .load(path.join(__dirname, 'config'))

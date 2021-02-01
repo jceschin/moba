@@ -25,7 +25,10 @@ server.post("/send-email", (req, res) => {
     },
   });
 
-  const valideId = Math.floor(Math.random()*90000) + 10000;;
+
+  const valideId =  Math.floor(Math.random()*90000) + 10000;
+  
+
   const host = req.get("host");
 
   Email.findOne({
@@ -78,7 +81,9 @@ server.post("/send-email", (req, res) => {
 server.post("/verify", (req, res) => {
   //const { valideId } = req.query;
   const { valideId, email } = req.body;
-  console.log(req.body)
+
+  if(!valideId || !email){return res.sendStatus(400)}
+
   Email.findOne({
     where: {
       email,
@@ -87,10 +92,20 @@ server.post("/verify", (req, res) => {
   })
     .then((result) => {
       if (!result) {
-        return res.send({ valid: false });
-      }
-      res.send({ valid: true });
+
+        return res.send( false );
+      } else {
+     Email.update({
+       valide: true,
+     }, {
+       where: {email: email}
+     })
+    }
+    }).then ((res) => {
+      res.send ( true )
+
     })
+  
     .catch((err) => {
       console.log("No se encontro valideId: " + err);
     });
