@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import MyContact from './MyContact';
 
 const SendMoney = () => {
   const navigation = useNavigation();  
@@ -26,6 +27,25 @@ const SendMoney = () => {
             >
                 <Text style={styles.greeting}>Send money</Text>
             </View>
+        </View>
+        <View style={styles.whiteContainer}>
+            <TextInput
+                style={{height: 40, textAlign: 'center', marginTop: 80, fontSize: 32}}
+                placeholder="US$ 0"
+            />
+            <View style={styles.contact}>
+                <View style={styles.avatar}>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>MG</Text>
+                </View>
+                <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                    <Text style={styles.name}>Martin Gomez</Text>
+                </View>
+            </View>    
+            <TouchableOpacity
+            style={styles.button}
+            >
+                <Text style={styles.btnContent}>Send</Text>
+            </TouchableOpacity>
         </View>    
     </LinearGradient>
   );
@@ -49,4 +69,52 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
     },
+    whiteContainer: {
+        top: 50,
+        backgroundColor: "white",
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        height: "100%",
+    },
+    button: {
+        height: 50,
+        marginBottom: 20,
+        borderRadius: 10,
+        justifyContent: "center",
+        backgroundColor: "#25D681",
+        marginRight: 18,
+        marginLeft: 18,
+        top: 380
+      },
+      btnContent: {
+        textAlign: "center",
+        color: "#fff",
+        fontSize: 20,
+        fontWeight: 'bold'
+      },
+      avatar: {
+        marginRight: 20,
+        borderRadius: '50%',
+        backgroundColor: '#25D681',
+        padding: 10,
+        heigth: 41,
+        width: 41,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    name: {
+        color: 'black',
+        fontSize: 18,
+        fontWeight: 'normal',
+        textAlign: 'left'
+    },
+    contact: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginHorizontal: 18,
+        marginVertical: 15,
+        justifyContent: 'center',
+        marginTop: 30,
+        height: 41
+    }
 });

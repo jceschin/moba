@@ -6,6 +6,7 @@ const MyContact = () => {
   const navigation = useNavigation(); 
 
   return (
+      // Change onPress!!
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('SendMoney')}>
         <View style={styles.avatar}>
             <Text style={{color: 'white', fontWeight: 'bold'}}>NG</Text>
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal: 18,
         marginVertical: 15,
-        paddingVertical: 5
+        height: 41
     },
     avatar: {
         marginRight: 20,
