@@ -10,7 +10,9 @@ const { Email } = require("../db");
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(cors(/* {origin: "http://localhost:19006", credentials: true} */));
+server.use(cors());
+
+
 
 server.post("/send-email", (req, res) => {
   const { email } = req.body;
@@ -23,8 +25,10 @@ server.post("/send-email", (req, res) => {
     },
   });
 
+
   const valideId =  Math.floor(Math.random()*90000) + 10000;
   
+
   const host = req.get("host");
 
   Email.findOne({
@@ -77,7 +81,9 @@ server.post("/send-email", (req, res) => {
 server.post("/verify", (req, res) => {
   //const { valideId } = req.query;
   const { valideId, email } = req.body;
+
   if(!valideId || !email){return res.sendStatus(400)}
+
   Email.findOne({
     where: {
       email,
@@ -86,6 +92,7 @@ server.post("/verify", (req, res) => {
   })
     .then((result) => {
       if (!result) {
+
         return res.send( false );
       } else {
      Email.update({
@@ -96,6 +103,7 @@ server.post("/verify", (req, res) => {
     }
     }).then ((res) => {
       res.send ( true )
+
     })
   
     .catch((err) => {
