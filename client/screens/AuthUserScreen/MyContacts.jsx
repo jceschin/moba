@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
+import axios from "axios";
 
 const MyContacts = () => {
   const navigation = useNavigation();  
+  const loggedUser = useSelector((state) => state.user);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    getUser(loggedUser.username);
+  }, []);
+
+  async function getUser(username) {
+    let response = await axios.get(`http://localhost:8000/users/${username}`, {
+      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+    });
+
+    setUser(response.data);
+  }
 
   return (
     <LinearGradient
