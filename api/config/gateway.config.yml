@@ -23,26 +23,29 @@ apiEndpoints:
   transaction:
     host: localhost
     paths: ["/transaction", "/transaction/*", "/transaction/users"]
-  mail:
+  email:
     host: localhost
-    paths: "/email/*"
+    paths: ["/email", "/email/*"]
+  contact:
+    host: localhost
+    paths: ["/contacts", "/contacts/*"]
 
 ##################################################################################################
 serviceEndpoints:
-  httpbin:
-    url: "https://httpbin.org"
   usersService:
     url: "http://localhost:8000"
+  transactionService:
+    url: "http://localhost:8001"
   authService:
     url: "http://localhost:8002"
   accountService:
     url: "http://localhost:8004"
   adminService:
     url: "http://localhost:8003"
-  transactionService:
-    url: "http://localhost:8001"
   emailService:
     url: "http://localhost:8005"
+  contactService:
+    url: "http://localhost:8006"
 ##################################################################################################
 policies:
   - basic-auth
@@ -122,14 +125,26 @@ pipelines:
               serviceEndpoint: transactionService
               changeOrigin: true
 ##################################################################################################
-emailPipeline:
-  apiEndpoints:
-    - email
-  policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
-    - proxy:
-        - action:
-            serviceEndpoint: emailService
-            changeOrigin: true
+  emailPipeline:
+    apiEndpoints:
+      - email
+    policies:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: emailService
+              stripPath: true
+              changeOrigin: true
 ##################################################################################################
+  contactPipeline:
+    apiEndpoints:
+      - contact
+    policies:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: contactService
+              stripPath: true
+              changeOrigin: true

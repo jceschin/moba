@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 const {
   DB_USER, DB_PASSWORD, DB_HOST,
@@ -32,7 +32,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 
-const { User, Account, Transaction, Blacklist } = sequelize.models;
+const { User, Account, Transaction, Blacklist, Contact } = sequelize.models;
 
 // Aca vendrian las relaciones
 
@@ -48,6 +48,11 @@ Account.belongsToMany(Transaction, { through: 'accounttransaction', foreignKey: 
 
 Transaction.belongsToMany(Account, { through: 'accounttransaction', foreignKey: 'number' });
 
+//User - Contact mx2 >> user have many contacts - contacts belongs to 2 users (his own user and the user that adding him)
+
+User.belongsToMany(Contact, { through: 'contact_user', as:'contacts', foreignKey: 'user_id' })
+
+Contact.belongsToMany(User, { through: 'contact_user', as:'users', foreignKey: 'contact_id' })
 
 
 //ENCRYPTIONS
