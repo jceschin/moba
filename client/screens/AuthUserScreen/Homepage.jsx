@@ -6,8 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from "expo-linear-gradient";
-import { AntDesign, MaterialIcons, Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -26,8 +27,8 @@ const Homepage = () => {
   async function getTransactions(username) {
     let response = await axios.get(
       `http://localhost:8080/transaction/users/${username}`, {
-        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-      }
+      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+    }
     );
 
     setTransactions(response.data);
@@ -58,13 +59,13 @@ const Homepage = () => {
             {user.account ? (
               <Text style={styles.balance}>US$ {user.account.balance}</Text>
             ) : (
-              <Text style={styles.balance}>US$ 0</Text>
-            )}
+                <Text style={styles.balance}>US$ 0</Text>
+              )}
             <View style={styles.options}>
               <View>
                 <TouchableOpacity>
-                  <AntDesign
-                    name="plus"
+                  <MaterialCommunityIcons
+                    name="cash-plus"
                     size={24}
                     color="black"
                     style={styles.optionIcon}
@@ -74,8 +75,8 @@ const Homepage = () => {
               </View>
               <View>
                 <TouchableOpacity>
-                  <MaterialIcons
-                    name="arrow-right-alt"
+                  <MaterialCommunityIcons
+                    name="bank-transfer"
                     size={24}
                     color="black"
                     style={styles.optionIcon}
@@ -85,8 +86,8 @@ const Homepage = () => {
               </View>
               <View>
                 <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
-                  <Feather
-                    name="settings"
+                  <MaterialIcons
+                    name="send-to-mobile"
                     size={24}
                     color="black"
                     style={styles.optionIcon}
@@ -111,13 +112,13 @@ const Homepage = () => {
                     {t.sender === loggedUser.username ? (
                       <Text style={styles.movType}>You send US${t.amount} to {t.receiver}</Text>
                     ) : (
-                      <Text style={styles.movType}>You received US${t.amount} from {t.sender}</Text>
-                    )}
-                    {t.sender === loggedUser.username  ? (
+                        <Text style={styles.movType}>You received US${t.amount} from {t.sender}</Text>
+                      )}
+                    {t.sender === loggedUser.username ? (
                       <Text style={styles.movType}>− US${t.amount}</Text>
                     ) : (
-                      <Text style={styles.movType}>US${t.amount}</Text>
-                    )}
+                        <Text style={styles.movType}>US${t.amount}</Text>
+                      )}
                   </View>
                 </View>
               );
