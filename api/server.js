@@ -7,9 +7,10 @@ require('./microservices/users.js')  //Uncomment requires for run all the micros
 require('./microservices/email.js')
 require('./microservices/auth.js')
 require('./microservices/transaction.js')
-
 require("./microservices/accounts.js");
 require("./microservices/admin.js");
+require("./microservices/contacts.js");
+
 
 conn.sync({ force: false })
 .then(() => {
