@@ -6,23 +6,23 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    contact_username:{
+    contact_username: {
       type: DataTypes.STRING,
       allowNull:false
     },
-    contact_name:{
+    contact_name: {
       type: DataTypes.STRING,
       allowNull:false
     },
-    contact_surname:{
+    contact_surname: {
       type: DataTypes.STRING,
       allowNull:false
     },
-    contact_phone:{
+    contact_phone: {
       type: DataTypes.STRING,
       allowNull:false
     },
-    contact_email:{
+    contact_email: {
       type: DataTypes.STRING,
       allowNull:false
     },
