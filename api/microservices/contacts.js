@@ -24,7 +24,7 @@ server.get(('/get/:user'), (req,res) => {
     if(!user){return res.sendStatus(404)}
     if(!user.contacts.length){return res.send("The user not have contacts")}
     res.send(user.contacts)})
-})
+});
 //ASOCIATE CONTACT
 server.post("/add", (req, res) => {
   const { user_username, contact_email, alias } = req.body;
@@ -65,6 +65,52 @@ server.post("/add", (req, res) => {
         .then(() => res.send('Succesfully!'));
     });
   });
+});
+
+// CREATE NEW CONTACT
+server.post("/contacts", (req, res) => {
+  Contact.create(req.body)
+    .then(contact => {
+      res.status(200).send(contact)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(404).send(err);
+    })
+});
+
+// UPDATE CONTACT by alias
+server.put("/contacts/:alias", (req, res) => {
+  Contact.update(
+    req.body,
+    {
+      where: { contact_id: req.params.alias },
+    }
+  )
+    .then((contact) => {
+      res.status(200).send(contact);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send(err);
+    })
+});
+
+// DELETE CONTACT by alias
+server.delete("/contacts/:alias", (req, res) => {
+  Contact.destroy(
+    req.body,
+    {
+      where: { alias: req.params.alias }
+    }
+  )
+    .then((contact) => {
+      res.status(200).send(contact);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send(err);
+    });
 });
 
 server.listen(8006, () => {
