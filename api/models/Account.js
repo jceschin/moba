@@ -16,8 +16,7 @@ module.exports = (sequelize) => {
     },
 
     opening_date: {
-      type: DataTypes.DATE,
-      defaultValue: new Date(formatDate(new Date(), "yyyy/MM/dd hh:mm:ss")),
+      type: DataTypes.STRING,
     },
 
     card_id: {
@@ -29,5 +28,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    rechargeCode:{
+        type: DataTypes.STRING
+    }
+
+
   });
 };

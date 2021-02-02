@@ -8,6 +8,8 @@ const passport = require("passport");
 const cors = require("cors");
 var Strategy = require("passport-local").Strategy;
 const crypto = require('crypto')
+const { formatDate } = require("date-utils-2020");
+
 
 
 server.use(morgan("dev"));
@@ -57,11 +59,20 @@ server.post("/auth/singup", (req, res, next) => {
   User.create(req.body)
 
     .then((user) => {
+      var card_id = Math.floor(Math.random() * 900000000000000) + 4000000000000000
+      var rechargeCode = Math.floor(Math.random()*90000000) + 10000000
+      var cvu = "222222".concat(Math.floor(Math.random() * 9000000000000000) + 1000000000000000)
+      var card_expiration = new Date()
+      card_expiration.setFullYear(card_expiration.getFullYear() + 6)
+      card_expiration = formatDate(card_expiration, "yyyy/MM/dd hh:mm:ss")
+      console.log(card_expiration)
       Account.create({
-        cvu: Math.floor(Math.random() * Math.pow(100,10)),
-        card_id: Math.floor(Math.random() * Math.pow(40,10)),
-        card_expiration: "9/9/25",
-        userId: user.dataValues.id
+        cvu,
+        card_id,
+        card_expiration,
+        userId: user.dataValues.id,
+        rechargeCode,
+        opening_date: formatDate(new Date(),"yyyy/MM/dd hh:mm:ss")
       })
       .then((acc) => {
         res.status(200).send(acc);
