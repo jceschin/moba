@@ -10,8 +10,15 @@ const { Email } = require("../db");
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(cors());
 
+server.use(cors(/* {origin: "http://localhost:19006", credentials: true} */));
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
 
 
 server.post("/send-email", (req, res) => {
@@ -82,6 +89,8 @@ server.post("/verify", (req, res) => {
   //const { valideId } = req.query;
   const { valideId, email } = req.body;
 
+  console.log(req.body)
+
   if(!valideId || !email){return res.sendStatus(400)}
 
   Email.findOne({
@@ -91,18 +100,20 @@ server.post("/verify", (req, res) => {
     },
   })
     .then((result) => {
+      console.log(result)
       if (!result) {
 
-        return res.send( false );
+        return res.send(false);
+
       } else {
-     Email.update({
+     result.update({
        valide: true,
-     }, {
-       where: {email: email}
-     })
+     }) 
     }
-    }).then ((res) => {
-      res.send ( true )
+
+    }).then((result) => {
+      console.log(result)
+      res.send(true)
 
     })
   

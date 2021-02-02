@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import HomeScreen from "./HomeScreen/HomeScreen";
 import AuthScreen from "./AuthScreen/AuthScreen";
 import AuthUserScreen from "./AuthUserScreen/AuthUserScreen";
-import Validation from "./AuthScreen/Validation"
+import Validation from "./AuthScreen/Validation";
 const Stack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => {
