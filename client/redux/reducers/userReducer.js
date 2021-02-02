@@ -5,7 +5,9 @@ import {
   AUTO_LOGIN,
   RECOVERY_USER,
   PASSWORD_RESET,
-  CHANGE_USER_PASSWORD
+  CHANGE_USER_PASSWORD,
+  ADD_USER_CONTACT,
+  GET_USER_CONTACTS
 } from '../types/userTypes';
 
 const initialState = {
@@ -46,6 +48,16 @@ const userReducer = (state = initialState, action) => {
         userToken: action.token,
         isAuthenticated: true, 
       };
+      case ADD_USER_CONTACT:
+        return {
+          ...state,
+          user: [state.user, action.contact]
+        };
+      case GET_USER_CONTACTS:
+        return {
+          ...state,
+          user: action.contacts
+        };
     default:
       return state;
   }

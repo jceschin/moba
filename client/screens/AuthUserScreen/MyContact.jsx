@@ -2,18 +2,25 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const MyContact = () => { 
-  const navigation = useNavigation(); 
+const MyContact = ( {name, surname, phone, username} ) => { 
+  const navigation = useNavigation();
+  const nameInitial = name.slice(0, 1).toUpperCase();
+  const surnameInitial = surname.slice(0, 1).toUpperCase(); 
 
   return (
       // Change onPress!!
-    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('SendMoney')}>
+    <TouchableOpacity
+        style={styles.container}
+        onPress={() => navigation.navigate('SendMoney', {
+            selectedContactUsername: username
+        })}
+    >
         <View style={styles.avatar}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>NG</Text>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>{nameInitial}{surnameInitial}</Text>
         </View>
         <View>
-            <Text style={styles.name}>Nicolas Gonzalez</Text>
-            <Text style={styles.phone}>+5491178934467</Text>
+            <Text style={styles.name}>{name} {surname}</Text>
+            <Text style={styles.phone}>{phone}</Text>
         </View>
     </TouchableOpacity>
   );

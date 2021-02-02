@@ -5,6 +5,8 @@ export const AUTO_LOGIN = "AUTO_LOGIN";
 export const RECOVERY_USER = "RECOVERY_USER";
 export const PASSWORD_RESET = "PASSWORD_RESET";
 export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
+export const ADD_USER_CONTACT = "ADD_USER_CONTACT";
+export const GET_USER_CONTACTS = "GET_USER_CONTACTS";
 
 // ERROR HANDLER
 export const ERROR_HANDLER = "ERROR_HANDLER";
@@ -64,5 +66,19 @@ export const errorHandler = (error) => {
     return {
         type: ERROR_HANDLER,
         error
+    }
+}
+
+export const addUserContact = (contact) => {
+    return {
+        type: ADD_USER_CONTACT,
+        contact
+    }
+}
+
+export const getContacts = (contacts) => {
+    return {
+        type: GET_USER_CONTACTS,
+        contacts
     }
 }
