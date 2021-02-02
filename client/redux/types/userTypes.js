@@ -7,6 +7,7 @@ export const PASSWORD_RESET = "PASSWORD_RESET";
 export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
 export const ADD_USER_CONTACT = "ADD_USER_CONTACT";
 export const GET_USER_CONTACTS = "GET_USER_CONTACTS";
+export const GET_SELECTED_USER = "GET_SELECTED_USER";
 
 // ERROR HANDLER
 export const ERROR_HANDLER = "ERROR_HANDLER";
@@ -80,5 +81,12 @@ export const getContacts = (contacts) => {
     return {
         type: GET_USER_CONTACTS,
         contacts
+    }
+}
+
+export const getSpecificUser = (user) => {
+    return {
+        type: GET_SELECTED_USER,
+        user
     }
 }

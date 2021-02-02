@@ -7,7 +7,8 @@ import {
   PASSWORD_RESET,
   CHANGE_USER_PASSWORD,
   ADD_USER_CONTACT,
-  GET_USER_CONTACTS
+  GET_USER_CONTACTS,
+  GET_SELECTED_USER
 } from '../types/userTypes';
 
 const initialState = {
@@ -58,6 +59,11 @@ const userReducer = (state = initialState, action) => {
           ...state,
           user: action.contacts
         };
+      case GET_SELECTED_USER:
+        return {
+          ...state,
+          user: action.user
+        };  
     default:
       return state;
   }

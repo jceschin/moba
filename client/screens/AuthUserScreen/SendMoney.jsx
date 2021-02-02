@@ -3,15 +3,21 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-nativ
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import getSelectedUser from '../../redux/actions/user';
 import axios from "axios";
+import { useForm } from "react-hook-form";
 
 const SendMoney = ({ route }) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const { selectedContactUsername } = route.params;
+  const { handleSubmit } = useForm();
+  const [transferAmount, setTransferAmount] = useState(0);
 
-  // Get selected user data
+//   dispatch(getSelectedUser(selectedContactUsername));
+
   const [selectedUser, setSelectedUser] = useState({});
 
   useEffect(() => {
@@ -25,6 +31,12 @@ const SendMoney = ({ route }) => {
 
     setSelectedUser(response.data);
   }
+
+  const onSubmit = () => {
+    //dispatch(createNewUser(data));
+    alert("Transfer completed!");
+    // navigation.navigate("Homepage");
+  };
 
   return (
     <LinearGradient
@@ -50,6 +62,8 @@ const SendMoney = ({ route }) => {
             <TextInput
                 style={{height: 40, textAlign: 'center', marginTop: 80, fontSize: 32}}
                 placeholder="US$ 0"
+                onChangeText={(text) => setTransferAmount(text)}
+                value={transferAmount}
             />
             <View style={styles.contact}>
                 <View style={styles.avatar}>
@@ -60,7 +74,8 @@ const SendMoney = ({ route }) => {
                 </View>
             </View>    
             <TouchableOpacity
-            style={styles.button}
+                style={styles.button}
+                onPress={handleSubmit(onSubmit)}
             >
                 <Text style={styles.btnContent}>Send</Text>
             </TouchableOpacity>

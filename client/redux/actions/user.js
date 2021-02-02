@@ -9,7 +9,8 @@ import {
   passwordReset,
   changeUserPassword,
   addUserContact,
-  getContacts
+  getContacts,
+  getSpecificUser
 } from '../types/userTypes';
 
 export const createNewUser = (newUser) => {
@@ -79,6 +80,21 @@ export function getUserContacts(username) {
       const res = await axios.get(`http://localhost:8080/contacts/get/${username}`);
 
       dispatch(getContacts(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+// Get selected user to receive money
+
+export function getSelectedUser(username) {
+  return async (dispatch) => {
+    try {
+      let res = await axios.get (`http://localhost:8000/users/${username}`);
+
+      dispatch(getSpecificUser(res.data));
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
