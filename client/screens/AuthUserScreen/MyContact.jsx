@@ -3,19 +3,23 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const MyContact = () => {
+const MyContact = ({ name, surname, phone, username }) => {
   const navigation = useNavigation();
+  const nameInitial = name.slice(0, 1).toUpperCase();
+  const surnameInitial = surname.slice(0, 1).toUpperCase();
 
   return (
     // Change onPress!!
     <View style={styles.wrapper}>
-      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('SendMoney')}>
+      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('SendMoney', {
+        selectedContactUsername: username
+      })}>
         <View style={styles.avatar}>
           <Text style={{ color: 'white', fontWeight: 'bold' }}>NG</Text>
         </View>
         <View>
-          <Text style={styles.name}>Nicolas Gonzalez</Text>
-          <Text style={styles.phone}>+5491178934467</Text>
+          <Text style={styles.name}>{name} {surname}</Text>
+          <Text style={styles.phone}>{phone}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btndelete}>

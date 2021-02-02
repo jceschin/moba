@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { validarEmail } from "../types/emailTypes"
+import { validarEmail, typeVerifyEmail } from "../types/emailTypes"
 
 
 export const enviarEmail = (state) => async(dispatch) => {
@@ -7,6 +7,17 @@ export const enviarEmail = (state) => async(dispatch) => {
         const result = await axios.post('http://localhost:8005/send-email', state);
 
         dispatch(validarEmail(result.data));
+     
+    } catch (error) {
+        console.log(error)
+    };
+};
+
+export const verifyEmail = (state) => async(dispatch) => {
+    try {
+        const result = await axios.post('http://localhost:8080/email/verify', state);
+
+        dispatch(typeVerifyEmail(result.data));
      
     } catch (error) {
         console.log(error)

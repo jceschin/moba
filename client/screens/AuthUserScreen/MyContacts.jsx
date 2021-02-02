@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, FlatList } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
+//Redux
+// import { getUserContacts, addNewContact } from '../../redux/actions/user';
+
 const MyContacts = () => {
   const navigation = useNavigation();
-  const [state, setState] = useState({
-    isLoading: false,
-  })
+  let userContacts = useSelector((state) => state.user.user);
 
   if (state.isLoading) {
     return (
@@ -54,6 +56,7 @@ const MyContacts = () => {
     )
   }
 
+
   return (
     <LinearGradient
       style={styles.container}
@@ -83,12 +86,18 @@ const MyContacts = () => {
         </View>
         <View style={styles.whiteContainer}>
           <Text style={styles.contactsTag}>Your contacts</Text>
-          <MyContact />
-          <MyContact />
-          <MyContact />
-          <MyContact />
-          <MyContact />
-          <MyContact />
+          {
+            userContacts.map(contact => {
+              return (
+                <MyContact
+                  name={contact.contact_name}
+                  surname={contact.contact_surname}
+                  phone={contact.contact_phone}
+                  username={contact.contact_username}
+                />
+              )
+            })
+          }
         </View>
       </ScrollView>
     </LinearGradient>

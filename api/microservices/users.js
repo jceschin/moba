@@ -2,7 +2,7 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
-const { User, Account, Blacklist } = require("../db");
+const { User, Account, Blacklist, Contact } = require("../db");
 
 const server = express();
 
@@ -48,7 +48,7 @@ server.get("/users", Verifytoken, isAdmin, (req, res) => {
 //Get One Users from dni, email, username
 server.get("/users/:dni_email", Verifytoken, (req, res) => {
   User.findOne({
-    include: [Account],
+    include: [{all: true}],
 
     where: {
       [Op.or]: [

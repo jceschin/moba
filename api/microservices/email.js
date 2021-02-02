@@ -10,7 +10,16 @@ const { Email } = require("../db");
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
+
 server.use(cors(/* {origin: "http://localhost:19006", credentials: true} */));
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
+
 
 server.post("/send-email", (req, res) => {
   const { email } = req.body;
@@ -23,7 +32,10 @@ server.post("/send-email", (req, res) => {
     },
   });
 
-  const valideId = Math.floor(Math.random() * 100 + 54);
+
+  const valideId =  Math.floor(Math.random()*90000) + 10000;
+  
+
   const host = req.get("host");
 
   Email.findOne({
@@ -41,14 +53,13 @@ server.post("/send-email", (req, res) => {
           valideId: valideId,
         })
           .then((result) => {
-            const linkRedirect = `http://${host}/verify?valideId=${valideId}`;
+            //const linkRedirect = `http://${host}/verify?valideId=${valideId}`;
 
             const mailOptions = {
               from: "noreplymoba@gmail.com",
               to: email,
-              subject: "Confirmacion Email",
-              html: `Su cuenta para la aplicación moba se ha confirmado. Pulse el siguiente enlace para confirmar la dirección de correo electronico. <br />
-                <a href= ${linkRedirect}> seguir el proceso </a>`,
+              subject: "Email confirmation - moba",
+              html: `Welcome to moba! Please confirm your email with the following code: ${valideId}. <br />`
             };
 
             transporter.sendMail(mailOptions, (error, info) => {
@@ -74,32 +85,38 @@ server.post("/send-email", (req, res) => {
     });
 });
 
-server.get("/verify", (req, res) => {
-  const { valideId } = req.query;
+server.post("/verify", (req, res) => {
+  //const { valideId } = req.query;
+  const { valideId, email } = req.body;
+
+  console.log(req.body)
+
+  if(!valideId || !email){return res.sendStatus(400)}
 
   Email.findOne({
     where: {
-      valideId: valideId,
+      email,
+      valideId,
     },
   })
-    .then((res) => {
-      if (!res) {
-        console.log("No se pudo validar el email");
-        res.status(404).json("No se pudo validar el email");
-      } else {
-        Email.update(
-          {
-            valide: true,
-          },
-          {
-            where: { valideId: valideId },
-          }
-        );
-      }
-    })
     .then((result) => {
-      res.send();
+      console.log(result)
+      if (!result) {
+
+        return res.send(false);
+
+      } else {
+     result.update({
+       valide: true,
+     }) 
+    }
+
+    }).then((result) => {
+      console.log(result)
+      res.send(true)
+
     })
+  
     .catch((err) => {
       console.log("No se encontro valideId: " + err);
     });
