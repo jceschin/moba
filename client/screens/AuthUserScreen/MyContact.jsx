@@ -7,7 +7,12 @@ const MyContact = () => {
 
   return (
       // Change onPress!!
-    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('SendMoney')}>
+    <TouchableOpacity
+        style={styles.container}
+        onPress={() => navigation.navigate('SendMoney', {
+            selectedContact: 'Juan'
+        })}
+    >
         <View style={styles.avatar}>
             <Text style={{color: 'white', fontWeight: 'bold'}}>NG</Text>
         </View>

@@ -5,8 +5,9 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
-const SendMoney = () => {
-  const navigation = useNavigation();  
+const SendMoney = ({ route }) => {
+  const navigation = useNavigation();
+  const { selectedContact } = route.params;
 
   return (
     <LinearGradient
