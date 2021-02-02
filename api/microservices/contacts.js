@@ -27,6 +27,8 @@ server.get(('/get/:user'), (req,res) => {
 })
 //ASOCIATE CONTACT
 server.post("/add", (req, res) => {
+  // user_username: logged user
+  // contact_email, alias: contact to be added
   const { user_username, contact_email, alias } = req.body;
  
   var firstUser = User.findOne({
