@@ -22,7 +22,7 @@ apiEndpoints:
     paths: "/admin/*"
   transaction:
     host: localhost
-    paths: ["/transaction", "/transaction/*", "/transaction/users"]
+    paths: ["/transaction", "/transaction/*"]
   email:
     host: localhost
     paths: ["/email", "/email/*"]
