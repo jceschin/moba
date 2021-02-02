@@ -91,19 +91,12 @@ server.post("/verify", (req, res) => {
     },
   })
     .then((result) => {
-      if (!result) {
-
-        return res.send( false );
-      } else {
-     Email.update({
+      if (!result) {return res.send(false)} else {
+     result.update({
        valide: true,
-     }, {
-       where: {email: email}
      })
-    }
-    }).then ((res) => {
-      res.send ( true )
-
+     .then(() => {
+       res.send(true)})}
     })
   
     .catch((err) => {
