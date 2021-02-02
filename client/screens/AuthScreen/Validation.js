@@ -97,11 +97,14 @@ export default function CodeVerification({ navigation }) {
 								<SingleNumInput changed={handleInputChange} id={'D'} _ref={pin4} _next={pin5} />
 								<SingleNumInput changed={handleInputChange} id={'E'} _ref={pin5} _next={null} />
 							</View>
-
-							<Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+                           
+							{/* <Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+								Validar
+							</Button>  */}
+                             <View style={styles.buttoncontainer}>
+							 <Button mode='contained' secureTextEntry={true} title='Validate' style={styles.buttons} onPress={handleSubmit}>
 								Validar
 							</Button> 
-                             <View style={styles.buttoncontainer}>
                             {/* <TouchableOpacity
             style={styles.buttons}
 			// onPress={handleSubmit}
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 20,
 		lineHeight: 23,
-		marginTop: 150,
+		// marginTop: 150,
 	  },
 	  textCodeII : {
 		color: "#663399",
@@ -178,10 +181,10 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 20,
 		lineHeight: 23,
-		marginTop: 150,
+		// marginTop: 150,
 	  },
 	  textCodeContainer: {
-		marginTop: -150,
+		marginTop: -550,
 		flex: 1,
 	    flexDirection: "row"
 	  },
@@ -195,9 +198,9 @@ const styles = StyleSheet.create({
 	  buttoncontainer: {
 		flex: 1,
 		alignItems: "center",
-		width: "auto",
+		// width: "auto",
 		justifyContent: "flex-end",
-		marginBottom: 80,
+		marginBottom: 600,
 	  },
 	  buttons: {
 		width: "90%",
