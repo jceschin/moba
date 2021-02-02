@@ -1,12 +1,18 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
+//Redux
+// import { getUserContacts, addNewContact } from '../../redux/actions/user';
+
 const MyContacts = () => {
+  // const dispatch = useDispatch();
   const navigation = useNavigation();  
+  let userContacts = useSelector((state) => state.user.user);
 
   return (
     <LinearGradient
@@ -15,7 +21,7 @@ const MyContacts = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-        <ScrollView>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
             <View style={styles.header}>
                 <TouchableOpacity
                     // style={{ position: "absolute" }}
@@ -31,16 +37,18 @@ const MyContacts = () => {
             </View>
             <View style={styles.whiteContainer}>
                 <Text style={styles.contactsTag}>Your contacts</Text>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
-                <MyContact/>
+                {
+                  userContacts.map(contact => {
+                    return (
+                      <MyContact
+                        name={contact.contact_name}
+                        surname={contact.contact_surname}
+                        phone={contact.contact_phone}
+                        username={contact.contact_username}
+                      />
+                    )
+                  })
+                }
             </View>
         </ScrollView>
     </LinearGradient>
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        height: "100%",
+        height: 1000
     },
     contactsTag: {
         fontSize: 18,
@@ -84,5 +92,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "rgba(167, 167, 167, 0.83)",
         borderStyle: "solid",
+      },
+      contentContainer: {
+        paddingVertical: 20,
       },
 });

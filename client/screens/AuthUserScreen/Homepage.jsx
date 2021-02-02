@@ -10,6 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign, MaterialIcons, Feather } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 const Homepage = () => {
