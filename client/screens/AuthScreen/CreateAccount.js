@@ -30,30 +30,10 @@ const CreateAccount = (props) => {
     if (esValido === false) {
       alert("Please enter a valid email");
     } else {
-      if (validateEmail) {
-        if(validateEmail.email === state.email){
-              if (validateEmail.valide === false) {
-                console.log(validateEmail);
-                alert("Please, validate your email");
-                window.location.reload();              
-              } else {
-                    props.navigation.navigate("RegisterPage");
-              }
-        } else {
-                dispatch(enviarEmail(state));
-                alert( " Please, check your email to continue with the registration process");
-                setinterruptor(validateEmail.valide); 
-          }          
-     
-    } else {
-     
       dispatch(enviarEmail(state));
-      alert(
-        " Please, check your email to continue with the registration process"
-      );
-    }
-  }
-};
+      props.navigation.navigate("Validation");
+              }
+  } 
 
   console.log(interruptor)
   
