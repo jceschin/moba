@@ -12,7 +12,9 @@ const MyContact = ( {name, surname, phone, username} ) => {
     <TouchableOpacity
         style={styles.container}
         onPress={() => navigation.navigate('SendMoney', {
-            selectedContactUsername: username
+            selectedContactUsername: username,
+            selectedContactNameInitial: nameInitial,
+            selectedContactSurnameInitial: surnameInitial
         })}
     >
         <View style={styles.avatar}>
