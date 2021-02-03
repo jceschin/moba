@@ -5,3 +5,5 @@ jspm_packages/
 node_modules
 package-lock.json
 package-lock.json/
+config.json
+config.json/
