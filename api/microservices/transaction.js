@@ -22,7 +22,8 @@ server.use(cors());
 
 // Create Transaction
 
-server.post("/transaction", Verifytoken, (req, res, next) => {
+server.post("/transaction", (req, res, next) => {
+  console.log(req.body);
   (async function () {
     try {
       //Account sender

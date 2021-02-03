@@ -3,19 +3,30 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-nativ
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+// import getSelectedUser from '../../redux/actions/user';
 import axios from "axios";
+import { useForm } from "react-hook-form";
 
 const SendMoney = ({ route }) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
-  const { selectedContactUsername } = route.params;
-
-  // Get selected user data
+  const [loggedUserData, setLoggedUserData] = useState({});
+  const { 
+            selectedContactUsername,
+            selectedContactNameInitial,
+            selectedContactSurnameInitial 
+        } = route.params;
+  const { handleSubmit } = useForm();
+  const [transferAmount, setTransferAmount] = useState(0);
   const [selectedUser, setSelectedUser] = useState({});
+
+  //dispatch(getSelectedUser(selectedContactUsername));
 
   useEffect(() => {
     getSelectedUser(selectedContactUsername);
+    getLoggedUserData(loggedUser.username);
   }, []);
 
   async function getSelectedUser(username) {
@@ -24,6 +35,37 @@ const SendMoney = ({ route }) => {
     });
 
     setSelectedUser(response.data);
+  }
+
+  async function getLoggedUserData(username) {
+    let response = await axios.get(`http://localhost:8000/users/${username}`, {
+      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+    });
+
+    setLoggedUserData(response.data);
+  }
+
+  const onSubmit = () => {
+    makeTransfer();
+  };
+
+  function makeTransfer() {
+    let transferData = {
+        cvu_sender: loggedUserData.account.cvu,
+        cvu_receiver: selectedUser.account.cvu,
+        amount: transferAmount,
+        number: Math.floor((Math.random() * 1000000))
+    }
+
+    axios.post(`http://localhost:8080/transaction`, transferData)
+    .then(res => {
+        console.log("Transfer completed");
+        alert("Transfer completed!");
+        navigation.navigate("HomePage");
+    })
+    .catch(error => {
+        alert("Insufficient funds");
+    })
   }
 
   return (
@@ -50,17 +92,22 @@ const SendMoney = ({ route }) => {
             <TextInput
                 style={{height: 40, textAlign: 'center', marginTop: 80, fontSize: 32}}
                 placeholder="US$ 0"
+                onChangeText={(text) => setTransferAmount(text)}
+                value={transferAmount}
             />
             <View style={styles.contact}>
                 <View style={styles.avatar}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>MG</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>
+                        {selectedContactNameInitial}{selectedContactSurnameInitial}
+                    </Text>
                 </View>
                 <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                    <Text style={styles.name}>Martin Gomez</Text>
+                    <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
                 </View>
             </View>    
             <TouchableOpacity
-            style={styles.button}
+                style={styles.button}
+                onPress={handleSubmit(onSubmit)}
             >
                 <Text style={styles.btnContent}>Send</Text>
             </TouchableOpacity>
