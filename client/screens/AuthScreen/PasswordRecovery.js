@@ -16,7 +16,7 @@ import { Feather, AntDesign } from "@expo/vector-icons";
 import { loginStateUser } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 
-const LoginScreen = ({ navigation }) => {
+const PasswordRecovery = ({ navigation }) => {
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -105,7 +105,7 @@ const LoginScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.welcomeView}>
-          <Text style={styles.text_header}>Welcome</Text>
+          <Text style={styles.text_header}>Password Recovery</Text>
         </View>
       </View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
@@ -118,7 +118,7 @@ const LoginScreen = ({ navigation }) => {
           </View>
           <View style={styles.action}>
             <TextInput
-              placeholder="Your Username"
+              placeholder="Enter your username or email"
               style={styles.textInputUsername}
               autoCapitalize="none"
               value={data.username}
@@ -141,40 +141,7 @@ const LoginScreen = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          <TouchableOpacity onPress={() => navigation.navigate("UsernameRecovery")}>
-            <Text style={styles.forgot_username}>Forgot your username?</Text>
-          </TouchableOpacity>
-
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Your Password"
-              secureTextEntry={data.secureTextEntry ? true : false}
-              style={styles.textInputPassword}
-              autoCapitalize="none"
-              value={data.password}
-              onChangeText={(val) => handlePasswordChange(val)}
-            />
-
-            <TouchableOpacity onPress={updateSecureTextEntry}>
-              {data.secureTextEntry ? (
-                <Feather name="eye-off" color="grey" size={20} />
-              ) : (
-                  <Feather name="eye" color="grey" size={20} />
-                )}
-            </TouchableOpacity>
-          </View>
-          {data.isValidPassword ? null : (
-            <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>
-                Password must be 8 characters long
-              </Text>
-            </Animatable.View>
-          )}
-
-          <TouchableOpacity onPress={() => navigation.navigate("PasswordRecovery")}>
-            <Text style={styles.forgot_password}>Forgot your password?</Text>
-          </TouchableOpacity>
-
+       
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
               <Text
@@ -185,7 +152,7 @@ const LoginScreen = ({ navigation }) => {
                   },
                 ]}
               >
-                Login
+                Recover!
               </Text>
             </TouchableOpacity>
           </View>
@@ -195,7 +162,7 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
+export default PasswordRecovery;
 
 const styles = StyleSheet.create({
   container: {
