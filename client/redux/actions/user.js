@@ -7,7 +7,9 @@ import {
   autoLogin,
   recoveryUser,
   passwordReset,
-  changeUserPassword
+  changeUserPassword,
+  addUserContact,
+  getContacts
 } from '../types/userTypes';
 
 export const createNewUser = (newUser) => {
@@ -51,6 +53,36 @@ export function logoutUserAction() {
   return async function (dispatch) {
     await dispatch(logoutUser());
   };
+}
+
+//User adds new contact
+
+export function addNewContact(newContact) {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`http://localhost:8080/contacts/add`, { ...newContact });
+      console.log(`This is ${newContact}`);
+      console.log(res.data);
+
+      dispatch(addUserContact(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+// Get user contacts
+
+export function getUserContacts(username) {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(`http://localhost:8080/contacts/get/${username}`);
+
+      dispatch(getContacts(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 

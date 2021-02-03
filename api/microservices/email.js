@@ -10,11 +10,19 @@ const { Email } = require("../db");
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(cors());
 
+server.use(cors(/* {origin: "http://localhost:19006", credentials: true} */));
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
 
 
 server.post("/send-email", (req, res) => {
+  const valideId = Math.floor(Math.random() * 90000) + 10000;
   const { email } = req.body;
 
   const transporter = nodemailer.createTransport({
@@ -25,11 +33,22 @@ server.post("/send-email", (req, res) => {
     },
   });
 
+  const mailOptions = {
+    from: "noreplymoba@gmail.com",
+    to: email,
+    subject: "Email confirmation - moba",
+    html: `Welcome to moba! Please confirm your email with the following code: ${valideId}. <br />`,
+  };
 
-  const valideId =  Math.floor(Math.random()*90000) + 10000;
-  
-
-  const host = req.get("host");
+  const send = () => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.status(500).json(error.message);
+      } else {
+        console.log("Email enviado");
+      }
+    });
+  };
 
   Email.findOne({
     where: {
@@ -37,50 +56,33 @@ server.post("/send-email", (req, res) => {
     },
   })
     .then((result) => {
-      if (result) {
-        console.log("Email ya existente");
-        res.json(result);
-      } else {
+      if (!result) {
         Email.create({
           email: email,
-          valideId: valideId,
-        })
-          .then((result) => {
-            //const linkRedirect = `http://${host}/verify?valideId=${valideId}`;
-
-            const mailOptions = {
-              from: "noreplymoba@gmail.com",
-              to: email,
-              subject: "Email confirmation - moba",
-              html: `Welcome to moba! Please confirm your email with the following code: ${valideId}. <br />`
-            };
-
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                res.status(500).json(error.message);
-              } else {
-                console.log("Email enviado");
-                res.status(200).jsonp(req.body);
-              }
-            });
-            return result;
-          })
-          .then((result) => {
-            res.json(result);
-          })
-          .catch((err) => {
-            console.log("Error no se puede enviar el email: " + err);
-          });
+          valideId,
+        }).then(() => {
+          send();
+        });
+      } else {
+        result.valideId = valideId;
+        result.save().then(() => {
+          send();
+        });
       }
     })
+    .then(() => {
+      res.send({email: email});
+    })
     .catch((err) => {
-      console.log("Error buscando un email especifico: " + err);
+      console.log("Error no se puede enviar el email: " + err);
     });
 });
 
 server.post("/verify", (req, res) => {
   //const { valideId } = req.query;
   const { valideId, email } = req.body;
+
+  console.log(req.body)
 
   if(!valideId || !email){return res.sendStatus(400)}
 
@@ -91,12 +93,21 @@ server.post("/verify", (req, res) => {
     },
   })
     .then((result) => {
-      if (!result) {return res.send(false)} else {
+      console.log(result)
+      if (!result) {
+
+        return res.send(false);
+
+      } else {
      result.update({
        valide: true,
-     })
-     .then(() => {
-       res.send(true)})}
+     }) 
+    }
+
+    }).then((result) => {
+      console.log(result)
+      res.send(true)
+
     })
   
     .catch((err) => {

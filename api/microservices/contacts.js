@@ -4,12 +4,25 @@ const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
 const { User, Contact, Contactuser } = require("../db");
+const WhatsAppWeb = require('baileys');
 
 // middlewares
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors());
+
+/* CONNECT WITH WHATSAPP */
+const client = new WhatsAppWeb() 
+client.connect() 
+.then (([user, chats, contacts, unread]) => {
+    console.log ("oh hello " + user.name + " (" + user.id + ")")
+    console.log ("you have " + unread.length + " unread messages")
+    console.log ("you have " + chats.length + " chats")
+    console.log("Succesful authentication")
+})
+.catch (err => console.log("unexpected error: " + err) )
+/* END CONNECT WITH WHATSAPP*/
 
 //routes
 //GET ALL CONTACTS FROM USER
@@ -19,20 +32,19 @@ server.get("/get/:user", (req, res) => {
     return res.sendStatus(400);
   }
   User.findOne({
-    include: [{ model: Contact, as: "contacts" }],
-    where: { username: user },
-  }).then((user) => {
-    if (!user) {
-      return res.sendStatus(404);
-    }
-    if (!user.contacts.length) {
-      return res.send("The user not have contacts");
-    }
-    res.send(user.contacts);
-  });
+
+    include:[{model:Contact, as:'contacts'}],
+    where:{username:user}
+  })
+  .then((user) => {
+    if(!user){return res.sendStatus(404)}
+    if(!user.contacts.length){return res.send("The user not have contacts")}
+    res.send(user.contacts)})
 });
 //ASOCIATE CONTACT
 server.post("/add", (req, res) => {
+  // user_username: logged user
+  // contact_email, alias: contact to be added
   const { user_username, contact_email, alias } = req.body;
 
   var firstUser = User.findOne({
@@ -106,6 +118,61 @@ server.post("/add", (req, res) => {
     .catch((err) => res.send(err));
 
 });
+
+// CREATE NEW CONTACT
+server.post("/contacts", (req, res) => {
+  Contact.create(req.body)
+    .then(contact => {
+      res.status(200).send(contact)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(404).send(err);
+    })
+});
+
+// UPDATE CONTACT by alias
+server.put("/contacts/:alias", (req, res) => {
+  Contact.update(
+    req.body,
+    {
+      where: { contact_id: req.params.alias },
+    }
+  )
+    .then((contact) => {
+      res.status(200).send(contact);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send(err);
+    })
+});
+
+// DELETE CONTACT by alias
+server.delete("/contacts/:alias", (req, res) => {
+  Contact.destroy(
+    req.body,
+    {
+      where: { alias: req.params.alias }
+    }
+  )
+    .then((contact) => {
+      res.status(200).send(contact);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send(err);
+    });
+});
+
+// SEND INVITATION WITH WHATSAPP MESSAGES
+server.post("/contacts/whatsapp", (req, res) => {
+  //[country code][phone number]@s.whatsapp.net
+  const wspMsg = client.sendTextMessage(`${req.body.phone}@s.whatsapp.net`, req.body.body)
+    .then(res.status(200).jsonp({ mensaje: 'Notification sent' }))
+    .catch(res.status(404).jsonp({ mensaje: 'Something failed :(' }));
+});
+
 
 server.listen(8006, () => {
   console.log("Contacts microservice running on 8006");
