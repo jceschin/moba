@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, ImageBackground, Image, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, ImageBackground, Image, Dimensions, Alert } from 'react-native';
 import { useDispatch, useSelector} from 'react-redux';
 import { Formik } from 'formik';
 import { LinearGradient } from "expo-linear-gradient";
 import axios from 'axios';
+import Button from '../../components/Button'
 import { enviarEmail } from "../../redux/actions/emailActions";
 import { verifyEmail } from '../../redux/actions/emailActions'
 
@@ -211,8 +212,7 @@ const styles = StyleSheet.create({
 		width: 379,
 		borderRadius: 15,
 		justifyContent: "center",
-		marginRight: "auto",
-		marginLeft: "auto",
+	
 		backgroundColor: "#567BFF",
 	  },
 	image: {
