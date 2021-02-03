@@ -28,6 +28,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    card_cvv:{
+      type: DataTypes.STRING,
+      allowNull:false
+    },
     rechargeCode:{
         type: DataTypes.STRING
     }
