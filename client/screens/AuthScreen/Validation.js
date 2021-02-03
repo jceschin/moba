@@ -4,6 +4,7 @@ import { useDispatch, useSelector} from 'react-redux';
 import { Formik } from 'formik';
 import { LinearGradient } from "expo-linear-gradient";
 import axios from 'axios';
+import { enviarEmail } from "../../redux/actions/emailActions";
 import { verifyEmail } from '../../redux/actions/emailActions'
 
 
@@ -51,6 +52,7 @@ export default function CodeVerification({ navigation }) {
 		email: validateEmail.email
 	}
 	
+
 
 	const pin1 = useRef();
 	const pin2 = useRef();
@@ -117,9 +119,9 @@ export default function CodeVerification({ navigation }) {
 							<View style={styles.textCodeContainer}>
 								<Text style={styles.textCode}>Didn't you get the code? </Text>
 								<TouchableOpacity 
-								onPress=
-								{() => alert("Reenviando código")}
-								// {() => dispatch(enviarEmail(mailAndCode.email))}
+								
+								onPress={() => dispatch(enviarEmail(mailAndCode))}
+								// onPress= {() => alert("We have sent you the validation code")}
 								>
 									<Text style={styles.textCodeII }>Resend code</Text>
 								</TouchableOpacity>
