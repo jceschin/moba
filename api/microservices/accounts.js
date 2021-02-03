@@ -91,10 +91,7 @@ server.put("/accounts/recharge/:userCode", (req, res) => {
   if (!amount || typeof parseInt(amount) !== "number" || parseInt(amount) < 0) {
     return res.status(400).send("Invalid amount");
   }
-  var moba = Account.findOne({
-    include: [{ model: User, where: { username: "mobaRecharges" } }],
-  });
-
+ 
   Account.findOne({
     where: { rechargeCode },
   })

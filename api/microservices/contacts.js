@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
-const { User, Contact } = require("../db");
+const { User, Contact, Contactuser } = require("../db");
 const WhatsAppWeb = require('baileys');
 
 // middlewares
@@ -26,10 +26,13 @@ client.connect()
 
 //routes
 //GET ALL CONTACTS FROM USER
-server.get(('/get/:user'), (req,res) => {
-  const {user} = req.params 
-  if(!user){return res.sendStatus(400)}
+server.get("/get/:user", (req, res) => {
+  const { user } = req.params;
+  if (!user) {
+    return res.sendStatus(400);
+  }
   User.findOne({
+
     include:[{model:Contact, as:'contacts'}],
     where:{username:user}
   })
@@ -43,43 +46,77 @@ server.post("/add", (req, res) => {
   // user_username: logged user
   // contact_email, alias: contact to be added
   const { user_username, contact_email, alias } = req.body;
- 
+
   var firstUser = User.findOne({
     where: { username: user_username },
   });
-  var contact;
 
-  //searching the future contact by email and creating contact
-  User.findOne({
+  var secondUser = User.findOne({
     where: { email: contact_email },
-  }).then((contact) => {
-    if (!contact) {
-      return res
-        .status(404)
-        .send(
-          "Error: The email is not associated to moba, you can invite him, ¿Send email?"
-        );
-    }
-    Contact.create({
-      alias: alias || contact.username,
-      contact_username: contact.username ,
-      contact_name:contact.name ,
-      contact_surname:contact.surname,
-      contact_phone: contact.phone,
-      contact_email: contact.email
-    }).then((data) => {
-      contact = data;
-      firstUser
-        .then((user) => {
-          if(!user){return res.sendStatus(404)}
-          if(contact_email && user.email === contact_email){
-            return res.status(400).send('You cant add yourself!')
-          }
-          user.addContact(contact);
-        })
-        .then(() => res.send('Succesfully!'));
-    });
   });
+  var loggedUser;
+  var futureContact;
+
+ 
+  firstUser
+    .then((user) => {
+      //checking if firstUser exists
+      if (!user) {
+        return res.sendStatus(404);
+      }
+      if (contact_email && user.email === contact_email) {
+        return res.status(400).send("You cant add yourself!");
+      }
+      loggedUser = user;
+    })
+    .then(() => {
+      //checking if secondUser exists
+      secondUser
+        .then((user2) => {
+          if (!user2) {
+            return res
+              .status(404)
+              .send(
+                "Error: The email is not associated to moba, you can invite him, ¿Send email?"
+              );
+          }
+          futureContact = user2;
+        })
+        .then(() => {
+          //checking if the user2 is already a contact of user1
+          Contactuser.findOne({
+            where: {
+              iscontact_ofuser: loggedUser.id,
+              contact_userid: futureContact.id,
+            },
+          })
+            .then((data) => {
+              if (data) {
+                return res.status(400).send("You already have this user contact!");
+              }
+              //creating the contact
+              Contact.create({
+                alias: alias || futureContact.username,
+                contact_username: futureContact.username,
+                contact_name: futureContact.name,
+                contact_surname: futureContact.surname,
+                contact_phone: futureContact.phone,
+                contact_email: futureContact.email,
+              }).then((contact) => {
+                //associating the contact
+                loggedUser.addContact(contact).then((contactuser) => {
+                  contactuser[0].contact_userid = futureContact.id;
+                  contactuser[0].save().then((contactuser) => {
+                    res.send('Succesfully');
+                  });
+                });
+              });
+            })
+            .catch((err) => console.log(err));
+        });
+    })
+    .catch((err) => res.send(err));
+
 });
 
 // CREATE NEW CONTACT
