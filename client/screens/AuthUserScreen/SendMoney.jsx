@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import getSelectedUser from '../../redux/actions/user';
+// import getSelectedUser from '../../redux/actions/user';
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
@@ -12,7 +12,12 @@ const SendMoney = ({ route }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
-  const { selectedContactUsername } = route.params;
+  const [loggedUserData, setLoggedUserData] = useState({});
+  const { 
+            selectedContactUsername,
+            selectedContactNameInitial,
+            selectedContactSurnameInitial 
+        } = route.params;
   const { handleSubmit } = useForm();
   const [transferAmount, setTransferAmount] = useState(0);
   const [selectedUser, setSelectedUser] = useState({});
@@ -21,6 +26,7 @@ const SendMoney = ({ route }) => {
 
   useEffect(() => {
     getSelectedUser(selectedContactUsername);
+    getLoggedUserData(loggedUser.username);
   }, []);
 
   async function getSelectedUser(username) {
@@ -31,26 +37,35 @@ const SendMoney = ({ route }) => {
     setSelectedUser(response.data);
   }
 
+  async function getLoggedUserData(username) {
+    let response = await axios.get(`http://localhost:8000/users/${username}`, {
+      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+    });
+
+    setLoggedUserData(response.data);
+  }
+
   const onSubmit = () => {
-    transferAmount();
-    alert("Transfer completed!");
-    navigation.navigate("Homepage");
+    makeTransfer();
   };
 
-  function transferAmount() {
+  function makeTransfer() {
     let transferData = {
-        cvu_sender: "",
-        cvu_receiver: "",
-        amount: "",
-        number: "",
-        transaction_type: "",
-        status: ""
+        cvu_sender: loggedUserData.account.cvu,
+        cvu_receiver: selectedUser.account.cvu,
+        amount: transferAmount,
+        number: Math.floor((Math.random() * 1000000))
     }
 
-    let response = await axios.post(`http://localhost:8000/transaction`, {
-        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-        transferData
-    });
+    axios.post(`http://localhost:8080/transaction`, transferData)
+    .then(res => {
+        console.log("Transfer completed");
+        alert("Transfer completed!");
+        navigation.navigate("HomePage");
+    })
+    .catch(error => {
+        alert("Insufficient funds");
+    })
   }
 
   return (
@@ -82,10 +97,12 @@ const SendMoney = ({ route }) => {
             />
             <View style={styles.contact}>
                 <View style={styles.avatar}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>MG</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>
+                        {selectedContactNameInitial}{selectedContactSurnameInitial}
+                    </Text>
                 </View>
                 <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                    <Text style={styles.name}>Martin Gomez</Text>
+                    <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
                 </View>
             </View>    
             <TouchableOpacity
