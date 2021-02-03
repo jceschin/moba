@@ -49,3 +49,12 @@ npx sequelize-cli db:seed:all
 
 Para quitar los seeders:
 npx sequelize-cli db:seed:undo:all
+
+____________________________________________________
+
+PARA ENVIAR MENSAJES POR WHASTSAPP
+
+Esperar q levante api
+Conectarse escaneando el codigo QR usando el lector que brinda la app de whatsapp
+Verificar que por consola diga Autenticado
+Listo!
