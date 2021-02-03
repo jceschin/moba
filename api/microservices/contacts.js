@@ -60,9 +60,10 @@ server.post("/add", (req, res) => {
           if(contact_email && user.email === contact_email){
             return res.status(400).send('You cant add yourself!')
           }
-          user.addContact(contact);
+          user.addContact(contact)
+          .then((data) => {console.log(data)})
         })
-        .then(() => res.send('Succesfully!'));
+        .then((data) => res.send(data));
     });
   });
 });
