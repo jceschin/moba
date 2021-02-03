@@ -8,7 +8,7 @@ const HomeNavbar = () => {
     
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.icon}>
+            <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate("HomePage")}>
                 <View style={{alignItems: 'center'}}>
                     <AntDesign name="home" size={24} color="black"/>
                     <Text style={styles.tag}>Home</Text>

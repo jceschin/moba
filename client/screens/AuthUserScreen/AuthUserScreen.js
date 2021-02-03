@@ -7,20 +7,35 @@ import AccountNumber from "./AccountNumber";
 import MyContacts from "./MyContacts";
 import MyContact from "./MyContact";
 import SendMoney from "./SendMoney";
+import Card from "./Card";
+import AddMoney from "./AddMoney";
 const Stack = createStackNavigator();
 
+export const Context = React.createContext({
+  eye: null,
+  setEye: () => {},
+  toggle: null,
+  setToggle: () => {},
+});
+
 const RootStackScreen = ({ navigation }) => {
+  const [eye, setEye] = React.useState(false);
+  const [toggle, setToggle] = React.useState(false);
   return (
     <>
-      <Stack.Navigator headerMode="none">
-        <Stack.Screen name="HomePage" component={HomePage} />
-        <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
-        <Stack.Screen name="MyAccount" component={MyAccount} />
-        <Stack.Screen name="AccountNumber" component={AccountNumber} />
-        <Stack.Screen name="MyContacts" component={MyContacts} />
-        <Stack.Screen name="MyContact" component={MyContact} />
-        <Stack.Screen name="SendMoney" component={SendMoney} />
-      </Stack.Navigator>
+      <Context.Provider value={{ eye, setEye, toggle, setToggle }}>
+        <Stack.Navigator headerMode="none">
+          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
+          <Stack.Screen name="MyAccount" component={MyAccount} />
+          <Stack.Screen name="AccountNumber" component={AccountNumber} />
+          <Stack.Screen name="MyContacts" component={MyContacts} />
+          <Stack.Screen name="MyContact" component={MyContact} />
+          <Stack.Screen name="SendMoney" component={SendMoney} />
+          <Stack.Screen name="AddMoney" component={AddMoney} />
+          <Stack.Screen name="Card" component={Card} />
+        </Stack.Navigator>
+      </Context.Provider>
     </>
   );
 };
