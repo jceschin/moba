@@ -15,10 +15,9 @@ const SendMoney = ({ route }) => {
   const { selectedContactUsername } = route.params;
   const { handleSubmit } = useForm();
   const [transferAmount, setTransferAmount] = useState(0);
-
-//   dispatch(getSelectedUser(selectedContactUsername));
-
   const [selectedUser, setSelectedUser] = useState({});
+
+  //dispatch(getSelectedUser(selectedContactUsername));
 
   useEffect(() => {
     getSelectedUser(selectedContactUsername);
@@ -33,10 +32,26 @@ const SendMoney = ({ route }) => {
   }
 
   const onSubmit = () => {
-    //dispatch(createNewUser(data));
+    transferAmount();
     alert("Transfer completed!");
-    // navigation.navigate("Homepage");
+    navigation.navigate("Homepage");
   };
+
+  function transferAmount() {
+    let transferData = {
+        cvu_sender: "",
+        cvu_receiver: "",
+        amount: "",
+        number: "",
+        transaction_type: "",
+        status: ""
+    }
+
+    let response = await axios.post(`http://localhost:8000/transaction`, {
+        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+        transferData
+    });
+  }
 
   return (
     <LinearGradient
