@@ -4,7 +4,7 @@ module.exports = {
   up: function (queryInterface, Sequelize) {
 
     return queryInterface.bulkInsert('transactions', [{
-      number: 1,
+      number: 111,
       amount: 5000,
       description: '$5000 to John',
       transaction_type: 'transfer',
@@ -13,7 +13,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      number: 2,
+      number: 222,
       amount: 500,
       description: '$500 to Michael',
       transaction_type: 'transfer',
@@ -22,7 +22,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      number: 3,
+      number: 333,
       amount: 5000,
       description: '$5000 to Jana',
       transaction_type: 'transfer',
@@ -32,7 +32,7 @@ module.exports = {
     },
 
     {
-      number: 4,
+      number: 444,
       amount: 2000,
       description: '$2000 to John',
       transaction_type: 'transfer',
@@ -41,7 +41,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      number: 5,
+      number: 555,
       amount: 1000,
       description: '$1000 to Jana',
       transaction_type: 'transfer',
@@ -50,7 +50,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      number: 6,
+      number: 666,
       amount: 500,
       description: '$2000 to John',
       transaction_type: 'transfer',

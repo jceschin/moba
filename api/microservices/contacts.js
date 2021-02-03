@@ -4,12 +4,25 @@ const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
 const { User, Contact } = require("../db");
+const WhatsAppWeb = require('baileys');
 
 // middlewares
 server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors());
+
+/* CONNECT WITH WHATSAPP */
+const client = new WhatsAppWeb() 
+client.connect() 
+.then (([user, chats, contacts, unread]) => {
+    console.log ("oh hello " + user.name + " (" + user.id + ")")
+    console.log ("you have " + unread.length + " unread messages")
+    console.log ("you have " + chats.length + " chats")
+    console.log("Succesful authentication")
+})
+.catch (err => console.log("unexpected error: " + err) )
+/* END CONNECT WITH WHATSAPP*/
 
 //routes
 //GET ALL CONTACTS FROM USER
@@ -114,6 +127,15 @@ server.delete("/contacts/:alias", (req, res) => {
       res.status(404).send(err);
     });
 });
+
+// SEND INVITATION WITH WHATSAPP MESSAGES
+server.post("/contacts/whatsapp", (req, res) => {
+  //[country code][phone number]@s.whatsapp.net
+  const wspMsg = client.sendTextMessage(`${req.body.phone}@s.whatsapp.net`, req.body.body)
+    .then(res.status(200).jsonp({ mensaje: 'Notification sent' }))
+    .catch(res.status(404).jsonp({ mensaje: 'Something failed :(' }));
+});
+
 
 server.listen(8006, () => {
   console.log("Contacts microservice running on 8006");

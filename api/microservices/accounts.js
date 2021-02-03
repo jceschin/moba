@@ -86,17 +86,37 @@ server.put("/accounts/:cvu", (req, res) => {
 //RECHARGE MONEY
 server.put("/accounts/recharge/:userCode", (req, res) => {
   const rechargeCode = req.params.userCode;
+  const { amount } = req.body;
+  var account;
+  if (!amount || typeof parseInt(amount) !== "number" || parseInt(amount) < 0) {
+    return res.status(400).send("Invalid amount");
+  }
   var moba = Account.findOne({
-      include:[{model:User, where:{username:'mobaRecharges'}}]
+    include: [{ model: User, where: { username: "mobaRecharges" } }],
+  });
+
+  Account.findOne({
+    where: { rechargeCode },
   })
-  moba.then((data) => res.send(data))
-//   Account.findOne({
-//     where: { rechargeCode },
-//   }).then((acc) => {
-//     if (!acc) {
-//       return res.status(404).send("Invalid recharge code");
-//     }
-//   });
+    .then((acc) => {
+      if (!acc) {
+        return res.status(404).send("Invalid recharge code");
+      }
+      acc.balance = parseInt(acc.balance) + parseInt(amount);
+      acc.save().then((acc) => {
+        console.log(acc.balance);
+        account = acc;
+        Transaction.create({
+          amount,
+          transaction_type: "charge",
+          status: "confirmed",
+        }).then((tr) => {
+          account.addTransaction(tr);
+          res.send(account);
+        });
+      });
+    })
+    .catch((err) => console.log(err));
 });
 
 server.listen(8004, () => {
