@@ -12,22 +12,26 @@ import {
   Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { Feather, AntDesign } from "@expo/vector-icons";
-import { loginStateUser } from "../../redux/actions/user";
-import { useDispatch, useSelector } from "react-redux";
+import { AntDesign } from "@expo/vector-icons";
+import axios from 'axios';
+// import { loginStateUser } from "../../redux/actions/user";
+// import { useDispatch, useSelector } from "react-redux";
 
 const PasswordRecovery = ({ navigation }) => {
   const [data, setData] = useState({
-    username: "",
-    password: "",
+    usernameOrEmail: "",
     check_textInputChange: false,
     secureTextEntry: true,
     isValidUser: true,
     isValidPassword: true,
   });
 
-  const dispatch = useDispatch();
-  const loginUser = async (data) => dispatch(loginStateUser(data));
+
+  const mailOrUsername = {
+    usernameOrEmail: data.usernameOrEmail,
+  }
+  // const dispatch = useDispatch();
+  // const loginUser = async (data) => dispatch(loginStateUser(data));
 
   const textInputChange = (val) => {
     if (val.length >= 4) {
@@ -47,21 +51,21 @@ const PasswordRecovery = ({ navigation }) => {
     }
   };
 
-  const handlePasswordChange = (val) => {
-    if (val.trim().length >= 8) {
-      setData({
-        ...data,
-        password: val,
-        isValidPassword: true,
-      });
-    } else {
-      setData({
-        ...data,
-        password: val,
-        isValidPassword: false,
-      });
-    }
-  };
+  // const handlePasswordChange = (val) => {
+  //   if (val.trim().length >= 8) {
+  //     setData({
+  //       ...data,
+  //       password: val,
+  //       isValidPassword: true,
+  //     });
+  //   } else {
+  //     setData({
+  //       ...data,
+  //       password: val,
+  //       isValidPassword: false,
+  //     });
+  //   }
+  // };
 
   const handleValidUser = (val) => {
     if (val.trim().length >= 4) {
@@ -77,19 +81,32 @@ const PasswordRecovery = ({ navigation }) => {
     }
   };
 
-  const updateSecureTextEntry = () => {
-    setData({
-      ...data,
-      secureTextEntry: !data.secureTextEntry,
-    });
-  };
+  // const updateSecureTextEntry = () => {
+  //   setData({
+  //     ...data,
+  //     secureTextEntry: !data.secureTextEntry,
+  //   });
+  // };
 
-  const loginHandle = async (userName, password) => {
-    if (data.username.length === 0 || data.password.length === 0) {
-      alert("Username or Password cannot be empty");
-    }
-    await loginUser(data);
-  };
+
+  // :::::::::::::::::::AXIOS:::::::::::
+
+  const handleRecoverPass = () => axios.post('http://localhost:8080/email/recoverPass', mailOrUsername ).then((result) => { //Ruta para buscar por mail o userName y encontrar el password
+							console.log(result)
+                            if (result.data === true) {
+                              alert('We have sent the username to your email box')
+								navigation.navigate('Login')
+							} else {
+								alert('Invalid password or email')
+							}
+            })
+            
+  // const loginHandle = async (userName, password) => {
+  //   if (data.username.length === 0 || data.password.length === 0) {
+  //     alert("Username or Password cannot be empty");
+  //   }
+  //   await loginUser(data);
+  // };
 
   return (
     <View style={styles.container}>
@@ -143,7 +160,10 @@ const PasswordRecovery = ({ navigation }) => {
 
        
           <View style={styles.button}>
-            <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
+            <TouchableOpacity style={styles.signIn}
+            //  onPress={loginHandle}
+            //  onPress={handleRecoverPass} 
+             >
               <Text
                 style={[
                   styles.textSign,
