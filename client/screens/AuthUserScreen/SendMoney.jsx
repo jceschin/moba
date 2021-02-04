@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import getSelectedUser from '../../redux/actions/user';
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import accounting from "accounting-js";
 
 const SendMoney = ({ route }) => {
   const dispatch = useDispatch();
@@ -19,7 +20,9 @@ const SendMoney = ({ route }) => {
             selectedContactSurnameInitial 
         } = route.params;
   const { handleSubmit } = useForm();
-  const [transferAmount, setTransferAmount] = useState(0);
+  const [transferAmount, setTransferAmount] = useState({
+      amount: 0
+  });
   const [selectedUser, setSelectedUser] = useState({});
 
   //dispatch(getSelectedUser(selectedContactUsername));
@@ -45,6 +48,14 @@ const SendMoney = ({ route }) => {
     setLoggedUserData(response.data);
   }
 
+  const textInputChange = (val) => {
+    if (val.length >= 1) {
+      setTransferAmount({
+          amount: val
+      });
+    }
+  };
+
   const onSubmit = () => {
     makeTransfer();
   };
@@ -53,7 +64,8 @@ const SendMoney = ({ route }) => {
     let transferData = {
         cvu_sender: loggedUserData.account.cvu,
         cvu_receiver: selectedUser.account.cvu,
-        amount: transferAmount,
+        // All transfer amounts have a 0 as 1st character, so we must get rid of it
+        amount: parseInt(transferAmount.amount.toString()),
         number: Math.floor((Math.random() * 1000000))
     }
 
@@ -67,6 +79,11 @@ const SendMoney = ({ route }) => {
         alert("Insufficient funds");
     })
   }
+
+  // Style functions
+  const formatValue = (value) => {
+    return accounting.formatMoney(parseFloat(value));
+  };
 
   return (
     <LinearGradient
@@ -90,10 +107,15 @@ const SendMoney = ({ route }) => {
         </View>
         <View style={styles.whiteContainer}>
             <TextInput
-                style={{height: 40, textAlign: 'center', marginTop: 80, fontSize: 32}}
-                placeholder="US$ 0"
-                onChangeText={(text) => setTransferAmount(text)}
-                value={transferAmount}
+                style={styles.textInputAmount}
+                autoCapitalize="none"
+                value={formatValue(transferAmount.amount)}
+            />
+            <TextInput
+                style={styles.textInputAmountHide}
+                autoCapitalize="none"
+                onChangeText={(val) => textInputChange(val)}
+                value={transferAmount.amount}
             />
             <View style={styles.contact}>
                 <View style={styles.avatar}>
@@ -181,5 +203,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 30,
         height: 41
+    },
+    textInputAmount: {
+        height: 40,
+        textAlign: 'center',
+        marginTop: 80,
+        fontSize: 32,
+        color: "#168903"
+    },
+    textInputAmountHide: {
+        height: 40,
+        textAlign: 'center',
+        marginTop: -40,
+        fontSize: 32,
+        color: "#168903",
+        opacity: 0
     }
 });
