@@ -19,10 +19,13 @@ const Homepage = () => {
   const loggedUser = useSelector((state) => state.user);
   const [transactions, setTransactions] = useState([]);
   const [user, setUser] = useState({});
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     getTransactions(loggedUser.username);
-
+    dispatch(getUserInfo(loggedUser.username))
+    getUser(loggedUser.username);
+  }, [user]);
 
   async function getTransactions(username) {
     let response = await axios.get(

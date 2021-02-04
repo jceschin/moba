@@ -13,12 +13,13 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import { loginStateUser } from "../../redux/actions/user";
-import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios'
+// import { loginStateUser } from "../../redux/actions/user";
+// import { useDispatch, useSelector } from "react-redux";
 
 const UsernameRecovery = ({ navigation }) => {
   const [data, setData] = useState({
-    username: "",
+    email: "",
     password: "",
     check_textInputChange: false,
     secureTextEntry: true,
@@ -26,8 +27,14 @@ const UsernameRecovery = ({ navigation }) => {
     isValidPassword: true,
   });
 
-  const dispatch = useDispatch();
-  const loginUser = async (data) => dispatch(loginStateUser(data));
+  console.log(data.email)
+
+  const mailAndPass = {
+    email: data.email,
+    password: data.password,
+  }
+  // const dispatch = useDispatch();
+  // const loginUser = async (data) => dispatch(loginStateUser(data));
 
   const textInputChange = (val) => {
     if (val.length >= 4) {
@@ -84,12 +91,25 @@ const UsernameRecovery = ({ navigation }) => {
     });
   };
 
-  const loginHandle = async (userName, password) => {
-    if (data.username.length === 0 || data.password.length === 0) {
-      alert("Username or Password cannot be empty");
-    }
-    await loginUser(data);
-  };
+
+
+  // :::::::::::::::::::AXIOS:::::::::::
+
+ const handleRecover = () => axios.post('http://localhost:8080/email/verifymailAndPass', mailAndPass ).then((result) => { //Ruta para buscar por mail y password y encontrar el userName
+							console.log(result)
+                            if (result.data === true) {
+                              alert('We have sent the username to your email box')
+								navigation.navigate('Login')
+							} else {
+								alert('Invalid password or email')
+							}
+						})
+  // const loginHandle = async (userName, password) => {
+  //   if (data.username.length === 0 || data.password.length === 0) {
+  //     alert("Username or Password cannot be empty");
+  //   }
+  //   await loginUser(data);
+  // };
 
   return (
     <View style={styles.container}>
@@ -141,9 +161,7 @@ const UsernameRecovery = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          {/* <TouchableOpacity>
-            <Text style={styles.forgot_username}>PRForgot your user?</Text>
-          </TouchableOpacity> */}
+        
 
           <View style={styles.action}>
             <TextInput
@@ -171,12 +189,13 @@ const UsernameRecovery = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          {/* <TouchableOpacity>
-            <Text style={styles.forgot_password}>PRForgot?</Text>
-          </TouchableOpacity> */}
+         
 
           <View style={styles.button}>
-            <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
+            <TouchableOpacity style={styles.signIn}
+            //  onPress={loginHandle}
+            // onPress={ handleRecover}
+             >
               <Text
                 style={[
                   styles.textSign,
