@@ -11,7 +11,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 const Homepage = () => {
@@ -23,6 +22,7 @@ const Homepage = () => {
   useEffect(() => {
     getTransactions(loggedUser.username);
     getUser(loggedUser.username);
+    console.log(loggedUser)
   }, []);
 
   async function getTransactions(username) {

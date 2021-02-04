@@ -1,12 +1,21 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+// REDUX
+import { deleteContact } from '../../redux/actions/user';
+
 const MyContact = ({ name, surname, phone, username }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const nameInitial = name.slice(0, 1).toUpperCase();
   const surnameInitial = surname.slice(0, 1).toUpperCase();
+
+  const onDelete = () => {
+    dispatch(deleteContact())
+  }
 
   return (
     // Change onPress!!
@@ -15,7 +24,7 @@ const MyContact = ({ name, surname, phone, username }) => {
         selectedContactUsername: username
       })}>
         <View style={styles.avatar}>
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>NG</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>{nameInitial} {surnameInitial}</Text>
         </View>
         <View>
           <Text style={styles.name}>{name} {surname}</Text>
@@ -45,10 +54,10 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: 20,
-    borderRadius: '50%',
+    borderRadius: 50,
     backgroundColor: '#25D681',
     padding: 10,
-    heigth: 41,
+    height: 41,
     width: 41,
     justifyContent: 'center',
     alignItems: 'center'
