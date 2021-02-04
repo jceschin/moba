@@ -30,13 +30,13 @@ export default function CreditCard() {
   return (
     <View style={[s.container, { backgroundColor: "#FFF", zIndex: 2 }]}>
       <View style={{ flexDirection: "row" }}>
-        <Text style={s.textTitle}>Débito Virtual</Text>
+        <Text style={s.textTitle}>Virtual Debit Card</Text>
         <View style={s.logoContainer}>
           <Image style={s.image} source={require("../../assets/MOBA.png")} />
         </View>
       </View>
       <View style={{ top: -20 }}>
-        <Text style={s.textColor}>Solo para compras online</Text>
+        <Text style={s.textColor}>Only for online shopping</Text>
       </View>
       <View style={[s.bgCircle, s.rightBgCircle]} />
       <Text style={[s.text, { color: "#949292", top: -8 }]}>
@@ -66,7 +66,7 @@ export default function CreditCard() {
         <View style={s.dateContainer}>
           <Text style={{ color: "#949292" }}>CVV</Text>
           <Text style={[s.text, { color: "black", paddingLeft: 11 }]}>
-            {toggle === false ? "***" : user.account ? user.account.cvu : nully}
+            {toggle === false ? "***" : user.account ? user.account.card_cvv : null}
           </Text>
         </View>
         <View style={s.visaContainer}>

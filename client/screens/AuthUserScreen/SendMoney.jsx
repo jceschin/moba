@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
       },
       avatar: {
         marginRight: 20,
-        borderRadius: '50%',
+        borderRadius: 50,
         backgroundColor: '#25D681',
         padding: 10,
         heigth: 41,

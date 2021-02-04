@@ -48,7 +48,7 @@ const MyAccount = () => {
           <View style={styles.options}>
             <View style={styles.option}>
               <MaterialIcons name="credit-card" size={18} color="black" />
-              <TouchableOpacity onPress={() => navigation.navigate("Card")}>
+              <TouchableOpacity >
                 <Text style={styles.optionName}>Credit Cards</Text>
               </TouchableOpacity>
             </View>
