@@ -46,7 +46,7 @@ const AddMoney = ({ navigation }) => {
     if (amountCharge.amount >= 100) {
       setAmount(true);
     } else {
-      Alert.alert("The minimum amount to charge is $100");
+      alert("The minimum amount to charge is $100");
     }
   };
 
@@ -86,11 +86,13 @@ const AddMoney = ({ navigation }) => {
       `The charge to your account has been completed successfully`
     );
     dispatch(getUserInfo(loggedUser.username))
+    navigation.navigate("HomePage")
   }
 
   useEffect(() => {
     //getUser(loggedUser.username);
-  }, [index, loggedUser]);
+    dispatch(getUserInfo(loggedUser.username))
+  }, [index]);
 
   return (
     <View style={styles.container}>
@@ -237,7 +239,7 @@ const AddMoney = ({ navigation }) => {
                 }}
               >
                 <Text style={{ fontSize: 20, color: "#fff" }}>
-                  {loggedUser.info.account ? loggedUser.info.account.rechargeCode : null}
+                  {(loggedUser && loggedUser.info) ? loggedUser.info.account.rechargeCode : null}
                 </Text>
               </View>
             </View>

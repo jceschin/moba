@@ -45,7 +45,7 @@ export function loginStateUser(loginInput) {
         }
       })
       .catch((err) => {
-        Alert.alert("Login Failed", "Some error occured, please retry later");
+        alert("Login Failed", "Some error occured, please retry later");
         console.log(err);
       });
   };
@@ -83,10 +83,10 @@ export const deleteContact = (alias) => {
   return async (dispatch) => {
     try {
 
-      const res = await axios.delete(`http://localhost:8080/contacts/${alias}`);
+      const res = await axios.delete(`http://localhost:8080/contacts/delete/${alias}`);
       console.log('ESTE ES EL ALIAS', alias);
 
-      dispatch(removeContact(res.data));
+      dispatch(removeContact());
 
     } catch (error) {
       console.log('ERROR EN DELETE CONTACT', error)

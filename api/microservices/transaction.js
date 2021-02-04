@@ -167,7 +167,7 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
       console.log(user.account);
       var numberTrans = user.account.transactions.map((tr) => tr.number);
       if (!numberTrans.length) {
-        return res.sendStatus(404);
+        return res.send(numberTrans);
       }
       Transaction.findAll({
         include: [{ model: Account, include: [{ model: User }] }],

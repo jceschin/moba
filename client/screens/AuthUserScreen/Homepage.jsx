@@ -43,8 +43,9 @@ const Homepage = () => {
   }
 
   getUser(loggedUser.username);
-  console.log(loggedUser)
 }, [loggedUser]);
+
+console.log(transactions)
 
   return (
     <LinearGradient
