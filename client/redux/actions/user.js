@@ -68,7 +68,7 @@ export function addNewContact(newContact) {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       console.log('ESTO ES NEW CONTACT', newContact);
-
+      dispatch(getUserInfo(newContact.user_username))
       dispatch(addUserContact(res.data));
       console.log('ESTO ES DATA', res.data);
     } catch (error) {

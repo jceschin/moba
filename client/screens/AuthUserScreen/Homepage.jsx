@@ -21,11 +21,8 @@ const Homepage = () => {
   const [user, setUser] = useState({});
   const dispatch = useDispatch()
   useEffect(() => {
-   // getTransactions(loggedUser.username);
-    dispatch(getUserInfo(loggedUser.username))
-    getUser(loggedUser.username);
-    console.log(loggedUser)
-  }, []);
+    getTransactions(loggedUser.username);
+
 
   async function getTransactions(username) {
     let response = await axios.get(
@@ -44,6 +41,10 @@ const Homepage = () => {
 
     setUser(response.data);
   }
+
+  getUser(loggedUser.username);
+  console.log(loggedUser)
+}, [loggedUser]);
 
   return (
     <LinearGradient

@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 // REDUX
 import { deleteContact } from '../../redux/actions/user';
 
-const MyContact = ({ name, surname, phone, username }) => {
+const MyContact = ({ name, surname, phone, username, alias }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const nameInitial = name.slice(0, 1).toUpperCase();
@@ -32,7 +32,7 @@ const MyContact = ({ name, surname, phone, username }) => {
           <Text style={{ color: 'white', fontWeight: 'bold' }}>{nameInitial} {surnameInitial}</Text>
         </View>
         <View>
-          <Text style={styles.name}>{name} {surname}</Text>
+          <Text style={styles.name}>{alias} ({name} {surname})</Text>
           <Text style={styles.phone}>{phone}</Text>
         </View>
       </TouchableOpacity>

@@ -76,6 +76,7 @@ server.post("/add", (req, res) => {
     })
     .then(() => {
       //checking if secondUser exists
+      console.log('asd')
       secondUser
         .then((user2) => {
           if (!user2) {
@@ -119,13 +120,11 @@ server.post("/add", (req, res) => {
             })
             .catch((err) => {
               console.log(err)
-              res.sendStatus(400)
             });
         });
     })
     .catch((err) => {
       console.log(err)
-      res.sendStatus(400)
     });
 
 });

@@ -6,6 +6,7 @@ module.exports = {
       "users",
       [
         {
+          id:111,
           username: "soyUsuario",
           name: "John",
           surname: "Doe",
@@ -24,6 +25,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:112,
           username: "soyAdmin",
           name: "Jane",
           surname: "Doe",
@@ -41,6 +43,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:113,
           username: "MichaelDoe",
           name: "Michael",
           surname: "Doe",
@@ -58,6 +61,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:114,
           username: "mobaRecharges",
           name: "recharges",
           surname: "moba",
@@ -77,6 +81,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:115,
           username: "JuanDoe",
           name: "Juan",
           surname: "Doe",
@@ -94,6 +99,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:116,
           username: "CamilaDoe",
           name: "Camila",
           surname: "Doe",
@@ -111,6 +117,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:117,
           username: "MarielaDoe",
           name: "Mariela",
           surname: "Doe",
@@ -128,6 +135,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:118,
           username: "LucasDoe",
           name: "Lucas",
           surname: "Doe",
@@ -145,6 +153,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:119,
           username: "MartinDoe",
           name: "Martin",
           surname: "Doe",
@@ -162,6 +171,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id:120,
           username: "LeticiaDoe",
           name: "Leticia",
           surname: "Doe",

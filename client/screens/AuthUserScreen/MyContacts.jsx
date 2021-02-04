@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, FlatList, Modal, Alert, TextInput, TouchableHighlight } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -26,6 +26,9 @@ const MyContacts = () => {
     dispatch(addNewContact({...data, user_username: loggedUser.username}))
   }
 
+  useEffect(() => {
+    //dispatch(getUserInfo(loggedUser.username))
+  },[loggedUser.user])
   return (
     <LinearGradient
       style={styles.container}
@@ -101,6 +104,7 @@ const MyContacts = () => {
                     surname={contact.contact_surname}
                     phone={contact.contact_phone}
                     username={contact.contact_username}
+                    alias={contact.alias}
                   />
                 )
               })
