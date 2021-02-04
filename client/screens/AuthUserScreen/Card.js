@@ -57,7 +57,7 @@ export default function Card() {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.movsHeader}>
-                  <Text style={{ fontSize: 18 }}>Ver Datos</Text>
+                  <Text style={{ fontSize: 18 }}>See Card Info</Text>
                 </View>
                 <View style={styles.toggleButton}>
                   <TouchableOpacity onPress={handleToggle}>
@@ -85,12 +85,12 @@ export default function Card() {
               <View style={styles.iconsColumn}>
                 <View style={styles.copyName}>
                   <Feather name="copy" size={28} color="black" />
-                  <Text style={styles.textCopyCardName}>Copiar Nombre</Text>
+                  <Text style={styles.textCopyCardName}>Copy Name</Text>
                 </View>
                 <View style={styles.copyNumberCard}>
                   <Feather name="copy" size={28} color="black" />
                   <Text style={styles.textCopyCardNumber}>
-                    Copiar Número de Tarjeta
+                    Copy Card Number
                   </Text>
                 </View>
               </View>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   toggleButton: {
-    left: 223,
+    left: 185,
   },
   subBottomContainer: {
     borderWidth: 1,

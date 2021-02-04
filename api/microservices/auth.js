@@ -10,6 +10,7 @@ var Strategy = require("passport-local").Strategy;
 const crypto = require("crypto");
 const { formatDate } = require("date-utils-2020");
 let DateGenerator = require("random-date-generator");
+const { Op } = require("sequelize");
 
 server.use(morgan("dev"));
 server.use(cors());
@@ -54,17 +55,47 @@ passport.use(
 //Create Users
 
 server.post("/auth/singup", (req, res, next) => {
-  var card_id = Math.floor(Math.random() * 900000000000000) + 4000000000000000;
-  var rechargeCode = Math.floor(Math.random() * 90000000) + 10000000;
-  var cvu = "222222".concat(
-    Math.floor(Math.random() * 9000000000000000) + 1000000000000000
-  );
-  var card_cvv = Math.floor(Math.random() * 900) + 100;
   let startDate = new Date(2027, 12, 12);
   let endDate = new Date(2029, 12, 12);
   var randomDate = DateGenerator.getRandomDateInRange(startDate, endDate);
   card_expiration = formatDate(randomDate, "dd/MM/yy");
-  User.create(req.body).then((user) => {
+  var cvu, card_cvv, card_id, rechargeCode;
+
+  const generator = () => {
+    rechargeCode = Math.floor(Math.random() * 90000000) + 10000000;
+    card_id = Math.floor(Math.random() * 900000000000000) + 4000000000000000;
+    cvu = "222222".concat(
+      Math.floor(Math.random() * 9000000000000000) + 1000000000000000
+    );
+    card_cvv = Math.floor(Math.random() * 900) + 100;
+  };
+
+  const checker = () => {
+    generator();
+    Account.findOne({
+      where: {
+        [Op.or]: [
+          { rechargeCode: rechargeCode.toString() },
+          { cvu },
+          { card_id: card_id.toString() },
+          { card_cvv: card_cvv.toString() },
+        ],
+      },
+    }).then((acc) => {
+      if (!acc) {
+        console.log("no repitió");
+        return;
+      } else {
+        console.log("repitió");
+        checker();
+      }
+    });
+  };
+
+
+  checker();
+  User.create(req.body)
+    .then((user) => {
       Account.create({
         cvu,
         card_id,

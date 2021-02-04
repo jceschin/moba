@@ -13,15 +13,15 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors());
 
 /* CONNECT WITH WHATSAPP */
-const client = new WhatsAppWeb() 
-client.connect() 
-.then (([user, chats, contacts, unread]) => {
-    console.log ("oh hello " + user.name + " (" + user.id + ")")
-    console.log ("you have " + unread.length + " unread messages")
-    console.log ("you have " + chats.length + " chats")
+const client = new WhatsAppWeb()
+client.connect()
+  .then(([user, chats, contacts, unread]) => {
+    console.log("oh hello " + user.name + " (" + user.id + ")")
+    console.log("you have " + unread.length + " unread messages")
+    console.log("you have " + chats.length + " chats")
     console.log("Succesful authentication")
-})
-.catch (err => console.log("unexpected error: " + err) )
+  })
+  .catch(err => console.log("unexpected error: " + err))
 /* END CONNECT WITH WHATSAPP*/
 
 //routes
@@ -33,20 +33,25 @@ server.get("/get/:user", (req, res) => {
   }
   User.findOne({
 
-    include:[{model:Contact, as:'contacts'}],
-    where:{username:user}
+    include: [{ model: Contact, as: 'contacts' }],
+    where: { username: user }
   })
-  .then((user) => {
-    if(!user){return res.sendStatus(404)}
-    if(!user.contacts.length){return res.send("The user not have contacts")}
-    res.send(user.contacts)})
+    .then((user) => {
+      if (!user) { return res.sendStatus(404) }
+      if (!user.contacts.length) { return res.send("The user not have contacts") }
+      res.send(user.contacts)
+    })
 });
 //ASOCIATE CONTACT
 server.post("/add", (req, res) => {
   // user_username: logged user
   // contact_email, alias: contact to be added
   const { user_username, contact_email, alias } = req.body;
-
+  console.log(req.body)
+  if(!user_username || !contact_email || !alias){
+    console.log(user_username, contact_email, alias)
+    return res.status(405).send('Missing parameters')
+  }
   var firstUser = User.findOne({
     where: { username: user_username },
   });
@@ -57,9 +62,9 @@ server.post("/add", (req, res) => {
   var loggedUser;
   var futureContact;
 
- 
   firstUser
     .then((user) => {
+      console.log('user', user)
       //checking if firstUser exists
       if (!user) {
         return res.sendStatus(404);
@@ -112,10 +117,16 @@ server.post("/add", (req, res) => {
                 });
               });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              console.log(err)
+              res.sendStatus(400)
+            });
         });
     })
-    .catch((err) => res.send(err));
+    .catch((err) => {
+      console.log(err)
+      res.sendStatus(400)
+    });
 
 });
 
@@ -126,7 +137,7 @@ server.post("/contacts", (req, res) => {
       res.status(200).send(contact)
     })
     .catch((err) => {
-      console.log(err)
+      console.log('ESTO ES UN ERROR EN LA RUTA', err)
       res.status(404).send(err);
     })
 });

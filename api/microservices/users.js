@@ -46,7 +46,7 @@ server.get("/users", Verifytoken, isAdmin, (req, res) => {
 });
 
 //Get One Users from dni, email, username
-server.get("/users/:dni_email", Verifytoken, (req, res) => {
+server.get("/users/:dni_email", (req, res) => {
   User.findOne({
     include: [{all: true}],
 

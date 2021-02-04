@@ -25,28 +25,28 @@ const SendMoney = ({ route }) => {
   });
   const [selectedUser, setSelectedUser] = useState({});
 
-  //dispatch(getSelectedUser(selectedContactUsername));
+    //dispatch(getSelectedUser(selectedContactUsername));
 
-  useEffect(() => {
-    getSelectedUser(selectedContactUsername);
-    getLoggedUserData(loggedUser.username);
-  }, []);
+    useEffect(() => {
+        getSelectedUser(selectedContactUsername);
+        getLoggedUserData(loggedUser.username);
+    }, []);
 
-  async function getSelectedUser(username) {
-    let response = await axios.get(`http://localhost:8000/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    });
+    async function getSelectedUser(username) {
+        let response = await axios.get(`http://localhost:8000/users/${username}`, {
+            headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+        });
 
-    setSelectedUser(response.data);
-  }
+        setSelectedUser(response.data);
+    }
 
-  async function getLoggedUserData(username) {
-    let response = await axios.get(`http://localhost:8000/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    });
+    async function getLoggedUserData(username) {
+        let response = await axios.get(`http://localhost:8000/users/${username}`, {
+            headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+        });
 
-    setLoggedUserData(response.data);
-  }
+        setLoggedUserData(response.data);
+    }
 
   const textInputChange = (val) => {
     if (val.length >= 1) {
@@ -69,16 +69,16 @@ const SendMoney = ({ route }) => {
         number: Math.floor((Math.random() * 1000000))
     }
 
-    axios.post(`http://localhost:8080/transaction`, transferData)
-    .then(res => {
-        console.log("Transfer completed");
-        alert("Transfer completed!");
-        navigation.navigate("HomePage");
-    })
-    .catch(error => {
-        alert("Insufficient funds");
-    })
-  }
+        axios.post(`http://localhost:8080/transaction`, transferData)
+            .then(res => {
+                console.log("Transfer completed");
+                alert("Transfer completed!");
+                navigation.navigate("HomePage");
+            })
+            .catch(error => {
+                alert("Insufficient funds");
+            })
+    }
 
   // Style functions
   const formatValue = (value) => {
@@ -124,19 +124,33 @@ const SendMoney = ({ route }) => {
                         {selectedContactNameInitial}{selectedContactSurnameInitial}
                     </Text>
                 </View>
-                <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                    <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
+            </View>
+            <View style={styles.whiteContainer}>
+                <TextInput
+                    style={{ height: 40, textAlign: 'center', marginTop: 80, fontSize: 32 }}
+                    placeholder="US$ 0"
+                    onChangeText={(text) => setTransferAmount(text)}
+                    value={transferAmount}
+                />
+                <View style={styles.contact}>
+                    <View style={styles.avatar}>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                            {selectedContactNameInitial}{selectedContactSurnameInitial}
+                        </Text>
+                    </View>
+                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
+                    </View>
                 </View>
-            </View>    
-            <TouchableOpacity
-                style={styles.button}
-                onPress={handleSubmit(onSubmit)}
-            >
-                <Text style={styles.btnContent}>Send</Text>
-            </TouchableOpacity>
-        </View>    
-    </LinearGradient>
-  );
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleSubmit(onSubmit)}
+                >
+                    <Text style={styles.btnContent}>Send</Text>
+                </TouchableOpacity>
+            </View>
+        </LinearGradient>
+    );
 };
 
 export default SendMoney;
@@ -173,19 +187,19 @@ const styles = StyleSheet.create({
         marginRight: 18,
         marginLeft: 18,
         top: 380
-      },
-      btnContent: {
+    },
+    btnContent: {
         textAlign: "center",
         color: "#fff",
         fontSize: 20,
         fontWeight: 'bold'
-      },
-      avatar: {
+    },
+    avatar: {
         marginRight: 20,
         borderRadius: '50%',
         backgroundColor: '#25D681',
         padding: 10,
-        heigth: 41,
+        height: 41,
         width: 41,
         justifyContent: 'center',
         alignItems: 'center'

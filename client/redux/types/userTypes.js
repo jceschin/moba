@@ -7,6 +7,9 @@ export const PASSWORD_RESET = "PASSWORD_RESET";
 export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
 export const ADD_USER_CONTACT = "ADD_USER_CONTACT";
 export const GET_USER_CONTACTS = "GET_USER_CONTACTS";
+export const REMOVE_USER_CONTACT = "REMOVE_USER_CONTACT";
+export const GET_USER_INFO = "GET_USER_INFO";
+
 
 // ERROR HANDLER
 export const ERROR_HANDLER = "ERROR_HANDLER";
@@ -82,3 +85,17 @@ export const getContacts = (contacts) => {
         contacts
     }
 }
+
+export const removeContact = ({ deletedContact }) => {
+    return {
+        type: REMOVE_USER_CONTACT,
+        deletedContact
+    }
+}
+
+export const userInfo = (info) => {
+    return {
+        type: GET_USER_INFO,
+        info
+    };
+};

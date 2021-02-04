@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,11 +16,26 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { logoutUserAction } from "../../redux/actions/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const MyAccount = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const loggedUser = useSelector((state) => state.user);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    getUser(loggedUser.username);
+  }, []);
+
+  async function getUser(username) {
+    let response = await axios.get(`http://localhost:8000/users/${username}`, {
+      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+    });
+
+    setUser(response.data);
+  }
 
   return (
     <LinearGradient
@@ -40,7 +55,7 @@ const MyAccount = () => {
           <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
           >
-            <Text style={styles.greeting}>Hello Juan!</Text>
+            <Text style={styles.greeting}>Hello {user.name}!</Text>
           </View>
         </View>
         <View style={styles.whiteContainer}>
@@ -48,7 +63,7 @@ const MyAccount = () => {
           <View style={styles.options}>
             <View style={styles.option}>
               <MaterialIcons name="credit-card" size={18} color="black" />
-              <TouchableOpacity onPress={() => navigation.navigate("Card")}>
+              <TouchableOpacity >
                 <Text style={styles.optionName}>Credit Cards</Text>
               </TouchableOpacity>
             </View>
@@ -72,7 +87,7 @@ const MyAccount = () => {
             </View>
             <View style={styles.option}>
               <AntDesign name="contacts" size={18} color="black" />
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
                 <Text style={styles.optionName}>Contacts</Text>
               </TouchableOpacity>
             </View>
