@@ -25,7 +25,7 @@ const Homepage = () => {
     getTransactions(loggedUser.username);
     dispatch(getUserInfo(loggedUser.username))
     getUser(loggedUser.username);
-  }, [transactions]);
+  }, [user]);
 
   async function getTransactions(username) {
     let response = await axios.get(
@@ -44,6 +44,10 @@ const Homepage = () => {
 
     setUser(response.data);
   }
+
+  getUser(loggedUser.username);
+  console.log(loggedUser)
+}, [loggedUser]);
 
   return (
     <LinearGradient

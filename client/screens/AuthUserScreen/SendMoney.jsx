@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import getSelectedUser from '../../redux/actions/user';
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { getUserInfo } from "../../redux/actions/user";
 import accounting from "accounting-js";
 
 const SendMoney = ({ route }) => {
@@ -74,6 +75,7 @@ const SendMoney = ({ route }) => {
                 console.log("Transfer completed");
                 alert("Transfer completed!");
                 navigation.navigate("HomePage");
+                dispatch(getUserInfo(loggedUser.username))
             })
             .catch(error => {
                 alert("Insufficient funds");

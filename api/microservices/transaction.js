@@ -56,7 +56,7 @@ server.post("/transaction", (req, res, next) => {
       });
 
       //Balance check
-      if (balance_sender.dataValues.balance >= req.body.amount) {
+      if (balance_sender.dataValues.balance >= parseInt(req.body.amount)) {
         //Update balance sender
         const new_balance_sender = await Account.update(
           {

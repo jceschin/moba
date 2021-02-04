@@ -12,12 +12,13 @@ require("./microservices/admin.js");
 require("./microservices/contacts.js");
 
 
-conn.sync({ force: true })
+conn.sync({ force: false })
 .then(() => {
   gateway()
   .load(path.join(__dirname, 'config'))
   .run();
   console.log(`Connected to Database ${conn.config.database}, with user '${conn.config.username}' on port ${conn.config.port}`)
 })
+.catch((err) => console.log(err))
   
  

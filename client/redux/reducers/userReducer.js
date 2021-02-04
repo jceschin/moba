@@ -69,7 +69,7 @@ const userReducer = (state = initialState, action) => {
       case GET_USER_INFO:
         return {
           ...state, 
-          info : action.info
+          info : action.info,
         }
     default:
       return state;

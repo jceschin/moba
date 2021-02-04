@@ -17,6 +17,7 @@ import accounting from "accounting-js";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { getUserInfo } from "../../redux/actions/user";
 
 const AddMoney = ({ navigation }) => {
   const [code, setCode] = React.useState(false);
@@ -31,9 +32,7 @@ const AddMoney = ({ navigation }) => {
   const [user, setUser] = useState({});
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    getUser(loggedUser.username);
-  }, [index]);
+
 
   const tabCode = () => {
     transfer === true ? setTransfer(false) : null;
@@ -66,27 +65,32 @@ const AddMoney = ({ navigation }) => {
     return accounting.formatMoney(parseFloat(value.toString()));
   };
 
-  async function getUser(username) {
-    let response = await axios.get(`http://localhost:8080/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    });
+  // async function getUser(username) {
+  //   let response = await axios.get(`http://localhost:8080/users/${username}`, {
+  //     headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+  //   });
 
-    setUser(response.data);
-  }
+  //   setUser(response.data);
+  // }
 
   async function addMoney(chargeCode) {
     let response = await axios.put(
-      `http://localhost:8080/accounts/recharge/${user.account.rechargeCode}`,
+      `http://localhost:8080/accounts/recharge/${loggedUser.info.account.rechargeCode}`,
       {
         headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
         amount: amountCharge.amount,
       }
     );
     console.log(response);
-    Alert.alert(
+    alert(
       `The charge to your account has been completed successfully`
     );
+    dispatch(getUserInfo(loggedUser.username))
   }
+
+  useEffect(() => {
+    //getUser(loggedUser.username);
+  }, [index, loggedUser]);
 
   return (
     <View style={styles.container}>
@@ -233,7 +237,7 @@ const AddMoney = ({ navigation }) => {
                 }}
               >
                 <Text style={{ fontSize: 20, color: "#fff" }}>
-                  {user.account ? user.account.rechargeCode : null}
+                  {loggedUser.info.account ? loggedUser.info.account.rechargeCode : null}
                 </Text>
               </View>
             </View>
