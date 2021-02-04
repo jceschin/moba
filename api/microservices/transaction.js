@@ -22,7 +22,8 @@ server.use(cors());
 
 // Create Transaction
 
-server.post("/transaction", Verifytoken, (req, res, next) => {
+server.post("/transaction", (req, res, next) => {
+  console.log(req.body);
   (async function () {
     try {
       //Account sender
@@ -40,7 +41,7 @@ server.post("/transaction", Verifytoken, (req, res, next) => {
       });
 
       //Create transaction
-      const transaction = await Transaction.create(req.body);
+      const transaction = await Transaction.create({...req.body, transaction_type:'transfer'});
 
       //Create table Accounttransaction
       const sender = await Accounttransaction.create({
@@ -149,7 +150,6 @@ server.get("/transaction/account/:cvu", Verifytoken, (req, res, next) => {
 // Get all Transaction for account by username, dni or email
 
 server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
-
   User.findOne({
     include: [{ model: Account, include: Transaction }],
     where: {
@@ -161,6 +161,10 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
     },
   })
     .then((user) => {
+      if (!user) {
+        return res.sendStatus(404);
+      }
+      console.log(user.account);
       var numberTrans = user.account.transactions.map((tr) => tr.number);
       if (!numberTrans.length) {
         return res.sendStatus(404);
@@ -176,10 +180,14 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
             payload.amount = dat.amount;
             payload.description = dat.description;
             payload.date = dat.createdAt;
-            payload[dat.accounts[0].accounttransaction.type] =
-              dat.accounts[0].user.username;
-            payload[dat.accounts[1].accounttransaction.type] =
-              dat.accounts[1].user.username;
+            if (dat.transaction_type == "transfer") {
+              payload.type = 'transfer'
+              payload[dat.accounts[0].accounttransaction.type] = dat.accounts[0].user.username;
+              payload[dat.accounts[1].accounttransaction.type] = dat.accounts[1].user.username;
+            }
+            else{
+              payload.type = 'recharge'
+            }
 
             return payload;
           });
@@ -192,7 +200,7 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
 
 // Get all Transaction status
 
-server.get("/transaction/status/:status", Verifytoken, (req, res, next) => {
+server.put("/transaction/status/:status", Verifytoken, (req, res, next) => {
   Transaction.findAll({
     include: [
       {

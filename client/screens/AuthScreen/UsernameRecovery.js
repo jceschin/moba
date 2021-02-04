@@ -16,7 +16,7 @@ import { Feather, AntDesign } from "@expo/vector-icons";
 import { loginStateUser } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 
-const LoginScreen = ({ navigation }) => {
+const UsernameRecovery = ({ navigation }) => {
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -105,7 +105,7 @@ const LoginScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.welcomeView}>
-          <Text style={styles.text_header}>Welcome</Text>
+          <Text style={styles.text_header}>Username Recovery</Text>
         </View>
       </View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
@@ -118,7 +118,7 @@ const LoginScreen = ({ navigation }) => {
           </View>
           <View style={styles.action}>
             <TextInput
-              placeholder="Your Username"
+              placeholder="Enter your email"
               style={styles.textInputUsername}
               autoCapitalize="none"
               value={data.username}
@@ -141,13 +141,13 @@ const LoginScreen = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          <TouchableOpacity onPress={() => navigation.navigate("UsernameRecovery")}>
-            <Text style={styles.forgot_username}>Forgot your username?</Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity>
+            <Text style={styles.forgot_username}>PRForgot your user?</Text>
+          </TouchableOpacity> */}
 
           <View style={styles.action}>
             <TextInput
-              placeholder="Your Password"
+              placeholder="Enter your password"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.textInputPassword}
               autoCapitalize="none"
@@ -171,9 +171,9 @@ const LoginScreen = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          <TouchableOpacity onPress={() => navigation.navigate("PasswordRecovery")}>
-            <Text style={styles.forgot_password}>Forgot your password?</Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity>
+            <Text style={styles.forgot_password}>PRForgot?</Text>
+          </TouchableOpacity> */}
 
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
@@ -185,7 +185,7 @@ const LoginScreen = ({ navigation }) => {
                   },
                 ]}
               >
-                Login
+                Recover!
               </Text>
             </TouchableOpacity>
           </View>
@@ -195,7 +195,7 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
+export default UsernameRecovery;
 
 const styles = StyleSheet.create({
   container: {
@@ -249,7 +249,8 @@ const styles = StyleSheet.create({
   },
   textInputPassword: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
+    marginTop: Platform.OS === "ios" ? 0 : 0,
+    paddingTop: 30,
     paddingLeft: 10,
     color: "#05375a",
     fontSize: 16,

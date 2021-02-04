@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, ImageBackground, Image, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, ImageBackground, Image, Dimensions, Alert } from 'react-native';
 import { useDispatch, useSelector} from 'react-redux';
 import { Formik } from 'formik';
 import { LinearGradient } from "expo-linear-gradient";
 import axios from 'axios';
+import Button from '../../components/Button'
+import { enviarEmail } from "../../redux/actions/emailActions";
 import { verifyEmail } from '../../redux/actions/emailActions'
 
 
@@ -52,6 +54,7 @@ export default function CodeVerification({ navigation }) {
 	}
 	
 
+
 	const pin1 = useRef();
 	const pin2 = useRef();
 	const pin3 = useRef();
@@ -97,11 +100,14 @@ export default function CodeVerification({ navigation }) {
 								<SingleNumInput changed={handleInputChange} id={'D'} _ref={pin4} _next={pin5} />
 								<SingleNumInput changed={handleInputChange} id={'E'} _ref={pin5} _next={null} />
 							</View>
-
-							<Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+                           
+							{/* <Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+								Validar
+							</Button>  */}
+                             <View style={styles.buttoncontainer}>
+							 <Button mode='contained' secureTextEntry={true} title='Validate' style={styles.buttons} onPress={handleSubmit}>
 								Validar
 							</Button> 
-                             <View style={styles.buttoncontainer}>
                             {/* <TouchableOpacity
             style={styles.buttons}
 			// onPress={handleSubmit}
@@ -114,9 +120,9 @@ export default function CodeVerification({ navigation }) {
 							<View style={styles.textCodeContainer}>
 								<Text style={styles.textCode}>Didn't you get the code? </Text>
 								<TouchableOpacity 
-								onPress=
-								{() => alert("Reenviando código")}
-								// {() => dispatch(enviarEmail(mailAndCode.email))}
+								
+								onPress={() => dispatch(enviarEmail(mailAndCode))}
+								// onPress= {() => alert("We have sent you the validation code")}
 								>
 									<Text style={styles.textCodeII }>Resend code</Text>
 								</TouchableOpacity>
@@ -169,7 +175,7 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 20,
 		lineHeight: 23,
-		marginTop: 150,
+		// marginTop: 150,
 	  },
 	  textCodeII : {
 		color: "#663399",
@@ -178,10 +184,10 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 20,
 		lineHeight: 23,
-		marginTop: 150,
+		// marginTop: 150,
 	  },
 	  textCodeContainer: {
-		marginTop: -150,
+		marginTop: -550,
 		flex: 1,
 	    flexDirection: "row"
 	  },
@@ -195,9 +201,9 @@ const styles = StyleSheet.create({
 	  buttoncontainer: {
 		flex: 1,
 		alignItems: "center",
-		width: "auto",
+		// width: "auto",
 		justifyContent: "flex-end",
-		marginBottom: 80,
+		marginBottom: 600,
 	  },
 	  buttons: {
 		width: "90%",
@@ -206,8 +212,7 @@ const styles = StyleSheet.create({
 		width: 379,
 		borderRadius: 15,
 		justifyContent: "center",
-		marginRight: "auto",
-		marginLeft: "auto",
+	
 		backgroundColor: "#567BFF",
 	  },
 	image: {

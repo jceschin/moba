@@ -22,6 +22,7 @@ server.use((req, res, next) => {
 
 
 server.post("/send-email", (req, res) => {
+  const valideId = Math.floor(Math.random() * 90000) + 10000;
   const { email } = req.body;
 
   const transporter = nodemailer.createTransport({
@@ -32,11 +33,22 @@ server.post("/send-email", (req, res) => {
     },
   });
 
+  const mailOptions = {
+    from: "noreplymoba@gmail.com",
+    to: email,
+    subject: "Email confirmation - moba",
+    html: `Welcome to moba! Please confirm your email with the following code: ${valideId}. <br />`,
+  };
 
-  const valideId =  Math.floor(Math.random()*90000) + 10000;
-  
-
-  const host = req.get("host");
+  const send = () => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.status(500).json(error.message);
+      } else {
+        console.log("Email enviado");
+      }
+    });
+  };
 
   Email.findOne({
     where: {
@@ -44,44 +56,25 @@ server.post("/send-email", (req, res) => {
     },
   })
     .then((result) => {
-      if (result) {
-        console.log("Email ya existente");
-        res.json(result);
-      } else {
+      if (!result) {
         Email.create({
           email: email,
-          valideId: valideId,
-        })
-          .then((result) => {
-            //const linkRedirect = `http://${host}/verify?valideId=${valideId}`;
-
-            const mailOptions = {
-              from: "noreplymoba@gmail.com",
-              to: email,
-              subject: "Email confirmation - moba",
-              html: `Welcome to moba! Please confirm your email with the following code: ${valideId}. <br />`
-            };
-
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                res.status(500).json(error.message);
-              } else {
-                console.log("Email enviado");
-                res.status(200).jsonp(req.body);
-              }
-            });
-            return result;
-          })
-          .then((result) => {
-            res.json(result);
-          })
-          .catch((err) => {
-            console.log("Error no se puede enviar el email: " + err);
-          });
+          valideId,
+        }).then(() => {
+          send();
+        });
+      } else {
+        result.valideId = valideId;
+        result.save().then(() => {
+          send();
+        });
       }
     })
+    .then(() => {
+      res.send({email: email});
+    })
     .catch((err) => {
-      console.log("Error buscando un email especifico: " + err);
+      console.log("Error no se puede enviar el email: " + err);
     });
 });
 

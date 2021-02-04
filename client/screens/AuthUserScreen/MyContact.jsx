@@ -20,9 +20,14 @@ const MyContact = ({ name, surname, phone, username }) => {
   return (
     // Change onPress!!
     <View style={styles.wrapper}>
-      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('SendMoney', {
-        selectedContactUsername: username
-      })}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => navigation.navigate('SendMoney', {
+          selectedContactUsername: username,
+          selectedContactNameInitial: nameInitial,
+          selectedContactSurnameInitial: surnameInitial
+        })}
+      >
         <View style={styles.avatar}>
           <Text style={{ color: 'white', fontWeight: 'bold' }}>{nameInitial} {surnameInitial}</Text>
         </View>

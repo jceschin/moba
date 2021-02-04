@@ -78,6 +78,9 @@ module.exports = (sequelize) => {
         rol: {
             type: DataTypes.ENUM("user", "admin"),
             defaultValue: "user",
+        },
+        rechargeCode:{
+            type: DataTypes.STRING
         }
     })
 }

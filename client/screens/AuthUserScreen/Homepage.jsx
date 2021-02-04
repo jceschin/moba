@@ -64,7 +64,7 @@ const Homepage = () => {
               )}
             <View style={styles.options}>
               <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("AddMoney")}>
                   <MaterialCommunityIcons
                     name="cash-plus"
                     size={24}

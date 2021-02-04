@@ -1,10 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import RegisterPage from './RegisterPage';
-import LastRegisterPage from './LastRegisterPage';
-import CreateAccount from './CreateAccount';
+import RegisterPage from "./RegisterPage";
+import LastRegisterPage from "./LastRegisterPage";
+import CreateAccount from "./CreateAccount";
 import Login from "./Login";
-
 const Stack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => {
