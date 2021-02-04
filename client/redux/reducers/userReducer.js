@@ -8,7 +8,8 @@ import {
   CHANGE_USER_PASSWORD,
   ADD_USER_CONTACT,
   REMOVE_USER_CONTACT,
-  GET_USER_CONTACTS
+  GET_USER_CONTACTS,
+  GET_USER_INFO
 } from '../types/userTypes';
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   isLoading: true,
   userToken: "",
   isAuthenticated: false,
+  info : []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -64,6 +66,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: action.contacts
       };
+      case GET_USER_INFO:
+        return {
+          ...state, 
+          info : action.info
+        }
     default:
       return state;
   }
