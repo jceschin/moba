@@ -80,7 +80,7 @@ export default function CodeVerification({ navigation }) {
 						axios.post('http://localhost:8080/email/verify', mailAndCode ).then((result) => {
 							console.log(result)
                             if (result.data === true) {
-								navigation.navigate('RegisterPage')
+								navigation.navigate('RegisterPage', {email:mailAndCode.email})
 							} else {
 								alert('Please, enter a valid code!')
 							}
