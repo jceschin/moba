@@ -9,111 +9,111 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 
 const SendMoney = ({ route }) => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const loggedUser = useSelector((state) => state.user);
-  const [loggedUserData, setLoggedUserData] = useState({});
-  const { 
-            selectedContactUsername,
-            selectedContactNameInitial,
-            selectedContactSurnameInitial 
-        } = route.params;
-  const { handleSubmit } = useForm();
-  const [transferAmount, setTransferAmount] = useState(0);
-  const [selectedUser, setSelectedUser] = useState({});
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const loggedUser = useSelector((state) => state.user);
+    const [loggedUserData, setLoggedUserData] = useState({});
+    const {
+        selectedContactUsername,
+        selectedContactNameInitial,
+        selectedContactSurnameInitial
+    } = route.params;
+    const { handleSubmit } = useForm();
+    const [transferAmount, setTransferAmount] = useState(0);
+    const [selectedUser, setSelectedUser] = useState({});
 
-  //dispatch(getSelectedUser(selectedContactUsername));
+    //dispatch(getSelectedUser(selectedContactUsername));
 
-  useEffect(() => {
-    getSelectedUser(selectedContactUsername);
-    getLoggedUserData(loggedUser.username);
-  }, []);
+    useEffect(() => {
+        getSelectedUser(selectedContactUsername);
+        getLoggedUserData(loggedUser.username);
+    }, []);
 
-  async function getSelectedUser(username) {
-    let response = await axios.get(`http://localhost:8000/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    });
+    async function getSelectedUser(username) {
+        let response = await axios.get(`http://localhost:8000/users/${username}`, {
+            headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+        });
 
-    setSelectedUser(response.data);
-  }
-
-  async function getLoggedUserData(username) {
-    let response = await axios.get(`http://localhost:8000/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    });
-
-    setLoggedUserData(response.data);
-  }
-
-  const onSubmit = () => {
-    makeTransfer();
-  };
-
-  function makeTransfer() {
-    let transferData = {
-        cvu_sender: loggedUserData.account.cvu,
-        cvu_receiver: selectedUser.account.cvu,
-        amount: transferAmount,
-        number: Math.floor((Math.random() * 1000000))
+        setSelectedUser(response.data);
     }
 
-    axios.post(`http://localhost:8080/transaction`, transferData)
-    .then(res => {
-        console.log("Transfer completed");
-        alert("Transfer completed!");
-        navigation.navigate("HomePage");
-    })
-    .catch(error => {
-        alert("Insufficient funds");
-    })
-  }
+    async function getLoggedUserData(username) {
+        let response = await axios.get(`http://localhost:8000/users/${username}`, {
+            headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+        });
 
-  return (
-    <LinearGradient
-      style={styles.container}
-      colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-        <View style={styles.header}>
-            <TouchableOpacity
-                // style={{ position: "absolute" }}
-                onPress={() => navigation.goBack()}
-            >
-                <Feather name="arrow-left" size={24} color="white" />
-            </TouchableOpacity>
-            <View
-                style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-            >
-                <Text style={styles.greeting}>Send money</Text>
+        setLoggedUserData(response.data);
+    }
+
+    const onSubmit = () => {
+        makeTransfer();
+    };
+
+    function makeTransfer() {
+        let transferData = {
+            cvu_sender: loggedUserData.account.cvu,
+            cvu_receiver: selectedUser.account.cvu,
+            amount: transferAmount,
+            number: Math.floor((Math.random() * 1000000))
+        }
+
+        axios.post(`http://localhost:8080/transaction`, transferData)
+            .then(res => {
+                console.log("Transfer completed");
+                alert("Transfer completed!");
+                navigation.navigate("HomePage");
+            })
+            .catch(error => {
+                alert("Insufficient funds");
+            })
+    }
+
+    return (
+        <LinearGradient
+            style={styles.container}
+            colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+        >
+            <View style={styles.header}>
+                <TouchableOpacity
+                    // style={{ position: "absolute" }}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Feather name="arrow-left" size={24} color="white" />
+                </TouchableOpacity>
+                <View
+                    style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+                >
+                    <Text style={styles.greeting}>Send money</Text>
+                </View>
             </View>
-        </View>
-        <View style={styles.whiteContainer}>
-            <TextInput
-                style={{height: 40, textAlign: 'center', marginTop: 80, fontSize: 32}}
-                placeholder="US$ 0"
-                onChangeText={(text) => setTransferAmount(text)}
-                value={transferAmount}
-            />
-            <View style={styles.contact}>
-                <View style={styles.avatar}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>
-                        {selectedContactNameInitial}{selectedContactSurnameInitial}
-                    </Text>
+            <View style={styles.whiteContainer}>
+                <TextInput
+                    style={{ height: 40, textAlign: 'center', marginTop: 80, fontSize: 32 }}
+                    placeholder="US$ 0"
+                    onChangeText={(text) => setTransferAmount(text)}
+                    value={transferAmount}
+                />
+                <View style={styles.contact}>
+                    <View style={styles.avatar}>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                            {selectedContactNameInitial}{selectedContactSurnameInitial}
+                        </Text>
+                    </View>
+                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
+                    </View>
                 </View>
-                <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                    <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
-                </View>
-            </View>    
-            <TouchableOpacity
-                style={styles.button}
-                onPress={handleSubmit(onSubmit)}
-            >
-                <Text style={styles.btnContent}>Send</Text>
-            </TouchableOpacity>
-        </View>    
-    </LinearGradient>
-  );
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleSubmit(onSubmit)}
+                >
+                    <Text style={styles.btnContent}>Send</Text>
+                </TouchableOpacity>
+            </View>
+        </LinearGradient>
+    );
 };
 
 export default SendMoney;
@@ -150,19 +150,19 @@ const styles = StyleSheet.create({
         marginRight: 18,
         marginLeft: 18,
         top: 380
-      },
-      btnContent: {
+    },
+    btnContent: {
         textAlign: "center",
         color: "#fff",
         fontSize: 20,
         fontWeight: 'bold'
-      },
-      avatar: {
+    },
+    avatar: {
         marginRight: 20,
-        borderRadius: '50%',
+        borderRadius: 50,
         backgroundColor: '#25D681',
         padding: 10,
-        heigth: 41,
+        height: 41,
         width: 41,
         justifyContent: 'center',
         alignItems: 'center'

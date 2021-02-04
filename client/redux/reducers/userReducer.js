@@ -7,6 +7,7 @@ import {
   PASSWORD_RESET,
   CHANGE_USER_PASSWORD,
   ADD_USER_CONTACT,
+  REMOVE_USER_CONTACT,
   GET_USER_CONTACTS
 } from '../types/userTypes';
 
@@ -26,7 +27,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: [state.user, action.user]
       };
-      case AUTO_LOGIN:
+    case AUTO_LOGIN:
       return {
         ...state,
         userToken: action.token,
@@ -41,23 +42,28 @@ const userReducer = (state = initialState, action) => {
         isAuthenticated: false,
         state: undefined
       };
-      case LOGIN_USER:
+    case LOGIN_USER:
       return {
         ...state,
         ...action.payload,
         userToken: action.token,
-        isAuthenticated: true, 
+        isAuthenticated: true,
       };
-      case ADD_USER_CONTACT:
-        return {
-          ...state,
-          user: [state.user, action.contact]
-        };
-      case GET_USER_CONTACTS:
-        return {
-          ...state,
-          user: action.contacts
-        };
+    case ADD_USER_CONTACT:
+      return {
+        ...state,
+        user: [...state.user, action.contact]
+      };
+    case REMOVE_USER_CONTACT:
+      return {
+        ...state,
+        user: state.user.filter(c => c.alias !== action.deletedContact)
+      };
+    case GET_USER_CONTACTS:
+      return {
+        ...state,
+        user: action.contacts
+      };
     default:
       return state;
   }

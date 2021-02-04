@@ -9,8 +9,11 @@ import {
   passwordReset,
   changeUserPassword,
   addUserContact,
+  removeContact,
   getContacts
 } from '../types/userTypes';
+
+// Create user account
 
 export const createNewUser = (newUser) => {
   return async (dispatch) => {
@@ -60,15 +63,34 @@ export function logoutUserAction() {
 export function addNewContact(newContact) {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:8080/contacts/add`, { ...newContact });
-      console.log(`This is ${newContact}`);
-      console.log(res.data);
+      const res = await axios.post(`http://localhost:8080/contacts/add`, { ...newContact }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      console.log('ESTO ES NEW CONTACT', newContact);
 
       dispatch(addUserContact(res.data));
+      console.log('ESTO ES DATA', res.data);
     } catch (error) {
       console.log(error);
     }
   };
+}
+
+// Delete user contact
+
+export const deleteContact = (alias) => {
+  return async (dispatch) => {
+    try {
+
+      const res = await axios.delete(`http://localhost:8080/contacts/${alias}`);
+      console.log('ESTE ES EL ALIAS', alias);
+
+      dispatch(removeContact(res.data));
+
+    } catch (error) {
+      console.log('ERROR EN DELETE CONTACT', error)
+    }
+  }
 }
 
 // Get user contacts
