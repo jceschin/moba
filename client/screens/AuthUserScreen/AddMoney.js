@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -9,29 +9,31 @@ import {
   ScrollView,
   Image,
   Text,
+  Alert,
 } from "react-native";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import accounting from "accounting-js";
-import {useSelector} from 'react-redux'
-import axios from 'axios'
-import {useDispatch} from 'react-redux'
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
-const AddMoney = ({navigation}) => {
+const AddMoney = ({ navigation }) => {
   const [code, setCode] = React.useState(false);
   const [transfer, setTransfer] = React.useState(false);
   const [amount, setAmount] = React.useState(false);
   const [amountCharge, setAmountCharge] = React.useState({
-    amount: 0
+    amount: 0,
   });
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const loggedUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     getUser(loggedUser.username);
-  }, []);
+  }, [index]);
 
   const tabCode = () => {
     transfer === true ? setTransfer(false) : null;
@@ -42,7 +44,11 @@ const AddMoney = ({navigation}) => {
   };
 
   const amountScreen = () => {
-    setAmount(true);
+    if (amountCharge.amount >= 100) {
+      setAmount(true);
+    } else {
+      Alert.alert("The minimum amount to charge is $100");
+    }
   };
 
   console.log("amount", amountCharge.amount);
@@ -57,7 +63,7 @@ const AddMoney = ({navigation}) => {
   };
 
   const formatValue = (value) => {
-    return accounting.formatMoney(parseFloat(value));
+    return accounting.formatMoney(parseFloat(value.toString()));
   };
 
   async function getUser(username) {
@@ -69,20 +75,24 @@ const AddMoney = ({navigation}) => {
   }
 
   async function addMoney(chargeCode) {
-    let response = await axios.put(`http://localhost:8080/accounts/recharge/${user.account.rechargeCode}`, {
-      headers: {Authorization: `Bearer ${loggedUser.data.data.token}`},
-      amount: amountCharge.amount,
-    })
-    console.log(response)
-    alert(`The charge to your account of $${amountCharge.amount} has been completed successfully`)
-    navigation.navigate("HomePage")
+    let response = await axios.put(
+      `http://localhost:8080/accounts/recharge/${user.account.rechargeCode}`,
+      {
+        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+        amount: amountCharge.amount,
+      }
+    );
+    console.log(response);
+    Alert.alert(
+      `The charge to your account has been completed successfully`
+    );
   }
-  
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#8CA5FD" barStyle="light-content" />
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
           <AntDesign
             name="arrowleft"
             size={24}
@@ -109,12 +119,23 @@ const AddMoney = ({navigation}) => {
                   style={{
                     fontSize: 20,
                     paddingLeft: 75,
+                    color:
+                      code === false && transfer === false ? "#567BFF" : "gray",
                   }}
                 >
                   Code
                 </Text>
               </TouchableOpacity>
-              <View style={styles.hairline} />
+              <View
+                style={{
+                  height: 3,
+                  width: 220,
+                  backgroundColor:
+                    code === false && transfer === false
+                      ? "#567BFF"
+                      : "#f2f2f2",
+                }}
+              />
             </View>
           </View>
           <View>
@@ -124,13 +145,22 @@ const AddMoney = ({navigation}) => {
                   style={{
                     fontSize: 20,
                     paddingLeft: 50,
+                    color:
+                      code === false && transfer === true ? "#567BFF" : "gray",
                   }}
                 >
                   Transfer
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.hairline} />
+            <View
+              style={{
+                height: 3,
+                width: 220,
+                backgroundColor:
+                  code === false && transfer === true ? "#567BFF" : "#f2f2f2",
+              }}
+            />
           </View>
         </View>
         <View
@@ -193,21 +223,25 @@ const AddMoney = ({navigation}) => {
                   paddingBottom: 10,
                   justifyContent: "center",
                   alignItems: "center",
-                  paddingTop: 40,
-                  width: 196,
+                  marginTop: 20,
+                  width: 200,
                   height: 55,
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#8CA5FD",
+                  borderWidth: 1,
+                  paddingTop: 10,
+                  borderColor: "#fff",
+                  backgroundColor: "#567BFF",
                 }}
               >
-                <Text style={{ fontSize: 18 }}>{user.account ? user.account.rechargeCode : null}</Text>
+                <Text style={{ fontSize: 20, color: "#fff" }}>
+                  {user.account ? user.account.rechargeCode : null}
+                </Text>
               </View>
             </View>
             <View style={{ textAlign: "center", paddingTop: 60 }}>
               <Text style={{ fontSize: 16 }}>
                 Show this code to the cashier in any of this branches.
                 {"\n"}
-                <View style={{ flexDirection: "row", paddingTop: 30 }}>
+                <View style={{ flexDirection: "row", paddingTop: 60 }}>
                   <Image
                     source={require("../../assets/rapipagoLogo.png.png")}
                     style={styles.imageRapipago}
@@ -219,8 +253,11 @@ const AddMoney = ({navigation}) => {
                 </View>
               </Text>
             </View>
-            <View style={{ paddingTop: 200, alignItems: "center" }}>
-              <TouchableOpacity style={styles.confirmCharge} onPress={() => dispatch(addMoney)}>
+            <View style={{ paddingTop: 170, alignItems: "center" }}>
+              <TouchableOpacity
+                style={styles.confirmCharge}
+                onPress={() => dispatch(addMoney)}
+              >
                 <Text style={{ fontSize: 18, color: "#fff" }}>Confirm</Text>
               </TouchableOpacity>
             </View>
@@ -247,7 +284,7 @@ const AddMoney = ({navigation}) => {
                 Account Number
               </Text>
               <Text style={{ fontSize: 16, paddingTop: 9 }}>
-                {user.account ? user.account.cvu: null}
+                {user.account ? user.account.cvu : null}
               </Text>
               <View style={{ justifyContent: "space-between" }}>
                 <TouchableOpacity style={styles.copyButton}>
@@ -281,11 +318,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#8CA5FD",
   },
-  hairline: {
-    height: 3,
-    width: 220,
-    backgroundColor: "#f2f2f2",
-  },
+
   header: {
     flex: 1,
     alignItems: "center",
