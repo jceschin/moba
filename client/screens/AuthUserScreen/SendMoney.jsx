@@ -113,7 +113,6 @@ const SendMoney = ({ route }) => {
                 autoCapitalize="none"
                 value={formatValue(transferAmount.amount)}
             />
-            {/* This input is hided */}
             <TextInput
                 style={styles.textInputAmountHide}
                 autoCapitalize="none"
