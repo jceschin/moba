@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // REDUX
-import { deleteContact } from '../../redux/actions/user';
+import { deleteContact, getUserInfo } from '../../redux/actions/user';
 
 const MyContact = ({ name, surname, phone, username, alias }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const nameInitial = name.slice(0, 1).toUpperCase();
   const surnameInitial = surname.slice(0, 1).toUpperCase();
+  let loggedUser = useSelector((state) => state.user)
+
 
   const onDelete = () => {
-    dispatch(deleteContact())
+    alert('Contact eliminated')
+    dispatch(deleteContact(alias))
+    dispatch(getUserInfo(loggedUser.username))
   }
 
   return (
@@ -37,7 +41,7 @@ const MyContact = ({ name, surname, phone, username, alias }) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btndelete}>
-        <MaterialCommunityIcons style={styles.delete} name="account-remove" size={24} color="black" />
+        <MaterialCommunityIcons style={styles.delete} onPress={onDelete} name="account-remove" size={24} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -62,8 +66,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: '#25D681',
     padding: 10,
-    height: 41,
-    width: 41,
+    height: 51,
+    width: 51,
     justifyContent: 'center',
     alignItems: 'center'
   },

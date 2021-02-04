@@ -159,20 +159,30 @@ server.put("/contacts/:alias", (req, res) => {
 });
 
 // DELETE CONTACT by alias
-server.delete("/contacts/:alias", (req, res) => {
-  Contact.destroy(
-    req.body,
-    {
-      where: { alias: req.params.alias }
+server.delete("/delete/:alias", (req, res) => {
+  console.log(typeof req.params.alias)
+  Contact.findOne({
+    where:{
+      alias: req.params.alias
     }
-  )
-    .then((contact) => {
-      res.status(200).send(contact);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(404).send(err);
-    });
+  })
+  .then((contact) => {
+    console.log(contact)
+    contact.destroy().then(() => res.sendStatus(200))
+  })
+  .catch((err) => console.log(err))
+  // Contact.destroy(
+  //   {
+  //     where: { alias: req.params.alias }
+  //   }
+  // )
+  //   .then((contact) => {
+  //     res.status(200).send(contact);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(404).send(err);
+  //   });
 });
 
 // SEND INVITATION WITH WHATSAPP MESSAGES
