@@ -119,7 +119,7 @@ const SendMoney = ({ route }) => {
             />
             <View style={styles.contact}>
                 <View style={styles.avatar}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>
+                    <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>
                         {selectedContactNameInitial}{selectedContactSurnameInitial}
                     </Text>
                 </View>
