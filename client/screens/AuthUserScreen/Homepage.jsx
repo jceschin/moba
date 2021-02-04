@@ -10,17 +10,19 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { getUserInfo } from '../../redux/actions/user';
 
 const Homepage = () => {
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const [transactions, setTransactions] = useState([]);
   const [user, setUser] = useState({});
-
+  const dispatch = useDispatch()
   useEffect(() => {
-    getTransactions(loggedUser.username);
+   // getTransactions(loggedUser.username);
+    dispatch(getUserInfo(loggedUser.username))
     getUser(loggedUser.username);
     console.log(loggedUser)
   }, []);
@@ -32,7 +34,7 @@ const Homepage = () => {
     }
     );
 
-    setTransactions(response.data);
+    response && setTransactions(response.data);
   }
 
   async function getUser(username) {

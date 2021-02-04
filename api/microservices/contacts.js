@@ -47,7 +47,11 @@ server.post("/add", (req, res) => {
   // user_username: logged user
   // contact_email, alias: contact to be added
   const { user_username, contact_email, alias } = req.body;
-
+  console.log(req.body)
+  if(!user_username || !contact_email || !alias){
+    console.log(user_username, contact_email, alias)
+    return res.status(405).send('Missing parameters')
+  }
   var firstUser = User.findOne({
     where: { username: user_username },
   });
@@ -58,9 +62,9 @@ server.post("/add", (req, res) => {
   var loggedUser;
   var futureContact;
 
-
   firstUser
     .then((user) => {
+      console.log('user', user)
       //checking if firstUser exists
       if (!user) {
         return res.sendStatus(404);
@@ -113,10 +117,16 @@ server.post("/add", (req, res) => {
                 });
               });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              console.log(err)
+              res.sendStatus(400)
+            });
         });
     })
-    .catch((err) => res.send(err));
+    .catch((err) => {
+      console.log(err)
+      res.sendStatus(400)
+    });
 
 });
 

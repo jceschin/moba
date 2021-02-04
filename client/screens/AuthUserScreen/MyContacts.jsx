@@ -11,18 +11,19 @@ import { addNewContact } from '../../redux/actions/user';
 
 const MyContacts = () => {
   const navigation = useNavigation();
-  let userContacts = useSelector((state) => state.user.user);
+  let loggedUser = useSelector((state) => state.user)
+  let userContacts = loggedUser && loggedUser.info.contacts
   console.log('ESTO ES USER CONTACTS', userContacts)
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState({
     alias: '',
-    user_username: userContacts,
     contact_email: ''
   })
   const dispatch = useDispatch();
 
   const onSubmit = () => {
-    dispatch(addNewContact(data))
+    console.log(userContacts)
+    dispatch(addNewContact({...data, user_username: loggedUser.username}))
   }
 
   return (
@@ -83,7 +84,7 @@ const MyContacts = () => {
         <View style={styles.whiteContainer}>
           <Text style={styles.contactsTag}>Your contacts</Text>
           {
-            userContacts
+            !userContacts
               ?
               <View style={{
                 ...StyleSheet.absoluteFill,

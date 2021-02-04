@@ -10,7 +10,8 @@ import {
   changeUserPassword,
   addUserContact,
   removeContact,
-  getContacts
+  getContacts,
+  userInfo
 } from '../types/userTypes';
 
 // Create user account
@@ -104,6 +105,25 @@ export function getUserContacts(username) {
     } catch (error) {
       console.log(error);
     }
+  }
+}
+
+//Get user full info
+export function getUserInfo(username){
+  return (dispatch) => {
+    return axios
+      .get(`http://localhost:8000/users/${username}`)
+      .then((data) => {
+        if(data.status !== 200){
+          alert('Sorry, an error ocurred')          
+        }
+        else{
+          var payload = data.data 
+          dispatch(userInfo(payload))
+        }
+      })
+      .catch((err) => console.log(err))
+
   }
 }
 
