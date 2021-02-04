@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import accounting from "accounting-js";
 
 const SendMoney = ({ route }) => {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const [loggedUserData, setLoggedUserData] = useState({});
@@ -111,6 +111,7 @@ const SendMoney = ({ route }) => {
                 autoCapitalize="none"
                 value={formatValue(transferAmount.amount)}
             />
+            {/* This input is hided */}
             <TextInput
                 style={styles.textInputAmountHide}
                 autoCapitalize="none"

@@ -22,7 +22,7 @@ const Homepage = () => {
   useEffect(() => {
     getTransactions(loggedUser.username);
     getUser(loggedUser.username);
-  }, []);
+  }, [transactions]);
 
   async function getTransactions(username) {
     let response = await axios.get(
