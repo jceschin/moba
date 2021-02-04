@@ -149,7 +149,8 @@ const SendMoney = ({ route }) => {
                     <Text style={styles.btnContent}>Send</Text>
                 </TouchableOpacity>
             </View>
-        </LinearGradient>
+        </View>    
+    </LinearGradient>
     );
 };
 
