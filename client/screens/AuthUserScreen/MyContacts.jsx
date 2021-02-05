@@ -16,6 +16,7 @@ const MyContacts = () => {
   let contactsUser = useSelector((state) => state.contacts)
   let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
   console.log('ESTO ES USER CONTACTS', userContacts)
+
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState({
     alias: '',
@@ -23,14 +24,15 @@ const MyContacts = () => {
   })
   const dispatch = useDispatch();
 
-  const onSubmit = () => {
-    console.log(userContacts)
-    dispatch(addNewContact({...data, user_username: loggedUser.username}))
-  }
+  // const onSubmit = () => {
+  //   console.log(userContacts)
+  //   dispatch(addNewContact({...data, user_username: loggedUser.username}))
+  // }
 
   useEffect(() => {
     dispatch(getUserInfo(loggedUser.username))
   },[contactsUser.contacts])
+
   return (
     <LinearGradient
       style={styles.container}
@@ -38,7 +40,7 @@ const MyContacts = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Modal
+      {/* <Modal
         animationType='fade'
         transparent={true}
         visible={modalVisible}
@@ -63,7 +65,7 @@ const MyContacts = () => {
         }}>
           <Text>Cancel</Text>
         </TouchableOpacity>
-      </Modal>
+      </Modal> */}
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -73,6 +75,11 @@ const MyContacts = () => {
             <Feather name="arrow-left" size={24} color="white" />
           </TouchableOpacity>
           <View
+              style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            >
+              <Text style={styles.greeting}>Who do you want to send?</Text>
+          </View>
+          {/* <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
           >
             <Text style={styles.greeting}>Contacts</Text>
@@ -84,7 +91,7 @@ const MyContacts = () => {
                 <Text style={styles.option}>Add Contact</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </View>
         <View style={styles.whiteContainer}>
           <Text style={styles.contactsTag}>Your contacts</Text>

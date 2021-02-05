@@ -96,7 +96,9 @@ server.post("/verify", (req, res) => {
       console.log(result)
       if (!result) {
 
-        return res.send(false);
+        return res.json([{
+          isvalid: false, 
+        }]);
 
       } else {
      result.update({
@@ -106,7 +108,9 @@ server.post("/verify", (req, res) => {
 
     }).then((result) => {
       console.log(result)
-      res.send(true)
+      res.json([{
+        isvalid: true, 
+      }])
 
     })
   
@@ -170,6 +174,7 @@ server.post('/findUserName', (req, res) => {
 
   
 })
+
 
 server.listen(8005, () => {
   console.log("Server running on 8005");

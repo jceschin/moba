@@ -12,17 +12,7 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors());
 
-/* CONNECT WITH WHATSAPP */
-const client = new WhatsAppWeb()
-client.connect()
-  .then(([user, chats, contacts, unread]) => {
-    console.log("oh hello " + user.name + " (" + user.id + ")")
-    console.log("you have " + unread.length + " unread messages")
-    console.log("you have " + chats.length + " chats")
-    console.log("Succesful authentication")
-  })
-  .catch(err => console.log("unexpected error: " + err))
-/* END CONNECT WITH WHATSAPP*/
+
 
 //routes
 //GET ALL CONTACTS FROM USER
@@ -139,25 +129,24 @@ server.post("/contacts", (req, res) => {
 });
 
 // UPDATE CONTACT by alias
-server.put("/contacts/:alias", (req, res) => {
-  Contact.update(
-    req.body,
-    {
-      where: { contact_id: req.params.alias },
+server.put("/update/:alias", (req, res) => {
+  var newAlias = req.body.newAlias;
+  Contact.findOne({
+    where:{
+      alias: req.params.alias
     }
-  )
+  })
     .then((contact) => {
-      res.status(200).send(contact);
+      contact.update({
+        alias: newAlias
+      })
+      res.sendStatus(200)
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(404).send(err);
-    })
+    .catch((err) => console.log(err))
 });
 
 // DELETE CONTACT by alias
 server.delete("/delete/:alias", (req, res) => {
-  console.log(typeof req.params.alias)
   Contact.findOne({
     where:{
       alias: req.params.alias
@@ -167,28 +156,9 @@ server.delete("/delete/:alias", (req, res) => {
     var reduce = contact
     console.log(contact)
     contact.destroy().then(() => res.send(reduce))
+
   })
   .catch((err) => console.log(err))
-  // Contact.destroy(
-  //   {
-  //     where: { alias: req.params.alias }
-  //   }
-  // )
-  //   .then((contact) => {
-  //     res.status(200).send(contact);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     res.status(404).send(err);
-  //   });
-});
-
-// SEND INVITATION WITH WHATSAPP MESSAGES
-server.post("/contacts/whatsapp", (req, res) => {
-  //[country code][phone number]@s.whatsapp.net
-  const wspMsg = client.sendTextMessage(`${req.body.phone}@s.whatsapp.net`, req.body.body)
-    .then(res.status(200).jsonp({ mensaje: 'Notification sent' }))
-    .catch(res.status(404).jsonp({ mensaje: 'Something failed :(' }));
 });
 
 

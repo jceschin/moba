@@ -10,6 +10,7 @@ require('./microservices/transaction.js')
 require("./microservices/accounts.js");
 require("./microservices/admin.js");
 require("./microservices/contacts.js");
+require("./microservices/whatsapp.js");
 
 
 conn.sync({ force: false })
@@ -19,6 +20,5 @@ conn.sync({ force: false })
   .run();
   console.log(`Connected to Database ${conn.config.database}, with user '${conn.config.username}' on port ${conn.config.port}`)
 })
-.catch((err) => console.log(err))
   
  

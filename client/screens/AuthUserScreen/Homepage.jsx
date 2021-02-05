@@ -18,6 +18,7 @@ const Homepage = () => {
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
+<<<<<<< HEAD
   const transactions = useSelector((state) => state.user.transactions);
   const dispatch = useDispatch();
 
@@ -56,15 +57,43 @@ const Homepage = () => {
           </View>
         </View>
       );
+=======
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    getTransactions(loggedUser.username);
+    dispatch(getUserInfo(loggedUser.username))
+    getUser(loggedUser.username);
+  }, []);
+
+  async function getTransactions(username) {
+    let response = await axios.get(
+        `http://localhost:8080/transaction/users/${username}`, {
+        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+      }
+    );
+
+    setTransactions(response.data);
+  }
+
+  async function getUser(username) {
+    let response = await axios.get(`http://localhost:8000/users/${username}`, {
+      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+>>>>>>> main
     });
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     dispatch(
       getUserTransactions(loggedUser.username, loggedUser.data.data.token)
     );
     dispatch(getUserInfo(loggedUser.username));
   }, [transactions && transactions.length]);
+=======
+    setUser(response.data);
+  }
+>>>>>>> main
 
   return (
     <LinearGradient

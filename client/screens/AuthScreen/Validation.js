@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, ImageBackground, Image, Dimensions, Alert } from 'react-native';
 import { useDispatch, useSelector} from 'react-redux';
 import { Formik } from 'formik';
@@ -62,6 +62,19 @@ export default function CodeVerification({ navigation, route }) {
 	const pin4 = useRef();
 	const pin5 = useRef();
 
+ useEffect(() => {
+	 
+	if(verify.length > 0){
+		if(verify[0].isvalid === true){
+			navigation.navigate('RegisterPage', {email:mailAndCode.email})
+		} 
+		else{
+		  alert('InvalidCode')
+		}
+	  }
+ 
+ }, [verify]);
+
 	return (
         <LinearGradient
         style={styles.container}
@@ -73,19 +86,27 @@ export default function CodeVerification({ navigation, route }) {
 
 				<Formik
 					initialValues={{
-						code: '',
+						code: verify,
 					}}
 					onSubmit={(values) => {
 						const { code } = values;
-						// dispatch( verifyEmail(mailAndCode));
-						axios.post('http://localhost:8080/email/verify', mailAndCode ).then((result) => {
-							console.log(result)
-                            if (result.data === true) {
-								navigation.navigate('RegisterPage', {email:mailAndCode.email})
-							} else {
-								alert('Please, enter a valid code!')
-							}
-						})
+						console.log(values)
+						dispatch( verifyEmail(mailAndCode));
+						console.log(verify)
+					    // if (verify === true ) {
+						// 	navigation.navigate('RegisterPage', {email:mailAndCode.email})
+						// } else {
+						// 	alert('Please, enter a valid code!')
+						// }
+
+						// axios.post('http://localhost:8080/email/verify', mailAndCode ).then((result) => {
+						// 	console.log(result)
+                        //     if (result.data === true) {
+						// 		navigation.navigate('RegisterPage', {email:mailAndCode.email})
+						// 	} else {
+						// 		alert('Please, enter a valid code!')
+						// 	}
+						// })
 						
 					}}
 				>

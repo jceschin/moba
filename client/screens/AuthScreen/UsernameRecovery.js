@@ -13,12 +13,13 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import { loginStateUser } from "../../redux/actions/user";
-import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios'
+// import { loginStateUser } from "../../redux/actions/user";
+// import { useDispatch, useSelector } from "react-redux";
 
 const UsernameRecovery = ({ navigation }) => {
   const [data, setData] = useState({
-    username: "",
+    mail: "",
     password: "",
     check_textInputChange: false,
     secureTextEntry: true,
@@ -26,21 +27,28 @@ const UsernameRecovery = ({ navigation }) => {
     isValidPassword: true,
   });
 
-  const dispatch = useDispatch();
-  const loginUser = async (data) => dispatch(loginStateUser(data));
+  console.log(data.mail)
+
+  const mailAndPass = {
+    mail: data.mail,
+    password: data.password,
+  }
+  console.log(mailAndPass)
+  // const dispatch = useDispatch();
+  // const loginUser = async (data) => dispatch(loginStateUser(data));
 
   const textInputChange = (val) => {
     if (val.length >= 4) {
       setData({
         ...data,
-        username: val,
+        mail: val,
         check_textInputChange: true,
         isValidUser: true,
       });
     } else {
       setData({
         ...data,
-        username: val,
+        mail: val,
         check_textInputChange: false,
         isValidUser: false,
       });
@@ -84,12 +92,28 @@ const UsernameRecovery = ({ navigation }) => {
     });
   };
 
-  const loginHandle = async (userName, password) => {
-    if (data.username.length === 0 || data.password.length === 0) {
-      alert("Username or Password cannot be empty");
-    }
-    await loginUser(data);
-  };
+
+
+  // :::::::::::::::::::AXIOS:::::::::::
+
+ const handleRecover = () => axios.post('http://localhost:8080/email/findUserName', mailAndPass ).then((result) => { //Ruta para buscar por mail y password y encontrar el userName
+             
+              console.log(result.data)
+            //   if (result.data.email !== mailAndPass.mail || Object.entries(result.data).length === 0){
+            //     alert('Invalid password or email')
+            //   } else {
+            //     alert('We have sent the username to your email box')
+            //     		navigation.navigate('Login')
+            //   }
+            // })
+                            if (result.data.email === mailAndPass.mail) {
+                              alert('We have sent the username to your email box')
+								navigation.navigate('Login')
+							} else {
+								alert('Invalid password or email')
+							}
+						})
+ 
 
   return (
     <View style={styles.container}>
@@ -141,9 +165,7 @@ const UsernameRecovery = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          {/* <TouchableOpacity>
-            <Text style={styles.forgot_username}>PRForgot your user?</Text>
-          </TouchableOpacity> */}
+        
 
           <View style={styles.action}>
             <TextInput
@@ -171,12 +193,13 @@ const UsernameRecovery = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          {/* <TouchableOpacity>
-            <Text style={styles.forgot_password}>PRForgot?</Text>
-          </TouchableOpacity> */}
+         
 
           <View style={styles.button}>
-            <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
+            <TouchableOpacity style={styles.signIn}
+            //  onPress={loginHandle}
+            onPress={ handleRecover}
+             >
               <Text
                 style={[
                   styles.textSign,

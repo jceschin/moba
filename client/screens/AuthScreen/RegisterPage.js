@@ -35,7 +35,7 @@ const RegisterPage = ({ navigation, route }) => {
   });
 
   const onSubmit = () => {
-    console.log(data)
+
     dispatch(createNewUser({...data, email:route.params.email}));
     alert("Usuario creado con exito");
     navigation.navigate("AuthScreen", { screen: "Login" });

@@ -8,20 +8,23 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { getUserInfo, getUserTransactions } from "../../redux/actions/user";
+import accounting from "accounting-js";
 
 const SendMoney = ({ route }) => {
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const loggedUser = useSelector((state) => state.user);
-    const [loggedUserData, setLoggedUserData] = useState({});
-    const {
-        selectedContactUsername,
-        selectedContactNameInitial,
-        selectedContactSurnameInitial
-    } = route.params;
-    const { handleSubmit } = useForm();
-    const [transferAmount, setTransferAmount] = useState(0);
-    const [selectedUser, setSelectedUser] = useState({});
+  //const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const loggedUser = useSelector((state) => state.user);
+  const [loggedUserData, setLoggedUserData] = useState({});
+  const { 
+            selectedContactUsername,
+            selectedContactNameInitial,
+            selectedContactSurnameInitial 
+        } = route.params;
+  const { handleSubmit } = useForm();
+  const [transferAmount, setTransferAmount] = useState({
+      amount: 0
+  });
+  const [selectedUser, setSelectedUser] = useState({});
 
     //dispatch(getSelectedUser(selectedContactUsername));
 
@@ -46,17 +49,26 @@ const SendMoney = ({ route }) => {
         setLoggedUserData(response.data);
     }
 
-    const onSubmit = () => {
-        makeTransfer();
-    };
+  const textInputChange = (val) => {
+    if (val.length >= 1) {
+      setTransferAmount({
+          amount: val
+      });
+    }
+  };
 
-    function makeTransfer() {
-        let transferData = {
-            cvu_sender: loggedUserData.account.cvu,
-            cvu_receiver: selectedUser.account.cvu,
-            amount: transferAmount,
-            number: Math.floor((Math.random() * 1000000))
-        }
+  const onSubmit = () => {
+    makeTransfer();
+  };
+
+  function makeTransfer() {
+    let transferData = {
+        cvu_sender: loggedUserData.account.cvu,
+        cvu_receiver: selectedUser.account.cvu,
+        // All transfer amounts have a 0 as 1st character, so we must get rid of it
+        amount: parseInt(transferAmount.amount.toString()),
+        number: Math.floor((Math.random() * 1000000))
+    }
 
         axios.post(`http://localhost:8080/transaction`, transferData)
             .then(res => {
@@ -70,24 +82,48 @@ const SendMoney = ({ route }) => {
             })
     }
 
-    return (
-        <LinearGradient
-            style={styles.container}
-            colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-        >
-            <View style={styles.header}>
-                <TouchableOpacity
-                    // style={{ position: "absolute" }}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Feather name="arrow-left" size={24} color="white" />
-                </TouchableOpacity>
-                <View
-                    style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-                >
-                    <Text style={styles.greeting}>Send money</Text>
+  // Style functions
+  const formatValue = (value) => {
+    return accounting.formatMoney(parseFloat(value));
+  };
+
+  return (
+    <LinearGradient
+      style={styles.container}
+      colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
+        <View style={styles.header}>
+            <TouchableOpacity
+                // style={{ position: "absolute" }}
+                onPress={() => navigation.goBack()}
+            >
+                <Feather name="arrow-left" size={24} color="white" />
+            </TouchableOpacity>
+            <View
+                style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            >
+                <Text style={styles.greeting}>Send money</Text>
+            </View>
+        </View>
+        <View style={styles.whiteContainer}>
+            <TextInput
+                style={styles.textInputAmount}
+                autoCapitalize="none"
+                value={formatValue(transferAmount.amount)}
+            />
+            <TextInput
+                style={styles.textInputAmountHide}
+                autoCapitalize="none"
+                onChangeText={(val) => textInputChange(val)}
+                value={transferAmount.amount}
+            />
+            <View style={styles.contact}>
+                <View style={styles.avatar}>
+                    <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>
+                        {selectedContactNameInitial}{selectedContactSurnameInitial}
+                    </Text>
                 </View>
             </View>
             <View style={styles.whiteContainer}>
@@ -114,7 +150,8 @@ const SendMoney = ({ route }) => {
                     <Text style={styles.btnContent}>Send</Text>
                 </TouchableOpacity>
             </View>
-        </LinearGradient>
+        </View>    
+    </LinearGradient>
     );
 };
 
@@ -183,5 +220,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 30,
         height: 41
+    },
+    textInputAmount: {
+        height: 40,
+        textAlign: 'center',
+        marginTop: 80,
+        fontSize: 32,
+        color: "#168903"
+    },
+    textInputAmountHide: {
+        height: 40,
+        textAlign: 'center',
+        marginTop: -40,
+        fontSize: 32,
+        color: "#168903",
+        opacity: 0
     }
 });
