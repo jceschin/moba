@@ -25,16 +25,16 @@ const Homepage = () => {
     getTransactions(loggedUser.username);
     dispatch(getUserInfo(loggedUser.username))
     getUser(loggedUser.username);
-  }, [user]);
+  }, []);
 
   async function getTransactions(username) {
     let response = await axios.get(
-      `http://localhost:8080/transaction/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    }
+        `http://localhost:8080/transaction/users/${username}`, {
+        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+      }
     );
 
-    response && setTransactions(response.data);
+    setTransactions(response.data);
   }
 
   async function getUser(username) {
@@ -44,10 +44,6 @@ const Homepage = () => {
 
     setUser(response.data);
   }
-
-  getUser(loggedUser.username);
-  console.log(loggedUser)
-}, [loggedUser]);
 
   return (
     <LinearGradient
