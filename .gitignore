@@ -7,6 +7,7 @@ node_modules
 package-lock.json
 /package.json
 package.json
+api/config/config.json
 # dependencies
 /node_modules
 .env
