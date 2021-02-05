@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
 const { User, Contact, Contactuser } = require("../db");
-const WhatsAppWeb = require('baileys');
+// const WhatsAppWeb = require('baileys');
 
 // middlewares
 server.use(morgan("dev"));
@@ -13,15 +13,15 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors());
 
 /* CONNECT WITH WHATSAPP */
-const client = new WhatsAppWeb()
-client.connect()
-  .then(([user, chats, contacts, unread]) => {
-    console.log("oh hello " + user.name + " (" + user.id + ")")
-    console.log("you have " + unread.length + " unread messages")
-    console.log("you have " + chats.length + " chats")
-    console.log("Succesful authentication")
-  })
-  .catch(err => console.log("unexpected error: " + err))
+// const client = new WhatsAppWeb()
+// client.connect()
+//   .then(([user, chats, contacts, unread]) => {
+//     console.log("oh hello " + user.name + " (" + user.id + ")")
+//     console.log("you have " + unread.length + " unread messages")
+//     console.log("you have " + chats.length + " chats")
+//     console.log("Succesful authentication")
+//   })
+//   .catch(err => console.log("unexpected error: " + err))
 /* END CONNECT WITH WHATSAPP*/
 
 //routes
