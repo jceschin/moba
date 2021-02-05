@@ -7,11 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
 //Redux
-import { addNewContact } from '../../redux/actions/user';
+import { addNewContact } from '../../redux/actions/contactActions';
+import { getUserInfo } from "../../redux/actions/user";
 
 const MyContacts = () => {
   const navigation = useNavigation();
   let loggedUser = useSelector((state) => state.user)
+  let contactsUser = useSelector((state) => state.contacts)
   let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
   console.log('ESTO ES USER CONTACTS', userContacts)
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,8 +29,8 @@ const MyContacts = () => {
   }
 
   useEffect(() => {
-    //dispatch(getUserInfo(loggedUser.username))
-  },[loggedUser.user])
+    dispatch(getUserInfo(loggedUser.username))
+  },[contactsUser.contacts])
   return (
     <LinearGradient
       style={styles.container}

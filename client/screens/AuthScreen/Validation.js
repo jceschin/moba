@@ -26,7 +26,8 @@ const SingleNumInput = ({ changed, id, _ref, _next }) => {
 };
 
 
-export default function CodeVerification({ navigation }) {
+export default function CodeVerification({ navigation, route }) {
+	console.log('params', route.params)
 	const validateEmail = useSelector((store) => store.email.newEmail);
 	var verify = useSelector((store) => store.email.verify);
 	console.log(verify);
@@ -80,7 +81,7 @@ export default function CodeVerification({ navigation }) {
 						axios.post('http://localhost:8080/email/verify', mailAndCode ).then((result) => {
 							console.log(result)
                             if (result.data === true) {
-								navigation.navigate('RegisterPage')
+								navigation.navigate('RegisterPage', {email:mailAndCode.email})
 							} else {
 								alert('Please, enter a valid code!')
 							}

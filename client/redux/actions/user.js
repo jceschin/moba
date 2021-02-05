@@ -11,7 +11,8 @@ import {
   addUserContact,
   removeContact,
   getContacts,
-  userInfo
+  userInfo,
+  getTransactions
 } from '../types/userTypes';
 
 // Create user account
@@ -59,54 +60,6 @@ export function logoutUserAction() {
   };
 }
 
-//User adds new contact
-
-export function addNewContact(newContact) {
-  return async (dispatch) => {
-    try {
-      const res = await axios.post(`http://localhost:8080/contacts/add`, { ...newContact }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      console.log('ESTO ES NEW CONTACT', newContact);
-      dispatch(getUserInfo(newContact.user_username))
-      dispatch(addUserContact(res.data));
-      console.log('ESTO ES DATA', res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
-
-// Delete user contact
-
-export const deleteContact = (alias) => {
-  return async (dispatch) => {
-    try {
-
-      const res = await axios.delete(`http://localhost:8080/contacts/delete/${alias}`);
-      console.log('ESTE ES EL ALIAS', alias);
-
-      dispatch(removeContact());
-
-    } catch (error) {
-      console.log('ERROR EN DELETE CONTACT', error)
-    }
-  }
-}
-
-// Get user contacts
-
-export function getUserContacts(username) {
-  return async (dispatch) => {
-    try {
-      const res = await axios.get(`http://localhost:8080/contacts/get/${username}`);
-
-      dispatch(getContacts(res.data));
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
 
 //Get user full info
 export function getUserInfo(username){
@@ -124,6 +77,20 @@ export function getUserInfo(username){
       })
       .catch((err) => console.log(err))
 
+  }
+}
+
+//Get transactions 
+export function getUserTransactions(username, token){
+  return (dispatch) => {
+    return axios.get(
+          `http://localhost:8080/transaction/users/${username}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+        ).then((tr) => {
+          dispatch(getTransactions(tr.data))
+        })
+        .catch((err) => console.log(err))
   }
 }
 

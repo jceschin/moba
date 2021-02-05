@@ -47,7 +47,6 @@ server.post("/add", (req, res) => {
   // user_username: logged user
   // contact_email, alias: contact to be added
   const { user_username, contact_email, alias } = req.body;
-  console.log(req.body)
   if(!user_username || !contact_email || !alias){
     console.log(user_username, contact_email, alias)
     return res.status(405).send('Missing parameters')
@@ -64,7 +63,6 @@ server.post("/add", (req, res) => {
 
   firstUser
     .then((user) => {
-      console.log('user', user)
       //checking if firstUser exists
       if (!user) {
         return res.sendStatus(404);
@@ -76,7 +74,6 @@ server.post("/add", (req, res) => {
     })
     .then(() => {
       //checking if secondUser exists
-      console.log('asd')
       secondUser
         .then((user2) => {
           if (!user2) {
@@ -113,7 +110,7 @@ server.post("/add", (req, res) => {
                 loggedUser.addContact(contact).then((contactuser) => {
                   contactuser[0].contact_userid = futureContact.id;
                   contactuser[0].save().then((contactuser) => {
-                    res.send('Succesfully');
+                    res.send(contact);
                   });
                 });
               });
@@ -167,8 +164,9 @@ server.delete("/delete/:alias", (req, res) => {
     }
   })
   .then((contact) => {
+    var reduce = contact
     console.log(contact)
-    contact.destroy().then(() => res.sendStatus(200))
+    contact.destroy().then(() => res.send(reduce))
   })
   .catch((err) => console.log(err))
   // Contact.destroy(

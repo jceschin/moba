@@ -16,14 +16,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { createNewUser } from "../../redux/actions/user";
 
-const RegisterPage = ({ navigation }) => {
+const RegisterPage = ({ navigation, route }) => {
   const { handleSubmit, control, errors } = useForm();
-
+  console.log('params register', route.params)
   const dispatch = useDispatch();
 
   const [data, setData] = useState({
     username: "",
-    email: "",
     name: "",
     surname: "",
     birthdate: "",
@@ -36,7 +35,8 @@ const RegisterPage = ({ navigation }) => {
   });
 
   const onSubmit = () => {
-    dispatch(createNewUser(data));
+    console.log(data)
+    dispatch(createNewUser({...data, email:route.params.email}));
     alert("Usuario creado con exito");
     navigation.navigate("AuthScreen", { screen: "Login" });
   };
