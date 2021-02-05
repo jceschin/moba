@@ -96,7 +96,9 @@ server.post("/verify", (req, res) => {
       console.log(result)
       if (!result) {
 
-        return res.send(false);
+        return res.json([{
+          isvalid: false, 
+        }]);
 
       } else {
      result.update({
@@ -106,7 +108,9 @@ server.post("/verify", (req, res) => {
 
     }).then((result) => {
       console.log(result)
-      res.send(true)
+      res.json([{
+        isvalid: true, 
+      }])
 
     })
   
@@ -163,7 +167,6 @@ server.post('/findUserName', (req, res) => {
   })
     .then(() => {
       res.send({email: mail});
-      console.log(res.send)
     })
     .catch((err) => {
       console.log("Error no se puede enviar el email: " + err);
@@ -171,7 +174,6 @@ server.post('/findUserName', (req, res) => {
 
   
 })
-
 
 
 server.listen(8005, () => {

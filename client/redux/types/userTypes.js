@@ -5,10 +5,9 @@ export const AUTO_LOGIN = "AUTO_LOGIN";
 export const RECOVERY_USER = "RECOVERY_USER";
 export const PASSWORD_RESET = "PASSWORD_RESET";
 export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
-export const ADD_USER_CONTACT = "ADD_USER_CONTACT";
-export const GET_USER_CONTACTS = "GET_USER_CONTACTS";
-export const REMOVE_USER_CONTACT = "REMOVE_USER_CONTACT";
 export const GET_USER_INFO = "GET_USER_INFO";
+export const GET_USER_TRANSACTIONS = "GET_USER_TRANSACTIONS";
+
 
 
 // ERROR HANDLER
@@ -72,30 +71,16 @@ export const errorHandler = (error) => {
     }
 }
 
-export const addUserContact = (contact) => {
-    return {
-        type: ADD_USER_CONTACT,
-        contact
-    }
-}
-
-export const getContacts = (contacts) => {
-    return {
-        type: GET_USER_CONTACTS,
-        contacts
-    }
-}
-
-export const removeContact = ({ deletedContact }) => {
-    return {
-        type: REMOVE_USER_CONTACT,
-        deletedContact
-    }
-}
-
 export const userInfo = (info) => {
     return {
         type: GET_USER_INFO,
         info
-    };
+    }
+};
+
+export const getTransactions = (transactions) => {
+    return {
+        type: GET_USER_TRANSACTIONS,
+        transactions
+    }
 };

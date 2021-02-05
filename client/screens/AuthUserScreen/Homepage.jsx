@@ -6,45 +6,67 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { getUserInfo } from '../../redux/actions/user';
+import { getUserInfo, getUserTransactions } from "../../redux/actions/user";
 
 const Homepage = () => {
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
-  const [transactions, setTransactions] = useState([]);
   const [user, setUser] = useState({});
+  const transactions = useSelector((state) => state.user.transactions);
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    getTransactions(loggedUser.username);
-    dispatch(getUserInfo(loggedUser.username))
-    getUser(loggedUser.username);
-  }, []);
 
-  async function getTransactions(username) {
-    let response = await axios.get(
-        `http://localhost:8080/transaction/users/${username}`, {
-        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+  const renderTransactions = () => {
+    var sortedTransactions = transactions.reverse()
+    return sortedTransactions.map((t) => {
+      var data;
+      if (t.sender === loggedUser.username) {
+        data = (
+          <Text style={styles.movType}>
+            You send US${t.amount} to {t.receiver}
+          </Text>
+        );
+      } else {
+        data =
+          t.type === "recharge" ? (
+            <Text style={styles.movType}>You deposit US${t.amount}</Text>
+          ) : (
+            <Text style={styles.movType}>
+              You received US${t.amount} from {t.sender}
+            </Text>
+          );
       }
-    );
-
-    setTransactions(response.data);
-  }
-
-  async function getUser(username) {
-    let response = await axios.get(`http://localhost:8000/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+      return (
+        <View style={styles.mov}>
+          <View style={styles.movDateContainer}>
+            <Text style={styles.movDate}>{t.date.substring(0, 10)}</Text>
+          </View>
+          <View style={styles.movDetails}>
+            {data}
+            {t.sender === loggedUser.username ? (
+              <Text style={styles.movType}>− US${t.amount}</Text>
+            ) : (
+              <Text style={styles.movType}>US${t.amount}</Text>
+            )}
+          </View>
+        </View>
+      );
     });
+  };
 
-    setUser(response.data);
-  }
+  useEffect(() => {
+    dispatch(
+      getUserTransactions(loggedUser.username, loggedUser.data.data.token)
+    );
+    dispatch(getUserInfo(loggedUser.username));
+  }, [transactions && transactions.length]);
 
+//
   return (
     <LinearGradient
       style={styles.container}
@@ -56,17 +78,22 @@ const Homepage = () => {
         <View style={styles.mainContainer}>
           <View style={styles.upperContainer}>
             <Text style={styles.accountOwner}>
-              {user.name} {user.surname}
+              {loggedUser.info &&
+                `${loggedUser.info.name} ${loggedUser.info.surname}`}
             </Text>
             <Text style={styles.balanceTag}>Balance</Text>
-            {user.account ? (
-              <Text style={styles.balance}>US$ {user.account.balance}</Text>
+            {loggedUser.info ? (
+              <Text style={styles.balance}>
+                US$ {loggedUser.info.account.balance}
+              </Text>
             ) : (
-                <Text style={styles.balance}>US$ 0</Text>
-              )}
+              <Text style={styles.balance}>US$ 0</Text>
+            )}
             <View style={styles.options}>
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate("AddMoney")}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("AddMoney")}
+                >
                   <MaterialCommunityIcons
                     name="cash-plus"
                     size={24}
@@ -88,7 +115,9 @@ const Homepage = () => {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("MyContacts")}
+                >
                   <MaterialIcons
                     name="send-to-mobile"
                     size={24}
@@ -103,29 +132,7 @@ const Homepage = () => {
 
           <View style={styles.movsContainer}>
             <Text style={styles.movsHeader}>Last Movements</Text>
-            {transactions.map((t) => {
-              return (
-                <View style={styles.mov}>
-                  <View style={styles.movDateContainer}>
-                    <Text style={styles.movDate}>
-                      {t.date.substring(0, 10)}
-                    </Text>
-                  </View>
-                  <View style={styles.movDetails}>
-                    {t.sender === loggedUser.username ? (
-                      <Text style={styles.movType}>You send US${t.amount} to {t.receiver}</Text>
-                    ) : (
-                        <Text style={styles.movType}>You received US${t.amount} from {t.sender}</Text>
-                      )}
-                    {t.sender === loggedUser.username ? (
-                      <Text style={styles.movType}>− US${t.amount}</Text>
-                    ) : (
-                        <Text style={styles.movType}>US${t.amount}</Text>
-                      )}
-                  </View>
-                </View>
-              );
-            })}
+            {transactions && renderTransactions()}
           </View>
         </View>
       </ScrollView>

@@ -9,11 +9,13 @@ import { useForm } from "react-hook-form";
 import accounting from "accounting-js";
 
 //Redux
-import { getUserInfo } from '../../redux/actions/user';
+import { getUserInfo, getUserTransactions, getContactInfo } from '../../redux/actions/user';
 
 const SendMoney = ({ route }) => {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
     const loggedUser = useSelector((state) => state.user);
+    const destinatary = useSelector((state) => state.contacts.selectedContact)
     const { 
         selectedContactUsername,
         selectedContactNameInitial,
@@ -23,22 +25,10 @@ const SendMoney = ({ route }) => {
     const [transferAmount, setTransferAmount] = useState({
         amount: 0
     });
-    // const [selectedUser, setSelectedUser] = useState({});
 
     useEffect(() => {
-        getUserInfo(selectedContactUsername);
+        dispatch(getContactInfo(selectedContactUsername))
     }, []);
-
-    const selectedUser = useSelector((state) => state.user.user);
-    console.log(selectedUser);
-
-    // async function getSelectedUser(username) {
-    //     let response = await axios.get(`http://localhost:8000/users/${username}`, {
-    //         headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    //     });
-
-    //     setSelectedUser(response.data);
-    // }
 
     const textInputChange = (val) => {
         if (val.length >= 1) {
@@ -55,7 +45,7 @@ const SendMoney = ({ route }) => {
     function makeTransfer() {
         let transferData = {
             cvu_sender: loggedUser.info.account.cvu,
-            cvu_receiver: selectedUser.account.cvu,
+            cvu_receiver: destinatary.account.cvu,
             // All transfer amounts have a 0 as 1st character, so we must get rid of it
             amount: parseInt(transferAmount.amount.toString()),
             number: Math.floor((Math.random() * 1000000))
@@ -64,6 +54,7 @@ const SendMoney = ({ route }) => {
             axios.post(`http://localhost:8080/transaction`, transferData)
                 .then(res => {
                     navigation.navigate("SendMoneySuccess");
+                    dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token))
                 })
                 .catch(error => {
                     navigation.navigate("SendMoneyError");

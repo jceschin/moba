@@ -6,11 +6,9 @@ import {
   RECOVERY_USER,
   PASSWORD_RESET,
   CHANGE_USER_PASSWORD,
-  ADD_USER_CONTACT,
-  REMOVE_USER_CONTACT,
-  GET_USER_CONTACTS,
-  GET_USER_INFO
-} from '../types/userTypes';
+  GET_USER_INFO,
+  GET_USER_TRANSACTIONS
+} from "../types/userTypes";
 
 const initialState = {
   user: {},
@@ -19,7 +17,8 @@ const initialState = {
   isLoading: true,
   userToken: "",
   isAuthenticated: false,
-  info : []
+  info: [],
+  transactions: []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -27,7 +26,7 @@ const userReducer = (state = initialState, action) => {
     case CREATE_USER:
       return {
         ...state,
-        user: [state.user, action.user]
+        user: [state.user, action.user],
       };
     case AUTO_LOGIN:
       return {
@@ -42,7 +41,7 @@ const userReducer = (state = initialState, action) => {
         userToken: null,
         isLoading: false,
         isAuthenticated: false,
-        state: undefined
+        state: undefined,
       };
     case LOGIN_USER:
       return {
@@ -51,24 +50,28 @@ const userReducer = (state = initialState, action) => {
         userToken: action.token,
         isAuthenticated: true,
       };
-    case ADD_USER_CONTACT:
+    
+    case GET_USER_INFO:
       return {
         ...state,
-        user: [...state.user, action.contact]
+        info: action.info,
       };
-    case REMOVE_USER_CONTACT:
+    case GET_USER_TRANSACTIONS:
       return {
         ...state,
-        user: state.user.filter(c => c.alias !== action.deletedContact)
+        transactions: action.transactions,
       };
+<<<<<<< HEAD
     case GET_CONTACT_INFO:
       return {
         ...state,
         contactInfo: action.contactInfo
       };
+=======
+>>>>>>> main
     default:
       return state;
   }
-}
+};
 
 export default userReducer;
