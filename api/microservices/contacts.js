@@ -142,20 +142,20 @@ server.post("/contacts", (req, res) => {
 });
 
 // UPDATE CONTACT by alias
-server.put("/contacts/:alias", (req, res) => {
-  Contact.update(
-    req.body,
-    {
-      where: { contact_id: req.params.alias },
+server.put("/update/:alias", (req, res) => {
+  var newAlias = req.body.newAlias;
+  Contact.findOne({
+    where:{
+      alias: req.params.alias
     }
-  )
+  })
     .then((contact) => {
-      res.status(200).send(contact);
+      contact.update({
+        alias: newAlias
+      })
+      res.sendStatus(200)
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(404).send(err);
-    })
+    .catch((err) => console.log(err))
 });
 
 // DELETE CONTACT by alias
