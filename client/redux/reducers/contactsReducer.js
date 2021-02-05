@@ -3,11 +3,13 @@ import { Alert } from 'react-native'
 import {
     ADD_USER_CONTACT,
     REMOVE_USER_CONTACT,
-    GET_USER_CONTACTS
+    GET_USER_CONTACTS,
+    GET_CONTACT_INFO
 } from '../types/contactTypes';
 
 const initialState = {
-    contacts:[]
+    contacts:[],
+    selectedContact:[]
 };
 
 export function contactsReducer(state = initialState, action) {
@@ -27,7 +29,13 @@ export function contactsReducer(state = initialState, action) {
             return {
               ...state,
               contacts: action.contacts,
-            };    
+            };
+
+            case GET_CONTACT_INFO:
+              return {
+                ...state,
+                selectedContact: action.contact,
+              };   
     
         default:
             return state;

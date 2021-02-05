@@ -24,10 +24,10 @@ const MyContacts = () => {
   })
   const dispatch = useDispatch();
 
-  // const onSubmit = () => {
-  //   console.log(userContacts)
-  //   dispatch(addNewContact({...data, user_username: loggedUser.username}))
-  // }
+  const onSubmit = () => {
+    console.log(userContacts)
+    dispatch(addNewContact({...data, user_username: loggedUser.username}))
+  }
 
   useEffect(() => {
     dispatch(getUserInfo(loggedUser.username))
@@ -40,7 +40,7 @@ const MyContacts = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      {/* <Modal
+      <Modal
         animationType='fade'
         transparent={true}
         visible={modalVisible}
@@ -65,7 +65,7 @@ const MyContacts = () => {
         }}>
           <Text>Cancel</Text>
         </TouchableOpacity>
-      </Modal> */}
+      </Modal>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <TouchableOpacity

@@ -4,6 +4,7 @@ import {
     addUserContact,
     removeContact,
     getContacts,
+    contactInfo
 
   } from '../types/contactTypes';
 
@@ -55,5 +56,26 @@ export function addNewContact(newContact) {
       } catch (error) {
         console.log(error);
       }
+    }
+  }
+
+
+  //get contact INFO
+  export function getContactInfo(username){
+    return (dispatch) => {
+      return axios
+        .get(`http://localhost:8000/users/${username}`)
+        .then((data) => {
+          if(data.status !== 200){
+            alert('Sorry, an error ocurred')          
+          }
+          else{
+            console.log(data)
+            var payload = data.data 
+            dispatch(contactInfo(payload))
+          }
+        })
+        .catch((err) => console.log(err))
+  
     }
   }

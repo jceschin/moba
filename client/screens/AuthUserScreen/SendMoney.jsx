@@ -9,12 +9,14 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { getUserInfo, getUserTransactions } from "../../redux/actions/user";
 import accounting from "accounting-js";
+import { getContactInfo } from "../../redux/actions/contactActions";
 
 const SendMoney = ({ route }) => {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const [loggedUserData, setLoggedUserData] = useState({});
+  const destinatary = useSelector((state) => state.contacts.selectedContact)
   const { 
             selectedContactUsername,
             selectedContactNameInitial,
@@ -29,7 +31,8 @@ const SendMoney = ({ route }) => {
     //dispatch(getSelectedUser(selectedContactUsername));
 
     useEffect(() => {
-        getSelectedUser(selectedContactUsername);
+        dispatch(getContactInfo(selectedContactUsername))
+        //getSelectedUser(selectedContactUsername);
         getLoggedUserData(loggedUser.username);
     }, []);
 
@@ -60,11 +63,11 @@ const SendMoney = ({ route }) => {
   const onSubmit = () => {
     makeTransfer();
   };
-
+  
   function makeTransfer() {
     let transferData = {
         cvu_sender: loggedUserData.account.cvu,
-        cvu_receiver: selectedUser.account.cvu,
+        cvu_receiver: destinatary.account.cvu,
         // All transfer amounts have a 0 as 1st character, so we must get rid of it
         amount: parseInt(transferAmount.amount.toString()),
         number: Math.floor((Math.random() * 1000000))
@@ -140,7 +143,7 @@ const SendMoney = ({ route }) => {
                         </Text>
                     </View>
                     <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
+                        <Text style={styles.name}>{destinatary.account && `${destinatary.name} ${destinatary.surname}`} </Text>
                     </View>
                 </View>
                 <TouchableOpacity
