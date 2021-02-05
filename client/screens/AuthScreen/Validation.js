@@ -26,7 +26,8 @@ const SingleNumInput = ({ changed, id, _ref, _next }) => {
 };
 
 
-export default function CodeVerification({ navigation }) {
+export default function CodeVerification({ navigation, route }) {
+	console.log('params', route.params)
 	const validateEmail = useSelector((store) => store.email.newEmail);
 	var verify = useSelector((store) => store.email.verify);
 	console.log(verify);

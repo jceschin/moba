@@ -1,0 +1,35 @@
+import axios from 'axios';
+import { Alert } from 'react-native'
+import {
+    ADD_USER_CONTACT,
+    REMOVE_USER_CONTACT,
+    GET_USER_CONTACTS
+} from '../types/contactTypes';
+
+const initialState = {
+    contacts:[]
+};
+
+export function contactsReducer(state = initialState, action) {
+    switch (action.type) {
+
+        case ADD_USER_CONTACT:
+            return {
+              ...state,
+              contacts: action.contact,
+            };
+          case REMOVE_USER_CONTACT:
+            return {
+              ...state,
+              contacts: action.deletedContact,
+            };
+          case GET_USER_CONTACTS:
+            return {
+              ...state,
+              contacts: action.contacts,
+            };    
+    
+        default:
+            return state;
+    }
+}
