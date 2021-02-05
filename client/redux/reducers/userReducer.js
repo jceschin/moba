@@ -61,16 +61,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: state.user.filter(c => c.alias !== action.deletedContact)
       };
-    case GET_USER_CONTACTS:
+    case GET_CONTACT_INFO:
       return {
         ...state,
-        user: action.contacts
+        contactInfo: action.contactInfo
       };
-      case GET_USER_INFO:
-        return {
-          ...state, 
-          info : action.info,
-        }
     default:
       return state;
   }
