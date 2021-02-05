@@ -66,7 +66,7 @@ const Homepage = () => {
     dispatch(getUserInfo(loggedUser.username));
   }, [transactions && transactions.length]);
 
-
+//
   return (
     <LinearGradient
       style={styles.container}
