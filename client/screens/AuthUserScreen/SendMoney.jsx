@@ -4,155 +4,125 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-// import getSelectedUser from '../../redux/actions/user';
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { getUserInfo } from "../../redux/actions/user";
 import accounting from "accounting-js";
 
-const SendMoney = ({ route }) => {
-  //const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const loggedUser = useSelector((state) => state.user);
-  const [loggedUserData, setLoggedUserData] = useState({});
-  const { 
-            selectedContactUsername,
-            selectedContactNameInitial,
-            selectedContactSurnameInitial 
-        } = route.params;
-  const { handleSubmit } = useForm();
-  const [transferAmount, setTransferAmount] = useState({
-      amount: 0
-  });
-  const [selectedUser, setSelectedUser] = useState({});
+//Redux functions
+import { getContactInfo } from '../../redux/actions/contactActions';
 
-    //dispatch(getSelectedUser(selectedContactUsername));
+const SendMoney = ({ route }) => {
+    // Redux
+    const dispatch = useDispatch();
+    const loggedUser = useSelector((state) => state.user);
+    const destinatary = useSelector((state) => state.contacts.selectedContact);
+
+    // Params
+    const { 
+        selectedContactUsername,
+        selectedContactNameInitial,
+        selectedContactSurnameInitial 
+    } = route.params;
+
+    // Amount to be transfered
+    const [transferAmount, setTransferAmount] = useState({
+        amount: 0
+    });
+
+    // Navigation and Form
+    const navigation = useNavigation();
+    const { handleSubmit } = useForm();
 
     useEffect(() => {
-        getSelectedUser(selectedContactUsername);
-        getLoggedUserData(loggedUser.username);
+        dispatch(getContactInfo(selectedContactUsername))
     }, []);
 
-    async function getSelectedUser(username) {
-        let response = await axios.get(`http://localhost:8000/users/${username}`, {
-            headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+    const textInputChange = (val) => {
+        if (val.length >= 1) {
+        setTransferAmount({
+            amount: val
         });
+        }
+    };
 
-        setSelectedUser(response.data);
-    }
+    const onSubmit = () => {
+        makeTransfer();
+    };
 
-    async function getLoggedUserData(username) {
-        let response = await axios.get(`http://localhost:8000/users/${username}`, {
-            headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-        });
+    function makeTransfer() {
+        let transferData = {
+            cvu_sender: loggedUser.info.account.cvu,
+            cvu_receiver: destinatary.account.cvu,
+            // All transfer amounts have a 0 as 1st character, so we must get rid of it
+            amount: parseInt(transferAmount.amount.toString()),
+            number: Math.floor((Math.random() * 1000000))
+        }
 
-        setLoggedUserData(response.data);
-    }
+            axios.post(`http://localhost:8080/transaction`, transferData)
+                .then(res => {
+                    navigation.navigate("SendMoneySuccess");
+                })
+                .catch(error => {
+                    navigation.navigate("SendMoneyError");
+                })
+        }
 
-  const textInputChange = (val) => {
-    if (val.length >= 1) {
-      setTransferAmount({
-          amount: val
-      });
-    }
-  };
+    // Style functions
+    const formatValue = (value) => {
+        return accounting.formatMoney(parseFloat(value));
+    };
 
-  const onSubmit = () => {
-    makeTransfer();
-  };
-
-  function makeTransfer() {
-    let transferData = {
-        cvu_sender: loggedUserData.account.cvu,
-        cvu_receiver: selectedUser.account.cvu,
-        // All transfer amounts have a 0 as 1st character, so we must get rid of it
-        amount: parseInt(transferAmount.amount.toString()),
-        number: Math.floor((Math.random() * 1000000))
-    }
-
-        axios.post(`http://localhost:8080/transaction`, transferData)
-            .then(res => {
-                console.log("Transfer completed");
-                alert("Transfer completed!");
-                navigation.navigate("HomePage");
-                dispatch(getUserInfo(loggedUser.username))
-            })
-            .catch(error => {
-                alert("Insufficient funds");
-            })
-    }
-
-  // Style functions
-  const formatValue = (value) => {
-    return accounting.formatMoney(parseFloat(value));
-  };
-
-  return (
-    <LinearGradient
-      style={styles.container}
-      colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-        <View style={styles.header}>
-            <TouchableOpacity
-                // style={{ position: "absolute" }}
-                onPress={() => navigation.goBack()}
-            >
-                <Feather name="arrow-left" size={24} color="white" />
-            </TouchableOpacity>
-            <View
-                style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-            >
-                <Text style={styles.greeting}>Send money</Text>
-            </View>
-        </View>
-        <View style={styles.whiteContainer}>
-            <TextInput
-                style={styles.textInputAmount}
-                autoCapitalize="none"
-                value={formatValue(transferAmount.amount)}
-            />
-            <TextInput
-                style={styles.textInputAmountHide}
-                autoCapitalize="none"
-                onChangeText={(val) => textInputChange(val)}
-                value={transferAmount.amount}
-            />
-            <View style={styles.contact}>
-                <View style={styles.avatar}>
-                    <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>
-                        {selectedContactNameInitial}{selectedContactSurnameInitial}
-                    </Text>
-                </View>
-            </View>
-            <View style={styles.whiteContainer}>
-                <TextInput
-                    style={{ height: 40, textAlign: 'center', marginTop: 80, fontSize: 32 }}
-                    placeholder="US$ 0"
-                    onChangeText={(text) => setTransferAmount(text)}
-                    value={transferAmount}
-                />
-                <View style={styles.contact}>
-                    <View style={styles.avatar}>
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                            {selectedContactNameInitial}{selectedContactSurnameInitial}
-                        </Text>
-                    </View>
-                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
-                    </View>
-                </View>
+    return (
+        <LinearGradient
+        style={styles.container}
+        colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        >
+            <View style={styles.header}>
                 <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleSubmit(onSubmit)}
+                    // style={{ position: "absolute" }}
+                    onPress={() => navigation.goBack()}
                 >
-                    <Text style={styles.btnContent}>Send</Text>
+                    <Feather name="arrow-left" size={24} color="white" />
                 </TouchableOpacity>
+                <View
+                    style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+                >
+                    <Text style={styles.greeting}>Send money</Text>
+                </View>
             </View>
-        </View>    
-    </LinearGradient>
-    );
+                <View style={styles.whiteContainer}>
+                    <TextInput
+                        style={styles.textInputAmount}
+                        autoCapitalize="none"
+                        value={formatValue(transferAmount.amount)}
+                    />
+                    <TextInput
+                        style={styles.textInputAmountHide}
+                        autoCapitalize="none"
+                        onChangeText={(val) => textInputChange(val)}
+                        value={transferAmount.amount}
+                    />
+                    <View style={styles.contact}>
+                        <View style={styles.avatar}>
+                            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                {selectedContactNameInitial}{selectedContactSurnameInitial}
+                            </Text>
+                        </View>
+                        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            <Text style={styles.name}>{destinatary.name} {destinatary.surname}</Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={handleSubmit(onSubmit)}
+                    >
+                        <Text style={styles.btnContent}>Send</Text>
+                    </TouchableOpacity>
+                </View>  
+        </LinearGradient>
+        );
 };
 
 export default SendMoney;
@@ -198,7 +168,7 @@ const styles = StyleSheet.create({
     },
     avatar: {
         marginRight: 20,
-        borderRadius: '50%',
+        borderRadius: 50,
         backgroundColor: '#25D681',
         padding: 10,
         height: 41,

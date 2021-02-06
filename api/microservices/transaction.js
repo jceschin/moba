@@ -24,6 +24,9 @@ server.use(cors());
 
 server.post("/transaction", (req, res, next) => {
   console.log(req.body);
+  if(typeof parseInt(req.body.amount) !== 'number' || parseInt(req.body.amount) <= 0){
+    return res.sendStatus(400)
+  }
   (async function () {
     try {
       //Account sender
@@ -47,12 +50,17 @@ server.post("/transaction", (req, res, next) => {
       const sender = await Accounttransaction.create({
         cvu: req.body.cvu_sender,
         number: transaction.number,
+        type: "sender",
+        old_balance: balance_sender.dataValues.balance,
+        new_balance: balance_sender.dataValues.balance,
       });
 
       const receiver = await Accounttransaction.create({
         cvu: req.body.cvu_receiver,
         number: transaction.number,
         type: "receiver",
+        old_balance: balance_receiver.dataValues.balance,
+        new_balance: balance_receiver.dataValues.balance,
       });
 
       //Balance check
@@ -65,7 +73,21 @@ server.post("/transaction", (req, res, next) => {
 
           {
             where: { cvu: req.body.cvu_sender },
-          }
+          } 
+        );
+
+        //Update Accounttransaction sender
+        const upAccounttransactionSender = await Accounttransaction.update(
+          {
+            new_balance: balance_sender.dataValues.balance - req.body.amount,
+          },
+
+          {
+            where: { 
+              cvu: req.body.cvu_sender,
+              number: transaction.number
+            },
+          } 
         );
 
         //Update balancer receiver
@@ -79,6 +101,22 @@ server.post("/transaction", (req, res, next) => {
           {
             where: { cvu: req.body.cvu_receiver },
           }
+        );
+
+         //Update Accounttransaction reseiver
+         const upAccounttransactionreseiver = await Accounttransaction.update(
+          {
+            new_balance:
+              parseFloat(req.body.amount) +
+              parseFloat(balance_receiver.dataValues.balance),
+          },
+
+          {
+            where: { 
+              cvu: req.body.cvu_receiver,
+              number: transaction.number
+            },
+          } 
         );
 
         //Confirmed transaction
@@ -147,7 +185,7 @@ server.get("/transaction/account/:cvu", Verifytoken, (req, res, next) => {
     });
 });
 
-// Get all Transaction for account by username, dni or email
+// Get all confirmed Transaction for account by username, dni or email
 
 server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
   User.findOne({
@@ -164,14 +202,13 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
       if (!user) {
         return res.sendStatus(404);
       }
-      console.log(user.account);
       var numberTrans = user.account.transactions.map((tr) => tr.number);
       if (!numberTrans.length) {
         return res.send(numberTrans);
       }
       Transaction.findAll({
         include: [{ model: Account, include: [{ model: User }] }],
-        where: { number: { [Op.or]: [numberTrans] } },
+        where: { number: { [Op.or]: [numberTrans] }, status: 'confirmed' },
       })
         .then((data) => {
           var sorted = data.map((dat, i) => {

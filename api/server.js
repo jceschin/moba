@@ -10,8 +10,8 @@ require('./microservices/transaction.js')
 require("./microservices/accounts.js");
 require("./microservices/admin.js");
 require("./microservices/contacts.js");
+require("./microservices/statistics.js");
 require("./microservices/whatsapp.js");
-
 
 conn.sync({ force: false })
 .then(() => {

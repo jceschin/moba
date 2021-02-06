@@ -175,10 +175,12 @@ server.post('/findUserName', (req, res) => {
     }
   })
     .then(() => {
+
       return res.json([{
         foundUsername: true, 
       }])
       console.log(res.send)
+
     })
     .catch((err) => {
       console.log("Error no se puede enviar el email: " + err);
@@ -186,7 +188,6 @@ server.post('/findUserName', (req, res) => {
 
   
 })
-
 
 
 server.listen(8005, () => {
