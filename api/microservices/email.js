@@ -147,17 +147,22 @@ server.post('/findUserName', (req, res) => {
  
   User.findOne({
     where: {
-      email: mail,
+      email: mail, // tiene que encontrar el password antes
     },
   }).then((user) => {
+    if(!user){
+      return res.json([{
+        foundUsername: false, 
+      }])
+    }
     console.log(user)
     const auth = user.correctPassword(password) 
     console.log(auth)
     if(auth === false){
-      res.json([{
+      return res.json([{
         foundUsername: false, 
       }])
-      return res.sendStatus(401)
+
     }
     else{
         mailOptions = {
@@ -170,7 +175,7 @@ server.post('/findUserName', (req, res) => {
     }
   })
     .then(() => {
-      res.json([{
+      return res.json([{
         foundUsername: true, 
       }])
       console.log(res.send)
