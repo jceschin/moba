@@ -50,12 +50,17 @@ server.post("/transaction", (req, res, next) => {
       const sender = await Accounttransaction.create({
         cvu: req.body.cvu_sender,
         number: transaction.number,
+        type: "sender",
+        old_balance: balance_sender.dataValues.balance,
+        new_balance: balance_sender.dataValues.balance,
       });
 
       const receiver = await Accounttransaction.create({
         cvu: req.body.cvu_receiver,
         number: transaction.number,
         type: "receiver",
+        old_balance: balance_receiver.dataValues.balance,
+        new_balance: balance_receiver.dataValues.balance,
       });
 
       //Balance check
@@ -68,7 +73,21 @@ server.post("/transaction", (req, res, next) => {
 
           {
             where: { cvu: req.body.cvu_sender },
-          }
+          } 
+        );
+
+        //Update Accounttransaction sender
+        const upAccounttransactionSender = await Accounttransaction.update(
+          {
+            new_balance: balance_sender.dataValues.balance - req.body.amount,
+          },
+
+          {
+            where: { 
+              cvu: req.body.cvu_sender,
+              number: transaction.number
+            },
+          } 
         );
 
         //Update balancer receiver
@@ -82,6 +101,22 @@ server.post("/transaction", (req, res, next) => {
           {
             where: { cvu: req.body.cvu_receiver },
           }
+        );
+
+         //Update Accounttransaction reseiver
+         const upAccounttransactionreseiver = await Accounttransaction.update(
+          {
+            new_balance:
+              parseFloat(req.body.amount) +
+              parseFloat(balance_receiver.dataValues.balance),
+          },
+
+          {
+            where: { 
+              cvu: req.body.cvu_receiver,
+              number: transaction.number
+            },
+          } 
         );
 
         //Confirmed transaction
