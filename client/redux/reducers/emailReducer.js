@@ -1,8 +1,9 @@
-import { VALIDAR_EMAIL, VERIFY_EMAIL } from "../types/emailTypes";
+import { VALIDAR_EMAIL, VERIFY_EMAIL, USERNAME_RECOVERY } from "../types/emailTypes";
 
 const initialState = {
     newEmail: {},
-    verify: []
+    verify: [],
+    username: []
 };
 
 export function emailReducer(state = initialState, action) {
@@ -17,7 +18,12 @@ export function emailReducer(state = initialState, action) {
             return {
                 ...state,
                 verify: action.payload,
-            };        
+            }; 
+            case USERNAME_RECOVERY:
+                return {
+                    ...state,
+                    username: action.payload
+                }      
     
         default:
             return state;

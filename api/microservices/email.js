@@ -152,7 +152,11 @@ server.post('/findUserName', (req, res) => {
   }).then((user) => {
     console.log(user)
     const auth = user.correctPassword(password) 
-    if(!auth){
+    console.log(auth)
+    if(auth === false){
+      res.json([{
+        foundUsername: false, 
+      }])
       return res.sendStatus(401)
     }
     else{
@@ -160,13 +164,15 @@ server.post('/findUserName', (req, res) => {
         from: "noreplymoba@gmail.com",
         to: mail,
         subject: "Username Recovery - moba",
-        html: `your username is ${user.username}, you can use it again to enter your moba account. <br />`,
+        html: `Your username is ${user.username}, you can use it again to enter your moba account. <br />`,
       };
     send()
     }
   })
     .then(() => {
-      res.send({email: mail});
+      res.json([{
+        foundUsername: true, 
+      }])
       console.log(res.send)
     })
     .catch((err) => {
