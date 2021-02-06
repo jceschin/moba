@@ -17,7 +17,8 @@ import accounting from "accounting-js";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { getUserInfo, getUserTransactions } from "../../redux/actions/user";
+import { getUserInfo } from "../../redux/actions/user";
+import { getUserTransactions } from "../../redux/actions/transactionActions";
 
 const AddMoney = ({ navigation }) => {
   const [code, setCode] = React.useState(false);

@@ -6,7 +6,7 @@ export const RECOVERY_USER = "RECOVERY_USER";
 export const PASSWORD_RESET = "PASSWORD_RESET";
 export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
 export const GET_USER_INFO = "GET_USER_INFO";
-export const GET_USER_TRANSACTIONS = "GET_USER_TRANSACTIONS";
+
 
 
 
@@ -75,12 +75,5 @@ export const userInfo = (info) => {
     return {
         type: GET_USER_INFO,
         info
-    }
-};
-
-export const getTransactions = (transactions) => {
-    return {
-        type: GET_USER_TRANSACTIONS,
-        transactions
     }
 };
