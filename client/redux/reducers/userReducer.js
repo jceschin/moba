@@ -61,14 +61,6 @@ const userReducer = (state = initialState, action) => {
         ...state,
         transactions: action.transactions,
       };
-<<<<<<< HEAD
-    case GET_CONTACT_INFO:
-      return {
-        ...state,
-        contactInfo: action.contactInfo
-      };
-=======
->>>>>>> main
     default:
       return state;
   }

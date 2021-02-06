@@ -8,23 +8,30 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import accounting from "accounting-js";
 
-//Redux
-import { getUserInfo, getUserTransactions, getContactInfo } from '../../redux/actions/user';
+//Redux functions
+import { getContactInfo } from '../../redux/actions/contactActions';
 
 const SendMoney = ({ route }) => {
+    // Redux
     const dispatch = useDispatch();
-    const navigation = useNavigation();
     const loggedUser = useSelector((state) => state.user);
-    const destinatary = useSelector((state) => state.contacts.selectedContact)
+    const destinatary = useSelector((state) => state.contacts.selectedContact);
+
+    // Params
     const { 
         selectedContactUsername,
         selectedContactNameInitial,
         selectedContactSurnameInitial 
     } = route.params;
-    const { handleSubmit } = useForm();
+
+    // Amount to be transfered
     const [transferAmount, setTransferAmount] = useState({
         amount: 0
     });
+
+    // Navigation and Form
+    const navigation = useNavigation();
+    const { handleSubmit } = useForm();
 
     useEffect(() => {
         dispatch(getContactInfo(selectedContactUsername))
@@ -54,14 +61,13 @@ const SendMoney = ({ route }) => {
             axios.post(`http://localhost:8080/transaction`, transferData)
                 .then(res => {
                     navigation.navigate("SendMoneySuccess");
-                    dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token))
                 })
                 .catch(error => {
                     navigation.navigate("SendMoneyError");
                 })
         }
 
-  // Style functions
+    // Style functions
     const formatValue = (value) => {
         return accounting.formatMoney(parseFloat(value));
     };
@@ -105,7 +111,7 @@ const SendMoney = ({ route }) => {
                             </Text>
                         </View>
                         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                            <Text style={styles.name}>{selectedUser.name} {selectedUser.surname}</Text>
+                            <Text style={styles.name}>{destinatary.name} {destinatary.surname}</Text>
                         </View>
                     </View>
                     <TouchableOpacity
