@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
-const { Email } = require("../db");
+const { Email, User } = require("../db");
 
 // middlewares
 server.use(morgan("dev"));
@@ -96,7 +96,9 @@ server.post("/verify", (req, res) => {
       console.log(result)
       if (!result) {
 
-        return res.send(false);
+        return res.json([{
+          isvalid: false, 
+        }]);
 
       } else {
      result.update({
@@ -106,7 +108,9 @@ server.post("/verify", (req, res) => {
 
     }).then((result) => {
       console.log(result)
-      res.send(true)
+      res.json([{
+        isvalid: true, 
+      }])
 
     })
   
@@ -114,6 +118,63 @@ server.post("/verify", (req, res) => {
       console.log("No se encontro valideId: " + err);
     });
 });
+
+server.post('/findUserName', (req, res) => {
+  const { mail, password } = req.body;
+  console.log(req.body)
+
+  if(!mail || !password){return res.sendStatus(400)};
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "noreplymoba@gmail.com",
+      pass: "yelwfokrlczzdpoq",
+    },
+  });
+
+  const send = () => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.status(500).json(error.message);
+      } else {
+        console.log("Email enviado");
+      }
+    });
+  };
+
+  var mailOptions
+ 
+  User.findOne({
+    where: {
+      email: mail,
+    },
+  }).then((user) => {
+    console.log(user)
+    const auth = user.correctPassword(password) 
+    if(!auth){
+      return res.sendStatus(401)
+    }
+    else{
+        mailOptions = {
+        from: "noreplymoba@gmail.com",
+        to: mail,
+        subject: "Username Recovery - moba",
+        html: `your username is ${user.username}, you can use it again to enter your moba account. <br />`,
+      };
+    send()
+    }
+  })
+    .then(() => {
+      res.send({email: mail});
+    })
+    .catch((err) => {
+      console.log("Error no se puede enviar el email: " + err);
+    });
+
+  
+})
+
 
 server.listen(8005, () => {
   console.log("Server running on 8005");

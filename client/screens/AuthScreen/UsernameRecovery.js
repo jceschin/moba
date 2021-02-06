@@ -19,7 +19,7 @@ import axios from 'axios'
 
 const UsernameRecovery = ({ navigation }) => {
   const [data, setData] = useState({
-    email: "",
+    mail: "",
     password: "",
     check_textInputChange: false,
     secureTextEntry: true,
@@ -27,12 +27,13 @@ const UsernameRecovery = ({ navigation }) => {
     isValidPassword: true,
   });
 
-  console.log(data.email)
+  console.log(data.mail)
 
   const mailAndPass = {
-    email: data.email,
+    mail: data.mail,
     password: data.password,
   }
+  console.log(mailAndPass)
   // const dispatch = useDispatch();
   // const loginUser = async (data) => dispatch(loginStateUser(data));
 
@@ -40,14 +41,14 @@ const UsernameRecovery = ({ navigation }) => {
     if (val.length >= 4) {
       setData({
         ...data,
-        username: val,
+        mail: val,
         check_textInputChange: true,
         isValidUser: true,
       });
     } else {
       setData({
         ...data,
-        username: val,
+        mail: val,
         check_textInputChange: false,
         isValidUser: false,
       });
@@ -95,21 +96,24 @@ const UsernameRecovery = ({ navigation }) => {
 
   // :::::::::::::::::::AXIOS:::::::::::
 
- const handleRecover = () => axios.post('http://localhost:8080/email/verifymailAndPass', mailAndPass ).then((result) => { //Ruta para buscar por mail y password y encontrar el userName
-							console.log(result)
-                            if (result.data === true) {
+ const handleRecover = () => axios.post('http://localhost:8080/email/findUserName', mailAndPass ).then((result) => { //Ruta para buscar por mail y password y encontrar el userName
+             
+              console.log(result.data)
+            //   if (result.data.email !== mailAndPass.mail || Object.entries(result.data).length === 0){
+            //     alert('Invalid password or email')
+            //   } else {
+            //     alert('We have sent the username to your email box')
+            //     		navigation.navigate('Login')
+            //   }
+            // })
+                            if (result.data.email === mailAndPass.mail) {
                               alert('We have sent the username to your email box')
 								navigation.navigate('Login')
 							} else {
 								alert('Invalid password or email')
 							}
 						})
-  // const loginHandle = async (userName, password) => {
-  //   if (data.username.length === 0 || data.password.length === 0) {
-  //     alert("Username or Password cannot be empty");
-  //   }
-  //   await loginUser(data);
-  // };
+ 
 
   return (
     <View style={styles.container}>
@@ -194,7 +198,7 @@ const UsernameRecovery = ({ navigation }) => {
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn}
             //  onPress={loginHandle}
-            // onPress={ handleRecover}
+            onPress={ handleRecover}
              >
               <Text
                 style={[

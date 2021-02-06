@@ -24,6 +24,9 @@ server.use(cors());
 
 server.post("/transaction", (req, res, next) => {
   console.log(req.body);
+  if(typeof parseInt(req.body.amount) !== 'number' || parseInt(req.body.amount) <= 0){
+    return res.sendStatus(400)
+  }
   (async function () {
     try {
       //Account sender
@@ -182,7 +185,7 @@ server.get("/transaction/account/:cvu", Verifytoken, (req, res, next) => {
     });
 });
 
-// Get all Transaction for account by username, dni or email
+// Get all confirmed Transaction for account by username, dni or email
 
 server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
   User.findOne({
@@ -199,14 +202,13 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
       if (!user) {
         return res.sendStatus(404);
       }
-      console.log(user.account);
       var numberTrans = user.account.transactions.map((tr) => tr.number);
       if (!numberTrans.length) {
         return res.send(numberTrans);
       }
       Transaction.findAll({
         include: [{ model: Account, include: [{ model: User }] }],
-        where: { number: { [Op.or]: [numberTrans] } },
+        where: { number: { [Op.or]: [numberTrans] }, status: 'confirmed' },
       })
         .then((data) => {
           var sorted = data.map((dat, i) => {

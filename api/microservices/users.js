@@ -83,7 +83,6 @@ server.put("/users/:dni", Verifytoken, (req, res) => {
     }
   )
     .then((users) => {
-      console.log(users);
       res.status(200).send(users);
     })
     .catch((err) => {

@@ -5,7 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // REDUX
-import { deleteContact, getUserInfo } from '../../redux/actions/user';
+import { getUserInfo } from '../../redux/actions/user';
+import {deleteContact} from '../../redux/actions/contactActions'
 
 const MyContact = ({ name, surname, phone, username, alias }) => {
   const navigation = useNavigation();
@@ -16,9 +17,7 @@ const MyContact = ({ name, surname, phone, username, alias }) => {
 
 
   const onDelete = () => {
-    alert('Contact eliminated')
     dispatch(deleteContact(alias))
-    dispatch(getUserInfo(loggedUser.username))
   }
 
   return (

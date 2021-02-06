@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import LandingPage from "./LandingPage";
+import { getUserInfo } from "../../redux/actions/user";
 
 const Stack = createStackNavigator();
 

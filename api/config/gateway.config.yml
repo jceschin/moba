@@ -32,6 +32,9 @@ apiEndpoints:
   statistics:
     host: localhost
     paths: ["/statistics", "/statistics/*"]
+  whatsapp:
+    host: localhost
+    paths: ["/whatsapp", "/whatsapp/*"]
 
 ##################################################################################################
 serviceEndpoints:
@@ -51,6 +54,8 @@ serviceEndpoints:
     url: "http://localhost:8006"
   statisticsService:
     url: "http://localhost:8008"
+  whatsappService:
+    url: "http://localhost:8007"
 ##################################################################################################
 policies:
   - basic-auth
@@ -151,6 +156,18 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: contactService
+              stripPath: true
+              changeOrigin: true
+##################################################################################################
+  whatsappPipeline:
+    apiEndpoints:
+      - whatsapp
+    policies:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: whatsappService
               stripPath: true
               changeOrigin: true
 ##################################################################################################

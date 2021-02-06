@@ -18,6 +18,7 @@ export const verifyEmail = (state) => async(dispatch) => {
         const result = await axios.post('http://localhost:8080/email/verify', state);
 
         dispatch(typeVerifyEmail(result.data));
+        console.log(result.data)  // arroja true o false según back
      
     } catch (error) {
         console.log(error)

@@ -17,7 +17,7 @@ import accounting from "accounting-js";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { getUserInfo } from "../../redux/actions/user";
+import { getUserInfo, getUserTransactions } from "../../redux/actions/user";
 
 const AddMoney = ({ navigation }) => {
   const [code, setCode] = React.useState(false);
@@ -85,7 +85,7 @@ const AddMoney = ({ navigation }) => {
     alert(
       `The charge to your account has been completed successfully`
     );
-    dispatch(getUserInfo(loggedUser.username))
+    dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token))
     navigation.navigate("HomePage")
   }
 
