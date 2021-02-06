@@ -4,18 +4,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import accounting from "accounting-js";
 
 //Redux functions
 import { getContactInfo } from '../../redux/actions/contactActions';
+import { addNewTransaction, getUserTransactions } from '../../redux/actions/transactionActions';
 
 const SendMoney = ({ route }) => {
     // Redux
     const dispatch = useDispatch();
     const loggedUser = useSelector((state) => state.user);
     const destinatary = useSelector((state) => state.contacts.selectedContact);
+    const lastTransfer = useSelector((state) => state.transactions.lastTransaction);
 
     // Params
     const { 
@@ -34,8 +35,9 @@ const SendMoney = ({ route }) => {
     const { handleSubmit } = useForm();
 
     useEffect(() => {
-        dispatch(getContactInfo(selectedContactUsername))
-    }, []);
+        dispatch(getContactInfo(selectedContactUsername));
+        alert("New transaction added!");
+    }, [lastTransfer]);
 
     const textInputChange = (val) => {
         if (val.length >= 1) {
@@ -58,14 +60,18 @@ const SendMoney = ({ route }) => {
             number: Math.floor((Math.random() * 1000000))
         }
 
-            axios.post(`http://localhost:8080/transaction`, transferData)
-                .then(res => {
-                    navigation.navigate("SendMoneySuccess");
-                })
-                .catch(error => {
-                    navigation.navigate("SendMoneyError");
-                })
-        }
+        dispatch(addNewTransaction(transferData));
+
+        // axios.post(`http://localhost:8080/transaction`, transferData)
+        //     .then(res => {
+        //         console.log(transferData);
+        //         console.log(res);
+        //         navigation.navigate("SendMoneySuccess");
+        //     })
+        //     .catch(error => {
+        //         navigation.navigate("SendMoneyError");
+        //     })
+    }
 
     // Style functions
     const formatValue = (value) => {
