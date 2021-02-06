@@ -92,22 +92,7 @@ export default function CodeVerification({ navigation, route }) {
 						const { code } = values;
 						console.log(values)
 						dispatch( verifyEmail(mailAndCode));
-						console.log(verify)
-					    // if (verify === true ) {
-						// 	navigation.navigate('RegisterPage', {email:mailAndCode.email})
-						// } else {
-						// 	alert('Please, enter a valid code!')
-						// }
-
-						// axios.post('http://localhost:8080/email/verify', mailAndCode ).then((result) => {
-						// 	console.log(result)
-                        //     if (result.data === true) {
-						// 		navigation.navigate('RegisterPage', {email:mailAndCode.email})
-						// 	} else {
-						// 		alert('Please, enter a valid code!')
-						// 	}
-						// })
-						
+						console.log(verify)						
 					}}
 				>
 					{({ handleChange, handleSubmit, values }) => (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,9 +15,14 @@ import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import axios from 'axios'
 // import { loginStateUser } from "../../redux/actions/user";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { usernameRecovery } from "../../redux/actions/emailActions"
 
 const UsernameRecovery = ({ navigation }) => {
+
+  var username = useSelector((store) => store.email.username);
+  console.log(username)
+
   const [data, setData] = useState({
     mail: "",
     password: "",
@@ -34,7 +39,7 @@ const UsernameRecovery = ({ navigation }) => {
     password: data.password,
   }
   console.log(mailAndPass)
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const loginUser = async (data) => dispatch(loginStateUser(data));
 
   const textInputChange = (val) => {
@@ -96,24 +101,30 @@ const UsernameRecovery = ({ navigation }) => {
 
   // :::::::::::::::::::AXIOS:::::::::::
 
- const handleRecover = () => axios.post('http://localhost:8080/email/findUserName', mailAndPass ).then((result) => { //Ruta para buscar por mail y password y encontrar el userName
+//  const handleRecover = () => axios.post('http://localhost:8080/email/findUserName', mailAndPass ).then((result) => { //Ruta para buscar por mail y password y encontrar el userName
              
-              console.log(result.data)
-            //   if (result.data.email !== mailAndPass.mail || Object.entries(result.data).length === 0){
-            //     alert('Invalid password or email')
-            //   } else {
-            //     alert('We have sent the username to your email box')
-            //     		navigation.navigate('Login')
-            //   }
-            // })
-                            if (result.data.email === mailAndPass.mail) {
-                              alert('We have sent the username to your email box')
-								navigation.navigate('Login')
-							} else {
-								alert('Invalid password or email')
-							}
-						})
- 
+//               console.log(result.data)
+//                             if (result.data.email === mailAndPass.mail) {
+//                               alert('We have sent the username to your email box')
+// 								navigation.navigate('Login')
+// 							} else {
+// 								alert('Invalid password or email')
+// 							}
+// 						})
+
+            useEffect(() => {
+	 
+              if(username.length > 0){
+                if(username[0].foundUsername === true){
+                  alert('We have sent the username to your email box')
+                  navigation.navigate('Login')
+                } 
+                else{
+                  alert('Invalid password or email')
+                }
+                }
+             
+             }, [username]);
 
   return (
     <View style={styles.container}>
@@ -198,7 +209,7 @@ const UsernameRecovery = ({ navigation }) => {
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn}
             //  onPress={loginHandle}
-            onPress={ handleRecover}
+            onPress={ () => dispatch(usernameRecovery(mailAndPass))}
              >
               <Text
                 style={[

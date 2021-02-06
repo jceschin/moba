@@ -147,26 +147,40 @@ server.post('/findUserName', (req, res) => {
  
   User.findOne({
     where: {
-      email: mail,
+      email: mail, // tiene que encontrar el password antes
     },
   }).then((user) => {
+    if(!user){
+      return res.json([{
+        foundUsername: false, 
+      }])
+    }
     console.log(user)
     const auth = user.correctPassword(password) 
-    if(!auth){
-      return res.sendStatus(401)
+    console.log(auth)
+    if(auth === false){
+      return res.json([{
+        foundUsername: false, 
+      }])
+
     }
     else{
         mailOptions = {
         from: "noreplymoba@gmail.com",
         to: mail,
         subject: "Username Recovery - moba",
-        html: `your username is ${user.username}, you can use it again to enter your moba account. <br />`,
+        html: `Your username is ${user.username}, you can use it again to enter your moba account. <br />`,
       };
     send()
     }
   })
     .then(() => {
-      res.send({email: mail});
+
+      return res.json([{
+        foundUsername: true, 
+      }])
+      console.log(res.send)
+
     })
     .catch((err) => {
       console.log("Error no se puede enviar el email: " + err);
