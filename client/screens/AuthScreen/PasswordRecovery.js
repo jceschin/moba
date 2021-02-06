@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,11 +13,19 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { AntDesign } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { passwordRecovery } from "../../redux/actions/emailActions"
 import axios from 'axios';
 // import { loginStateUser } from "../../redux/actions/user";
 // import { useDispatch, useSelector } from "react-redux";
 
 const PasswordRecovery = ({ navigation }) => {
+
+  var emailOrUsername = useSelector((store) => store.email.emailOrUsername);
+  console.log(emailOrUsername)
+
+  const dispatch = useDispatch();
+
   const [data, setData] = useState({
     usernameOrEmail: "",
     check_textInputChange: false,
@@ -27,29 +35,46 @@ const PasswordRecovery = ({ navigation }) => {
   });
 
 
-  const mailOrUsername = {
-    usernameOrEmail: data.usernameOrEmail,
-  }
+  // const emailOrUsername = {
+  //   usernameOrEmail: data.usernameOrEmail,
+  // }
   // const dispatch = useDispatch();
   // const loginUser = async (data) => dispatch(loginStateUser(data));
-
-  const textInputChange = (val) => {
+   console.log(data.usernameOrEmail)
+   const textInputChange = (val) => {
     if (val.length >= 4) {
       setData({
         ...data,
-        username: val,
+        usernameOrEmail: val,
         check_textInputChange: true,
         isValidUser: true,
       });
     } else {
       setData({
         ...data,
-        username: val,
+        usernameOrEmail: val,
         check_textInputChange: false,
         isValidUser: false,
       });
     }
   };
+  // const textInputChange = (val) => {
+  //   if (val.length >= 4) {
+  //     setData({
+  //       ...data,
+  //       username: val,
+  //       check_textInputChange: true,
+  //       isValidUser: true,
+  //     });
+  //   } else {
+  //     setData({
+  //       ...data,
+  //       username: val,
+  //       check_textInputChange: false,
+  //       isValidUser: false,
+  //     });
+  //   }
+  // };
 
   // const handlePasswordChange = (val) => {
   //   if (val.trim().length >= 8) {
@@ -91,15 +116,15 @@ const PasswordRecovery = ({ navigation }) => {
 
   // :::::::::::::::::::AXIOS:::::::::::
 
-  const handleRecoverPass = () => axios.post('http://localhost:8080/email/recoverPass', mailOrUsername ).then((result) => { //Ruta para buscar por mail o userName y encontrar el password
-							console.log(result)
-                            if (result.data === true) {
-                              alert('We have sent the username to your email box')
-								navigation.navigate('Login')
-							} else {
-								alert('Invalid password or email')
-							}
-            })
+  // const handleRecoverPass = () => axios.post('http://localhost:8080/email/recoverPass', mailOrUsername ).then((result) => { //Ruta para buscar por mail o userName y encontrar el password
+	// 						console.log(result)
+  //                           if (result.data === true) {
+  //                             alert('We have sent the username to your email box')
+	// 							navigation.navigate('Login')
+	// 						} else {
+	// 							alert('Invalid password or email')
+	// 						}
+  //           })
             
   // const loginHandle = async (userName, password) => {
   //   if (data.username.length === 0 || data.password.length === 0) {
@@ -107,6 +132,20 @@ const PasswordRecovery = ({ navigation }) => {
   //   }
   //   await loginUser(data);
   // };
+
+  useEffect(() => {
+	 
+    if(emailOrUsername.length > 0){
+      if(emailOrUsername[0].emailOrUsername === true){
+        alert('We have sent to your email the code to reset your password')
+        navigation.navigate("TokenRecovery")
+      } 
+      else{
+        alert('Email or username not found')
+      }
+      }
+   
+   }, [emailOrUsername]);
 
   return (
     <View style={styles.container}>
@@ -161,7 +200,7 @@ const PasswordRecovery = ({ navigation }) => {
        
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn}
-            //  onPress={loginHandle}
+                 onPress={ () => dispatch(passwordRecovery({dataUser: data.usernameOrEmail}))}
             //  onPress={handleRecoverPass} 
              >
               <Text

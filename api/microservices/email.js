@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
+const { Op } = require("sequelize");
 const { Email, User } = require("../db");
 
 // middlewares
@@ -187,6 +188,109 @@ server.post('/findUserName', (req, res) => {
     });
 
   
+})
+
+//RECOVERY USER (send token)
+server.post("/recovery/sendtoken", (req, res) => {
+  const recoveryToken = Math.floor(Math.random() * 90000) + 10000;
+  const { dataUser } = req.body;
+  console.log(dataUser)
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "noreplymoba@gmail.com",
+      pass: "yelwfokrlczzdpoq",
+    },
+  });
+
+  var mailOptions = {
+    from: "noreplymoba@gmail.com",
+    to: "",
+    subject: "Password recovery - moba",
+    html: `Hi, for recovery your password, please use the following code: ${recoveryToken}. <br />`,
+  };
+
+
+  const send = () => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.status(500).json(error.message);
+      } else {
+        console.log("Recovery token sent");
+      }
+    });
+  };
+  console.log(dataUser);
+
+  if(!dataUser){return res.sendStatus(400)}
+
+  //send mail
+  User.findOne({
+    where: { [Op.or]: [{ email: dataUser }, { username: dataUser }] },
+  }).then((user) => {
+    if (!user) {
+      return res.json([{
+        emailOrUsername: false
+      }])
+    }
+    user.recoveryToken = recoveryToken 
+    user.save().then((user) => {
+      mailOptions.to = user.email
+      send()
+      //Token expires after 5mins
+      setTimeout(() => {
+        user.recoveryToken = null
+        user.save().then(() => {console.log('recovery token expired')})
+      },300000)
+      res.json([{
+        emailOrUsername: true
+      }])
+    })
+  });
+});
+
+server.post('/recovery/verifytoken', (req,res) => {
+  const {dataUser, token} = req.body 
+  if(!dataUser || !token){return res.sendStatus(400)}
+  User.findOne({
+    where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}
+  })
+  .then((user) => {
+    if(!user){
+      return res.json([{
+        recoveryToken: 'user not exists', 
+      }])
+    }
+    if(!user.recoveryToken){
+      return res.json([{
+        recoveryToken: 'expired token', 
+      }])
+    }
+    if(user.recoveryToken !== token){
+      return res.json([{
+        recoveryToken: 'invalid token', 
+      }])
+    }
+    res.json([{
+      recoveryToken: 'valid token', 
+    }])
+  })
+})
+
+server.put('/recovery/changepassword', (req,res) => {
+  const {dataUser, password} = req.body 
+  if(!dataUser || !password){return res.send('User or password not received')}
+  User.findOne({
+    where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}
+  })
+  .then((user) => {
+    if(!user){return res.send('User not exists')}
+    user.password = password
+    user.save().then(() => {
+      res.send('Password changed succesfully')
+    })
+  })
 })
 
 

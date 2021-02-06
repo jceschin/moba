@@ -8,6 +8,9 @@ import AuthUserScreen from "./AuthUserScreen/AuthUserScreen";
 import Validation from "./AuthScreen/Validation";
 import UsernameRecovery from './AuthScreen/UsernameRecovery';
 import PasswordRecovery from './AuthScreen/PasswordRecovery';
+import FormNewPassword from './AuthScreen/FormNewPassword';
+import TokenRecovery from './AuthScreen/TokenRecovery'
+
 const Stack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => {
@@ -22,6 +25,8 @@ const RootStackScreen = ({ navigation }) => {
              <Stack.Screen name="Validation" component={Validation} />
              <Stack.Screen name="UsernameRecovery" component={UsernameRecovery} />
              <Stack.Screen name="PasswordRecovery" component={PasswordRecovery} />
+             <Stack.Screen name="FormNewPassword" component={FormNewPassword} />
+             <Stack.Screen name="TokenRecovery" component={TokenRecovery} />
           </>
         ) : !user.data.token ? null : (
           <Stack.Screen name="AuthUserScreen" component={AuthUserScreen} />
