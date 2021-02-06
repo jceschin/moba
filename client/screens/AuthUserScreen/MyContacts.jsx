@@ -7,16 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
 //Redux
-import { addNewContact } from '../../redux/actions/contactActions';
-import { getUserInfo } from "../../redux/actions/user";
+import { addNewContact } from '../../redux/actions/user';
 
 const MyContacts = () => {
   const navigation = useNavigation();
   let loggedUser = useSelector((state) => state.user)
-  let contactsUser = useSelector((state) => state.contacts)
-  let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
-  console.log('ESTO ES USER CONTACTS', userContacts)
-
+  // let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
+  // console.log('ESTO ES USER CONTACTS', userContacts)
+  let userContacts = useSelector((state) => state.user.user);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState({
     alias: '',
@@ -24,14 +22,14 @@ const MyContacts = () => {
   })
   const dispatch = useDispatch();
 
-  const onSubmit = () => {
-    console.log(userContacts)
-    dispatch(addNewContact({...data, user_username: loggedUser.username}))
-  }
+  // const onSubmit = () => {
+  //   console.log(userContacts)
+  //   dispatch(addNewContact({...data, user_username: loggedUser.username}))
+  // }
 
   useEffect(() => {
-    dispatch(getUserInfo(loggedUser.username))
-  },[contactsUser.contacts])
+    //dispatch(getUserInfo(loggedUser.username))
+  },[loggedUser.user])
 
   return (
     <LinearGradient
@@ -40,7 +38,7 @@ const MyContacts = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Modal
+      {/* <Modal
         animationType='fade'
         transparent={true}
         visible={modalVisible}
@@ -65,7 +63,7 @@ const MyContacts = () => {
         }}>
           <Text>Cancel</Text>
         </TouchableOpacity>
-      </Modal>
+      </Modal> */}
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <TouchableOpacity
