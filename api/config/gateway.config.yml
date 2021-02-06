@@ -50,7 +50,7 @@ serviceEndpoints:
   contactService:
     url: "http://localhost:8006"
   statisticsService:
-    url: "http://localhost:8007"
+    url: "http://localhost:8008"
 ##################################################################################################
 policies:
   - basic-auth

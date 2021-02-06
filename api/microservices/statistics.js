@@ -71,8 +71,8 @@ server.get("/statistics/:cvu/:dateFrom/:dateTo" ,(req, res) => {
 	.catch(err => { res.send(err) });
 })
 
-server.listen(8007, () => {
-  console.log("statistics microservice running on 8007");
+server.listen(8008, () => {
+  console.log("statistics microservice running on 8008");
 });
 
 module.exports = server;
