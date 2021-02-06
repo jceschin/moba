@@ -29,6 +29,9 @@ apiEndpoints:
   contact:
     host: localhost
     paths: ["/contacts", "/contacts/*"]
+  statistics:
+    host: localhost
+    paths: ["/statistics", "/statistics/*"]
 
 ##################################################################################################
 serviceEndpoints:
@@ -46,6 +49,8 @@ serviceEndpoints:
     url: "http://localhost:8005"
   contactService:
     url: "http://localhost:8006"
+  statisticsService:
+    url: "http://localhost:8007"
 ##################################################################################################
 policies:
   - basic-auth
@@ -147,4 +152,15 @@ pipelines:
           - action:
               serviceEndpoint: contactService
               stripPath: true
+              changeOrigin: true
+##################################################################################################
+  statisticsPipeline:
+    apiEndpoints:
+      - statistics
+    policies:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: statisticsService
               changeOrigin: true

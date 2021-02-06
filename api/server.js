@@ -10,7 +10,7 @@ require('./microservices/transaction.js')
 require("./microservices/accounts.js");
 require("./microservices/admin.js");
 require("./microservices/contacts.js");
-
+require("./microservices/statistics.js");
 
 conn.sync({ force: false })
 .then(() => {

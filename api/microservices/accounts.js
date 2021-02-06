@@ -2,7 +2,7 @@ const express = require("express");
 const server = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const { Account, User, Transaction } = require("../db");
+const { Account, User, Transaction, Accounttransaction } = require("../db");
 const { Op } = require("sequelize");
 const cors = require("cors");
 
@@ -108,7 +108,15 @@ server.put("/accounts/recharge/:userCode", (req, res) => {
           transaction_type: "charge",
           status: "confirmed",
         }).then((tr) => {
-          account.addTransaction(tr);
+          
+          Accounttransaction.create({
+            cvu: account.cvu,
+            number: tr.dataValues.number,
+            type: "charge",
+            old_balance: parseInt(acc.balance) - parseInt(amount),
+            new_balance: acc.balance,
+          });
+
           res.send(account);
         });
       });
