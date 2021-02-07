@@ -2,60 +2,60 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: 192.168.0.18
+  host: ${LOCAL_IP:-localhost}
 ##################################################################################################
 apiEndpoints:
   api:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: "/ip"
   auth:
     paths: ["/auth/", "/auth/*"]
   users:
     methods: "GET,POST,PUT,PATCH,DELETE"
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: ["/users", "/users/*"]
   account:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: ["/accounts", "/accounts/*"]
   admin:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: "/admin/*"
   transaction:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: ["/transaction", "/transaction/*"]
   email:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: ["/email", "/email/*"]
   contact:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: ["/contacts", "/contacts/*"]
   statistics:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: ["/statistics", "/statistics/*"]
   whatsapp:
-    host: 192.168.0.18
+    host: ${LOCAL_IP:-localhost}
     paths: ["/whatsapp", "/whatsapp/*"]
 
 ##################################################################################################
 serviceEndpoints:
   usersService:
-    url: "http://192.168.0.18:8000"
+    url: "http://${LOCAL_IP:-localhost}:8000"
   transactionService:
-    url: "http://192.168.0.18:8001"
+    url: "http://${LOCAL_IP:-localhost}:8001"
   authService:
-    url: "http://192.168.0.18:8002"
+    url: "http://${LOCAL_IP:-localhost}:8002"
   accountService:
-    url: "http://192.168.0.18:8004"
+    url: "http://${LOCAL_IP:-localhost}:8004"
   adminService:
-    url: "http://192.168.0.18:8003"
+    url: "http://${LOCAL_IP:-localhost}:8003"
   emailService:
-    url: "http://192.168.0.18:8005"
+    url: "http://${LOCAL_IP:-localhost}:8005"
   contactService:
-    url: "http://192.168.0.18:8006"
+    url: "http://${LOCAL_IP:-localhost}:8006"
   statisticsService:
-    url: "http://192.168.0.18:8008"
+    url: "http://${LOCAL_IP:-localhost}:8008"
   whatsappService:
-    url: "http://192.168.0.18:8007"
+    url: "http://${LOCAL_IP:-localhost}:8007"
 ##################################################################################################
 policies:
   - basic-auth
@@ -76,7 +76,7 @@ pipelines:
     policies:
       - log:
           - action:
-              message: "header===> ${req.headers.authorization}"
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       # - jwt:
       #   - action:
       #       secretOrPublicKey: 'mobaAuth'

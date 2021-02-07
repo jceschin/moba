@@ -9,7 +9,6 @@ import {
   } from '../types/contactTypes';
 
 
-
 //User adds new contact
 
 export function addNewContact(newContact) {
@@ -79,3 +78,4 @@ export function addNewContact(newContact) {
   
     }
   }
+
