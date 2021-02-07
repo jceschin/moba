@@ -130,7 +130,7 @@ server.post("/transaction", (req, res, next) => {
           }
         );
 
-        res.status(201).send({ transaction, sender, receiver });
+        res.status(201).json({...transaction.dataValues, status:'confirmed'});
       } else {
         //Cancelled transaction
         const transactionFail = await Transaction.update(
@@ -143,7 +143,7 @@ server.post("/transaction", (req, res, next) => {
           }
         );
 
-        res.status(404).send("error fondos insuficientes");
+        res.status(201).json({...transaction.dataValues, status:'cancelled'});
       }
     } catch (err) {
       res.status(404).send(err);

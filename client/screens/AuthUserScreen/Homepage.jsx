@@ -66,7 +66,7 @@ const Homepage = () => {
       getUserTransactions(loggedUser.username, loggedUser.data.data.token)
     );
     dispatch(getUserInfo(loggedUser.username));
-  }, [transactions && transactions.length]);
+  }, []);
 
 //
   return (

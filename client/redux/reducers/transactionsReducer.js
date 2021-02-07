@@ -1,8 +1,8 @@
-import { ADD_TRANSACTION, GET_USER_TRANSACTIONS } from "../types/transactionTypes";
+import { ADD_TRANSACTION, GET_USER_TRANSACTIONS, CLEAR_LAST_TRANSACTION } from "../types/transactionTypes";
 
 const initialState = {
     transactions: [],
-    lastTransaction: {}
+    lastTransaction: null
 };
 
 export function transactionsReducer(state = initialState, action) {
@@ -16,7 +16,12 @@ export function transactionsReducer(state = initialState, action) {
             return {
                 ...state,
                 transactions: action.transactions,
-            };      
+            };  
+        case CLEAR_LAST_TRANSACTION:
+            return{
+                ...state,
+                lastTransaction: null
+            }
         default:
             return state;
     }
