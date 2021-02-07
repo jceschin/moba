@@ -35,7 +35,7 @@ export function loginStateUser(loginInput) {
   const { username } = loginInput;
   return (dispatch) => {
     return axios
-      .post("http://localhost:8080/auth/login", loginInput)
+      .post("http://192.168.0.18:8080/auth/login", loginInput)
       .then((json) => {
         if (json.status === 200) {
           const o = { ...json, username: username };
@@ -65,7 +65,7 @@ export function logoutUserAction() {
 export function getUserInfo(username){
   return (dispatch) => {
     return axios
-      .get(`http://localhost:8000/users/${username}`)
+      .get(`http://192.168.0.18:8080/users/${username}`)
       .then((data) => {
         if(data.status !== 200){
           alert('Sorry, an error ocurred')          
@@ -80,19 +80,7 @@ export function getUserInfo(username){
   }
 }
 
-//Get transactions 
-export function getUserTransactions(username, token){
-  return (dispatch) => {
-    return axios.get(
-          `http://localhost:8080/transaction/users/${username}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-        ).then((tr) => {
-          dispatch(getTransactions(tr.data))
-        })
-        .catch((err) => console.log(err))
-  }
-}
+
 
 
 

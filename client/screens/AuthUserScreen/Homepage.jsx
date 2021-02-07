@@ -23,8 +23,7 @@ const Homepage = () => {
 
   const renderTransactions = () => {
     if (transactions.length > 0) {
-      var sortedTransactions = transactions.reverse()
-      return sortedTransactions.map((t) => {
+      var sortedTransactions = transactions.map((t) => {
         var data;
         if (t.sender === loggedUser.username) {
           data = (
@@ -58,6 +57,7 @@ const Homepage = () => {
           </View>
         );
       });
+      return sortedTransactions.reverse()
     }
   };
 
@@ -84,7 +84,7 @@ const Homepage = () => {
                 `${loggedUser.info.name} ${loggedUser.info.surname}`}
             </Text>
             <Text style={styles.balanceTag}>Balance</Text>
-            {loggedUser.info ? (
+            {(loggedUser.info && loggedUser.info.account) ? (
               <Text style={styles.balance}>
                 US$ {loggedUser.info.account.balance}
               </Text>

@@ -4,7 +4,7 @@ import { addTransaction, getTransactions, clearTransaction } from "../types/tran
 export function addNewTransaction(transferData) {
   return async (dispatch) => {
     try {
-      const res = axios.post(`http://localhost:8080/transaction`, {
+      const res = axios.post(`http://192.168.0.18:8080/transaction`, {
         ...transferData,
       });
       res.then((tr) => {
@@ -21,7 +21,7 @@ export function addNewTransaction(transferData) {
 export function getUserTransactions(username, token) {
   return (dispatch) => {
     return axios
-      .get(`http://localhost:8080/transaction/users/${username}`, {
+      .get(`http://192.168.0.18:8080/transaction/users/${username}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((tr) => {

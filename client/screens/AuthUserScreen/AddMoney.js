@@ -25,7 +25,7 @@ const AddMoney = ({ navigation }) => {
   const [transfer, setTransfer] = React.useState(false);
   const [amount, setAmount] = React.useState(false);
   const [amountCharge, setAmountCharge] = React.useState({
-    amount: 0,
+    amount: 2121,
   });
   const dispatch = useDispatch();
 
@@ -76,24 +76,26 @@ const AddMoney = ({ navigation }) => {
 
   async function addMoney(chargeCode) {
     let response = await axios.put(
-      `http://localhost:8080/accounts/recharge/${loggedUser.info.account.rechargeCode}`,
+      `http://192.168.0.18:8080/accounts/recharge/${loggedUser.info.account.rechargeCode}`,
       {
         headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
         amount: amountCharge.amount,
       }
     );
     console.log(response);
+    dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token))
+    dispatch(getUserInfo(loggedUser.username))
     alert(
       `The charge to your account has been completed successfully`
     );
-    dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token))
+ 
     navigation.navigate("HomePage")
   }
 
   useEffect(() => {
     //getUser(loggedUser.username);
     dispatch(getUserInfo(loggedUser.username))
-  }, [index]);
+  }, []);
 
   return (
     <View style={styles.container}>

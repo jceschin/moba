@@ -2,60 +2,60 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: localhost
+  host: 192.168.0.18
 ##################################################################################################
 apiEndpoints:
   api:
-    host: localhost
+    host: 192.168.0.18
     paths: "/ip"
   auth:
     paths: ["/auth/", "/auth/*"]
   users:
     methods: "GET,POST,PUT,PATCH,DELETE"
-    host: localhost
+    host: 192.168.0.18
     paths: ["/users", "/users/*"]
   account:
-    host: localhost
+    host: 192.168.0.18
     paths: ["/accounts", "/accounts/*"]
   admin:
-    host: localhost
+    host: 192.168.0.18
     paths: "/admin/*"
   transaction:
-    host: localhost
+    host: 192.168.0.18
     paths: ["/transaction", "/transaction/*"]
   email:
-    host: localhost
+    host: 192.168.0.18
     paths: ["/email", "/email/*"]
   contact:
-    host: localhost
+    host: 192.168.0.18
     paths: ["/contacts", "/contacts/*"]
   statistics:
-    host: localhost
+    host: 192.168.0.18
     paths: ["/statistics", "/statistics/*"]
   whatsapp:
-    host: localhost
+    host: 192.168.0.18
     paths: ["/whatsapp", "/whatsapp/*"]
 
 ##################################################################################################
 serviceEndpoints:
   usersService:
-    url: "http://localhost:8000"
+    url: "http://192.168.0.18:8000"
   transactionService:
-    url: "http://localhost:8001"
+    url: "http://192.168.0.18:8001"
   authService:
-    url: "http://localhost:8002"
+    url: "http://192.168.0.18:8002"
   accountService:
-    url: "http://localhost:8004"
+    url: "http://192.168.0.18:8004"
   adminService:
-    url: "http://localhost:8003"
+    url: "http://192.168.0.18:8003"
   emailService:
-    url: "http://localhost:8005"
+    url: "http://192.168.0.18:8005"
   contactService:
-    url: "http://localhost:8006"
+    url: "http://192.168.0.18:8006"
   statisticsService:
-    url: "http://localhost:8008"
+    url: "http://192.168.0.18:8008"
   whatsappService:
-    url: "http://localhost:8007"
+    url: "http://192.168.0.18:8007"
 ##################################################################################################
 policies:
   - basic-auth
