@@ -1,7 +1,8 @@
 export const VALIDAR_EMAIL = "VALIDAR_EMAIL";
 export const VERIFY_EMAIL = 'VERIFY_EMAIL';
-export const USERNAME_RECOVERY = 'USERNAME_RECOVERY'
-export const PASSWORD_RECOVERY = 'PASSWORD_RECOVERY'
+export const USERNAME_RECOVERY = 'USERNAME_RECOVERY';
+export const PASSWORD_RECOVERY = 'PASSWORD_RECOVERY';
+export const VERIFY_TOKEN = 'VERIFY_TOKEN';
 
 export const validarEmail = (res) => {
   return {
@@ -27,6 +28,13 @@ export const typeUsernameRecovery = (res) => {
 export const typePasswordRecovery = (res) => {
   return {
     type: PASSWORD_RECOVERY,
+    payload: res,
+  };
+};
+
+export const typeVerifyToken = (res) => {
+  return {
+    type: VERIFY_TOKEN,
     payload: res,
   };
 };

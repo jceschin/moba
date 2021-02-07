@@ -4,7 +4,8 @@ const initialState = {
     newEmail: {},
     verify: [],
     username: [],
-    emailOrUsername: []
+    emailOrUsername: [],
+    token: []
 };
 
 export function emailReducer(state = initialState, action) {

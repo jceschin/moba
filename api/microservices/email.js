@@ -244,7 +244,8 @@ server.post("/recovery/sendtoken", (req, res) => {
         user.save().then(() => {console.log('recovery token expired')})
       },300000)
       res.json([{
-        emailOrUsername: true
+        emailOrUsername: true,
+        emailToken: dataUser
       }])
     })
   });
@@ -252,6 +253,7 @@ server.post("/recovery/sendtoken", (req, res) => {
 
 server.post('/recovery/verifytoken', (req,res) => {
   const {dataUser, token} = req.body 
+  console.log(req.body)
   if(!dataUser || !token){return res.sendStatus(400)}
   User.findOne({
     where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}

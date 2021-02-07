@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery } from "../types/emailTypes"
+import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken } from "../types/emailTypes"
 
 //:::::Enviar email con código de validación
 export const enviarEmail = (state) => async(dispatch) => {
@@ -50,3 +50,15 @@ export const  passwordRecovery = (dataUser) => async(dispatch) => {
         console.log(error)
     };
 };
+
+//:::: Verifica token 
+export const  verifyToken = (obj) => async(dispatch) => {
+    console.log("Este es el", obj)
+    try {
+        const result = await axios.post('http://localhost:8080/email/recovery/verifytoken', obj );
+        dispatch(typeVerifyToken(result.data));
+        console.log(result.data)
+    } catch (error) {
+        console.log(error)
+    };
+}
