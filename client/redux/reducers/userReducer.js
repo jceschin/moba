@@ -6,7 +6,9 @@ import {
   RECOVERY_USER,
   PASSWORD_RESET,
   CHANGE_USER_PASSWORD,
-  GET_USER_INFO
+  GET_USER_INFO,
+  GET_USER_TRANSACTIONS,
+  CHARGE_USER_ACCOUNT
 } from "../types/userTypes";
 
 const initialState = {
@@ -55,6 +57,17 @@ const userReducer = (state = initialState, action) => {
         ...state,
         info: action.info,
       };
+    case GET_USER_TRANSACTIONS:
+      return {
+        ...state,
+        transactions: action.transactions,
+      };
+      case CHARGE_USER_ACCOUNT:
+      return {
+        ...state,
+        charge: state.charge.map(charge =>
+          charge.id === action.payload.id ? charge = action.payload : charge,
+        )};
     default:
       return state;
   }

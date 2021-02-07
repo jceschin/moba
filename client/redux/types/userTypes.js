@@ -6,9 +6,8 @@ export const RECOVERY_USER = "RECOVERY_USER";
 export const PASSWORD_RESET = "PASSWORD_RESET";
 export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
 export const GET_USER_INFO = "GET_USER_INFO";
-
-
-
+export const GET_USER_TRANSACTIONS = "GET_USER_TRANSACTIONS";
+export const CHARGE_USER_ACCOUNT = "CHARGE_USER_ACCOUNT";
 
 // ERROR HANDLER
 export const ERROR_HANDLER = "ERROR_HANDLER";
@@ -77,3 +76,17 @@ export const userInfo = (info) => {
         info
     }
 };
+
+export const getTransactions = (transactions) => {
+    return {
+        type: GET_USER_TRANSACTIONS,
+        transactions
+    }
+};
+
+export const chargeAccount = (charge) => {
+    return {
+      type: CHARGE_USER_ACCOUNT,
+      charge,
+    };
+  };

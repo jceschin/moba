@@ -17,10 +17,13 @@ import accounting from "accounting-js";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { getUserInfo } from "../../redux/actions/user";
-import { getUserTransactions } from "../../redux/actions/transactionActions";
+import {
+  getUserInfo,
+  getUserTransactions,
+  chargeAccount,
+} from "../../redux/actions/user";
 
-const AddMoney = ({ navigation }) => {
+const AddMoney = ({ navigation, route }) => {
   const [code, setCode] = React.useState(false);
   const [transfer, setTransfer] = React.useState(false);
   const [amount, setAmount] = React.useState(false);
@@ -32,8 +35,6 @@ const AddMoney = ({ navigation }) => {
   const loggedUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
   const [index, setIndex] = useState(0);
-
-
 
   const tabCode = () => {
     transfer === true ? setTransfer(false) : null;
@@ -63,36 +64,23 @@ const AddMoney = ({ navigation }) => {
   };
 
   const formatValue = (value) => {
-    return accounting.formatMoney(parseFloat(value.toString()));
+    return accounting.formatMoney(parseFloat(value));
   };
 
-  // async function getUser(username) {
-  //   let response = await axios.get(`http://localhost:8080/users/${username}`, {
-  //     headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-  //   });
-
-  //   setUser(response.data);
-  // }
-
-  async function addMoney(chargeCode) {
-    let response = await axios.put(
-      `http://localhost:8080/accounts/recharge/${loggedUser.info.account.rechargeCode}`,
-      {
-        headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+  const addMoneyUser = () => {
+     dispatch(
+      chargeAccount(loggedUser.info.account.rechargeCode, {
         amount: amountCharge.amount,
-      }
+      })
     );
-    console.log(response);
-    alert(
-      `The charge to your account has been completed successfully`
-    );
-    dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token))
-    navigation.navigate("HomePage")
-  }
+    alert("The charge to your account has been completed successfully")
+     dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token));
+    navigation.navigate("HomePage");
+  };
 
   useEffect(() => {
     //getUser(loggedUser.username);
-    dispatch(getUserInfo(loggedUser.username))
+    dispatch(getUserInfo(loggedUser.username));
   }, [index]);
 
   return (
@@ -186,26 +174,28 @@ const AddMoney = ({ navigation }) => {
                   The minimum amount is $100
                 </Text>
 
-                <View
+                {/* <View
                   style={{
                     color: "#168903",
                     top: "50%",
                     left: "35%",
                     alignItems: "center",
                   }}
-                >
-                  <TextInput
+                > */}
+                {/* <TextInput
                     style={styles.textInputAmount}
                     autoCapitalize="none"
                     value={formatValue(amountCharge.amount)}
-                  />
-                  <TextInput
-                    style={styles.textInputAmountHide}
-                    autoCapitalize="none"
                     value={amountCharge.amount}
                     onChangeText={(val) => textInputChange(val)}
-                  />
-                </View>
+                  /> */}
+                <TextInput
+                  style={styles.textInputAmountHide}
+                  autoCapitalize="none"
+                  value={amountCharge.amount}
+                  onChangeText={(val) => textInputChange(val)}
+                />
+                {/* </View> */}
 
                 <TouchableOpacity
                   style={styles.continueCharge}
@@ -240,7 +230,9 @@ const AddMoney = ({ navigation }) => {
                 }}
               >
                 <Text style={{ fontSize: 20, color: "#fff" }}>
-                  {(loggedUser && loggedUser.info) ? loggedUser.info.account.rechargeCode : null}
+                  {loggedUser && loggedUser.info
+                    ? loggedUser.info.account.rechargeCode
+                    : null}
                 </Text>
               </View>
             </View>
@@ -263,7 +255,7 @@ const AddMoney = ({ navigation }) => {
             <View style={{ paddingTop: 170, alignItems: "center" }}>
               <TouchableOpacity
                 style={styles.confirmCharge}
-                onPress={() => dispatch(addMoney)}
+                onPress={addMoneyUser}
               >
                 <Text style={{ fontSize: 18, color: "#fff" }}>Confirm</Text>
               </TouchableOpacity>
@@ -403,22 +395,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     backgroundColor: "#567BFF",
-    top: 300,
+    /*  top: 300, */
   },
   textInputAmount: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    /* paddingLeft: 10, */
+    marginTop: Platform.OS === "ios" ? 0 : 10,
+    paddingLeft: 10,
     color: "#168903",
     fontSize: 24,
   },
   textInputAmountHide: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    /* paddingLeft: 10, */
+    marginTop: Platform.OS === "ios" ? 0 : 0,
+    paddingLeft: 10,
     color: "#168903",
     fontSize: 24,
     marginTop: -30,
-    opacity: 0,
+    /* opacity: 0, */
   },
 });
