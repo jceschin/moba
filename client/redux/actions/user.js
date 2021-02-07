@@ -12,9 +12,10 @@ import {
   removeContact,
   getContacts,
   userInfo,
-  getTransactions
+  getTransactions,
+  chargeUserCode
 } from '../types/userTypes';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // Create user account
 
 export const createNewUser = (newUser) => {
@@ -94,5 +95,19 @@ export function getUserTransactions(username, token){
   }
 }
 
-
-
+export function chargeAccount(chargeCode, amount) {
+  return async (dispatch) => {
+    try {
+      await axios.put(
+        `http://localhost:8080/accounts/recharge/${chargeCode}`,
+        amount,
+        {
+          headers: { Authorization: `Bearer ${AsyncStorage.getItem("token")}` },
+        }
+      );
+      dispatch(chargeAccount(amount));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
