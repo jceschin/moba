@@ -12,7 +12,9 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { getUserInfo, getUserTransactions } from "../../redux/actions/user";
+import { getUserInfo } from "../../redux/actions/user";
+import { getUserTransactions } from "../../redux/actions/transactionActions";
+
 
 const Homepage = () => {
   const navigation = useNavigation();
@@ -22,49 +24,48 @@ const Homepage = () => {
   const dispatch = useDispatch();
 
   const renderTransactions = () => {
-    var sortedTransactions = transactions.reverse()
-    return sortedTransactions.map((t) => {
-      var data;
-      if (t.sender === loggedUser.username) {
-        data = (
-          <Text style={styles.movType}>
-            You send US${t.amount} to {t.receiver}
-          </Text>
-        );
-      } else {
-        data =
-          t.type === "recharge" ? (
-            <Text style={styles.movType}>You deposit US${t.amount}</Text>
-          ) : (
+    if (transactions.length > 0) {
+      var sortedTransactions = transactions.map((t) => {
+        var data;
+        if (t.sender === loggedUser.username) {
+          data = (
             <Text style={styles.movType}>
-              You received US${t.amount} from {t.sender}
+              You send US${t.amount} to {t.receiver}
             </Text>
           );
-      }
-      return (
-        <View style={styles.mov}>
-          <View style={styles.movDateContainer}>
-            <Text style={styles.movDate}>{t.date.substring(0, 10)}</Text>
-          </View>
-          <View style={styles.movDetails}>
-            {data}
-            {t.sender === loggedUser.username ? (
-              <Text style={styles.movType}>− US${t.amount}</Text>
+        } else {
+          data =
+            t.type === "recharge" ? (
+              <Text style={styles.movType}>You deposit US${t.amount}</Text>
             ) : (
-              <Text style={styles.movType}>US${t.amount}</Text>
-            )}
+              <Text style={styles.movType}>
+                You received US${t.amount} from {t.sender}
+              </Text>
+            );
+        }
+        return (
+          <View style={styles.mov}>
+            <View style={styles.movDateContainer}>
+              <Text style={styles.movDate}>{t.date.substring(0, 10)}</Text>
+            </View>
+            <View style={styles.movDetails}>
+              {data}
+              {t.sender === loggedUser.username ? (
+                <Text style={styles.movType}>− US${t.amount}</Text>
+              ) : (
+                <Text style={styles.movType}>US${t.amount}</Text>
+              )}
+            </View>
           </View>
-        </View>
-      );
-    });
+        );
+      });
+      return sortedTransactions
+    }
   };
 
   useEffect(() => {
-    dispatch(
-      getUserTransactions(loggedUser.username, loggedUser.data.data.token)
-    );
     dispatch(getUserInfo(loggedUser.username));
-  }, []);
+  }, [transactions]);
 
 //
   return (
@@ -82,7 +83,7 @@ const Homepage = () => {
                 `${loggedUser.info.name} ${loggedUser.info.surname}`}
             </Text>
             <Text style={styles.balanceTag}>Balance</Text>
-            {loggedUser.info ? (
+            {(loggedUser.info && loggedUser.info.account) ? (
               <Text style={styles.balance}>
                 US$ {loggedUser.info.account.balance}
               </Text>

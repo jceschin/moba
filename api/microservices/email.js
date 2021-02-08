@@ -260,7 +260,7 @@ server.post('/recovery/verifytoken', (req,res) => {
     where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}
   })
   .then((user) => {
-    console.log(user)
+
     if(!user){
       return res.json([{
         recoveryToken: 'user not exists', 

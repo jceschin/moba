@@ -1,5 +1,6 @@
 {
   "development": {
+
     "username": "postgres",
     "password": "postgres", 
     "database": "mobadb",

@@ -67,7 +67,6 @@ const SendMoney = ({ route }) => {
       cvu_receiver: destinatary.account.cvu,
       // All transfer amounts have a 0 as 1st character, so we must get rid of it
       amount: parseInt(transferAmount.amount.toString()),
-      number: Math.floor(Math.random() * 1000000),
     };
 
     dispatch(addNewTransaction(transferData));

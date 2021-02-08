@@ -17,11 +17,12 @@ import accounting from "accounting-js";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import {apiEndpoint} from '../../const'
 import {
   getUserInfo,
-  getUserTransactions,
   chargeAccount,
 } from "../../redux/actions/user";
+import {getUserTransactions} from '../../redux/actions/transactionActions'
 
 const AddMoney = ({ navigation, route }) => {
   const [code, setCode] = React.useState(false);
@@ -66,6 +67,7 @@ const AddMoney = ({ navigation, route }) => {
   const formatValue = (value) => {
     return accounting.formatMoney(parseFloat(value));
   };
+
 
   const addMoneyUser = () => {
      dispatch(

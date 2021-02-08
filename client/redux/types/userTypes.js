@@ -84,7 +84,7 @@ export const getTransactions = (transactions) => {
     }
 };
 
-export const chargeAccount = (charge) => {
+export const newCharge = (charge) => {
     return {
       type: CHARGE_USER_ACCOUNT,
       charge,

@@ -13,15 +13,17 @@ import {
   getContacts,
   userInfo,
   getTransactions,
-  chargeUserCode
+  chargeUserCode,
+  newCharge
 } from '../types/userTypes';
+import {apiEndpoint} from '../../const'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // Create user account
 
 export const createNewUser = (newUser) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:8080/auth/singup`, { ...newUser });
+      const res = await axios.post(`http://${apiEndpoint}/auth/singup`, { ...newUser });
 
       dispatch(createUser(res.data));
     } catch (error) {
@@ -36,11 +38,12 @@ export function loginStateUser(loginInput) {
   const { username } = loginInput;
   return (dispatch) => {
     return axios
-      .post("http://localhost:8080/auth/login", loginInput)
+      .post(`http://${apiEndpoint}/auth/login`, loginInput)
       .then((json) => {
         if (json.status === 200) {
           const o = { ...json, username: username };
           console.log(json)
+          alert(apiEndpoint)
           dispatch(loginUser(o));
         } else {
           alert("Login Failed", "Username or Password is incorrect");
@@ -66,7 +69,7 @@ export function logoutUserAction() {
 export function getUserInfo(username){
   return (dispatch) => {
     return axios
-      .get(`http://localhost:8000/users/${username}`)
+      .get(`http://${apiEndpoint}/users/${username}`)
       .then((data) => {
         if(data.status !== 200){
           alert('Sorry, an error ocurred')          
@@ -81,31 +84,19 @@ export function getUserInfo(username){
   }
 }
 
-//Get transactions 
-export function getUserTransactions(username, token){
-  return (dispatch) => {
-    return axios.get(
-          `http://localhost:8080/transaction/users/${username}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-        ).then((tr) => {
-          dispatch(getTransactions(tr.data))
-        })
-        .catch((err) => console.log(err))
-  }
-}
+
 
 export function chargeAccount(chargeCode, amount) {
   return async (dispatch) => {
     try {
       await axios.put(
-        `http://localhost:8080/accounts/recharge/${chargeCode}`,
+        `http://${apiEndpoint}/accounts/recharge/${chargeCode}`,
         amount,
         {
           headers: { Authorization: `Bearer ${AsyncStorage.getItem("token")}` },
         }
       );
-      dispatch(chargeAccount(amount));
+      dispatch(newCharge(amount));
     } catch (error) {
       console.log(error);
     }
