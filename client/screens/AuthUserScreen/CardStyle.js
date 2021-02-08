@@ -16,16 +16,15 @@ export default function CreditCard() {
   const { eye, setEye, toggle, setToggle } = React.useContext(Context);
   const loggedUser = useSelector((state) => state.user);
 
-  async function getCardNumber(username) {
-    let response = await axios.get(`http://localhost:8080/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    });
-    setUser(response.data);
-  }
+  // async function getCardNumber(username) {
+  //   let response = await axios.get(`http://localhost:8080/users/${username}`, {
+  //     headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
+  //   });
+  //   setUser(response.data);
+  // }
 
   useEffect(() => {
-    getCardNumber(loggedUser.username);
-  }, []);
+  }, [loggedUser.info]);
 
   return (
     <View style={[s.container, { backgroundColor: "#FFF", zIndex: 2 }]}>
@@ -40,16 +39,16 @@ export default function CreditCard() {
       </View>
       <View style={[s.bgCircle, s.rightBgCircle]} />
       <Text style={[s.text, { color: "#949292", top: -8 }]}>
-        {user.name + " " + user.surname}
+        {loggedUser.info.name + " " + loggedUser.info.surname}
       </Text>
       <View style={s.cardNumberContainer}>
         <View style={s.cardNumberPart}>
           <View>
-            <Text style={{ fontSize: 16 }}>
+            <Text style={{ fontSize: 23 }}>
               {toggle === false
                 ? "**** **** **** ****"
-                : user.account
-                ? user.account.card_id
+                : loggedUser.info.account
+                ? (loggedUser.info.account.card_id.replace(/\B(?=(\d{4})+(?!\d))/g, " "))
                 : null}
             </Text>
           </View>
@@ -60,13 +59,13 @@ export default function CreditCard() {
         <View style={s.dateContainer}>
           <Text style={{ color: "#949292" }}>Exp. Date</Text>
           <Text style={[s.text, { color: "black" }]}>
-            {user.account ? user.account.card_expiration.substr(3) : null}
+            {loggedUser.info.account ? loggedUser.info.account.card_expiration.substr(3) : null}
           </Text>
         </View>
         <View style={s.dateContainer}>
           <Text style={{ color: "#949292" }}>CVV</Text>
           <Text style={[s.text, { color: "black", paddingLeft: 11 }]}>
-            {toggle === false ? "***" : user.account ? user.account.card_cvv : null}
+            {toggle === false ? "***" : loggedUser.info.account ? loggedUser.info.account.card_cvv : null}
           </Text>
         </View>
         <View style={s.visaContainer}>
@@ -106,7 +105,7 @@ const s = StyleSheet.create({
     marginBottom: 18,
     width: 184,
   },
-  cardNumberPart: { flexDirection: "row" },
+  cardNumberPart: { flexDirection: "row"},
   dot: {
     width: 6,
     height: 6,

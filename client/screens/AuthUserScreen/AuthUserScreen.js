@@ -7,6 +7,8 @@ import AccountNumber from "./AccountNumber";
 import MyContacts from "./MyContacts";
 import MyContact from "./MyContact";
 import SendMoney from "./SendMoney";
+import SendMoneySuccess from "./SendMoneySuccess";
+import SendMoneyError from "./SendMoneyError";
 import Card from "./Card";
 import AddMoney from "./AddMoney";
 import AddContact from "./AddContact";
@@ -34,6 +36,8 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="AddContact" component={AddContact} />
           <Stack.Screen name="MyContact" component={MyContact} />
           <Stack.Screen name="SendMoney" component={SendMoney} />
+          <Stack.Screen name="SendMoneySuccess" component={SendMoneySuccess} />
+          <Stack.Screen name="SendMoneyError" component={SendMoneyError} />
           <Stack.Screen name="AddMoney" component={AddMoney} />
           <Stack.Screen name="Card" component={Card} />
         </Stack.Navigator>

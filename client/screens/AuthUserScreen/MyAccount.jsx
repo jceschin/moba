@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import { logoutUserAction } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import {apiEndpoint} from '../../const'
 
 const MyAccount = () => {
   const navigation = useNavigation();
@@ -30,9 +31,7 @@ const MyAccount = () => {
   }, []);
 
   async function getUser(username) {
-    let response = await axios.get(`http://localhost:8000/users/${username}`, {
-      headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-    });
+    let response = await axios.get(`http://${apiEndpoint}/users/${username}`);
 
     setUser(response.data);
   }
@@ -44,7 +43,7 @@ const MyAccount = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <ScrollView>
+      <ScrollView contentStyle={{height: "100%"}}>
         <View style={styles.header}>
           <TouchableOpacity
             // style={{ position: "absolute" }}

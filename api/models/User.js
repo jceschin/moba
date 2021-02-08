@@ -7,17 +7,19 @@ module.exports = (sequelize) => {
         username: {
             type: DataTypes.STRING,
             unique: true,
-            allowNull: false
+            validate: {notEmpty:true}
         },
 
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {notEmpty:true}
         },
 
         surname: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {notEmpty:true}
         },
 
         email: {
@@ -30,46 +32,51 @@ module.exports = (sequelize) => {
 
         address: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {notEmpty:true}
         },
 
         city: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {notEmpty:true}
         },
 
         state: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {notEmpty:true}
         },
 
         dni: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
+            validate: {notEmpty:true}
         },
 
         phone: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {notEmpty:true}
         },
 
         birthdate: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATEONLY,
             allowNull: false,
-            validate: {
-                isDate: true,
-            }
+       
         },
 
         password: {
             type: DataTypes.STRING,
+            validate: {notEmpty:true},
             get() {
                 return () => this.getDataValue('password')
             }
         },
         salt: {
             type: DataTypes.STRING,
+            validate: {notEmpty:true},
             get() {
                 return () => this.getDataValue('salt')
             }
@@ -79,8 +86,9 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM("user", "admin"),
             defaultValue: "user",
         },
-        rechargeCode:{
-            type: DataTypes.STRING
-        }
+        
+        recoveryToken: {
+            type: DataTypes.STRING,
+          },
     })
 }

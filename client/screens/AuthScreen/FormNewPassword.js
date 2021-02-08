@@ -13,47 +13,37 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import axios from 'axios'
-// import { loginStateUser } from "../../redux/actions/user";
+import { loginStateUser } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
-import { usernameRecovery, cleanUsername } from "../../redux/actions/emailActions"
+import { updatePassword, clearPass, cleanEmailOrUsername } from '../../redux/actions/emailActions'
 
-const UsernameRecovery = ({ navigation }) => {
-
-  var username = useSelector((store) => store.email.username);
-  console.log(username)
-
+const FormNewPassword = ({ navigation }) => {
+  const emailToken = useSelector((store) => store.email.emailOrUsername[0].emailToken);
+  const pass = useSelector((store) => store.email.pass)
   const [data, setData] = useState({
-    mail: "",
+    // username: "",
     password: "",
     check_textInputChange: false,
     secureTextEntry: true,
-    isValidUser: true,
+    // isValidUser: true,
     isValidPassword: true,
   });
 
-  console.log(data.mail)
-
-  const mailAndPass = {
-    mail: data.mail,
-    password: data.password,
-  }
-  console.log(mailAndPass)
   const dispatch = useDispatch();
-  // const loginUser = async (data) => dispatch(loginStateUser(data));
+ 
 
   const textInputChange = (val) => {
     if (val.length >= 4) {
       setData({
         ...data,
-        mail: val,
+        username: val,
         check_textInputChange: true,
         isValidUser: true,
       });
     } else {
       setData({
         ...data,
-        mail: val,
+        username: val,
         check_textInputChange: false,
         isValidUser: false,
       });
@@ -76,19 +66,19 @@ const UsernameRecovery = ({ navigation }) => {
     }
   };
 
-  const handleValidUser = (val) => {
-    if (val.trim().length >= 4) {
-      setData({
-        ...data,
-        isValidUser: true,
-      });
-    } else {
-      setData({
-        ...data,
-        isValidUser: false,
-      });
-    }
-  };
+//   const handleValidUser = (val) => {
+//     if (val.trim().length >= 4) {
+//       setData({
+//         ...data,
+//         isValidUser: true,
+//       });
+//     } else {
+//       setData({
+//         ...data,
+//         isValidUser: false,
+//       });
+//     }
+//   };
 
   const updateSecureTextEntry = () => {
     setData({
@@ -97,36 +87,37 @@ const UsernameRecovery = ({ navigation }) => {
     });
   };
 
+  const loginHandle = async (password) => {
+    if (data.password.length === 0) {
+      alert("Password cannot be empty");
+    }
+    await loginUser(data);
+  };
 
+  const mailAndPass = {
+		dataUser: emailToken,
+		password: data.password
+	}
 
-  // :::::::::::::::::::AXIOS:::::::::::
+  const confirmPassword = () => {
+     dispatch(updatePassword(mailAndPass));
+   };
 
-//  const handleRecover = () => axios.post('http://localhost:8080/email/findUserName', mailAndPass ).then((result) => { //Ruta para buscar por mail y password y encontrar el userName
-             
-//               console.log(result.data)
-//                             if (result.data.email === mailAndPass.mail) {
-//                               alert('We have sent the username to your email box')
-// 								navigation.navigate('Login')
-// 							} else {
-// 								alert('Invalid password or email')
-// 							}
-// 						})
+   useEffect(() => {
 
-            useEffect(() => {
-	 
-              if(username.length > 0){
-                if(username[0].foundUsername === true){
-                  dispatch(cleanUsername())
-                  alert('We have sent the username to your email box')
-                  navigation.navigate('Login')
-                } 
-                if((username[0].foundUsername === false)){
-                  dispatch(cleanUsername())
-                  alert('Invalid password or email')
-                }
-                }
-             
-             }, [username]);
+    if(pass.length > 0){
+      if(pass[0].changePassword === 'Password changed succesfully'){
+        dispatch(clearPass());
+        dispatch (cleanEmailOrUsername());
+        navigation.navigate('Login')
+      } 
+        if (pass[0].changePassword === 'user not exists'){
+      alert('user not exists')
+      dispatch(clearPass());
+          }
+      };
+    
+   }, [pass]);
 
   return (
     <View style={styles.container}>
@@ -142,12 +133,12 @@ const UsernameRecovery = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.welcomeView}>
-          <Text style={styles.text_header}>Username Recovery</Text>
+          <Text style={styles.text_header}>New Password</Text>
         </View>
       </View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <ScrollView>
-          <View style={styles.containerImg}>
+          {/* <View style={styles.containerImg}>
             <Image
               style={styles.image}
               source={require("../../assets/MOBA.png")}
@@ -155,7 +146,7 @@ const UsernameRecovery = ({ navigation }) => {
           </View>
           <View style={styles.action}>
             <TextInput
-              placeholder="Enter your email"
+              placeholder="Your Username"
               style={styles.textInputUsername}
               autoCapitalize="none"
               value={data.username}
@@ -168,21 +159,23 @@ const UsernameRecovery = ({ navigation }) => {
                 <AntDesign name="checkcircleo" size={14} color="green" />
               </Animatable.View>
             ) : null}
-          </View>
+          </View> */}
 
-          {data.isValidUser ? null : (
+          {/* {data.isValidUser ? null : (
             <Animatable.View animation="fadeInLeft" duration={500}>
               <Text style={styles.errorMsg}>
                 Username must be 4 characters long
               </Text>
             </Animatable.View>
-          )}
+          )} */}
 
-        
+          {/* <TouchableOpacity onPress={() => navigation.navigate("UsernameRecovery")}>
+            <Text style={styles.forgot_username}>Forgot your username?</Text>
+          </TouchableOpacity> */}
 
           <View style={styles.action}>
             <TextInput
-              placeholder="Enter your password"
+              placeholder="Enter your new Password"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.textInputPassword}
               autoCapitalize="none"
@@ -206,12 +199,13 @@ const UsernameRecovery = ({ navigation }) => {
             </Animatable.View>
           )}
 
-         
+          {/* <TouchableOpacity onPress={() => navigation.navigate("PasswordRecovery")}>
+            <Text style={styles.forgot_password}>Forgot your password?</Text>
+          </TouchableOpacity> */}
 
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn}
-            //  onPress={loginHandle}
-            onPress={ () => dispatch(usernameRecovery(mailAndPass))}
+              onPress={() => confirmPassword()}
              >
               <Text
                 style={[
@@ -221,7 +215,7 @@ const UsernameRecovery = ({ navigation }) => {
                   },
                 ]}
               >
-                Recover!
+                Confirm
               </Text>
             </TouchableOpacity>
           </View>
@@ -231,97 +225,97 @@ const UsernameRecovery = ({ navigation }) => {
   );
 };
 
-export default UsernameRecovery;
+export default FormNewPassword;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#8CA5FD",
-  },
-  header: {
-    flex: 1,
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-    flexDirection: "row",
-  },
-  welcomeView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    right: 15,
-  },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 5,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-    marginTop: -80,
-  },
-  text_header: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 30,
-  },
-  text_footer: {
-    color: "#05375a",
-    fontSize: 18,
-  },
-  action: {
-    flexDirection: "row",
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
-    paddingBottom: 5,
-  },
-  textInputUsername: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    paddingLeft: 10,
-    color: "#05375a",
-    fontSize: 16,
-  },
-  textInputPassword: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : 0,
-    paddingTop: 30,
-    paddingLeft: 10,
-    color: "#05375a",
-    fontSize: 16,
-  },
-  forgot_username: {
-    marginBottom: 30,
-    left: 10,
-  },
-  forgot_password: {
-    left: 10,
-  },
-  button: {
-    alignItems: "center",
-    marginTop: 300,
-  },
-  signIn: {
-    width: "100%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#567BFF",
-  },
-  textSign: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  containerImg: {
-    alignItems: "center",
-  },
-  image: {
-    marginBottom: 72,
-  },
-  errorMsg: {
-    color: "#FF0000",
-    fontSize: 14,
-  },
-});
+    container: {
+      flex: 1,
+      backgroundColor: "#8CA5FD",
+    },
+    header: {
+      flex: 1,
+      alignItems: "center",
+      paddingHorizontal: 20,
+      paddingBottom: 50,
+      flexDirection: "row",
+    },
+    welcomeView: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "flex-end",
+      right: 15,
+    },
+    footer: {
+      flex: Platform.OS === "ios" ? 3 : 5,
+      backgroundColor: "#fff",
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      paddingHorizontal: 20,
+      paddingVertical: 30,
+      marginTop: -80,
+    },
+    text_header: {
+      color: "#fff",
+      fontWeight: "bold",
+      fontSize: 30,
+    },
+    text_footer: {
+      color: "#05375a",
+      fontSize: 18,
+    },
+    action: {
+      flexDirection: "row",
+      marginTop: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: "#f2f2f2",
+      paddingBottom: 5,
+    },
+    textInputUsername: {
+      flex: 1,
+      marginTop: Platform.OS === "ios" ? 0 : -12,
+      paddingLeft: 10,
+      color: "#05375a",
+      fontSize: 16,
+    },
+    textInputPassword: {
+      flex: 1,
+      marginTop: Platform.OS === "ios" ? 0 : 0,
+      paddingTop: 30,
+      paddingLeft: 10,
+      color: "#05375a",
+      fontSize: 16,
+    },
+    forgot_username: {
+      marginBottom: 30,
+      left: 10,
+    },
+    forgot_password: {
+      left: 10,
+    },
+    button: {
+      alignItems: "center",
+      marginTop: 300,
+    },
+    signIn: {
+      width: "100%",
+      height: 50,
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: 10,
+      backgroundColor: "#567BFF",
+    },
+    textSign: {
+      fontSize: 18,
+      fontWeight: "bold",
+    },
+    containerImg: {
+      alignItems: "center",
+    },
+    image: {
+      marginBottom: 72,
+    },
+    errorMsg: {
+      color: "#FF0000",
+      fontSize: 14,
+    },
+  });

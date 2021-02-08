@@ -7,10 +7,12 @@ import MainScreen from "./screens/MainScreen";
 import { Provider } from "react-redux";
 import { reduxStore, persistedStore } from "./redux/store";
 import { PersistGate } from "redux-persist/es/integration/react";
+import {apiEndpoint} from './const'
+
 
 export default function App() {
   const Drawer = createDrawerNavigator();
-
+  console.log('APIENDPOINT', apiEndpoint)
   return (
     <Provider store={reduxStore}>
       <PersistGate persistor={persistedStore} loading={null}>

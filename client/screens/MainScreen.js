@@ -8,6 +8,10 @@ import AuthUserScreen from "./AuthUserScreen/AuthUserScreen";
 import Validation from "./AuthScreen/Validation";
 import UsernameRecovery from './AuthScreen/UsernameRecovery';
 import PasswordRecovery from './AuthScreen/PasswordRecovery';
+import FormNewPassword from './AuthScreen/FormNewPassword';
+import TokenRecovery from './AuthScreen/TokenRecovery';
+import SplashScreen from './HomeScreen/SplashScreen';
+
 const Stack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => {
@@ -17,11 +21,14 @@ const RootStackScreen = ({ navigation }) => {
       <Stack.Navigator headerMode="none">
         {!user ? (
           <>
+            <Stack.Screen name="SplashScreen" component={SplashScreen} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="AuthScreen" component={AuthScreen} />
              <Stack.Screen name="Validation" component={Validation} />
              <Stack.Screen name="UsernameRecovery" component={UsernameRecovery} />
              <Stack.Screen name="PasswordRecovery" component={PasswordRecovery} />
+             <Stack.Screen name="FormNewPassword" component={FormNewPassword} />
+             <Stack.Screen name="TokenRecovery" component={TokenRecovery} />
           </>
         ) : !user.data.token ? null : (
           <Stack.Screen name="AuthUserScreen" component={AuthUserScreen} />

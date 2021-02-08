@@ -5,7 +5,8 @@ import { Formik } from 'formik';
 import { LinearGradient } from "expo-linear-gradient";
 import axios from 'axios';
 import Button from '../../components/Button'
-import { enviarEmail } from "../../redux/actions/emailActions";
+import { verifyToken } from "../../redux/actions/emailActions";
+import { clearToken, passwordRecovery } from '../../redux/actions/emailActions'
 import { verifyEmail } from '../../redux/actions/emailActions'
 
 
@@ -28,10 +29,13 @@ const SingleNumInput = ({ changed, id, _ref, _next }) => {
 
 export default function CodeVerification({ navigation, route }) {
 	console.log('params', route.params)
-	const validateEmail = useSelector((store) => store.email.newEmail);
-	var verify = useSelector((store) => store.email.verify);
-	console.log(verify);
-	console.log(validateEmail.email);
+	const emailToken = useSelector((store) => store.email.emailOrUsername[0].emailToken);
+	const token = useSelector((store) => store.email.token);
+	
+    console.log(emailToken)
+	console.log(token)
+
+	
 	const dispatch = useDispatch();
 	const [codeIn, setCodeIn] = React.useState({
 		A: '',
@@ -49,11 +53,10 @@ export default function CodeVerification({ navigation, route }) {
 	const verification_code = parseInt(codeIn.A + codeIn.B + codeIn.C + codeIn.D + codeIn.E);
 	console.log(verification_code)
 
-	const mailAndCode = {
-		valideId: verification_code,
-		email: validateEmail.email
+	const obj = {
+		token: verification_code,
+		dataUser: emailToken
 	}
-	
 
 
 	const pin1 = useRef();
@@ -62,18 +65,28 @@ export default function CodeVerification({ navigation, route }) {
 	const pin4 = useRef();
 	const pin5 = useRef();
 
+  
+
  useEffect(() => {
 	 
-	if(verify.length > 0){
-		if(verify[0].isvalid === true){
-			navigation.navigate('RegisterPage', {email:mailAndCode.email})
+	if(token.length > 0){
+		if(token[0].recoveryToken === 'valid token'){
+			dispatch(clearToken())
+			navigation.navigate('FormNewPassword')
 		} 
-		else{
-		  alert('InvalidCode')
+		if (token[0].recoveryToken === 'invalid token'){
+               alert("invalid token")
 		}
+		if (token[0].recoveryToken === 'expired token'){
+			alert("expired token")
+			navigation.navigate('Login')
+	    }
+	    if (token[0].recoveryToken === 'user not exists'){
+		alert('user not exists')
+        }
 	  }
  
- }, [verify]);
+ }, [token]);
 
 	return (
         <LinearGradient
@@ -86,18 +99,18 @@ export default function CodeVerification({ navigation, route }) {
 
 				<Formik
 					initialValues={{
-						code: verify,
+						code: "",
 					}}
 					onSubmit={(values) => {
 						const { code } = values;
 						console.log(values)
-						dispatch( verifyEmail(mailAndCode));
-						console.log(verify)						
+						dispatch( verifyToken(obj));
+						// console.log(verify)						
 					}}
 				>
 					{({ handleChange, handleSubmit, values }) => (
 						<View style={styles.inputContainer}>
-							<Text style={styles.textValidate}>Account validation</Text>
+							<Text style={styles.textValidate}>Recovery code</Text>
 							<Text style={styles.textIndication}>Enter the code we sent to your email</Text>
 
 							<View style={styles.row}>
@@ -128,7 +141,7 @@ export default function CodeVerification({ navigation, route }) {
 								<Text style={styles.textCode}>Didn't you get the code? </Text>
 								<TouchableOpacity 
 								
-								onPress={() => dispatch(enviarEmail(mailAndCode))}
+								onPress={ () => dispatch(passwordRecovery({dataUser: emailToken}))}
 								// onPress= {() => alert("We have sent you the validation code")}
 								>
 									<Text style={styles.textCodeII }>Resend code</Text>

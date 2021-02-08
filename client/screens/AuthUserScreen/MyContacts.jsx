@@ -6,14 +6,17 @@ import { Feather, Ionicons, AntDesign, MaterialCommunityIcons, Foundation } from
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
+//Redux
+import { getUserInfo } from '../../redux/actions/user'
+import { addNewContact } from '../../redux/actions/contactActions';
 
 const MyContacts = () => {
   const navigation = useNavigation();
   let loggedUser = useSelector((state) => state.user)
-  // let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
+  let contactsUser = useSelector((state) => state.contacts)
+  let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
   // console.log('ESTO ES USER CONTACTS', userContacts)
-  let userContacts = useSelector((state) => state.user.info.contacts);
-  console.log('USER CONTACTS', loggedUser)
+  //let userContacts = useSelector((state) => state.user.user);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState({
     alias: '',
@@ -21,14 +24,14 @@ const MyContacts = () => {
   })
   const dispatch = useDispatch();
 
-  // const onSubmit = () => {
-  //   console.log(userContacts)
-  //   dispatch(addNewContact({...data, user_username: loggedUser.username}))
-  // }
+  const onSubmit = () => {
+    console.log(userContacts)
+    dispatch(addNewContact({ ...data, user_username: loggedUser.username }))
+  }
 
   useEffect(() => {
-    //dispatch(getUserInfo(loggedUser.username))
-  }, [loggedUser.user])
+    dispatch(getUserInfo(loggedUser.username))
+  }, [contactsUser.contacts])
 
   return (
     <LinearGradient
@@ -140,6 +143,7 @@ const MyContacts = () => {
                     phone={contact.contact_phone}
                     username={contact.contact_username}
                     alias={contact.alias}
+                    id={contact.id}
                   />
                 )
               })

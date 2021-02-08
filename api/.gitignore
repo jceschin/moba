@@ -6,6 +6,8 @@ node_modules
 package-lock.json
 package-lock.json/
 config/config.json
+config/config.json/
 config.json
 config.json/
 api/config/config.json
+

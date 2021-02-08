@@ -2,55 +2,60 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: localhost
+  host: ${LOCAL_IP:-localhost}
 ##################################################################################################
 apiEndpoints:
   api:
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: "/ip"
   auth:
     paths: ["/auth/", "/auth/*"]
   users:
     methods: "GET,POST,PUT,PATCH,DELETE"
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: ["/users", "/users/*"]
   account:
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: ["/accounts", "/accounts/*"]
   admin:
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: "/admin/*"
   transaction:
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: ["/transaction", "/transaction/*"]
   email:
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: ["/email", "/email/*"]
   contact:
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: ["/contacts", "/contacts/*"]
+  statistics:
+    host: ${LOCAL_IP:-localhost}
+    paths: ["/statistics", "/statistics/*"]
   whatsapp:
-    host: localhost
+    host: ${LOCAL_IP:-localhost}
     paths: ["/whatsapp", "/whatsapp/*"]
 
 ##################################################################################################
 serviceEndpoints:
   usersService:
-    url: "http://localhost:8000"
+    url: "http://${LOCAL_IP:-localhost}:8000"
   transactionService:
-    url: "http://localhost:8001"
+    url: "http://${LOCAL_IP:-localhost}:8001"
   authService:
-    url: "http://localhost:8002"
+    url: "http://${LOCAL_IP:-localhost}:8002"
   accountService:
-    url: "http://localhost:8004"
+    url: "http://${LOCAL_IP:-localhost}:8004"
   adminService:
-    url: "http://localhost:8003"
+    url: "http://${LOCAL_IP:-localhost}:8003"
   emailService:
-    url: "http://localhost:8005"
+    url: "http://${LOCAL_IP:-localhost}:8005"
   contactService:
-    url: "http://localhost:8006"
+    url: "http://${LOCAL_IP:-localhost}:8006"
+  statisticsService:
+    url: "http://${LOCAL_IP:-localhost}:8008"
   whatsappService:
-    url: "http://localhost:8007"
+    url: "http://${LOCAL_IP:-localhost}:8007"
 ##################################################################################################
 policies:
   - basic-auth
@@ -71,7 +76,7 @@ pipelines:
     policies:
       - log:
           - action:
-              message: "header===> ${req.headers.authorization}"
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       # - jwt:
       #   - action:
       #       secretOrPublicKey: 'mobaAuth'
@@ -86,6 +91,9 @@ pipelines:
     apiEndpoints:
       - auth
     policies:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: authService
@@ -97,7 +105,7 @@ pipelines:
     policies:
       - log:
           - action:
-              message: "header===> ${req.headers.authorization}"
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       # - jwt:
       #   - action:
       #       secretOrPublicKey: 'mobaAuth'
@@ -112,8 +120,9 @@ pipelines:
     apiEndpoints:
       - admin
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: adminService
@@ -123,8 +132,9 @@ pipelines:
     apiEndpoints:
       - transaction
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: transactionService
@@ -134,8 +144,9 @@ pipelines:
     apiEndpoints:
       - email
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: emailService
@@ -146,8 +157,9 @@ pipelines:
     apiEndpoints:
       - contact
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: contactService
@@ -158,10 +170,23 @@ pipelines:
     apiEndpoints:
       - whatsapp
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: whatsappService
               stripPath: true
+              changeOrigin: true
+##################################################################################################
+  statisticsPipeline:
+    apiEndpoints:
+      - statistics
+    policies:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
+      - proxy:
+          - action:
+              serviceEndpoint: statisticsService
               changeOrigin: true

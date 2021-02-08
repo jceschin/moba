@@ -5,6 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import {apiEndpoint} from '../../const'
+
 
 const AccountNumber = () => {
     const navigation = useNavigation();
@@ -16,7 +18,7 @@ const AccountNumber = () => {
     }, []);
 
     async function getUser(username) {
-        let response = await axios.get(`http://localhost:8080/users/${username}`);
+        let response = await axios.get(`http://${apiEndpoint}/users/${username}`);
     
         setUser(response.data);
     }

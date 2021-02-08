@@ -15,9 +15,17 @@ module.exports = (sequelize) => {
         },
 
         type: {
-            type: DataTypes.ENUM("sender", "receiver"),
-            defaultValue: "sender",
+            type: DataTypes.ENUM("sender", "receiver", "charge"),
+            defaultValue: "charge",
             allowNull: false
+        },
+
+        old_balance: {
+            type: DataTypes.DECIMAL(15,2),
+        },
+        
+        new_balance: {
+            type: DataTypes.DECIMAL(15,2),
         }
     })
 };
