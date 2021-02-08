@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const server = express();
 const cors = require("cors");
 const { User, Contact, Contactuser } = require("../db");
-const WhatsAppWeb = require('baileys');
 
 // middlewares
 server.use(morgan("dev"));
