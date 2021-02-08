@@ -36,7 +36,7 @@ export default function Card() {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <ScrollView>
+      <ScrollView contentContainerStyle={{flex: 1}}>
         <View style={styles.mainContainer}>
           <View style={styles.upperContainer}>
             <View style={styles.viewCard}>

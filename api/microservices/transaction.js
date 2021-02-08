@@ -24,8 +24,11 @@ server.use(cors());
 
 server.post("/transaction", (req, res, next) => {
   console.log(req.body);
-  if(typeof parseInt(req.body.amount) !== 'number' || parseInt(req.body.amount) <= 0){
-    return res.sendStatus(400)
+  if (
+    typeof parseInt(req.body.amount) !== "number" ||
+    parseInt(req.body.amount) <= 0
+  ) {
+    return res.sendStatus(400);
   }
   (async function () {
     try {
@@ -44,7 +47,10 @@ server.post("/transaction", (req, res, next) => {
       });
 
       //Create transaction
-      const transaction = await Transaction.create({...req.body, transaction_type:'transfer'});
+      const transaction = await Transaction.create({
+        ...req.body,
+        transaction_type: "transfer",
+      });
 
       //Create table Accounttransaction
       const sender = await Accounttransaction.create({
@@ -73,7 +79,7 @@ server.post("/transaction", (req, res, next) => {
 
           {
             where: { cvu: req.body.cvu_sender },
-          } 
+          }
         );
 
         //Update Accounttransaction sender
@@ -83,11 +89,11 @@ server.post("/transaction", (req, res, next) => {
           },
 
           {
-            where: { 
+            where: {
               cvu: req.body.cvu_sender,
-              number: transaction.number
+              number: transaction.number,
             },
-          } 
+          }
         );
 
         //Update balancer receiver
@@ -103,8 +109,8 @@ server.post("/transaction", (req, res, next) => {
           }
         );
 
-         //Update Accounttransaction reseiver
-         const upAccounttransactionreseiver = await Accounttransaction.update(
+        //Update Accounttransaction reseiver
+        const upAccounttransactionreseiver = await Accounttransaction.update(
           {
             new_balance:
               parseFloat(req.body.amount) +
@@ -112,11 +118,11 @@ server.post("/transaction", (req, res, next) => {
           },
 
           {
-            where: { 
+            where: {
               cvu: req.body.cvu_receiver,
-              number: transaction.number
+              number: transaction.number,
             },
-          } 
+          }
         );
 
         //Confirmed transaction
@@ -130,7 +136,9 @@ server.post("/transaction", (req, res, next) => {
           }
         );
 
-        res.status(201).json({...transaction.dataValues, status:'confirmed'});
+        res
+          .status(201)
+          .json({ ...transaction.dataValues, status: "confirmed" });
       } else {
         //Cancelled transaction
         const transactionFail = await Transaction.update(
@@ -143,7 +151,9 @@ server.post("/transaction", (req, res, next) => {
           }
         );
 
-        res.status(201).json({...transaction.dataValues, status:'cancelled'});
+        res
+          .status(201)
+          .json({ ...transaction.dataValues, status: "cancelled" });
       }
     } catch (err) {
       res.status(404).send(err);
@@ -208,7 +218,8 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
       }
       Transaction.findAll({
         include: [{ model: Account, include: [{ model: User }] }],
-        where: { number: { [Op.or]: [numberTrans] }, status: 'confirmed' },
+        where: { number: { [Op.or]: [numberTrans] }, status: "confirmed" },
+        order: [["number", "DESC"]],
       })
         .then((data) => {
           var sorted = data.map((dat, i) => {
@@ -218,12 +229,13 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
             payload.description = dat.description;
             payload.date = dat.createdAt;
             if (dat.transaction_type == "transfer") {
-              payload.type = 'transfer'
-              payload[dat.accounts[0].accounttransaction.type] = dat.accounts[0].user.username;
-              payload[dat.accounts[1].accounttransaction.type] = dat.accounts[1].user.username;
-            }
-            else{
-              payload.type = 'recharge'
+              payload.type = "transfer";
+              payload[dat.accounts[0].accounttransaction.type] =
+                dat.accounts[0].user.username;
+              payload[dat.accounts[1].accounttransaction.type] =
+                dat.accounts[1].user.username;
+            } else {
+              payload.type = "recharge";
             }
 
             return payload;

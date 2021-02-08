@@ -43,7 +43,7 @@ const MyAccount = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <ScrollView>
+      <ScrollView contentStyle={{height: "100%"}}>
         <View style={styles.header}>
           <TouchableOpacity
             // style={{ position: "absolute" }}

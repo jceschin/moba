@@ -17,6 +17,10 @@ import { loginStateUser } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 
 const LoginScreen = ({ navigation }) => {
+
+  const token = useSelector((store) => store.email.token)
+  const pass = useSelector((store) => store.email.pass)
+  
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -90,6 +94,14 @@ const LoginScreen = ({ navigation }) => {
     }
     await loginUser(data);
   };
+
+  const handlePress = () => {
+    console.log(token)
+    // if(token.length === 0 ){
+      console.log(token.length)
+    navigation.navigate("PasswordRecovery")
+    }
+  
 
   return (
     <View style={styles.container}>
@@ -171,7 +183,7 @@ const LoginScreen = ({ navigation }) => {
             </Animatable.View>
           )}
 
-          <TouchableOpacity onPress={() => navigation.navigate("PasswordRecovery")}>
+          <TouchableOpacity onPress={() => handlePress()}>
             <Text style={styles.forgot_password}>Forgot your password?</Text>
           </TouchableOpacity>
 

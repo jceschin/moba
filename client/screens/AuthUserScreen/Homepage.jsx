@@ -11,14 +11,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 import { getUserInfo } from "../../redux/actions/user";
 import { getUserTransactions } from "../../redux/actions/transactionActions";
+
 
 const Homepage = () => {
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
-  const transactions = useSelector((state) => state.transactions.transactions);
+  const transactions = useSelector((state) => state.user.transactions);
   const dispatch = useDispatch();
 
   const renderTransactions = () => {
@@ -57,16 +59,13 @@ const Homepage = () => {
           </View>
         );
       });
-      return sortedTransactions.reverse()
+      return sortedTransactions
     }
   };
 
   useEffect(() => {
-    dispatch(
-      getUserTransactions(loggedUser.username, loggedUser.data.data.token)
-    );
     dispatch(getUserInfo(loggedUser.username));
-  }, []);
+  }, [transactions]);
 
 //
   return (
@@ -76,7 +75,7 @@ const Homepage = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <ScrollView>
+      <ScrollView contentContainerStyle={{flex: 1, height: "100%"}}>
         <View style={styles.mainContainer}>
           <View style={styles.upperContainer}>
             <Text style={styles.accountOwner}>

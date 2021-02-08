@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,11 @@ import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { loginStateUser } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
+import { updatePassword, clearPass, cleanEmailOrUsername } from '../../redux/actions/emailActions'
 
 const FormNewPassword = ({ navigation }) => {
+  const emailToken = useSelector((store) => store.email.emailOrUsername[0].emailToken);
+  const pass = useSelector((store) => store.email.pass)
   const [data, setData] = useState({
     // username: "",
     password: "",
@@ -27,7 +30,7 @@ const FormNewPassword = ({ navigation }) => {
   });
 
   const dispatch = useDispatch();
-  const loginUser = async (data) => dispatch(loginStateUser(data));
+ 
 
   const textInputChange = (val) => {
     if (val.length >= 4) {
@@ -90,6 +93,31 @@ const FormNewPassword = ({ navigation }) => {
     }
     await loginUser(data);
   };
+
+  const mailAndPass = {
+		dataUser: emailToken,
+		password: data.password
+	}
+
+  const confirmPassword = () => {
+     dispatch(updatePassword(mailAndPass));
+   };
+
+   useEffect(() => {
+
+    if(pass.length > 0){
+      if(pass[0].changePassword === 'Password changed succesfully'){
+        dispatch(clearPass());
+        dispatch (cleanEmailOrUsername());
+        navigation.navigate('Login')
+      } 
+        if (pass[0].changePassword === 'user not exists'){
+      alert('user not exists')
+      dispatch(clearPass());
+          }
+      };
+    
+   }, [pass]);
 
   return (
     <View style={styles.container}>
@@ -177,7 +205,7 @@ const FormNewPassword = ({ navigation }) => {
 
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn}
-             onPress={() => navigation.navigate('Login')}
+              onPress={() => confirmPassword()}
              >
               <Text
                 style={[

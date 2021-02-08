@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery } from "../types/emailTypes"
 import {apiEndpoint} from '../../const'
+import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken, typeUpdatePassword, typeClearPass, typeClearToken, typecleanEmailOrUsername, typecleanUsername } from "../types/emailTypes"
 
 //:::::Enviar email con código de validación
 export const enviarEmail = (state) => async(dispatch) => {
@@ -51,3 +51,51 @@ export const  passwordRecovery = (dataUser) => async(dispatch) => {
         console.log(error)
     };
 };
+
+//:::: Verifica token 
+export const  verifyToken = (obj) => async(dispatch) => {
+    console.log("Este es el", obj )
+    try {
+        const result = await axios.post(`http://${apiEndpoint}/email/recovery/verifytoken`, obj );
+        dispatch(typeVerifyToken(result.data));
+        console.log("Este es el de verify", result.data)
+    } catch (error) {
+        console.log(error)
+    };
+}
+
+//:::: Actualizar contraseña
+export const updatePassword = (mailAndPass) => async(dispatch) => {
+    console.log("Este es el", mailAndPass)
+    try {
+        const result = await axios.put(`http://${apiEndpoint}/email/recovery/changepassword`, mailAndPass );
+        dispatch(typeUpdatePassword(result.data));
+        console.log(result.data)
+    } catch (error) {
+        console.log(error)
+    };
+}
+
+export const clearPass = () =>{
+    return (dispatch) => {
+        dispatch (typeClearPass())
+       };
+} 
+
+export const clearToken = () =>{
+    return (dispatch) => {
+        dispatch (typeClearToken())
+    };
+}
+
+export const cleanEmailOrUsername = () =>{
+    return (dispatch) => {
+        dispatch (typecleanEmailOrUsername())
+    };
+}
+
+export const  cleanUsername = () => {
+    return (dispatch) => {
+        dispatch (typecleanUsername())
+    };
+}

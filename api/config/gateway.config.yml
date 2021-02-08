@@ -91,6 +91,9 @@ pipelines:
     apiEndpoints:
       - auth
     policies:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: authService
@@ -102,7 +105,7 @@ pipelines:
     policies:
       - log:
           - action:
-              message: "header===> ${req.headers.authorization}"
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       # - jwt:
       #   - action:
       #       secretOrPublicKey: 'mobaAuth'
@@ -117,8 +120,9 @@ pipelines:
     apiEndpoints:
       - admin
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: adminService
@@ -128,8 +132,9 @@ pipelines:
     apiEndpoints:
       - transaction
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: transactionService
@@ -139,8 +144,9 @@ pipelines:
     apiEndpoints:
       - email
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: emailService
@@ -151,8 +157,9 @@ pipelines:
     apiEndpoints:
       - contact
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: contactService
@@ -163,8 +170,9 @@ pipelines:
     apiEndpoints:
       - whatsapp
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: whatsappService
@@ -175,8 +183,9 @@ pipelines:
     apiEndpoints:
       - statistics
     policies:
-      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-      # - key-auth:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
       - proxy:
           - action:
               serviceEndpoint: statisticsService

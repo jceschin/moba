@@ -244,7 +244,8 @@ server.post("/recovery/sendtoken", (req, res) => {
         user.save().then(() => {console.log('recovery token expired')})
       },300000)
       res.json([{
-        emailOrUsername: true
+        emailOrUsername: true,
+        emailToken: dataUser
       }])
     })
   });
@@ -252,12 +253,14 @@ server.post("/recovery/sendtoken", (req, res) => {
 
 server.post('/recovery/verifytoken', (req,res) => {
   const {dataUser, token} = req.body 
+  console.log("Es de verify", req.body)
+  console.log(parseInt(token))
   if(!dataUser || !token){return res.sendStatus(400)}
   User.findOne({
     where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}
   })
   .then((user) => {
-    console.log(typeof token, typeof user.recoveryToken)
+
     if(!user){
       return res.json([{
         recoveryToken: 'user not exists', 
@@ -268,7 +271,9 @@ server.post('/recovery/verifytoken', (req,res) => {
         recoveryToken: 'expired token', 
       }])
     }
-    if(user.recoveryToken !== token){
+    if(user.recoveryToken !== token.toString()){
+      console.log(typeof token)
+      console.log(typeof user.recoveryToken)
       return res.json([{
         recoveryToken: 'invalid token', 
       }])
@@ -281,15 +286,26 @@ server.post('/recovery/verifytoken', (req,res) => {
 
 server.put('/recovery/changepassword', (req,res) => {
   const {dataUser, password} = req.body 
-  if(!dataUser || !password){return res.send('User or password not received')}
+  if(!dataUser || !password){
+    return res.json([{ 
+      changePassword: 'User or password not received'
+    }])
+  }
   User.findOne({
     where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}
   })
   .then((user) => {
-    if(!user){return res.send('User not exists')}
+    if(!user){
+      return res.json([{ 
+        changePassword: 'User not exists'
+      }])
+    }
     user.password = password
     user.save().then(() => {
-      res.send('Password changed succesfully')
+      res.json([{ 
+        token:  Math.floor(Math.random() * 90000) + 10000,
+        changePassword: 'Password changed succesfully'
+      }])
     })
   })
 })
