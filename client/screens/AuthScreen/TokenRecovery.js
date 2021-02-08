@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import axios from 'axios';
 import Button from '../../components/Button'
 import { verifyToken } from "../../redux/actions/emailActions";
+import { clearToken, passwordRecovery } from '../../redux/actions/emailActions'
 import { verifyEmail } from '../../redux/actions/emailActions'
 
 
@@ -29,7 +30,8 @@ const SingleNumInput = ({ changed, id, _ref, _next }) => {
 export default function CodeVerification({ navigation, route }) {
 	console.log('params', route.params)
 	const emailToken = useSelector((store) => store.email.emailOrUsername[0].emailToken);
-	const token = useSelector((store) => store.email.token)
+	const token = useSelector((store) => store.email.token);
+	
     console.log(emailToken)
 	console.log(token)
 
@@ -69,6 +71,7 @@ export default function CodeVerification({ navigation, route }) {
 	 
 	if(token.length > 0){
 		if(token[0].recoveryToken === 'valid token'){
+			dispatch(clearToken())
 			navigation.navigate('FormNewPassword')
 		} 
 		if (token[0].recoveryToken === 'invalid token'){
@@ -76,9 +79,10 @@ export default function CodeVerification({ navigation, route }) {
 		}
 		if (token[0].recoveryToken === 'expired token'){
 			alert("expired token")
+			navigation.navigate('Login')
 	    }
 	    if (token[0].recoveryToken === 'user not exists'){
-		alert("expired token")
+		alert('user not exists')
         }
 	  }
  
@@ -137,7 +141,7 @@ export default function CodeVerification({ navigation, route }) {
 								<Text style={styles.textCode}>Didn't you get the code? </Text>
 								<TouchableOpacity 
 								
-								onPress={() => dispatch(verifyToken(obj))}
+								onPress={ () => dispatch(passwordRecovery({dataUser: emailToken}))}
 								// onPress= {() => alert("We have sent you the validation code")}
 								>
 									<Text style={styles.textCodeII }>Resend code</Text>
