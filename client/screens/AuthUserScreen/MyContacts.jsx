@@ -114,6 +114,7 @@ const MyContacts = () => {
                     phone={contact.contact_phone}
                     username={contact.contact_username}
                     alias={contact.alias}
+                    id={contact.id}
                   />
                 )
               })

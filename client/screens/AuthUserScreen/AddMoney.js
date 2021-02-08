@@ -19,13 +19,14 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { getUserInfo } from "../../redux/actions/user";
 import { getUserTransactions } from "../../redux/actions/transactionActions";
+import {apiEndpoint} from '../../const'
 
 const AddMoney = ({ navigation }) => {
   const [code, setCode] = React.useState(false);
   const [transfer, setTransfer] = React.useState(false);
   const [amount, setAmount] = React.useState(false);
   const [amountCharge, setAmountCharge] = React.useState({
-    amount: 2121,
+    amount: 0,
   });
   const dispatch = useDispatch();
 
@@ -76,7 +77,7 @@ const AddMoney = ({ navigation }) => {
 
   async function addMoney(chargeCode) {
     let response = await axios.put(
-      `http://192.168.0.18:8080/accounts/recharge/${loggedUser.info.account.rechargeCode}`,
+      `http://${apiEndpoint}/accounts/recharge/${loggedUser.info.account.rechargeCode}`,
       {
         headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
         amount: amountCharge.amount,

@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery } from "../types/emailTypes"
+import {apiEndpoint} from '../../const'
 
 //:::::Enviar email con código de validación
 export const enviarEmail = (state) => async(dispatch) => {
     try {
-        const result = await axios.post('http://localhost:8005/send-email', state);
+        const result = await axios.post(`http://${apiEndpoint}/email/send-email`, state);
 
         dispatch(validarEmail(result.data));
      
@@ -17,7 +18,7 @@ export const enviarEmail = (state) => async(dispatch) => {
 //::::: Verificar código de validación
 export const verifyEmail = (state) => async(dispatch) => {
     try {
-        const result = await axios.post('http://localhost:8080/email/verify', state);
+        const result = await axios.post(`http://${apiEndpoint}/email/verify`, state);
 
         dispatch(typeVerifyEmail(result.data));
         console.log(result.data)  // arroja true o false según back
@@ -31,7 +32,7 @@ export const verifyEmail = (state) => async(dispatch) => {
 //:::: Recuperar UserName
 export const  usernameRecovery = (mailAndPass) => async(dispatch) => {
     try {
-        const result = await axios.post('http://localhost:8080/email/findUserName', mailAndPass );
+        const result = await axios.post(`http://${apiEndpoint}/email/findUserName`, mailAndPass );
         dispatch(typeUsernameRecovery(result.data));
         console.log(result.data)
     } catch (error) {
@@ -43,7 +44,7 @@ export const  usernameRecovery = (mailAndPass) => async(dispatch) => {
 export const  passwordRecovery = (dataUser) => async(dispatch) => {
     console.log("Este es el", dataUser)
     try {
-        const result = await axios.post('http://localhost:8080/email/recovery/sendtoken', dataUser );
+        const result = await axios.post(`http://${apiEndpoint}/email/recovery/sendtoken`, dataUser );
         dispatch(typePasswordRecovery(result.data));
         console.log(result.data)
     } catch (error) {

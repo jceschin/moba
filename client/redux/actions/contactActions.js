@@ -8,13 +8,13 @@ import {
 
   } from '../types/contactTypes';
 
-
+import {apiEndpoint} from '../../const'
 //User adds new contact
 
 export function addNewContact(newContact) {
     return async (dispatch) => {
       try {
-        const res = await axios.post(`http://localhost:8080/contacts/add`, { ...newContact }, {
+        const res = await axios.post(`http://${apiEndpoint}/contacts/add`, { ...newContact }, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         console.log('ESTO ES NEW CONTACT', newContact);
@@ -32,7 +32,7 @@ export function addNewContact(newContact) {
     return async (dispatch) => {
       try {
   
-        const res = await axios.delete(`http://localhost:8080/contacts/delete/${alias}`);
+        const res = await axios.delete(`http://${apiEndpoint}/contacts/delete/${alias}`);
         console.log('ESTE ES EL ALIAS', alias);
         dispatch(removeContact(res.data));
         alert('Contact eliminated')
@@ -49,7 +49,7 @@ export function addNewContact(newContact) {
   export function getUserContacts(username) {
     return async (dispatch) => {
       try {
-        const res = await axios.get(`http://localhost:8080/contacts/get/${username}`);
+        const res = await axios.get(`http://${apiEndpoint}/contacts/get/${username}`);
   
         dispatch(getContacts(res.data));
       } catch (error) {
@@ -63,7 +63,7 @@ export function addNewContact(newContact) {
   export function getContactInfo(username){
     return (dispatch) => {
       return axios
-        .get(`http://localhost:8000/users/${username}`)
+        .get(`http://${apiEndpoint}/users/${username}`)
         .then((data) => {
           if(data.status !== 200){
             alert('Sorry, an error ocurred')          

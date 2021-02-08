@@ -62,11 +62,9 @@ module.exports = (sequelize) => {
         },
 
         birthdate: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATEONLY,
             allowNull: false,
-            validate: {
-                isDate: true,
-            }
+       
         },
 
         password: {

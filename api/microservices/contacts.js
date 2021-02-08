@@ -147,6 +147,7 @@ server.put("/update/:alias", (req, res) => {
 
 // DELETE CONTACT by alias
 server.delete("/delete/:alias", (req, res) => {
+  console.log(req.body)
   Contact.findOne({
     where:{
       alias: req.params.alias

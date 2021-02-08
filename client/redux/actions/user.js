@@ -14,13 +14,14 @@ import {
   userInfo,
   getTransactions
 } from '../types/userTypes';
+import {apiEndpoint} from '../../const'
 
 // Create user account
 
 export const createNewUser = (newUser) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:8080/auth/singup`, { ...newUser });
+      const res = await axios.post(`http://${apiEndpoint}/auth/singup`, { ...newUser });
 
       dispatch(createUser(res.data));
     } catch (error) {
@@ -35,7 +36,7 @@ export function loginStateUser(loginInput) {
   const { username } = loginInput;
   return (dispatch) => {
     return axios
-      .post("http://192.168.0.18:8080/auth/login", loginInput)
+      .post(`http://${apiEndpoint}/auth/login`, loginInput)
       .then((json) => {
         if (json.status === 200) {
           const o = { ...json, username: username };
@@ -66,7 +67,7 @@ export function logoutUserAction() {
 export function getUserInfo(username){
   return (dispatch) => {
     return axios
-      .get(`http://192.168.0.18:8080/users/${username}`)
+      .get(`http://${apiEndpoint}/users/${username}`)
       .then((data) => {
         if(data.status !== 200){
           alert('Sorry, an error ocurred')          
