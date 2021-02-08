@@ -16,7 +16,7 @@ import { Feather, AntDesign } from "@expo/vector-icons";
 import axios from 'axios'
 // import { loginStateUser } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
-import { usernameRecovery } from "../../redux/actions/emailActions"
+import { usernameRecovery, cleanUsername } from "../../redux/actions/emailActions"
 
 const UsernameRecovery = ({ navigation }) => {
 
@@ -116,10 +116,12 @@ const UsernameRecovery = ({ navigation }) => {
 	 
               if(username.length > 0){
                 if(username[0].foundUsername === true){
+                  dispatch(cleanUsername())
                   alert('We have sent the username to your email box')
                   navigation.navigate('Login')
                 } 
                 if((username[0].foundUsername === false)){
+                  dispatch(cleanUsername())
                   alert('Invalid password or email')
                 }
                 }
