@@ -10,7 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import {
   Feather,
   MaterialIcons,
-  Ionicons,
+  FontAwesome,
   AntDesign,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
@@ -19,6 +19,7 @@ import { logoutUserAction } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import {apiEndpoint} from '../../const'
+import { Entypo } from '@expo/vector-icons';
 
 const MyAccount = () => {
   const navigation = useNavigation();
@@ -37,13 +38,8 @@ const MyAccount = () => {
   }
 
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-      <ScrollView contentStyle={{height: "100%"}}>
+    <View style={styles.colorContainer}>
+      <ScrollView>
         <View style={styles.header}>
           <TouchableOpacity
             // style={{ position: "absolute" }}
@@ -61,15 +57,59 @@ const MyAccount = () => {
           <Text style={styles.accountTag}>Account</Text>
           <View style={styles.options}>
             <View style={styles.option}>
-              <MaterialIcons name="credit-card" size={18} color="black" />
+              <MaterialCommunityIcons name="credit-card" size={24} color="black" />
               <TouchableOpacity >
-                <Text style={styles.optionName}>Credit Cards</Text>
+                <Text style={styles.optionName}>Card</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.option}>
+              <Entypo name="plus" size={24} color="black"/>
+              <TouchableOpacity>
+                <Text style={styles.optionName}>Add Money</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.option}>
+              <FontAwesome name="long-arrow-right" size={24} color="black"/>
+              <TouchableOpacity>
+                <Text style={styles.optionName}>Send Money</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.option}>
+              <MaterialIcons name="compare-arrows" size={24} color="black"/>
+              <TouchableOpacity>
+                <Text style={styles.optionName}>Statistics</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.option}>
+              <AntDesign name="contacts" size={24} color="black" />
+              <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
+                <Text style={styles.optionName}>Contacts</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <Text style={styles.settingsTag}>Account Settings</Text>
+          <View style={styles.options}>
+            <View style={styles.option}>
+              <MaterialCommunityIcons
+                name="account-settings-outline"
+                size={24}
+                color="black"
+              />
+              <TouchableOpacity>
+                <Text style={styles.optionName}>Profile</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.option}>
+              <Feather name="help-circle" size={24} color="black" />
+              <TouchableOpacity>
+                <Text style={styles.optionName}>Help</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.option}>
               <MaterialCommunityIcons
                 name="logout-variant"
-                size={18}
+                size={24}
                 color="black"
               />
               <TouchableOpacity
@@ -80,71 +120,27 @@ const MyAccount = () => {
                 <Text style={styles.optionName}>Log Out</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.option}>
-              <Ionicons name="add-circle-outline" size={18} color="black" />
-              <TouchableOpacity>
-                <Text style={styles.optionName}>Add Money</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <MaterialIcons name="compare-arrows" size={18} color="black" />
-              <TouchableOpacity>
-                <Text style={styles.optionName}>Transfers</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <Feather name="activity" size={18} color="black" />
-              <TouchableOpacity>
-                <Text style={styles.optionName}>Activity</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <AntDesign name="contacts" size={18} color="black" />
-              <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
-                <Text style={styles.optionName}>Contacts</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <Text style={styles.settingsTag}>Account Settings</Text>
-          <View style={styles.options}>
-
-            {/* <View style={styles.option}>
-              <MaterialCommunityIcons
-                name="account-settings-outline"
-                size={18}
-                color="black"
-              />
-              <TouchableOpacity>
-                <Text style={styles.optionName}>Profile</Text>
-              </TouchableOpacity>
-            </View> */}
-            {/* <View style={styles.option}>
-              <Feather name="help-circle" size={18} color="black" />
-              <TouchableOpacity>
-                <Text style={styles.optionName}>Help</Text>
-              </TouchableOpacity>
-            </View> */}
-
           </View>
         </View>
       </ScrollView>
-    </LinearGradient>
+    </View>
   );
 };
 
 export default MyAccount;
 
 const styles = StyleSheet.create({
-  container: {
+  colorContainer: {
     flex: 1,
+    backgroundColor: "#521886",
+    opacity: 0.9
   },
   header: {
     display: "flex",
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    top: 24,
+    marginTop: 37
   },
   greeting: {
     color: "white",
@@ -152,10 +148,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   whiteContainer: {
-    top: 50,
-    backgroundColor: "white",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    marginTop: 40,
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     height: "100%",
   },
   accountTag: {

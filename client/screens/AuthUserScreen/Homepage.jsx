@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from "react-nati
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import HomeNavbar from "./HomeNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserInfo } from "../../redux/actions/user";
@@ -110,12 +111,7 @@ const Homepage = () => {
                 <TouchableOpacity
                   onPress={() => navigation.navigate("MyContacts")}
                 >
-                  <MaterialIcons
-                    name="send-to-mobile"
-                    size={24}
-                    color="white"
-                    style={styles.optionIcon}
-                  />
+                  <FontAwesome name="long-arrow-right" size={24} color="white" style={styles.optionIcon}/>
                   <Text style={styles.option}>Send Money</Text>
                 </TouchableOpacity>
               </View>
@@ -155,8 +151,8 @@ const styles = StyleSheet.create({
     minHeight: 290,
     backgroundColor: "white",
     height: "100%",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12
   },
   accountOwner: {
     fontSize: 36,
