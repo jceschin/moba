@@ -67,6 +67,20 @@ const MyAccount = () => {
               </TouchableOpacity>
             </View>
             <View style={styles.option}>
+              <MaterialCommunityIcons
+                name="logout-variant"
+                size={18}
+                color="black"
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(logoutUserAction());
+                }}
+              >
+                <Text style={styles.optionName}>Log Out</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.option}>
               <Ionicons name="add-circle-outline" size={18} color="black" />
               <TouchableOpacity>
                 <Text style={styles.optionName}>Add Money</Text>
@@ -95,7 +109,7 @@ const MyAccount = () => {
           <Text style={styles.settingsTag}>Account Settings</Text>
           <View style={styles.options}>
 
-            <View style={styles.option}>
+            {/* <View style={styles.option}>
               <MaterialCommunityIcons
                 name="account-settings-outline"
                 size={18}
@@ -104,27 +118,14 @@ const MyAccount = () => {
               <TouchableOpacity>
                 <Text style={styles.optionName}>Profile</Text>
               </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
+            </View> */}
+            {/* <View style={styles.option}>
               <Feather name="help-circle" size={18} color="black" />
               <TouchableOpacity>
                 <Text style={styles.optionName}>Help</Text>
               </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <MaterialCommunityIcons
-                name="logout-variant"
-                size={18}
-                color="black"
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch(logoutUserAction());
-                }}
-              >
-                <Text style={styles.optionName}>Log Out</Text>
-              </TouchableOpacity>
-            </View>
+            </View> */}
+
           </View>
         </View>
       </ScrollView>
