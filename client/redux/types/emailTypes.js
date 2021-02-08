@@ -6,7 +6,8 @@ export const VERIFY_TOKEN = 'VERIFY_TOKEN';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const CLEAR_PASS = 'CLEAR_PASS';
 export const CLEAR_TOKEN = 'CLEAR_TOKEN';
-export const CLEAN_EMAILORUSERNAME = 'CLEAN_EMAILORUSERNAME'
+export const CLEAN_EMAILORUSERNAME = 'CLEAN_EMAILORUSERNAME';
+export const CLEAN_USERNAME = 'CLEAN_USERNAME';
 
 export const validarEmail = (res) => {
   return {
@@ -67,6 +68,13 @@ export const typeClearToken = () => {
 export const typecleanEmailOrUsername = () => {
   return {
     type: CLEAN_EMAILORUSERNAME,
+    payload: []
+  };
+}
+
+export const typecleanUsername = () => {
+  return {
+    type: CLEAN_USERNAME,
     payload: []
   };
 }

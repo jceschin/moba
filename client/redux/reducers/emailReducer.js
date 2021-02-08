@@ -1,4 +1,4 @@
-import { VALIDAR_EMAIL, VERIFY_EMAIL, USERNAME_RECOVERY, PASSWORD_RECOVERY, VERIFY_TOKEN, UPDATE_PASSWORD, CLEAR_PASS, CLEAR_TOKEN, CLEAN_EMAILORUSERNAME } from "../types/emailTypes";
+import { VALIDAR_EMAIL, VERIFY_EMAIL, USERNAME_RECOVERY, PASSWORD_RECOVERY, VERIFY_TOKEN, UPDATE_PASSWORD, CLEAR_PASS, CLEAR_TOKEN, CLEAN_EMAILORUSERNAME, CLEAN_USERNAME } from "../types/emailTypes";
 
 const initialState = {
     newEmail: {},
@@ -56,7 +56,12 @@ export function emailReducer(state = initialState, action) {
                            return {
                                 ...state,
                           emailOrUsername: action.payload,
-                                        };                       
+                                 }; 
+                case CLEAN_USERNAME:
+                           return {
+                               ...state,
+                         username: action.payload,
+                             };                                     
         default:
             return state;
     }

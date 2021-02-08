@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken, typeUpdatePassword, typeClearPass, typeClearToken, typecleanEmailOrUsername } from "../types/emailTypes"
+import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken, typeUpdatePassword, typeClearPass, typeClearToken, typecleanEmailOrUsername, typecleanUsername } from "../types/emailTypes"
 
 //:::::Enviar email con código de validación
 export const enviarEmail = (state) => async(dispatch) => {
@@ -90,5 +90,11 @@ export const clearToken = () =>{
 export const cleanEmailOrUsername = () =>{
     return (dispatch) => {
         dispatch (typecleanEmailOrUsername())
+    };
+}
+
+export const  cleanUsername = () => {
+    return (dispatch) => {
+        dispatch (typecleanUsername())
     };
 }
