@@ -24,6 +24,8 @@ const PasswordRecovery = ({ navigation }) => {
   var emailOrUsername = useSelector((store) => store.email.emailOrUsername);
   console.log(emailOrUsername)
 
+  const token = useSelector((store) => store.email.token)
+
   const dispatch = useDispatch();
 
   const [data, setData] = useState({
@@ -135,8 +137,10 @@ const PasswordRecovery = ({ navigation }) => {
 
   useEffect(() => {
 	 
-    if(emailOrUsername.length > 0){
-      if(emailOrUsername[0].emailOrUsername === true){
+    if(emailOrUsername.length > 0 ){
+      console.log(emailOrUsername.length)
+      
+      if(emailOrUsername[0].emailOrUsername === true ){
         alert('We have sent to your email the code to reset your password')
         navigation.navigate("TokenRecovery")
       } 

@@ -119,7 +119,7 @@ const UsernameRecovery = ({ navigation }) => {
                   alert('We have sent the username to your email box')
                   navigation.navigate('Login')
                 } 
-                else{
+                if((username[0].foundUsername === false)){
                   alert('Invalid password or email')
                 }
                 }

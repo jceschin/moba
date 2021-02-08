@@ -1,10 +1,12 @@
-import { VALIDAR_EMAIL, VERIFY_EMAIL, USERNAME_RECOVERY, PASSWORD_RECOVERY } from "../types/emailTypes";
+import { VALIDAR_EMAIL, VERIFY_EMAIL, USERNAME_RECOVERY, PASSWORD_RECOVERY, VERIFY_TOKEN, UPDATE_PASSWORD, CLEAR_PASS, CLEAR_TOKEN, CLEAN_EMAILORUSERNAME } from "../types/emailTypes";
 
 const initialState = {
     newEmail: {},
     verify: [],
     username: [],
-    emailOrUsername: []
+    emailOrUsername: [],
+    token: [],
+    pass: []
 };
 
 export function emailReducer(state = initialState, action) {
@@ -25,12 +27,36 @@ export function emailReducer(state = initialState, action) {
                     ...state,
                     username: action.payload
                 };
-            case PASSWORD_RECOVERY:
+                case PASSWORD_RECOVERY:
                 return {
                     ...state,
                     emailOrUsername: action.payload
-                }      
-    
+                };
+                case VERIFY_TOKEN:
+                    return {
+                        ...state,
+                        token: action.payload,
+                    }; 
+                 case UPDATE_PASSWORD:
+                        return {
+                            ...state,
+                            pass: action.payload,
+                        }; 
+                 case CLEAR_PASS:
+                            return {
+                                ...state,
+                                pass: action.payload,
+                            }; 
+                 case CLEAR_TOKEN:
+                            return {
+                                  ...state,
+                                  token: action.payload,
+                                };                         
+                 case CLEAN_EMAILORUSERNAME:
+                           return {
+                                ...state,
+                          emailOrUsername: action.payload,
+                                        };                       
         default:
             return state;
     }

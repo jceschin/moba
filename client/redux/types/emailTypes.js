@@ -1,7 +1,12 @@
 export const VALIDAR_EMAIL = "VALIDAR_EMAIL";
 export const VERIFY_EMAIL = 'VERIFY_EMAIL';
-export const USERNAME_RECOVERY = 'USERNAME_RECOVERY'
-export const PASSWORD_RECOVERY = 'PASSWORD_RECOVERY'
+export const USERNAME_RECOVERY = 'USERNAME_RECOVERY';
+export const PASSWORD_RECOVERY = 'PASSWORD_RECOVERY';
+export const VERIFY_TOKEN = 'VERIFY_TOKEN';
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
+export const CLEAR_PASS = 'CLEAR_PASS';
+export const CLEAR_TOKEN = 'CLEAR_TOKEN';
+export const CLEAN_EMAILORUSERNAME = 'CLEAN_EMAILORUSERNAME'
 
 export const validarEmail = (res) => {
   return {
@@ -30,3 +35,38 @@ export const typePasswordRecovery = (res) => {
     payload: res,
   };
 };
+
+export const typeVerifyToken = (res) => {
+  return {
+    type: VERIFY_TOKEN,
+    payload: res,
+  };
+};
+
+export const typeUpdatePassword = (res) => {
+  return {
+    type: UPDATE_PASSWORD,
+    payload: res,
+  };
+}
+
+export const typeClearPass = () => {
+  return {
+    type: CLEAR_PASS,
+    payload: []
+  };
+}
+
+export const typeClearToken = () => {
+  return {
+    type: CLEAR_TOKEN,
+    payload: []
+  };
+}
+
+export const typecleanEmailOrUsername = () => {
+  return {
+    type: CLEAN_EMAILORUSERNAME,
+    payload: []
+  };
+}
