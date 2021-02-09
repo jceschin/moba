@@ -18,19 +18,19 @@ const HomeNavbar = () => {
         onPress={() => navigation.navigate("HomePage")}
       >
         <View style={{ alignItems: "center" }}>
-          <AntDesign name="home" size={24} color="black" />
+          <AntDesign name="home" size={30} color="black" />
           <Text style={styles.tag}>Home</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Card")}>
         <View style={{ alignItems: "center" }}>
-          <MaterialCommunityIcons name="credit-card" size={24} color="black" />
+          <MaterialCommunityIcons name="credit-card" size={30} color="black" />
           <Text style={styles.tag}>Card</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("MyAccount")}>
         <View style={{ alignItems: "center" }}>
-          <SimpleLineIcons name="menu" size={24} color="black" />
+          <SimpleLineIcons name="menu" size={30} color="black" />
           <Text style={styles.tag}>More</Text>
         </View>
       </TouchableOpacity>

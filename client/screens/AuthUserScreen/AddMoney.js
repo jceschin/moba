@@ -87,7 +87,6 @@ const AddMoney = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#8CA5FD" barStyle="light-content" />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
           <AntDesign

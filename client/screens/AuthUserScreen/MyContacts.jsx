@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, FlatList, Modal, Alert, TextInput, TouchableHighlight } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { Feather, Ionicons, Foundation } from "@expo/vector-icons";
+import { Feather, Ionicons, AntDesign, MaterialCommunityIcons, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
 //Redux
-import {getUserInfo} from '../../redux/actions/user'
+import { getUserInfo } from '../../redux/actions/user'
 import { addNewContact } from '../../redux/actions/contactActions';
 
 const MyContacts = () => {
   const navigation = useNavigation();
   let loggedUser = useSelector((state) => state.user)
   let contactsUser = useSelector((state) => state.contacts)
-   let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
+  let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
   // console.log('ESTO ES USER CONTACTS', userContacts)
   //let userContacts = useSelector((state) => state.user.user);
   const [modalVisible, setModalVisible] = useState(false);
@@ -26,12 +26,12 @@ const MyContacts = () => {
 
   const onSubmit = () => {
     console.log(userContacts)
-    dispatch(addNewContact({...data, user_username: loggedUser.username}))
+    dispatch(addNewContact({ ...data, user_username: loggedUser.username }))
   }
 
   useEffect(() => {
     dispatch(getUserInfo(loggedUser.username))
-  },[contactsUser.contacts])
+  }, [contactsUser.contacts])
 
   return (
     <LinearGradient
@@ -40,32 +40,6 @@ const MyContacts = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          alert('Contact has been not added');
-        }}
-      >
-        <Text>Hello</Text>
-        <TextInput
-          onChangeText={(text) => setData({ alias: text })}
-          placeholder='Alias'
-        />
-        <TextInput
-          onChangeText={(text) => setData({ ...data, contact_email: text })}
-          placeholder='Contact Email'
-        />
-        <TouchableOpacity onPress={onSubmit}>
-          <Text>Save Contact</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setModalVisible(false)
-        }}>
-          <Text>Cancel</Text>
-        </TouchableOpacity>
-      </Modal>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -75,23 +49,78 @@ const MyContacts = () => {
             <Feather name="arrow-left" size={24} color="white" />
           </TouchableOpacity>
           <View
-              style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-            >
-              <Text style={styles.greeting}>Who do you want to send?</Text>
-          </View>
-          {/* <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
           >
-            <Text style={styles.greeting}>Contacts</Text>
-            <View style={styles.action}>
-              <TouchableOpacity onPress={() => {
-                setModalVisible(true);
-              }}>
-                <Ionicons name="person-add" size={24} color="black" style={styles.optionIcon} />
-                <Text style={styles.option}>Add Contact</Text>
-              </TouchableOpacity>
+            <Text style={styles.greeting}>Who do you want to send?</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            top: 40,
+            borderRadius: 15,
+            marginLeft: 10,
+            marginRight: 10,
+            padding: 5,
+            backgroundColor: "white",
+            marginBottom: 40,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5
+          }}
+        >
+          <View style={styles.action}>
+            <TouchableOpacity onPress={() => navigation.navigate('')}
+              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
+            >
+              <MaterialCommunityIcons name="plus" size={24} color="white" />
+            </TouchableOpacity>
+            <View style={{
+              padding: 10
+            }}>
+              <Text style={{
+                fontStyle: "normal",
+                fontWeight: "bold",
+              }}>New Transfer</Text>
             </View>
-          </View> */}
+          </View>
+          <View style={styles.action}>
+            <TouchableOpacity onPress={() => navigation.navigate("AddContact")}
+              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
+            >
+              <Ionicons name="person-add-outline" size={24} color="white" />
+            </TouchableOpacity>
+            <View style={{
+              padding: 10
+            }}>
+              <Text style={{
+                fontStyle: "normal",
+                fontWeight: "bold",
+              }}>New Contact</Text>
+            </View>
+          </View>
+          <View style={styles.action}>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('');
+            }}
+              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
+            >
+              <AntDesign name="edit" size={24} color="white" />
+            </TouchableOpacity>
+            <View style={{
+              padding: 10
+            }}>
+              <Text style={{
+                fontStyle: "normal",
+                fontWeight: "bold",
+              }}>Edit Contact</Text>
+            </View>
+          </View>
         </View>
         <View style={styles.whiteContainer}>
           <Text style={styles.contactsTag}>Your contacts</Text>
@@ -144,7 +173,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   action: {
-    marginTop: 15,
+    flexDirection: "row",
     padding: 5
   },
   whiteContainer: {
@@ -177,9 +206,6 @@ const styles = StyleSheet.create({
   optionIcon: {
     textAlign: "center",
     marginBottom: 5,
-  },
-  option: {
-    fontSize: 16,
   },
   centeredView: {
     flex: 1,
