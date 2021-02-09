@@ -14,7 +14,9 @@ import {
   userInfo,
   getTransactions,
   chargeUserCode,
-  newCharge
+  newCharge,
+  userStats,
+  userLinealStats
 } from '../types/userTypes';
 import {apiEndpoint} from '../../const'
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -101,4 +103,41 @@ export function chargeAccount(chargeCode, amount) {
       console.log(error);
     }
   };
+}
+
+export function getUserStats(cvu, dateFrom, dateTo){
+  return (dispatch) => {
+    return axios
+      .get(`http://${apiEndpoint}/statistics/${cvu}/${dateFrom}/${dateTo}`)
+      .then((data) => {
+        if(data.status !== 200){
+          alert('Sorry, an error ocurred')          
+        }
+        else{
+          var payload = data.data 
+          dispatch(userStats(payload))
+        }
+      })
+      .catch((err) => console.log(err))
+
+  }
+}
+
+export function getLinealUserStats(cvu, dateFrom, dateTo){
+  return (dispatch) => {
+    return axios
+      .get(`http://${apiEndpoint}/statistics/lineal/${cvu}/${dateFrom}/${dateTo}`)
+      .then((data) => {
+        if(data.status !== 200){
+          alert('Sorry, an error ocurred')          
+        }
+        else{
+          console.log('ASDASD', data)
+          var payload = data.data 
+          dispatch(userLinealStats(payload))
+        }
+      })
+      .catch((err) => console.log(err))
+
+  }
 }

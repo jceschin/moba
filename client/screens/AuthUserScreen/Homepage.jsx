@@ -160,7 +160,7 @@ const Homepage = () => {
       </View>
     );
   }
-};
+}
 
 export default Homepage;
 

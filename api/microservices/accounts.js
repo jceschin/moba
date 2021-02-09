@@ -115,6 +115,7 @@ server.put("/accounts/recharge/:userCode", (req, res) => {
             type: "charge",
             old_balance: parseInt(acc.balance) - parseInt(amount),
             new_balance: acc.balance,
+            status:'confirmed'
           });
 
           res.send(account);
