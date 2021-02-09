@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-nativ
 import { Feather, AntDesign } from "@expo/vector-icons";
 
 //Redux
-import { addNewContact } from '../../redux/actions/user';
+import { addNewContact } from '../../redux/actions/contactActions';
 import { useSelector, useDispatch } from "react-redux";
 
 const AddContact = ({ navigation }) => {
@@ -68,32 +68,21 @@ const AddContact = ({ navigation }) => {
           ) :
             pages === 'second' ? (
               <View style={styles.section}>
-                <View style={styles.Wrapper}>
-                  <TextInput style={styles.input} value={userLoggued} />
-                </View>
-                <View style={styles.buttonWrapper}>
-                  <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === true ? styles.buttonAble : styles.buttonDisable]} onPress={() => setPages('third')}>
-                    <Text style={styles.textButton}>Continue</Text>
-                  </TouchableOpacity>
-                </View>
+              <View style={styles.Wrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder='Contact email...'
+                  onChangeText={value => handleInput('contact_email', value)}
+                  placeholderTextColor={'rgba(0, 0, 0, 0.4);'}
+                  fontWeight={'bold'}
+                />
               </View>
-            ) : pages === 'third' ? (
-              <View style={styles.section}>
-                <View style={styles.Wrapper}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder='Contact email...'
-                    onChangeText={value => handleInput('contact_email', value)}
-                    placeholderTextColor={'rgba(0, 0, 0, 0.4);'}
-                    fontWeight={'bold'}
-                  />
-                </View>
-                <View style={styles.buttonWrapper}>
-                  <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === true ? styles.buttonAble : styles.buttonDisable]} onPress={submitData}>
-                    <Text style={styles.textButton}>Confirm</Text>
-                  </TouchableOpacity>
-                </View>
+              <View style={styles.buttonWrapper}>
+                <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === true ? styles.buttonAble : styles.buttonDisable]} onPress={submitData}>
+                  <Text style={styles.textButton}>Confirm</Text>
+                </TouchableOpacity>
               </View>
+            </View>
             ) : null
         }
         {
