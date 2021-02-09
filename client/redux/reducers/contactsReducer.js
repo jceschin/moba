@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { Alert } from 'react-native'
 import {
     ADD_USER_CONTACT,
     REMOVE_USER_CONTACT,

@@ -13,6 +13,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import accounting from "accounting-js";
 
+// Fonts
+import {
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+
 //Redux functions
 import { getContactInfo } from "../../redux/actions/contactActions";
 import {
@@ -21,6 +31,16 @@ import {
 } from "../../redux/actions/transactionActions";
 
 const SendMoney = ({ route }) => {
+
+  // Fonts
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
+
   // Redux
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.user);
@@ -99,12 +119,7 @@ const SendMoney = ({ route }) => {
   }, [lastTransfer]);
 
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
+    <View style={styles.colorContainer}>
       <View style={styles.header}>
         <TouchableOpacity
           // style={{ position: "absolute" }}
@@ -119,20 +134,36 @@ const SendMoney = ({ route }) => {
         </View>
       </View>
       <View style={styles.whiteContainer}>
-        <TextInput
-          style={styles.textInputAmount}
-          autoCapitalize="none"
-          value={formatValue(transferAmount.amount)}
-        />
-        <TextInput
-          style={styles.textInputAmountHide}
-          autoCapitalize="none"
-          onChangeText={(val) => textInputChange(val)}
-          value={transferAmount.amount}
-        />
+        <View
+          style={{
+            borderBottomWidth: 1,
+            borderBottomColor: "#C4C4C4",
+            borderStyle: "solid",
+            marginLeft: 100,
+            marginRight: 100
+          }}
+        >
+          <TextInput
+            style={styles.textInputAmount}
+            autoCapitalize="none"
+            value={formatValue(transferAmount.amount)}
+          />
+          <TextInput
+            style={styles.textInputAmountHide}
+            autoCapitalize="none"
+            onChangeText={(val) => textInputChange(val)}
+            value={transferAmount.amount}
+          />
+        </View>
         <View style={styles.contact}>
           <View style={styles.avatar}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
+            <Text
+              style={{
+                color: 'white',
+                fontFamily: 'OpenSans_700Bold',
+                fontSize: 18
+              }}
+            >  
               {selectedContactNameInitial}
               {selectedContactSurnameInitial}
             </Text>
@@ -153,16 +184,21 @@ const SendMoney = ({ route }) => {
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
         >
-          <Text style={styles.btnContent}>Send</Text>
+          <Text style={styles.btnContent}>Confirm</Text>
         </TouchableOpacity>
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 
 export default SendMoney;
 
 const styles = StyleSheet.create({
+  colorContainer: {
+    flex: 1,
+    backgroundColor: "#521886",
+    opacity: 0.9,
+  },
   container: {
     flex: 1,
   },
@@ -171,18 +207,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    top: 24,
+    top: 24
   },
   greeting: {
     color: "white",
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontFamily: 'OpenSans_700Bold'
   },
   whiteContainer: {
     top: 50,
     backgroundColor: "white",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     height: "100%",
   },
   button: {
@@ -190,10 +226,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 10,
     justifyContent: "center",
-    backgroundColor: "#25D681",
+    backgroundColor: "#521886",
     marginRight: 18,
     marginLeft: 18,
-    top: 380,
+    top: 315,
   },
   btnContent: {
     textAlign: "center",
@@ -204,23 +240,21 @@ const styles = StyleSheet.create({
   avatar: {
     marginRight: 20,
     borderRadius: 50,
-    backgroundColor: "#25D681",
+    backgroundColor: "#CC1833",
     padding: 10,
-    height: 41,
-    width: 41,
+    height: 45,
+    width: 45,
     justifyContent: "center",
     alignItems: "center",
   },
   name: {
     color: "black",
     fontSize: 18,
-    fontWeight: "normal",
-    textAlign: "left",
+    fontFamily: 'OpenSans_600SemiBold'
   },
   contact: {
     display: "flex",
     flexDirection: "row",
-    marginHorizontal: 18,
     marginVertical: 15,
     justifyContent: "center",
     marginTop: 30,
@@ -230,8 +264,9 @@ const styles = StyleSheet.create({
     height: 40,
     textAlign: "center",
     marginTop: 80,
-    fontSize: 32,
-    color: "#168903",
+    fontSize: 40,
+    color: "#499174",
+    fontFamily: 'OpenSans_700Bold'
   },
   textInputAmountHide: {
     height: 40,
