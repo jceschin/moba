@@ -4,11 +4,30 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+// Fonts
+import {
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+
 // REDUX
 import { getUserInfo } from '../../redux/actions/user';
 import {deleteContact} from '../../redux/actions/contactActions'
 
 const MyContact = ({ name, surname, phone, username, alias }) => {
+  // Fonts
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const nameInitial = name.slice(0, 1).toUpperCase();
@@ -32,7 +51,14 @@ const MyContact = ({ name, surname, phone, username, alias }) => {
         })}
       >
         <View style={styles.avatar}>
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>{nameInitial} {surnameInitial}</Text>
+          <Text 
+          style={{
+            color: '#000000',
+            fontFamily: 'OpenSans_700Bold',
+            fontSize: 18 
+          }}>
+              {nameInitial} {surnameInitial}
+          </Text>
         </View>
         <View>
           <Text style={styles.name}>{alias} ({name} {surname})</Text>
@@ -52,6 +78,10 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: "#C4C4C4",
+    borderStyle: "solid",
+    paddingBottom: 5
   },
   container: {
     display: 'flex',
@@ -62,11 +92,10 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: 20,
-    borderRadius: 50,
-    backgroundColor: '#25D681',
-    padding: 10,
-    height: 51,
-    width: 51,
+    backgroundColor: '#E5E5E5',
+    height: 48,
+    width: 45,
+    borderRadius: 11,
     justifyContent: 'center',
     alignItems: 'center'
   },

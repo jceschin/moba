@@ -7,10 +7,32 @@ import { Feather, Ionicons, AntDesign, MaterialCommunityIcons, Foundation } from
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
+// Fonts
+import {
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+
+// import AppLoading from "expo-app-loading";
+
 //Redux
 import { getUserInfo } from '../../redux/actions/user'
 
 const MyContacts = () => {
+
+  // Fonts
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
+
   const navigation = useNavigation();
   // let loggedUser = useSelector((state) => state.user);
   let userContacts = useSelector((state) => state.user.info.contacts);
@@ -22,12 +44,7 @@ const MyContacts = () => {
   // }, [userContacts])
 
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={["rgba(140, 165, 253, 1)", "rgba(243, 129, 245, 0.77)"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
+    <View style={styles.colorContainer}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -47,8 +64,8 @@ const MyContacts = () => {
             display: "flex",
             top: 40,
             borderRadius: 15,
-            marginLeft: 10,
-            marginRight: 10,
+            marginLeft: 18,
+            marginRight: 18,
             padding: 5,
             backgroundColor: "white",
             marginBottom: 40,
@@ -62,7 +79,7 @@ const MyContacts = () => {
             elevation: 5
           }}
         >
-          <View style={styles.action}>
+          {/* <View style={styles.action}>
             <TouchableOpacity onPress={() => navigation.navigate('')}
               style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
             >
@@ -76,7 +93,7 @@ const MyContacts = () => {
                 fontWeight: "bold",
               }}>New Transfer</Text>
             </View>
-          </View>
+          </View> */}
           <View style={styles.action}>
             <TouchableOpacity onPress={() => navigation.navigate("AddContact")}
               style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
@@ -111,7 +128,7 @@ const MyContacts = () => {
           </View>
         </View>
         <View style={styles.whiteContainer}>
-          <Text style={styles.contactsTag}>Your contacts</Text>
+          <Text style={styles.contactsTag}>Contacts</Text>
           {
             !userContacts ? (
               <View style={{
@@ -138,13 +155,18 @@ const MyContacts = () => {
           }
         </View>
       </ScrollView>
-    </LinearGradient>
+    </View>
   );
 };
 
 export default MyContacts;
 
 const styles = StyleSheet.create({
+  colorContainer: {
+    flex: 1,
+    backgroundColor: "#521886",
+    opacity: 0.9,
+  },
   container: {
     flex: 1,
   },
@@ -156,32 +178,32 @@ const styles = StyleSheet.create({
     top: 24,
   },
   greeting: {
-    color: "white",
-    fontSize: 24,
-    fontWeight: "bold",
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontFamily: 'OpenSans_800ExtraBold'
   },
   action: {
     flexDirection: "row",
     padding: 5
   },
   whiteContainer: {
-    top: 50,
-    backgroundColor: "white",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    marginTop: 24,
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     height: "100%",
+    minHeight: 1000
   },
   contactsTag: {
-    fontSize: 18,
-    fontWeight: "normal",
-    color: "#A7A7A7",
-    marginTop: 40,
-    marginBottom: 25,
-    paddingBottom: 15,
-    paddingLeft: 18,
-    paddingRight: 18,
+    fontSize: 20,
+    fontFamily: 'OpenSans_700Bold',
+    color: "#000000",
+    marginTop: 12,
+    marginBottom: 5,
+    paddingBottom: 10,
+    paddingLeft: 21,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(167, 167, 167, 0.83)",
+    borderBottomColor: "#C4C4C4",
     borderStyle: "solid",
   },
   notFound: {
