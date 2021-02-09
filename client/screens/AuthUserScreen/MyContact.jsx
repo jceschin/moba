@@ -39,8 +39,8 @@ const MyContact = ({ name, surname, phone, username, alias }) => {
           <Text style={styles.phone}>{phone}</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.btndelete}>
-        <MaterialCommunityIcons style={styles.delete} onPress={onDelete} name="account-remove" size={24} color="black" />
+      <TouchableOpacity style={styles.btndelete} onPress={onDelete}>
+        <MaterialCommunityIcons style={styles.delete} name="account-remove" size={24} color="black" />
       </TouchableOpacity>
     </View>
   );
