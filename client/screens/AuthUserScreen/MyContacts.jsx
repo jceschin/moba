@@ -9,30 +9,17 @@ import MyContact from './MyContact';
 
 //Redux
 import { getUserInfo } from '../../redux/actions/user'
-import { addNewContact } from '../../redux/actions/contactActions';
 
 const MyContacts = () => {
   const navigation = useNavigation();
-  let loggedUser = useSelector((state) => state.user)
-  let contactsUser = useSelector((state) => state.contacts)
-  let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
-  // console.log('ESTO ES USER CONTACTS', userContacts)
-  //let userContacts = useSelector((state) => state.user.user);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState({
-    alias: '',
-    contact_email: ''
-  })
-  const dispatch = useDispatch();
+  // let loggedUser = useSelector((state) => state.user);
+  let userContacts = useSelector((state) => state.user.info.contacts);
+  // const dispatch = useDispatch();
+  // console.log(userContacts);
 
-  const onSubmit = () => {
-    console.log(userContacts)
-    dispatch(addNewContact({ ...data, user_username: loggedUser.username }))
-  }
-
-  useEffect(() => {
-    dispatch(getUserInfo(loggedUser.username))
-  }, [contactsUser.contacts])
+  // useEffect(() => {
+  //   dispatch(getUserInfo(loggedUser.username))
+  // }, [userContacts])
 
   return (
     <LinearGradient
