@@ -60,9 +60,14 @@ const MyContact = ({ name, surname, phone, username, alias }) => {
               {nameInitial} {surnameInitial}
           </Text>
         </View>
-        <View>
-          <Text style={styles.name}>{alias} ({name} {surname})</Text>
-          <Text style={styles.phone}>{phone}</Text>
+        <View
+          style={{
+            paddingLeft: 5,
+            justifyContent: 'center',
+            height: 48
+          }}
+        >
+          <Text style={styles.name}>{name} {surname}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btndelete} onPress={onDelete}>
@@ -107,8 +112,8 @@ const styles = StyleSheet.create({
   },
   name: {
     color: 'black',
-    fontSize: 16,
-    fontWeight: 'normal',
+    fontSize: 20,
+    fontFamily: 'OpenSans_700Bold',
     textAlign: 'left'
   },
   phone: {
