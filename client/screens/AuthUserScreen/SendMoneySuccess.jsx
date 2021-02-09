@@ -61,7 +61,7 @@ const SendMoneySuccess = () => {
             textAlign: 'center'
           }}
         >
-          Juan Pedro will receive your money</Text>
+          The transaction has been succesfully completed</Text>
       </View>
       <TouchableOpacity
         style={styles.button}

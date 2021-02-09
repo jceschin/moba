@@ -28,7 +28,6 @@ const RootStackScreen = ({ navigation }) => {
     <>
       <Context.Provider value={{ eye, setEye, toggle, setToggle }}>
         <Stack.Navigator headerMode="none">
-          <Stack.Screen name="SendMoneyError" component={SendMoneyError} />
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
           <Stack.Screen name="MyAccount" component={MyAccount} />
@@ -38,7 +37,7 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="MyContact" component={MyContact} />
           <Stack.Screen name="SendMoney" component={SendMoney} />
           <Stack.Screen name="SendMoneySuccess" component={SendMoneySuccess} />
-          
+          <Stack.Screen name="SendMoneyError" component={SendMoneyError} />
           <Stack.Screen name="AddMoney" component={AddMoney} />
           <Stack.Screen name="Card" component={Card} />
         </Stack.Navigator>
