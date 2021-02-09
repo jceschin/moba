@@ -1,28 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
+import Clipboard from 'expo-clipboard';
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, Fontisto, Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import CreditCard from "./CardStyle";
 import HomeNavbar from "./HomeNavbar";
 import { Context } from "./AuthUserScreen";
 
 export default function Card() {
   const { eye, setEye, toggle, setToggle } = React.useContext(Context);
+  let cardInfo = useSelector((state) => state.user.info.account.card_id);
+  let userInfo = useSelector((state) => state.user.info);
+
+  const userName = userInfo.name.concat(' ', userInfo.surname);
+
+  const copyToClipboard = () => {
+    Clipboard.setString(cardInfo.toString())
+    alert('Copy to clipboard')
+  }
+
+  const copyUsernameToClipboard = () => {
+    Clipboard.setString(userName.toString())
+    alert('Copy to clipboard')
+  }
 
   const handleToggle = () => {
     toggle === false
       ? setToggle(true)
       : toggle === true
-      ? setToggle(false)
-      : null;
+        ? setToggle(false)
+        : null;
   };
 
   const handleEye = () => {
@@ -36,7 +50,7 @@ export default function Card() {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <ScrollView contentContainerStyle={{flex: 1}}>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.mainContainer}>
           <View style={styles.upperContainer}>
             <View style={styles.viewCard}>
@@ -52,8 +66,8 @@ export default function Card() {
                     {toggle === true ? (
                       <Ionicons name="eye-sharp" size={28} color="black" />
                     ) : (
-                      <Ionicons name="eye-off-sharp" size={28} color="black" />
-                    )}
+                        <Ionicons name="eye-off-sharp" size={28} color="black" />
+                      )}
                   </TouchableOpacity>
                 </View>
                 <View style={styles.movsHeader}>
@@ -69,13 +83,13 @@ export default function Card() {
                         style={{ transition: "2s ease-out" }}
                       />
                     ) : (
-                      <Fontisto
-                        name="toggle-off"
-                        size={31}
-                        color="black"
-                        style={{ transition: "2s ease-out" }}
-                      />
-                    )}
+                        <Fontisto
+                          name="toggle-off"
+                          size={31}
+                          color="black"
+                          style={{ transition: "2s ease-out" }}
+                        />
+                      )}
                   </TouchableOpacity>
                 </View>
               </View>
@@ -84,11 +98,11 @@ export default function Card() {
             <View style={styles.subBottomContainer}>
               <View style={styles.iconsColumn}>
                 <View style={styles.copyName}>
-                  <Feather name="copy" size={28} color="black" />
+                  <Feather name="copy" size={28} color="black" onPress={() => copyUsernameToClipboard()} />
                   <Text style={styles.textCopyCardName}>Copy Name</Text>
                 </View>
                 <View style={styles.copyNumberCard}>
-                  <Feather name="copy" size={28} color="black" />
+                  <Feather name="copy" size={28} color="black" onPress={() => copyToClipboard()} />
                   <Text style={styles.textCopyCardNumber}>
                     Copy Card Number
                   </Text>

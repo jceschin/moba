@@ -25,7 +25,16 @@ const AddContact = ({ navigation }) => {
 
   const handleInput = (name, value) => {
     setData({ ...data, [name]: value });
-    if (data.alias || data.contact_email || userLoggued) {
+    if (data.alias) {
+      setDisable(true)
+    } else {
+      setDisable(false)
+    }
+  }
+
+  const handleEmail = (email, value) => {
+    setData({ ...data, [email]: value });
+    if (data.contact_email) {
       setDisable(true)
     } else {
       setDisable(false)
@@ -35,6 +44,7 @@ const AddContact = ({ navigation }) => {
   useEffect(() => {
     setPages('first')
   }, [])
+
 
   return (
     <View style={styles.container}>
@@ -60,7 +70,7 @@ const AddContact = ({ navigation }) => {
                 />
               </View>
               <View style={styles.buttonWrapper}>
-                <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === true ? styles.buttonAble : styles.buttonDisable]} onPress={() => setPages('second')}>
+                <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === false ? styles.buttonDisable : styles.buttonAble]} onPress={() => setPages('second')}>
                   <Text style={styles.textButton}>Continue</Text>
                 </TouchableOpacity>
               </View>
@@ -72,7 +82,7 @@ const AddContact = ({ navigation }) => {
                   <TextInput style={styles.input} value={userLoggued} />
                 </View>
                 <View style={styles.buttonWrapper}>
-                  <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === true ? styles.buttonAble : styles.buttonDisable]} onPress={() => setPages('third')}>
+                  <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === false ? styles.buttonDisable : styles.buttonAble]} onPress={() => setPages('third')}>
                     <Text style={styles.textButton}>Continue</Text>
                   </TouchableOpacity>
                 </View>
@@ -83,38 +93,35 @@ const AddContact = ({ navigation }) => {
                   <TextInput
                     style={styles.input}
                     placeholder='Contact email...'
-                    onChangeText={value => handleInput('contact_email', value)}
+                    onChangeText={value => handleEmail('contact_email', value)}
                     placeholderTextColor={'rgba(0, 0, 0, 0.4);'}
                     fontWeight={'bold'}
                   />
                 </View>
                 <View style={styles.buttonWrapper}>
-                  <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === true ? styles.buttonAble : styles.buttonDisable]} onPress={submitData}>
+                  <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === false ? styles.buttonDisable : styles.buttonAble]} onPress={submitData}>
                     <Text style={styles.textButton}>Confirm</Text>
                   </TouchableOpacity>
                 </View>
               </View>
-            ) : null
-        }
-        {
-          pages === 'success' ? (
-            <View style={styles.container}>
-              <View style={styles.bodySuccess}>
-                <View>
-                  <Text>Contact added</Text>
-                </View>
-                <AntDesign name="contacts" size={36} color="White" />
-                <View>
-                  <Text >Successfully added {data.alias} to your contact list</Text>
-                </View>
-                <View>
-                  <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
-                    <Text>Continue</Text>
-                  </TouchableOpacity>
+            ) : pages === 'success' ? (
+              <View style={styles.container}>
+                <View style={styles.bodySuccess}>
+                  <View>
+                    <Text>Contact added</Text>
+                  </View>
+                  <AntDesign name="contacts" size={40} color="White" />
+                  <View>
+                    <Text >Successfully added {data.alias} to your contact list</Text>
+                  </View>
+                  <View>
+                    <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
+                      <Text>Continue</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
-          ) : null
+            ) : null
         }
       </View>
     </View>
@@ -155,7 +162,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   bodySuccess: {
-    flex: 1,
     backgroundColor: '#38046C',
     justifyContent: 'center',
     alignItems: 'center'

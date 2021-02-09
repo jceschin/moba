@@ -48,8 +48,8 @@ export default function CreditCard() {
               {toggle === false
                 ? "**** **** **** ****"
                 : loggedUser.info.account
-                ? (loggedUser.info.account.card_id.replace(/\B(?=(\d{4})+(?!\d))/g, " "))
-                : null}
+                  ? (loggedUser.info.account.card_id.replace(/\B(?=(\d{4})+(?!\d))/g, " "))
+                  : null}
             </Text>
           </View>
         </View>
@@ -105,7 +105,7 @@ const s = StyleSheet.create({
     marginBottom: 18,
     width: 184,
   },
-  cardNumberPart: { flexDirection: "row"},
+  cardNumberPart: { flexDirection: "row" },
   dot: {
     width: 6,
     height: 6,
