@@ -14,13 +14,26 @@ import {
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { loginStateUser } from "../../redux/actions/user";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+import AppLoading from 'expo-app-loading';
 
 const LoginScreen = ({ navigation }) => {
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
 
-  const token = useSelector((store) => store.email.token)
-  const pass = useSelector((store) => store.email.pass)
-  
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -88,38 +101,20 @@ const LoginScreen = ({ navigation }) => {
     });
   };
 
-  const loginHandle = async (userName, password) => {
+  const loginHandle = async () => {
     if (data.username.length === 0 || data.password.length === 0) {
       alert("Username or Password cannot be empty");
     }
     await loginUser(data);
   };
 
-  const handlePress = () => {
-    console.log(token)
-    // if(token.length === 0 ){
-      console.log(token.length)
-    navigation.navigate("PasswordRecovery")
-    }
-  
-
+  if(!fontsLoaded){
+    return <AppLoading/>
+  }
+  else {
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#8CA5FD" barStyle="light-content" />
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <AntDesign
-            name="arrowleft"
-            size={24}
-            color="white"
-            style={{ right: 10 }}
-          />
-        </TouchableOpacity>
-
-        <View style={styles.welcomeView}>
-          <Text style={styles.text_header}>Welcome</Text>
-        </View>
-      </View>
+      <View style={styles.header}></View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <ScrollView>
           <View style={styles.containerImg}>
@@ -127,10 +122,14 @@ const LoginScreen = ({ navigation }) => {
               style={styles.image}
               source={require("../../assets/MOBA.png")}
             />
+            <Text style={styles.textContainerImg}>
+              Your finances simple and fast.
+            </Text>
           </View>
           <View style={styles.action}>
             <TextInput
-              placeholder="Your Username"
+              placeholder="Username"
+              placeholderTextColor="rgba(0, 0, 0, 0.35)"
               style={styles.textInputUsername}
               autoCapitalize="none"
               value={data.username}
@@ -139,8 +138,8 @@ const LoginScreen = ({ navigation }) => {
             />
 
             {data.check_textInputChange ? (
-              <Animatable.View animation="bounceIn">
-                <AntDesign name="checkcircleo" size={14} color="green" />
+              <Animatable.View animation="bounceIn" style={styles.checkView}>
+                <AntDesign name="checkcircle" size={21} color="green" />
               </Animatable.View>
             ) : null}
           </View>
@@ -152,14 +151,10 @@ const LoginScreen = ({ navigation }) => {
               </Text>
             </Animatable.View>
           )}
-
-          <TouchableOpacity onPress={() => navigation.navigate("UsernameRecovery")}>
-            <Text style={styles.forgot_username}>Forgot your username?</Text>
-          </TouchableOpacity>
-
           <View style={styles.action}>
             <TextInput
-              placeholder="Your Password"
+              placeholder="Password"
+              placeholderTextColor="rgba(0, 0, 0, 0.35)"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.textInputPassword}
               autoCapitalize="none"
@@ -167,12 +162,15 @@ const LoginScreen = ({ navigation }) => {
               onChangeText={(val) => handlePasswordChange(val)}
             />
 
-            <TouchableOpacity onPress={updateSecureTextEntry}>
+            <TouchableOpacity
+              onPress={updateSecureTextEntry}
+              style={styles.eyeView}
+            >
               {data.secureTextEntry ? (
-                <Feather name="eye-off" color="grey" size={20} />
+                <Feather name="eye-off" color="grey" size={21} />
               ) : (
-                  <Feather name="eye" color="grey" size={20} />
-                )}
+                <Feather name="eye" color="grey" size={21} />
+              )}
             </TouchableOpacity>
           </View>
           {data.isValidPassword ? null : (
@@ -182,10 +180,6 @@ const LoginScreen = ({ navigation }) => {
               </Text>
             </Animatable.View>
           )}
-
-          <TouchableOpacity onPress={() => handlePress()}>
-            <Text style={styles.forgot_password}>Forgot your password?</Text>
-          </TouchableOpacity>
 
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
@@ -201,18 +195,61 @@ const LoginScreen = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
           </View>
+          <View style={{ alignItems: "center" }}>
+            <View style={{flexDirection: "row"}}>
+            <Text
+              style={{
+                marginTop: 12,
+                fontSize: 16,
+                color: "rgba(0, 0, 0, 0.35)",
+                fontFamily: "OpenSans_400Regular",
+              }}
+            >
+              Forgot your login information?{" "}
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("ForgotOptions")}>
+                <Text
+                  style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 12 }}
+                >
+                  Help
+                </Text>
+              </TouchableOpacity>
+              </View>
+            <View style={{flexDirection: "row"}}>
+            <Text
+              style={{
+                marginTop: 149,
+                fontSize: 16,
+                color: "rgba(0, 0, 0, 0.35)",
+                fontFamily: "OpenSans_400Regular",
+              }}
+            >
+              Not registered yet?{" "}
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}>
+              <Text
+                style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 149}}
+              >
+                Create an account
+              </Text>
+              </TouchableOpacity>
+              </View>
+          </View>
         </ScrollView>
       </Animatable.View>
     </View>
   );
 };
+}
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#8CA5FD",
+    flex: 5,
+    backgroundColor: "#fff",
+    paddingHorizontal: 20,
+    paddingVertical: 30,
   },
   header: {
     flex: 1,
@@ -221,50 +258,47 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     flexDirection: "row",
   },
-  welcomeView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    right: 15,
-  },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 5,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-    marginTop: -80,
-  },
-  text_header: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 30,
-  },
-  text_footer: {
-    color: "#05375a",
-    fontSize: 18,
-  },
   action: {
     flexDirection: "row",
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 25,
+    borderWidth: 1,
+    borderColor: "rgba(141, 138, 138, 0.54)",
     paddingBottom: 5,
+    width: 359,
+    height: 52,
+    borderRadius: 10,
+    backgroundColor: "rgba(83, 83, 83, 0.06)",
+  },
+  actionPassword: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 41,
+    borderWidth: 1,
+    borderColor: "rgba(141, 138, 138, 0.54)",
+    paddingBottom: 5,
+    width: 359,
+    height: 52,
+    borderRadius: 10,
+    backgroundColor: "rgba(83, 83, 83, 0.06)",
   },
   textInputUsername: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    paddingLeft: 10,
-    color: "#05375a",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 21,
+    color: "black",
     fontSize: 16,
+    fontFamily: "OpenSans_400Regular",
   },
   textInputPassword: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    paddingLeft: 10,
-    color: "#05375a",
+    paddingLeft: 21,
+    color: "black",
     fontSize: 16,
+    fontFamily: "OpenSans_400Regular",
   },
   forgot_username: {
     marginBottom: 30,
@@ -275,7 +309,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    marginTop: 250,
+    marginTop: 21,
   },
   signIn: {
     width: "100%",
@@ -283,20 +317,41 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: "#567BFF",
+    backgroundColor: "#521886",
   },
   textSign: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontFamily: "OpenSans_600SemiBold",
   },
   containerImg: {
     alignItems: "center",
   },
   image: {
-    marginBottom: 72,
+    /* margintTop: 207, */
+    height: 30,
+    width: 113,
   },
   errorMsg: {
-    color: "#FF0000",
-    fontSize: 14,
+    color: "#CC1833",
+    fontSize: 15,
+    fontFamily: "OpenSans_600SemiBold",
+    paddingLeft: 7,
+  },
+  textContainerImg: {
+    marginTop: 11,
+    fontSize: 18,
+    fontFamily: "OpenSans_700Bold",
+  },
+  checkView: {
+    right: 17,
+  },
+  eyeView: {
+    right: 17,
+  },
+  footer: {
+    flex: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    alignItems: "center",
   },
 });

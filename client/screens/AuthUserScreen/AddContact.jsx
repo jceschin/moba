@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   input: {
-    fontWeight: 600,
+    fontWeight: "600",
     fontSize: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#d4d4d4',
