@@ -8,6 +8,8 @@ export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
 export const GET_USER_INFO = "GET_USER_INFO";
 export const GET_USER_TRANSACTIONS = "GET_USER_TRANSACTIONS";
 export const CHARGE_USER_ACCOUNT = "CHARGE_USER_ACCOUNT";
+export const GET_USER_STATS = "GET_USER_STATS"
+export const GET_USER_LINEAL_STATS = "GET_USER_LINEAL_STATS"
 
 // ERROR HANDLER
 export const ERROR_HANDLER = "ERROR_HANDLER";
@@ -90,3 +92,18 @@ export const newCharge = (charge) => {
       charge,
     };
   };
+
+  export const userStats = (stats) => {
+    return {
+        type: GET_USER_STATS,
+        stats
+    }
+};
+
+export const userLinealStats = (stats) => {
+    return {
+        type: GET_USER_LINEAL_STATS,
+        stats
+    }
+};
+

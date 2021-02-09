@@ -120,7 +120,7 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.containerImg}>
             <Image
               style={styles.image}
-              source={require("../../assets/MOBA.png")}
+              source={require("../../resources/images/mobapng.png")}
             />
             <Text style={styles.textContainerImg}>
               Your finances simple and fast.

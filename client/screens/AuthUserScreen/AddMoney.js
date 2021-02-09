@@ -103,12 +103,9 @@ const AddMoney = ({ navigation, route }) => {
     navigation.navigate("HomePage");
   };
 
-/*   useEffect(() => {
+  useEffect(() => {
     dispatch(getUserInfo(loggedUser.username));
-  }, []); */
-
-  console.log("user", user)
-  console.log("loggedUser", loggedUser)
+  }, []); 
 
   if (!fontsLoaded) {
     return <AppLoading />;

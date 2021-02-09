@@ -26,6 +26,10 @@ module.exports = (sequelize) => {
         
         new_balance: {
             type: DataTypes.DECIMAL(15,2),
+        },
+        status:{
+            type: DataTypes.STRING,
+            defaultValue: 'cancelled'
         }
     })
 };
