@@ -11,13 +11,14 @@ import SendMoneySuccess from "./SendMoneySuccess";
 import SendMoneyError from "./SendMoneyError";
 import Card from "./Card";
 import AddMoney from "./AddMoney";
+import AddContact from "./AddContact";
 const Stack = createStackNavigator();
 
 export const Context = React.createContext({
   eye: null,
-  setEye: () => {},
+  setEye: () => { },
   toggle: null,
-  setToggle: () => {},
+  setToggle: () => { },
 });
 
 const RootStackScreen = ({ navigation }) => {
@@ -32,6 +33,7 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="MyAccount" component={MyAccount} />
           <Stack.Screen name="AccountNumber" component={AccountNumber} />
           <Stack.Screen name="MyContacts" component={MyContacts} />
+          <Stack.Screen name="AddContact" component={AddContact} />
           <Stack.Screen name="MyContact" component={MyContact} />
           <Stack.Screen name="SendMoney" component={SendMoney} />
           <Stack.Screen name="SendMoneySuccess" component={SendMoneySuccess} />

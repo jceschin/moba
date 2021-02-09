@@ -1,25 +1,38 @@
 
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, FlatList, Modal, Alert, TextInput, TouchableHighlight } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { Feather, Ionicons, Foundation } from "@expo/vector-icons";
+import { Feather, Ionicons, AntDesign, MaterialCommunityIcons, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
 //Redux
-import getUserContacts from '../../redux/actions/contactActions';
+import { getUserInfo } from '../../redux/actions/user'
+import { addNewContact } from '../../redux/actions/contactActions';
 
 const MyContacts = () => {
   const navigation = useNavigation();
   let loggedUser = useSelector((state) => state.user)
-  let userContacts = useSelector((state) => state.user.user);
-  // let userContacts = useSelector((state) => state.contacts.contacts);
-  // const dispatch = useDispatch();
+  let contactsUser = useSelector((state) => state.contacts)
+  let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
+  // console.log('ESTO ES USER CONTACTS', userContacts)
+  //let userContacts = useSelector((state) => state.user.user);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [data, setData] = useState({
+    alias: '',
+    contact_email: ''
+  })
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getUserContacts(loggedUser.username));
-  // },[loggedUser.user])
+  const onSubmit = () => {
+    console.log(userContacts)
+    dispatch(addNewContact({ ...data, user_username: loggedUser.username }))
+  }
+
+  useEffect(() => {
+    dispatch(getUserInfo(loggedUser.username))
+  }, [contactsUser.contacts])
 
   return (
     <LinearGradient
@@ -37,9 +50,77 @@ const MyContacts = () => {
             <Feather name="arrow-left" size={24} color="white" />
           </TouchableOpacity>
           <View
-              style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <Text style={styles.greeting}>Who do you want to send?</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            top: 40,
+            borderRadius: 15,
+            marginLeft: 10,
+            marginRight: 10,
+            padding: 5,
+            backgroundColor: "white",
+            marginBottom: 40,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5
+          }}
+        >
+          <View style={styles.action}>
+            <TouchableOpacity onPress={() => navigation.navigate('')}
+              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
             >
-              <Text style={styles.greeting}>Who do you want to send?</Text>
+              <MaterialCommunityIcons name="plus" size={24} color="white" />
+            </TouchableOpacity>
+            <View style={{
+              padding: 10
+            }}>
+              <Text style={{
+                fontStyle: "normal",
+                fontWeight: "bold",
+              }}>New Transfer</Text>
+            </View>
+          </View>
+          <View style={styles.action}>
+            <TouchableOpacity onPress={() => navigation.navigate("AddContact")}
+              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
+            >
+              <Ionicons name="person-add-outline" size={24} color="white" />
+            </TouchableOpacity>
+            <View style={{
+              padding: 10
+            }}>
+              <Text style={{
+                fontStyle: "normal",
+                fontWeight: "bold",
+              }}>New Contact</Text>
+            </View>
+          </View>
+          <View style={styles.action}>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('');
+            }}
+              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
+            >
+              <AntDesign name="edit" size={24} color="white" />
+            </TouchableOpacity>
+            <View style={{
+              padding: 10
+            }}>
+              <Text style={{
+                fontStyle: "normal",
+                fontWeight: "bold",
+              }}>Edit Contact</Text>
+            </View>
           </View>
         </View>
         <View style={styles.whiteContainer}>
@@ -93,7 +174,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   action: {
-    marginTop: 15,
+    flexDirection: "row",
     padding: 5
   },
   whiteContainer: {
@@ -126,9 +207,6 @@ const styles = StyleSheet.create({
   optionIcon: {
     textAlign: "center",
     marginBottom: 5,
-  },
-  option: {
-    fontSize: 16,
   },
   centeredView: {
     flex: 1,
