@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-nativ
 import { Feather, AntDesign } from "@expo/vector-icons";
 
 //Redux
-import { addNewContact } from '../../redux/actions/user';
+import { addNewContact } from '../../redux/actions/contactActions';
 import { useSelector, useDispatch } from "react-redux";
 
 const AddContact = ({ navigation }) => {
