@@ -69,6 +69,17 @@ const SendMoney = ({ route }) => {
     dispatch(getContactInfo(selectedContactUsername));
   }, []);
 
+  useEffect(() => {
+    if (lastTransfer) {
+      if (lastTransfer.status === "confirmed") {
+        navigation.navigate("SendMoneySuccess");
+      }
+      else{
+        navigation.navigate("SendMoneyError");
+      }
+    }
+  }, [lastTransfer]);
+
   const textInputChange = (val) => {
     if (val.length >= 1) {
       setTransferAmount({
@@ -106,17 +117,6 @@ const SendMoney = ({ route }) => {
   const formatValue = (value) => {
     return accounting.formatMoney(parseFloat(value));
   };
-
-  useEffect(() => {
-    if (lastTransfer) {
-      if (lastTransfer.status === "confirmed") {
-        navigation.navigate("SendMoneySuccess");
-      }
-      else{
-        navigation.navigate("SendMoneyError");
-      }
-    }
-  }, [lastTransfer]);
 
   return (
     <View style={styles.colorContainer}>
