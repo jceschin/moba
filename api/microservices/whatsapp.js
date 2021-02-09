@@ -5,6 +5,7 @@ const server = express();
 const cors = require("cors");
 const { User, Account } = require("../db");
 const WhatsAppWeb = require('baileys');
+var emoji = require('node-emoji');
 
 // middlewares
 server.use(morgan("dev"));
@@ -54,6 +55,7 @@ server.post("/message", (req, res) => {
 server.post("/:id", (req, res) => {
   let phone = req.body.phone;
   let userId = req.params.id;
+  let bankEmoji = emoji.get("bank");
 
   User.findOne({
     include: [Account],
@@ -63,7 +65,10 @@ server.post("/:id", (req, res) => {
   })
     .then((user) => {
       //console.log(user.account.cvu)
-      let userCvu = "CVU: " + user.account.cvu;
+      let name = user.name;
+      let surname = user.surname;
+      let dni = user.dni;
+      let userCvu = "MOBA " + bankEmoji + "\n" + "NAME: " + name + "\n" + "SURNAME: " + surname + "\n"+ "DNI: "+ dni + "\n" + "CVU: " + user.account.cvu;
       if (userCvu) {
         const wspMsg = client.sendTextMessage(`${phone}@s.whatsapp.net`, userCvu)
         return res.sendStatus(200)
