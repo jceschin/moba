@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, FlatList, Modal, Alert, TextInput, TouchableHighlight } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,31 +8,18 @@ import { useNavigation } from "@react-navigation/native";
 import MyContact from './MyContact';
 
 //Redux
-import {getUserInfo} from '../../redux/actions/user'
-import { addNewContact } from '../../redux/actions/contactActions';
+import getUserContacts from '../../redux/actions/contactActions';
 
 const MyContacts = () => {
   const navigation = useNavigation();
   let loggedUser = useSelector((state) => state.user)
-  let contactsUser = useSelector((state) => state.contacts)
-   let userContacts = (loggedUser && loggedUser.info) ? loggedUser.info.contacts : null
-  // console.log('ESTO ES USER CONTACTS', userContacts)
-  //let userContacts = useSelector((state) => state.user.user);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState({
-    alias: '',
-    contact_email: ''
-  })
-  const dispatch = useDispatch();
+  let userContacts = useSelector((state) => state.user.user);
+  // let userContacts = useSelector((state) => state.contacts.contacts);
+  // const dispatch = useDispatch();
 
-  const onSubmit = () => {
-    console.log(userContacts)
-    dispatch(addNewContact({...data, user_username: loggedUser.username}))
-  }
-
-  useEffect(() => {
-    dispatch(getUserInfo(loggedUser.username))
-  },[contactsUser.contacts])
+  // useEffect(() => {
+  //   dispatch(getUserContacts(loggedUser.username));
+  // },[loggedUser.user])
 
   return (
     <LinearGradient
@@ -40,32 +28,6 @@ const MyContacts = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          alert('Contact has been not added');
-        }}
-      >
-        <Text>Hello</Text>
-        <TextInput
-          onChangeText={(text) => setData({ alias: text })}
-          placeholder='Alias'
-        />
-        <TextInput
-          onChangeText={(text) => setData({ ...data, contact_email: text })}
-          placeholder='Contact Email'
-        />
-        <TouchableOpacity onPress={onSubmit}>
-          <Text>Save Contact</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setModalVisible(false)
-        }}>
-          <Text>Cancel</Text>
-        </TouchableOpacity>
-      </Modal>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -79,25 +41,11 @@ const MyContacts = () => {
             >
               <Text style={styles.greeting}>Who do you want to send?</Text>
           </View>
-          {/* <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <Text style={styles.greeting}>Contacts</Text>
-            <View style={styles.action}>
-              <TouchableOpacity onPress={() => {
-                setModalVisible(true);
-              }}>
-                <Ionicons name="person-add" size={24} color="black" style={styles.optionIcon} />
-                <Text style={styles.option}>Add Contact</Text>
-              </TouchableOpacity>
-            </View>
-          </View> */}
         </View>
         <View style={styles.whiteContainer}>
           <Text style={styles.contactsTag}>Your contacts</Text>
           {
-            !userContacts
-              ?
+            !userContacts ? (
               <View style={{
                 ...StyleSheet.absoluteFill,
                 alignItems: 'center', justifyContent: 'center'
@@ -105,7 +53,8 @@ const MyContacts = () => {
                 <Foundation name="page-search" size={32} color="black" />
                 <Text style={styles.notFound}>Contacts not found, add contacts to send money!</Text>
               </View>
-              :
+            )
+            : (
               userContacts.map(contact => {
                 return (
                   <MyContact
@@ -114,10 +63,10 @@ const MyContacts = () => {
                     phone={contact.contact_phone}
                     username={contact.contact_username}
                     alias={contact.alias}
-                    id={contact.id}
                   />
                 )
               })
+            )
           }
         </View>
       </ScrollView>
