@@ -11,6 +11,8 @@ import SendMoneySuccess from "./SendMoneySuccess";
 import SendMoneyError from "./SendMoneyError";
 import Card from "./Card";
 import AddMoney from "./AddMoney";
+import Stats from './Stats'
+
 const Stack = createStackNavigator();
 
 export const Context = React.createContext({
@@ -38,6 +40,8 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="SendMoneyError" component={SendMoneyError} />
           <Stack.Screen name="AddMoney" component={AddMoney} />
           <Stack.Screen name="Card" component={Card} />
+          <Stack.Screen name="Stats" component={Stats} />
+          
         </Stack.Navigator>
       </Context.Provider>
     </>

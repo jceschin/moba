@@ -105,7 +105,9 @@ const Homepage = () => {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={() => navigation.navigate("Stats")}
+                  >
                   <MaterialCommunityIcons
                     name="bank-transfer"
                     size={24}
