@@ -25,7 +25,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const Homepage = () => {
   // Fonts
   let [fontsLoaded] = useFonts({
@@ -83,14 +83,17 @@ const Homepage = () => {
 
   useEffect(() => {
     dispatch(
-      getUserTransactions(loggedUser.username, loggedUser.data.data.token)
+      getUserTransactions(
+        loggedUser.username,
+        loggedUser.isAuthenticated === true ? loggedUser.data.data.token : null
+      )
     );
     dispatch(getUserInfo(loggedUser.username));
   }, [transactions && transactions.length]);
 
   //
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen2 />;
   } else {
     return (
       <View style={styles.colorContainer}>
@@ -169,8 +172,6 @@ const Homepage = () => {
     );
   }
 };
-
-
 
 export default Homepage;
 

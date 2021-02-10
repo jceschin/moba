@@ -20,7 +20,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 export default function Card() {
   const { eye, setEye, toggle, setToggle } = React.useContext(Context);
   let cardInfo = useSelector((state) => state.user.info.account.card_id);
@@ -58,8 +58,8 @@ export default function Card() {
     OpenSans_800ExtraBold,
   });
 
-  if (!fontsLoaded) {
-    return <AppLoading />
+  if(!fontsLoaded){
+    return <SplashScreen2 />
   } else {
     return (
       <View style={styles.mainContainer}>

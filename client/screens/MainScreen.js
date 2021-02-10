@@ -5,7 +5,6 @@ import AuthScreen from "./AuthScreen/AuthScreen";
 import AuthUserScreen from "./AuthUserScreen/AuthUserScreen";
 import HomeScreen from "./HomeScreen/HomeScreen";
 
-
 const Stack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => {

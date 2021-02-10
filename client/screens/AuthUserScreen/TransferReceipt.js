@@ -24,7 +24,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const PasswordRecovery = ({ navigation }) => {
   var emailOrUsername = useSelector((store) => store.email.emailOrUsername);
   console.log(emailOrUsername);
@@ -94,7 +94,7 @@ const PasswordRecovery = ({ navigation }) => {
 
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen2 />;
   } else {
     return (
       <View style={styles.container}>
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#521886",
   },
   receiptContainer: {
-    border: "solid",
+    borderStyle: "solid",
     width: 298,
     height: 550,
     marginLeft: "auto",
