@@ -226,9 +226,9 @@ const Stats = () => {
           yAxisLabel="$"
           yAxisInterval={1} // optional, defaults to 1
           chartConfig={{
-            backgroundColor: "#e2600",
-            backgroundGradientFrom: "#fb8c00",
-            backgroundGradientTo: "#ffa726",
+            backgroundColor: "#090908",
+            backgroundGradientFrom: "#090908",
+            backgroundGradientTo: "#090908",
             decimalPlaces: 2, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -241,7 +241,7 @@ const Stats = () => {
               stroke: "#ffa726",
             },
           }}
-          bezierz
+          bezier
           style={{
             marginVertical: 8,
             borderRadius: 16,
