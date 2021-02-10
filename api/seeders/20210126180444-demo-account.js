@@ -53,6 +53,18 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          cvu: "2222226194980634363704",
+          balance: "6000",
+          opening_date: "05/05/20",
+          rechargeCode: "43001136",
+          card_id: "4143095137322319",
+          card_expiration: "17/05/28",
+          card_cvv: "286",
+          userId: 121,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
