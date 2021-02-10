@@ -20,61 +20,65 @@ const Stats = () => {
   var amountGraph, typeGraph, amountGraphData, typeGraphData;
 
   if (loggedUser.stats && loggedUser.linealStats) {
-    amountGraph = loggedUser.stats.map((tr) => {
-      return {
-        incomes: tr.charger + tr.receiver,
-        expenses: tr.sender,
-      };
-    });
+    if(loggedUser.stats.length && loggedUser.linealStats.length){
+      console.log('LOGGEDUSER',  loggedUser.stats)
+      amountGraph = loggedUser.stats.map((tr) => {
+        return {
+          incomes: tr.charger + tr.receiver,
+          expenses: tr.sender,
+        };
+      });
+  
+      typeGraph = loggedUser.stats.map((tr) => {
+        return {
+          sentOperations: tr.senderOperations,
+          receiverOperations: tr.receiverOperations,
+          chargerOperations: tr.chargerOperations,
+        };
+      });
+  
+       amountGraphData = [
+        {
+          amount: amountGraph[0].incomes,
+          name: "Incomes",
+          color: "#303841",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15,
+        },
+        {
+          name: "Expenses",
+          amount: amountGraph[0].expenses,
+          color: "#d1d4c9",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15,
+        },
+      ];
+  
+       typeGraphData = [
+        {
+          type: typeGraph[0].sentOperations,
+          name: "Sents",
+          color: "#303841",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15,
+        },
+        {
+          name: "Receives",
+          type: typeGraph[0].sentOperations,
+          color: "#d1d4c9",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15,
+        },
+        {
+          name: "Recharges",
+          type: typeGraph[0].chargerOperations,
+          color: "#e7e6e1",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15,
+        },
+      ];
+    }
 
-    typeGraph = loggedUser.stats.map((tr) => {
-      return {
-        sentOperations: tr.senderOperations,
-        receiverOperations: tr.receiverOperations,
-        chargerOperations: tr.chargerOperations,
-      };
-    });
-
-     amountGraphData = [
-      {
-        amount: amountGraph[0].incomes,
-        name: "Incomes",
-        color: "#303841",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15,
-      },
-      {
-        name: "Expenses",
-        amount: amountGraph[0].expenses,
-        color: "#d1d4c9",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15,
-      },
-    ];
-
-     typeGraphData = [
-      {
-        type: typeGraph[0].sentOperations,
-        name: "Sents",
-        color: "#303841",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15,
-      },
-      {
-        name: "Receives",
-        type: typeGraph[0].sentOperations,
-        color: "#d1d4c9",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15,
-      },
-      {
-        name: "Recharges",
-        type: typeGraph[0].chargerOperations,
-        color: "#e7e6e1",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15,
-      },
-    ];
   }
 
   const chartConfig = {
@@ -180,7 +184,7 @@ const Stats = () => {
       <TouchableOpacity onPress={last6Months}>
         <Text>Last 6 months</Text>
       </TouchableOpacity>
-      {loggedUser.stats ? (
+      {(loggedUser.stats && loggedUser.stats.length) ? (
         <PieChart
           data={amountGraphData}
           width={screenWidth}
@@ -193,7 +197,7 @@ const Stats = () => {
           absolute={true}
         />
       ) : <Text>No movements</Text>}
-      {loggedUser.stats ? (
+      {(loggedUser.stats && loggedUser.stats.length) ? (
         <PieChart
           data={typeGraphData}
           width={screenWidth}
@@ -206,7 +210,7 @@ const Stats = () => {
           absolute={true}
         />
       ) : null}
-      {loggedUser.linealStats ? (
+      {(loggedUser.linealStats && loggedUser.linealStats.length) ? (
         <LineChart
           data={{
             labels:
@@ -222,9 +226,9 @@ const Stats = () => {
           yAxisLabel="$"
           yAxisInterval={1} // optional, defaults to 1
           chartConfig={{
-            backgroundColor: "#e2600",
-            backgroundGradientFrom: "#fb8c00",
-            backgroundGradientTo: "#ffa726",
+            backgroundColor: "#090908",
+            backgroundGradientFrom: "#090908",
+            backgroundGradientTo: "#090908",
             decimalPlaces: 2, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -237,7 +241,7 @@ const Stats = () => {
               stroke: "#ffa726",
             },
           }}
-          bezierz
+          bezier
           style={{
             marginVertical: 8,
             borderRadius: 16,
