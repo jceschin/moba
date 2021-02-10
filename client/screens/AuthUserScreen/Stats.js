@@ -27,7 +27,7 @@ const Stats = () => {
       };
     });
 
-    var typeGraph = loggedUser.stats.map((tr) => {
+    typeGraph = loggedUser.stats.map((tr) => {
       return {
         sentOperations: tr.senderOperations,
         receiverOperations: tr.receiverOperations,
