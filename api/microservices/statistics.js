@@ -53,7 +53,7 @@ server.get("/statistics/:cvu/:dateFrom/:dateTo", (req, res) => {
   })
     .then((tr) => {
       if (!tr.length) {
-        return res.json([{ stats: null }]);
+        return res.send(null);
       }
       console.log(tr);
       tr.forEach((element) =>
@@ -260,7 +260,7 @@ server.get("/statistics/lineal/:cvu/:dateFrom/:dateTo", (req, res) => {
   })
     .then((data) => {
       if (!data.length) {
-        return res.json([]);
+        return res.send(null);
       }
       if (diffDays < 8 || data.length < 5) {
         console.log("ENTRO AL 1RO");
@@ -276,15 +276,18 @@ server.get("/statistics/lineal/:cvu/:dateFrom/:dateTo", (req, res) => {
         });
 
         timeline.push(last);
+        if(!timeline.length){return res.send(null)}
         return res.send(timeline);
       }
       if (diffDays > 7 && diffDays <= 42) {
         console.log("ENTRO AL 2DO");
         generateWeeks(data);
+        if(!weeks.length){return res.send(null)}
         return res.send(weeks);
       }
       if (diffDays > 42) {
         generateMonths(data);
+        if(!months.length){return res.send(null)}
         return res.send(months);
       }
     })
