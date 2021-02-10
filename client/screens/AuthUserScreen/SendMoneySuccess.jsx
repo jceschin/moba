@@ -30,12 +30,19 @@ const SendMoneySuccess = () => {
   const loggedUser = useSelector((state) => state.user);
   const lastTransaction = useSelector((state) => state.transactions.lastTransaction);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(
         getUserTransactions(loggedUser.username, loggedUser.data.data.token)
       );
-    dispatch(clearLastTransaction());
-  },[lastTransaction]);
+  },[]);
+
+  // useEffect(() => {
+  //   dispatch(
+  //       getUserTransactions(loggedUser.username, loggedUser.data.data.token)
+  //     );
+  //   dispatch(clearLastTransaction());
+  // },[lastTransaction]);
 
   return (
     <View style={styles.colorContainer}>
@@ -63,6 +70,12 @@ const SendMoneySuccess = () => {
         >
           The transaction has been succesfully completed</Text>
       </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("TransferReceipt", {lastTransaction})}
+      >
+        <Text style={styles.btnContent}>See receipt</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("HomePage")}

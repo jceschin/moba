@@ -61,6 +61,8 @@ const SendMoney = ({ route }) => {
     amount: 0,
   });
 
+  // Object to send to POST request
+
   // Navigation and Form
   const navigation = useNavigation();
   const { handleSubmit } = useForm();

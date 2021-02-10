@@ -14,7 +14,6 @@ import {
 import * as Animatable from "react-native-animatable";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { passwordRecovery } from "../../redux/actions/emailActions";
 import {
   useFonts,
   OpenSans_300Light,
@@ -25,26 +24,12 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
 
-const PasswordRecovery = ({ navigation }) => {
-  var emailOrUsername = useSelector((store) => store.email.emailOrUsername);
-  console.log(emailOrUsername);
-  const loggedUser = useSelector((state) => state.user);
-  console.log(loggedUser)
-  const destinatary = useSelector((state) => state.contacts.selectedContact);
-  console.log(destinatary)
+//Redux
+import { clearLastTransaction, getUserTransactions } from "../../redux/actions/transactionActions";
 
-  const token = useSelector((store) => store.email.token);
+const TransferReceipt = ({ route }) => {
 
-  const dispatch = useDispatch();
-
-  const [data, setData] = useState({
-    usernameOrEmail: "",
-    check_textInputChange: false,
-    secureTextEntry: true,
-    isValidUser: true,
-    isValidPassword: true,
-  });
-
+  // Fonts
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
@@ -53,45 +38,18 @@ const PasswordRecovery = ({ navigation }) => {
     OpenSans_800ExtraBold,
   });
 
-  const [focusUsername, setFocusUsername] = useState(false);
+  let lastTransaction = route.params;
 
-  const changeFocusUser = () => {
-    focusUsername === false ? setFocusUsername(true) : false;
-  };
+  const loggedUser = useSelector((state) => state.user);
+  const destinatary = useSelector((state) => state.contacts.selectedContact);
+  const dispatch = useDispatch();
 
-  const textInputChange = (val) => {
-    if (val.length >= 4) {
-      setData({
-        ...data,
-        usernameOrEmail: val,
-        check_textInputChange: true,
-        isValidUser: true,
-      });
-    } else {
-      setData({
-        ...data,
-        usernameOrEmail: val,
-        check_textInputChange: false,
-        isValidUser: false,
-      });
-    }
-  };
-
-  const handleValidUser = (val) => {
-    if (val.trim().length >= 4) {
-      setData({
-        ...data,
-        isValidUser: true,
-      });
-    } else {
-      setData({
-        ...data,
-        isValidUser: false,
-      });
-    }
-  };
-
-
+  useEffect(() => {
+    dispatch(
+        getUserTransactions(loggedUser.username, loggedUser.data.data.token)
+      );
+    dispatch(clearLastTransaction());
+  },[lastTransaction]);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -108,7 +66,7 @@ const PasswordRecovery = ({ navigation }) => {
           </TouchableOpacity>
 
           <View style={styles.welcomeView}>
-            <Text style={styles.text_header}>Desde transfer </Text> {/* Colocara acá el cbu */}
+            <Text style={styles.text_header}>Successful transfer</Text> {/* Colocara acá el cbu */}
           </View>
         </View>
         <Animatable.View animation="fadeInUpBig" style={styles.footer}>
@@ -121,48 +79,42 @@ const PasswordRecovery = ({ navigation }) => {
               Amount
             </Text>
             <Text style={styles.textRowII}>
-              xxxxxxxxx
+              {lastTransaction.lastTransaction.amount}
             </Text>
             <br/>
             <Text style={styles.textRow}>
               From
             </Text>
             <Text style={styles.textRowII}>
-             Nombre persona
+             {loggedUser.info.name} {loggedUser.info.surname}
             </Text>
             <Text style={styles.textRowII}>
-             cbu xxxxxx
+             {loggedUser.info.account.cvu}
             </Text>
             <br/>
             <Text style={styles.textRow}>
             To
             </Text>
             <Text style={styles.textRowII}>
-            Nombre persona
+              {destinatary.name} {destinatary.surname}
             </Text>
             <Text style={styles.textRowII}>
-             cbu xxxx
+             {destinatary.account.cvu}
             </Text>
             <br/>
-            <Text style={styles.textRow}>
-              Reason for Wire Transfer
-            </Text>
-            <Text style={styles.textRowII}>
-              Varios
-            </Text>
             <br/>
             <Text style={styles.textRow}>
-              Reference Number
+              Transaction number
             </Text>
             <Text style={styles.textRowII}>
-              xxxxxxxxx
+              {lastTransaction.lastTransaction.number}
             </Text>
             <br/>
             <Text style={styles.textRow}>
               Transaction Date
             </Text>
             <Text style={styles.textRowII}>
-             fecha de transferencia xxxx
+             {lastTransaction.lastTransaction.createdAt.slice(0, 10)}
             </Text>
             <Image style={styles.image} source={require("../../resources/images/mobapng.png")} />
             </View>
@@ -173,7 +125,7 @@ const PasswordRecovery = ({ navigation }) => {
   }
 };
 
-export default PasswordRecovery;
+export default TransferReceipt;
 
 const styles = StyleSheet.create({
   container: {
@@ -181,7 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#521886",
   },
   receiptContainer: {
-    // border: "solid",
+    borderStyle: "solid",
     width: 298,
     height: 550,
     marginLeft: "auto",
