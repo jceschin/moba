@@ -32,7 +32,7 @@ export default function CreditCard() {
     OpenSans_800ExtraBold,
   });
 
-  useEffect(() => {}, [loggedUser.info]);
+  useEffect(() => { }, [loggedUser.info]);
 
   if (!fontsLoaded) {
     return <SplashScreen2 />;
@@ -59,25 +59,25 @@ export default function CreditCard() {
           </View>
 
           <View style={[s.bgCircle, s.rightBgCircle]} />
-          <Text style={[s.textTitle, {top: 13 }]}>
+          <Text style={[s.textTitle, { top: 13 }]}>
             {loggedUser.info.name + " " + loggedUser.info.surname}
           </Text>
           <View style={s.cardNumberContainer}>
             <View style={s.cardNumberPart}>
               <View>
-                <Text style={[s.text, {top: 10}]}>
+                <Text style={[s.text, { top: 10 }]}>
                   {toggle === false
                     ? "**** **** **** ****"
                     : loggedUser.info.account
-                    ? loggedUser.info.account.card_id.replace(
+                      ? loggedUser.info.account.card_id.replace(
                         /\B(?=(\d{4})+(?!\d))/g,
                         " "
                       )
-                    : null}
+                      : null}
                 </Text>
               </View>
             </View>
-            <Text style={[s.text, { color: "white" }]}>{}</Text>
+            <Text style={[s.text, { color: "white" }]}>{ }</Text>
           </View>
           <View style={s.footerContainer}>
             <View style={s.dateContainer}>
@@ -107,8 +107,8 @@ export default function CreditCard() {
                 {toggle === false
                   ? "***"
                   : loggedUser.info.account
-                  ? loggedUser.info.account.card_cvv
-                  : null}
+                    ? loggedUser.info.account.card_cvv
+                    : null}
               </Text>
             </View>
             <View style={s.visaContainer}>
@@ -133,9 +133,9 @@ const s = StyleSheet.create({
     position: "relative",
     overflow: "hidden",
   },
-  textTitle:{
-    color: "#C7A8D9", 
-    fontSize: 16, 
+  textTitle: {
+    color: "#C7A8D9",
+    fontSize: 16,
     letterSpacing: 0.53,
     fontFamily: "OpenSans_700Bold"
   },
