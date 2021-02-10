@@ -17,19 +17,17 @@ import {
 const Stats = () => {
   const loggedUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  var amountGraph, typeGraph, amountGraphData, typeGraphData;
 
-  var amountGraph =
-    loggedUser.stats &&
-    loggedUser.stats.map((tr) => {
+  if (loggedUser.stats && loggedUser.linealStats) {
+    amountGraph = loggedUser.stats.map((tr) => {
       return {
         incomes: tr.charger + tr.receiver,
         expenses: tr.sender,
       };
     });
 
-  var typeGraph =
-    loggedUser.stats &&
-    loggedUser.stats.map((tr) => {
+    var typeGraph = loggedUser.stats.map((tr) => {
       return {
         sentOperations: tr.senderOperations,
         receiverOperations: tr.receiverOperations,
@@ -37,46 +35,47 @@ const Stats = () => {
       };
     });
 
-  const amountGraphData = [
-    {
-      amount: amountGraph && amountGraph[0].incomes,
-      name: "Incomes",
-      color: "#303841",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Expenses",
-      amount: amountGraph && amountGraph[0].expenses,
-      color: "#d1d4c9",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ];
+     amountGraphData = [
+      {
+        amount: amountGraph[0].incomes,
+        name: "Incomes",
+        color: "#303841",
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15,
+      },
+      {
+        name: "Expenses",
+        amount: amountGraph[0].expenses,
+        color: "#d1d4c9",
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15,
+      },
+    ];
 
-  const typeGraphData = [
-    {
-      type: typeGraph && typeGraph[0].sentOperations,
-      name: "Sents",
-      color: "#303841",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Receives",
-      type: typeGraph && typeGraph[0].sentOperations,
-      color: "#d1d4c9",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Recharges",
-      type: typeGraph && typeGraph[0].chargerOperations,
-      color: "#e7e6e1",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ];
+     typeGraphData = [
+      {
+        type: typeGraph[0].sentOperations,
+        name: "Sents",
+        color: "#303841",
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15,
+      },
+      {
+        name: "Receives",
+        type: typeGraph[0].sentOperations,
+        color: "#d1d4c9",
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15,
+      },
+      {
+        name: "Recharges",
+        type: typeGraph[0].chargerOperations,
+        color: "#e7e6e1",
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15,
+      },
+    ];
+  }
 
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
@@ -172,52 +171,49 @@ const Stats = () => {
 
   return (
     <View>
-      
-      <TouchableOpacity onPress={lastWeek}><Text>Last week</Text></TouchableOpacity>
-      <TouchableOpacity onPress={lastMonth}><Text>Last month</Text></TouchableOpacity>
-      <TouchableOpacity onPress={last6Months}><Text>Last 6 months</Text></TouchableOpacity>
-
-
-      <Text style={labelStyle}>Incomes and expenses</Text>
-
-      <PieChart
-        data={amountGraphData}
-        width={screenWidth}
-        height={230}
-        chartConfig={chartConfig}
-        accessor={"amount"}
-        backgroundColor={"transparent"}
-        paddingLeft={"15"}
-        center={[20, -20]}
-        absolute={true}
-      />
-
-      <Text style={labelStyle}>Types of movements</Text>
-
-      <PieChart
-        data={typeGraphData}
-        width={screenWidth}
-        height={230}
-        chartConfig={chartConfig}
-        accessor={"type"}
-        backgroundColor={"transparent"}
-        paddingLeft={"15"}
-        center={[20, -20]}
-        absolute={true}
-      />
-
-      <Text>Bezier Line Chart</Text>
-      {loggedUser.linealStats && (
+      <TouchableOpacity onPress={lastWeek}>
+        <Text>Last week</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={lastMonth}>
+        <Text>Last month</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={last6Months}>
+        <Text>Last 6 months</Text>
+      </TouchableOpacity>
+      {loggedUser.stats ? (
+        <PieChart
+          data={amountGraphData}
+          width={screenWidth}
+          height={230}
+          chartConfig={chartConfig}
+          accessor={"amount"}
+          backgroundColor={"transparent"}
+          paddingLeft={"15"}
+          center={[20, -20]}
+          absolute={true}
+        />
+      ) : <Text>No movements</Text>}
+      {loggedUser.stats ? (
+        <PieChart
+          data={typeGraphData}
+          width={screenWidth}
+          height={230}
+          chartConfig={chartConfig}
+          accessor={"type"}
+          backgroundColor={"transparent"}
+          paddingLeft={"15"}
+          center={[20, -20]}
+          absolute={true}
+        />
+      ) : null}
+      {loggedUser.linealStats ? (
         <LineChart
           data={{
             labels:
-              loggedUser.linealStats &&
               loggedUser.linealStats.map((data) => data.date),
             datasets: [
               {
-                data:
-                  loggedUser.linealStats &&
-                  loggedUser.linealStats.map((data) => parseInt(data.amount)),
+                data: loggedUser.linealStats.map((data) => parseInt(data.amount)),
               },
             ],
           }}
@@ -247,7 +243,7 @@ const Stats = () => {
             borderRadius: 16,
           }}
         />
-      )}
+      ) : null}
     </View>
   );
 };
