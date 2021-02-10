@@ -2,33 +2,34 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  Dimensions,
   Platform,
-  StatusBar,
   TouchableOpacity,
-  ScrollView,
   Image,
   Text,
   Alert,
 } from "react-native";
-import { Feather, AntDesign } from "@expo/vector-icons";
+import { Feather, AntDesign, Fontisto  } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import accounting from "accounting-js";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { useDispatch } from "react-redux";
-import {apiEndpoint} from '../../const'
+import { getUserInfo, chargeAccount } from "../../redux/actions/user";
+import { getUserTransactions } from "../../redux/actions/transactionActions";
 import {
-  getUserInfo,
-  chargeAccount,
-} from "../../redux/actions/user";
-import {getUserTransactions} from '../../redux/actions/transactionActions'
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+import AppLoading from "expo-app-loading";
 
 const AddMoney = ({ navigation, route }) => {
   const [code, setCode] = React.useState(false);
   const [transfer, setTransfer] = React.useState(false);
   const [amount, setAmount] = React.useState(false);
-  const [amountCharge, setAmountCharge] = React.useState({
+  const [amountCharge, setAmountCharge] = useState({
     amount: 0,
   });
   const dispatch = useDispatch();
@@ -36,6 +37,15 @@ const AddMoney = ({ navigation, route }) => {
   const loggedUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
   const [index, setIndex] = useState(0);
+  const [valid, setValid] = useState(false);
+
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
 
   const tabCode = () => {
     transfer === true ? setTransfer(false) : null;
@@ -62,187 +72,186 @@ const AddMoney = ({ navigation, route }) => {
         amount: val,
       });
     }
+    if (!val) {
+      setAmountCharge({
+        ...amountCharge,
+        amount: 0,
+      });
+    }
   };
+
+  useEffect(() => {
+    amountCharge.amount < 100 ? setValid(false) : setValid(true);
+  });
+
+  console.log(valid);
 
   const formatValue = (value) => {
-    return accounting.formatMoney(parseFloat(value));
+    return accounting.formatMoney(parseFloat(value.toString()));
   };
 
-
   const addMoneyUser = () => {
-     dispatch(
+    dispatch(
       chargeAccount(loggedUser.info.account.rechargeCode, {
         amount: amountCharge.amount,
       })
     );
-    alert("The charge to your account has been completed successfully")
-     dispatch(getUserTransactions(loggedUser.username, loggedUser.data.data.token));
+    alert("The charge to your account has been completed successfully");
+    dispatch(
+      getUserTransactions(loggedUser.username, loggedUser.data.data.token)
+    );
     navigation.navigate("HomePage");
   };
 
   useEffect(() => {
-    //getUser(loggedUser.username);
     dispatch(getUserInfo(loggedUser.username));
-  }, [index]);
+  }, []);
 
-  return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#8CA5FD" barStyle="light-content" />
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
-          <AntDesign
-            name="arrowleft"
-            size={24}
-            color="white"
-            style={{ right: 10 }}
-          />
-        </TouchableOpacity>
+  console.log("user", user)
+  console.log("loggedUser", loggedUser)
 
-        <View style={styles.welcomeView}>
-          <Text style={styles.text_header}>Add money to your account</Text>
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
+            <AntDesign name="arrowleft" size={24} color="white" />
+          </TouchableOpacity>
+
+          <View style={styles.welcomeView}>
+            <Text style={styles.text_header}>Add money to your account</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.footer}>
-        <View
-          style={{
-            justifyContent: "space-around",
-            flexDirection: "row",
-          }}
-        >
-          <View>
+        <View style={styles.footer}>
+          <View
+            style={{
+              justifyContent: "space-around",
+              flexDirection: "row",
+            }}
+          >
             <View>
-              <TouchableOpacity onPress={tabCode}>
-                <Text
+              <View>
+                <TouchableOpacity onPress={tabCode}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      paddingLeft: 75,
+                      color:
+                        code === false && transfer === false
+                          ? "#521886"
+                          : "gray",
+                    }}
+                  >
+                    Code
+                  </Text>
+                </TouchableOpacity>
+                <View
                   style={{
-                    fontSize: 20,
-                    paddingLeft: 75,
-                    color:
-                      code === false && transfer === false ? "#567BFF" : "gray",
+                    height: 3,
+                    width: 260,
+                    marginRight: 80,
+                    backgroundColor:
+                      code === false && transfer === false
+                        ? "#521886"
+                        : "#f2f2f2",
                   }}
-                >
-                  Code
-                </Text>
-              </TouchableOpacity>
+                />
+              </View>
+            </View>
+            <View>
+              <View style={{ flexDirection: "column" }}>
+                <TouchableOpacity onPress={tabTransfer}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      paddingLeft: 60,
+                      color:
+                        code === false && transfer === true
+                          ? "#521886"
+                          : "gray",
+                    }}
+                  >
+                    Transfer
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <View
                 style={{
                   height: 3,
-                  width: 220,
+                  width: 280,
                   backgroundColor:
-                    code === false && transfer === false
-                      ? "#567BFF"
-                      : "#f2f2f2",
+                    code === false && transfer === true ? "#521886" : "#f2f2f2",
                 }}
               />
             </View>
           </View>
-          <View>
-            <View style={{ flexDirection: "column" }}>
-              <TouchableOpacity onPress={tabTransfer}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    paddingLeft: 50,
-                    color:
-                      code === false && transfer === true ? "#567BFF" : "gray",
-                  }}
-                >
-                  Transfer
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                height: 3,
-                width: 220,
-                backgroundColor:
-                  code === false && transfer === true ? "#567BFF" : "#f2f2f2",
-              }}
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            alignItems: "center",
-            textAlign: "center",
-            justifyContent: "center",
-          }}
-        >
-          {code === false && transfer === false && amount === false ? (
-            <View styles={styles.amountView}>
-              <View style={{ paddingTop: 34 }}>
-                <Text style={{ fontSize: 20 }}>
+          <View
+            style={{
+              alignItems: "center",
+              textAlign: "center",
+              justifyContent: "center",
+            }}
+          >
+            {code === false && transfer === false && amount === false ? (
+              <View style={styles.amountView}>
+                <Text style={styles.textRecover}>
                   How much you want to charge?
                   {"\n"}
-                  The minimum amount is $100
+                  The minimum amount is{" "}
+                  <Text style={{ color: "rgba(73, 145, 116, 1)" }}>$100</Text>
                 </Text>
 
-                {/* <View
-                  style={{
-                    color: "#168903",
-                    top: "50%",
-                    left: "35%",
-                    alignItems: "center",
-                  }}
-                > */}
-                {/* <TextInput
-                    style={styles.textInputAmount}
-                    autoCapitalize="none"
-                    value={formatValue(amountCharge.amount)}
-                    value={amountCharge.amount}
-                    onChangeText={(val) => textInputChange(val)}
-                  /> */}
+                <TextInput
+                  style={[
+                    styles.textInputAmount,
+                    valid === false
+                      ? styles.textInputColorInvalid
+                      : styles.textInputColorValid,
+                  ]}
+                  autoCapitalize="none"
+                  value={formatValue(amountCharge.amount)}
+                />
                 <TextInput
                   style={styles.textInputAmountHide}
                   autoCapitalize="none"
                   value={amountCharge.amount}
                   onChangeText={(val) => textInputChange(val)}
                 />
-                {/* </View> */}
 
                 <TouchableOpacity
                   style={styles.continueCharge}
                   onPress={amountScreen}
                 >
-                  <Text style={{ fontSize: 18, color: "#fff" }}>Continue</Text>
+                  <Text style={styles.textButton}>Continue</Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          ) : null}
-        </View>
-        {code === false && transfer === false && amount === true ? (
-          <View styles={styles.codePayment}>
-            <View style={{ textAlign: "center", paddingTop: 20 }}>
-              <Text style={{ fontSize: 16 }}>
-                Use this code to charge money to your account.
-              </Text>
-            </View>
-            <View style={styles.qrCodeComponent}>
-              <View
-                style={{
-                  paddingBottom: 10,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 20,
-                  width: 200,
-                  height: 55,
-                  borderWidth: 1,
-                  paddingTop: 10,
-                  borderColor: "#fff",
-                  backgroundColor: "#567BFF",
-                }}
-              >
-                <Text style={{ fontSize: 20, color: "#fff" }}>
+            ) : null}
+          </View>
+          {code === false && transfer === false && amount === true ? (
+            <View styles={styles.codePayment}>
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.textRecover}>
+                  Use this code to charge
+                  {"\n"}
+                  money to your account.
+                </Text>
+              </View>
+              <View style={styles.qrCodeComponent}>
+                <Text style={styles.accountRechargeCode}>
                   {loggedUser && loggedUser.info
                     ? loggedUser.info.account.rechargeCode
                     : null}
                 </Text>
               </View>
-            </View>
-            <View style={{ textAlign: "center", paddingTop: 60 }}>
-              <Text style={{ fontSize: 16 }}>
-                Show this code to the cashier in any of this branches.
-                {"\n"}
-                <View style={{ flexDirection: "row", paddingTop: 60 }}>
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.textRecover}>
+                  Show this code to the cashier in
+                  {"\n"}
+                  any of this branches.
+                </Text>
+                <View style={{ flexDirection: "column", alignItems: "center" }}>
                   <Image
                     source={require("../../assets/rapipagoLogo.png.png")}
                     style={styles.imageRapipago}
@@ -252,64 +261,79 @@ const AddMoney = ({ navigation, route }) => {
                     style={styles.imagePagoFacil}
                   />
                 </View>
-              </Text>
-            </View>
-            <View style={{ paddingTop: 170, alignItems: "center" }}>
-              <TouchableOpacity
-                style={styles.confirmCharge}
-                onPress={addMoneyUser}
-              >
-                <Text style={{ fontSize: 18, color: "#fff" }}>Confirm</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ) : transfer === true && code === false ? (
-          <View style={styles.transferPayment}>
-            <View style={{ paddingTop: 29 }}>
-              <Text style={{ fontSize: 16 }}>
-                These are your account details, copy them to make a transfer
-              </Text>
-            </View>
-            <View
-              style={{
-                paddingTop: 30,
-                width: 375,
-                height: 214,
-                borderWidth: 1,
-                borderColor: "#E3DADA",
-                alignItems: "center",
-                top: 30,
-              }}
-            >
-              <Text style={{ fontSize: 24, fontWeight: "bold", top: 15 }}>
-                Account Number
-              </Text>
-              <Text style={{ fontSize: 16, paddingTop: 9 }}>
-                {user.account ? user.account.cvu : null}
-              </Text>
-              <View style={{ justifyContent: "space-between" }}>
-                <TouchableOpacity style={styles.copyButton}>
-                  <Text
-                    style={{
-                      color: "#0000EE",
-                      fontSize: 18,
-                      fontWeight: "500",
-                      paddingLeft: 10,
-                    }}
-                  >
-                    <View style={{ right: 17 }}>
-                      <Feather name="copy" size={28} color="black" />
-                    </View>
-                    Copy
-                  </Text>
+              </View>
+
+              <View style={{ paddingTop: 80, alignItems: "center" }}>
+                <TouchableOpacity
+                  style={styles.confirmCharge}
+                  onPress={addMoneyUser}
+                >
+                  <Text style={styles.textButton}>Confirm</Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
-        ) : null}
+          ) : transfer === true && code === false ? (
+            <View style={styles.transferPayment}>
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.textRecover}>
+                  These are your account details,
+                  {"\n"}
+                  copy them to make a transfer
+                </Text>
+              </View>
+              <View
+                style={{
+                  paddingTop: 30,
+                  width: 351,
+                  height: 168,
+                  borderWidth: 1,
+                  borderColor: "#CCCCCC",
+                  alignItems: "center",
+                  top: 42,
+                }}
+              >
+                <Text style={styles.titleAccountNumber}>
+                  Account Number
+                </Text>
+                <Text style={styles.textCvu}>
+                  {loggedUser.info ? loggedUser.info.account.cvu : null}
+                </Text>
+                <View style={{flexDirection: "row", paddingTop: 38}}>
+                <View style={{ justifyContent: "center", flexDirection: "row" }}>
+                  <TouchableOpacity style={styles.copyButton}>
+                  <View style={{paddingRight: 5}}>
+                        <Feather name="copy" size={20} color="#38046C" />
+                      </View>
+                    <Text
+                      style={styles.copyButtonText}
+                    >
+                      
+                      Copy
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ justifyContent: "center", flexDirection: "row" }}>
+                  <TouchableOpacity style={styles.shareButton}>
+                  <View style={{paddingRight: 5}}>
+                      <Fontisto name="share-a" size={18} color="white" />
+                      </View>
+                    <Text
+                      style={styles.shareButtonText}
+                    >
+                    
+                      Share
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              </View>
+            </View>
+          ) : null}
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 };
 
 export default AddMoney;
@@ -317,62 +341,67 @@ export default AddMoney;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#8CA5FD",
+    backgroundColor: "#521886",
   },
-
   header: {
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingBottom: 12,
     flexDirection: "row",
+    marginBottom: 12
   },
   welcomeView: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-end",
-    right: 15,
   },
   footer: {
-    flex: Platform.OS === "ios" ? 3 : 5,
+    flex: 5,
     backgroundColor: "#fff",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    paddingHorizontal: 20,
     paddingVertical: 30,
-    marginTop: -80,
+    marginTop: -60,
+    alignItems: "center",
   },
   text_header: {
     color: "#fff",
-    fontWeight: "bold",
-    fontSize: 20,
+    fontFamily: "OpenSans_700Bold",
+    fontSize: 24,
   },
-  text_footer: {
-    color: "#05375a",
+  textRecover: {
+    fontFamily: "OpenSans_600SemiBold",
+    color: "black",
     fontSize: 18,
+    marginTop: 38,
   },
-  codePayment: {},
+  codePayment: {
+    alignItems: "center",
+  },
   confirmCharge: {
-    width: 300,
+    width: 379,
+    marginBottom: 47,
     height: 50,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#567BFF",
+    backgroundColor: "#521886",
   },
   qrCodeComponent: {
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 22,
   },
   imageRapipago: {
-    width: 133,
-    height: 24,
-    top: 30,
-    right: 15,
+    width: 152,
+    height: 25,
+    marginTop: 32,
   },
   imagePagoFacil: {
-    width: 80,
-    height: 83,
-    left: 15,
+    width: 90,
+    height: 102,
+    marginTop: 29
   },
   transferPayment: {
     alignItems: "center",
@@ -380,39 +409,86 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   copyButton: {
-    width: 200,
-    height: 50,
+    width: 131,
+    height: 34,
     alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
     backgroundColor: "#fff",
-    borderColor: "#E3DADA",
+    borderColor: "#38046C",
     borderWidth: 1,
-    top: 40,
+    flexDirection: "row",
+    textAlign: "center",
+    justifyContent: "center"
+  },
+  shareButton: {
+    backgroundColor: "rgba(82, 24, 134, 1)",
+    width: 131,
+    height: 34,
+    marginLeft: 25,
+    borderRadius: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    textAlign: "center",
+    justifyContent: "center"
+  },
+  copyButtonText:{
+    color: "rgba(56, 4, 108, 1)",
+    fontSize: 17,
+    fontFamily: "OpenSans_600SemiBold",
+  },
+  shareButtonText:{
+    color: "#fff",
+    fontSize: 17,
+    fontFamily: "OpenSans_600SemiBold"
   },
   continueCharge: {
-    width: 300,
+    width: 379,
+    marginBottom: 47,
     height: 50,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#567BFF",
-    /*  top: 300, */
+    backgroundColor: "#521886",
+    marginTop: 267,
   },
   textInputAmount: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : 10,
-    paddingLeft: 10,
-    color: "#168903",
-    fontSize: 24,
+    fontSize: 34,
+    marginTop: 133,
+  },
+  textInputColorValid: {
+    color: "rgba(73, 145, 116, 1)",
+  },
+  textInputColorInvalid: {
+    color: "rgba(204, 24, 51, 1)",
   },
   textInputAmountHide: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : 0,
-    paddingLeft: 10,
     color: "#168903",
-    fontSize: 24,
-    marginTop: -30,
-    /* opacity: 0, */
+    fontSize: 34,
+    marginTop: -32,
+    opacity: 0,
   },
+  amountView: {
+    alignItems: "center",
+  },
+  textButton: {
+    fontSize: 18,
+    fontFamily: "OpenSans_800ExtraBold",
+    color: "#fff",
+  },
+  accountRechargeCode: {
+    color: "#38046C",
+    fontSize: 24,
+    fontFamily: "OpenSans_700Bold",
+  },
+  titleAccountNumber:{
+    fontFamily: "OpenSans_800ExtraBold",
+    fontSize: 18,
+    color: "black"
+  },
+  textCvu:{
+    fontFamily: "OpenSans_400Regular",
+    fontSize: 16,
+    color: "black",
+    top: 19
+  }
 });

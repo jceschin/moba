@@ -86,6 +86,7 @@ server.post("/transaction", (req, res, next) => {
         const upAccounttransactionSender = await Accounttransaction.update(
           {
             new_balance: balance_sender.dataValues.balance - req.body.amount,
+            status: 'confirmed'
           },
 
           {
@@ -115,6 +116,7 @@ server.post("/transaction", (req, res, next) => {
             new_balance:
               parseFloat(req.body.amount) +
               parseFloat(balance_receiver.dataValues.balance),
+              status:'confirmed'
           },
 
           {

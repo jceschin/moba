@@ -10,20 +10,27 @@ import {
 } from '../types/contactTypes';
 
 import { apiEndpoint } from '../../const'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 //User adds new contact
 
 export function addNewContact(newContact) {
   return async (dispatch) => {
     try {
       const res = await axios.post(`http://${apiEndpoint}/contacts/add`, { ...newContact }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        headers: { Authorization: `Bearer ${AsyncStorage.getItem('token')}` },
       });
+      console.log('ESTO ES NEW CONTACT', newContact);
+      console.log('nuevo contacto', res.data)
       dispatch(addUserContact(res.data));
     } catch (error) {
       console.log(error);
     }
   };
 }
+
+
 
 //Update contact
 

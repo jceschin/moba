@@ -8,7 +8,9 @@ import {
   CHANGE_USER_PASSWORD,
   GET_USER_INFO,
   GET_USER_TRANSACTIONS,
-  CHARGE_USER_ACCOUNT
+  CHARGE_USER_ACCOUNT,
+  GET_USER_STATS,
+  GET_USER_LINEAL_STATS,
 } from "../types/userTypes";
 
 const initialState = {
@@ -19,7 +21,9 @@ const initialState = {
   userToken: "",
   isAuthenticated: false,
   info: [],
-  transactions: []
+  transactions: [],
+  stats: [],
+  linealStats:[]
 };
 
 const userReducer = (state = initialState, action) => {
@@ -51,7 +55,7 @@ const userReducer = (state = initialState, action) => {
         userToken: action.token,
         isAuthenticated: true,
       };
-    
+
     case GET_USER_INFO:
       return {
         ...state,
@@ -62,15 +66,25 @@ const userReducer = (state = initialState, action) => {
         ...state,
         transactions: action.transactions,
       };
-      case CHARGE_USER_ACCOUNT:
+    case CHARGE_USER_ACCOUNT:
       return {
         ...state,
-        charge: state.charge.map(charge =>
-          charge.id === action.payload.id ? charge = action.payload : charge,
-        )};
+        charge: state.charge.map((charge) =>
+          charge.id === action.payload.id ? (charge = action.payload) : charge
+        ),
+      };
+    case GET_USER_STATS:
+      return {
+        ...state,
+        stats: action.stats,
+      };
+    case GET_USER_LINEAL_STATS:
+      return {
+        ...state,
+        linealStats: action.stats,
+      };
     default:
       return state;
   }
 };
-
 export default userReducer;
