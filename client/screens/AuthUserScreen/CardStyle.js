@@ -8,75 +8,120 @@ import {
   Image,
 } from "react-native";
 import { Context } from "./AuthUserScreen";
-import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 import { useSelector } from "react-redux";
+import {
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+import AppLoading from "expo-app-loading";
 
 export default function CreditCard() {
   const [user, setUser] = useState([]);
   const { eye, setEye, toggle, setToggle } = React.useContext(Context);
   const loggedUser = useSelector((state) => state.user);
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
 
-  // async function getCardNumber(username) {
-  //   let response = await axios.get(`http://localhost:8080/users/${username}`, {
-  //     headers: { Authorization: `Bearer ${loggedUser.data.data.token}` },
-  //   });
-  //   setUser(response.data);
-  // }
+  useEffect(() => {}, [loggedUser.info]);
 
-  useEffect(() => {
-  }, [loggedUser.info]);
-
-  return (
-    <View style={[s.container, { backgroundColor: "#FFF", zIndex: 2 }]}>
-      <View style={{ flexDirection: "row" }}>
-        <Text style={s.textTitle}>Virtual Debit Card</Text>
-        <View style={s.logoContainer}>
-          <Image style={s.image} source={require("../../assets/MOBA.png")} />
-        </View>
-      </View>
-      <View style={{ top: -20 }}>
-        <Text style={s.textColor}>Only for online shopping</Text>
-      </View>
-      <View style={[s.bgCircle, s.rightBgCircle]} />
-      <Text style={[s.text, { color: "#949292", top: -8 }]}>
-        {loggedUser.info.name + " " + loggedUser.info.surname}
-      </Text>
-      <View style={s.cardNumberContainer}>
-        <View style={s.cardNumberPart}>
-          <View>
-            <Text style={{ fontSize: 23 }}>
-              {toggle === false
-                ? "**** **** **** ****"
-                : loggedUser.info.account
-                ? (loggedUser.info.account.card_id.replace(/\B(?=(\d{4})+(?!\d))/g, " "))
-                : null}
-            </Text>
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <>
+        <LinearGradient
+          style={[s.container, { zIndex: 2 }]}
+          colors={["#521886", "rgba(0, 0, 0, 0.35)"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View>
+              <Text style={s.textTitle}>Balance</Text>
+              <Text style={s.textTitle}>${loggedUser.info.account.balance}</Text>
+            </View>
+            <View style={s.logoContainer}>
+              <Image
+                style={s.image}
+                source={require("../../assets/MOBA.png")}
+              />
+            </View>
           </View>
-        </View>
-        <Text style={[s.text, { color: "black" }]}>{ }</Text>
-      </View>
-      <View style={s.footerContainer}>
-        <View style={s.dateContainer}>
-          <Text style={{ color: "#949292" }}>Exp. Date</Text>
-          <Text style={[s.text, { color: "black" }]}>
-            {loggedUser.info.account ? loggedUser.info.account.card_expiration.substr(3) : null}
+
+          <View style={[s.bgCircle, s.rightBgCircle]} />
+          <Text style={[s.textTitle, {top: 13 }]}>
+            {loggedUser.info.name + " " + loggedUser.info.surname}
           </Text>
-        </View>
-        <View style={s.dateContainer}>
-          <Text style={{ color: "#949292" }}>CVV</Text>
-          <Text style={[s.text, { color: "black", paddingLeft: 11 }]}>
-            {toggle === false ? "***" : loggedUser.info.account ? loggedUser.info.account.card_cvv : null}
-          </Text>
-        </View>
-        <View style={s.visaContainer}>
-          <Image
-            style={s.imageVisa}
-            source={require("../../assets/simbolos.png")}
-          />
-        </View>
-      </View>
-    </View>
-  );
+          <View style={s.cardNumberContainer}>
+            <View style={s.cardNumberPart}>
+              <View>
+                <Text style={[s.text, {top: 10}]}>
+                  {toggle === false
+                    ? "**** **** **** ****"
+                    : loggedUser.info.account
+                    ? loggedUser.info.account.card_id.replace(
+                        /\B(?=(\d{4})+(?!\d))/g,
+                        " "
+                      )
+                    : null}
+                </Text>
+              </View>
+            </View>
+            <Text style={[s.text, { color: "white" }]}>{}</Text>
+          </View>
+          <View style={s.footerContainer}>
+            <View style={s.dateContainer}>
+              <Text
+                style={{
+                  color: "#C7A8D9",
+                  fontSize: 16,
+                  letterSpacing: 0.53,
+                  textAlign: "left",
+                }}
+              >
+                Exp. Date
+              </Text>
+              <Text style={[s.text, { right: 11 }]}>
+                {loggedUser.info.account
+                  ? loggedUser.info.account.card_expiration.substr(3)
+                  : null}
+              </Text>
+            </View>
+            <View style={s.cvvContainer}>
+              <Text
+                style={s.textTitle}
+              >
+                CVV
+              </Text>
+              <Text style={s.text}>
+                {toggle === false
+                  ? "***"
+                  : loggedUser.info.account
+                  ? loggedUser.info.account.card_cvv
+                  : null}
+              </Text>
+            </View>
+            <View style={s.visaContainer}>
+              <Image
+                style={s.imageVisa}
+                source={require("../../assets/simbolos.png")}
+              />
+            </View>
+          </View>
+        </LinearGradient>
+      </>
+    );
+  }
 }
 
 const s = StyleSheet.create({
@@ -88,6 +133,12 @@ const s = StyleSheet.create({
     position: "relative",
     overflow: "hidden",
   },
+  textTitle:{
+    color: "#C7A8D9", 
+    fontSize: 16, 
+    letterSpacing: 0.53,
+    fontFamily: "OpenSans_700Bold"
+  },
   logoContainer: {
     position: "relative",
     marginBottom: 24,
@@ -95,9 +146,20 @@ const s = StyleSheet.create({
     alignItems: "flex-end",
     flex: 2,
   },
-  circle: { width: 34, height: 34, borderRadius: 17 },
-  rightCircle: { backgroundColor: "#F2E5E5", position: "absolute", left: 20 },
-  leftCircle: { backgroundColor: "black", zIndex: 999 },
+  circle: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+  },
+  rightCircle: {
+    backgroundColor: "#F2E5E5",
+    position: "absolute",
+    left: 20,
+  },
+  leftCircle: {
+    backgroundColor: "black",
+    zIndex: 999,
+  },
   cardNumberContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -105,7 +167,9 @@ const s = StyleSheet.create({
     marginBottom: 18,
     width: 184,
   },
-  cardNumberPart: { flexDirection: "row"},
+  cardNumberPart: {
+    flexDirection: "row",
+  },
   dot: {
     width: 6,
     height: 6,
@@ -117,10 +181,10 @@ const s = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontFamily: "Courier",
+    fontFamily: "OpenSans_700Bold",
     fontSize: 16,
     letterSpacing: 0.53,
-    fontWeight: "900",
+    color: "white"
   },
   bgCircle: {
     position: "absolute",
@@ -141,18 +205,15 @@ const s = StyleSheet.create({
     left: (0 * (-1 * 250)) / 2,
   },
   image: {
-    width: 60,
-    height: 15,
+    width: 100,
+    height: 25,
   },
   imageVisa: {
-    width: 60,
-    height: 35,
+    width: 83,
+    height: 40,
   },
   textColor: {
     color: "#949292",
-  },
-  textTitle: {
-    fontWeight: "900",
   },
   visaContainer: {
     justifyContent: "flex-end",
@@ -164,5 +225,11 @@ const s = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  cvvContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 59,
   },
 });
