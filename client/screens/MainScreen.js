@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import AuthScreen from "./AuthScreen/AuthScreen";
 import AuthUserScreen from "./AuthUserScreen/AuthUserScreen";
 import HomeScreen from "./HomeScreen/HomeScreen";
-import TransferReceipt from "./AuthUserScreen/TransferReceipt"
+
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,7 @@ const RootStackScreen = ({ navigation }) => {
         {!user ? (
           <>
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            <Stack.Screen name="TransferReceipt" component={TransferReceipt} />
+            <Stack.Screen name="AuthUserScreen" component={AuthUserScreen} />
             <Stack.Screen name="AuthScreen" component={AuthScreen} />
           </>
         ) : !user.data.token ? null : (

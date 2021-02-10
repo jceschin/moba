@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { View, StatusBar,  StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable'
 
-export default class LandingPage extends Component {
+export default class SplashScreen extends Component {
 
     goToScreen(routeName){
         this.props.navigation.navigate(routeName)
@@ -23,7 +23,6 @@ export default class LandingPage extends Component {
                     animation= "jello"
                     easing= "linear"
                     iterationCount="infinite"
-                    iterationDelay= "500"
                     style={{
                       width: 280,
                       height: 280,
