@@ -106,7 +106,7 @@ const MyContacts = () => {
           </View>
           <View style={styles.action}>
             <TouchableOpacity onPress={() => {
-              navigation.navigate('');
+              navigation.navigate('EditContact');
             }}
               style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
             >

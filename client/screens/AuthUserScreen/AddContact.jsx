@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { Feather, AntDesign } from "@expo/vector-icons";
+import * as Animatable from 'react-native-animatable';
 
 //Redux
-import { addNewContact } from '../../redux/actions/user';
+import { addNewContact } from '../../redux/actions/contactActions';
 import { useSelector, useDispatch } from "react-redux";
 
 const AddContact = ({ navigation }) => {
@@ -45,9 +46,31 @@ const AddContact = ({ navigation }) => {
     setPages('first')
   }, [])
 
+  if (pages === 'success') {
+    return (
+      <Animatable.View animation='zoomIn' style={styles.container}>
+        <View style={styles.bodySuccess}>
+          <View style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }}>
+            <Text style={styles.headerSuccess}>Contact added</Text>
+          </View>
+          <AntDesign name="contacts" size={48} color="white" />
+          <View style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }}>
+            <Text style={styles.textSuccess} >
+              Successfully added {data.alias} to your contact list
+            </Text>
+          </View>
+          <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', padding: 10, marginTop: 200 }}>
+            <TouchableOpacity style={styles.buttonSuccess} onPress={() => navigation.navigate('MyContacts')}>
+              <Text style={styles.textButtonSuccess}>Continue</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Animatable.View>
+    )
+  }
 
   return (
-    <View style={styles.container}>
+    <Animatable.View animation='slideInRight' style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" size={24} color="white" />
@@ -59,11 +82,12 @@ const AddContact = ({ navigation }) => {
       <View style={styles.body}>
         {
           pages === 'first' ? (
-            <View style={styles.section}>
+            <Animatable.View animation='slideInRight' style={styles.section}>
               <View style={styles.Wrapper}>
                 <TextInput
                   style={styles.input}
                   placeholder='Add an alias...'
+                  value={data.alias}
                   onChangeText={value => handleInput('alias', value)}
                   placeholderTextColor={'rgba(0, 0, 0, 0.4);'}
                   fontWeight={'bold'}
@@ -74,25 +98,15 @@ const AddContact = ({ navigation }) => {
                   <Text style={styles.textButton}>Continue</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </Animatable.View>
           ) :
             pages === 'second' ? (
-              <View style={styles.section}>
-                <View style={styles.Wrapper}>
-                  <TextInput style={styles.input} value={userLoggued} />
-                </View>
-                <View style={styles.buttonWrapper}>
-                  <TouchableOpacity disabled={!disable} style={[styles.buttonConfirm, disable === false ? styles.buttonDisable : styles.buttonAble]} onPress={() => setPages('third')}>
-                    <Text style={styles.textButton}>Continue</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ) : pages === 'third' ? (
-              <View style={styles.section}>
+              <Animatable.View animation='slideInRight' style={styles.section}>
                 <View style={styles.Wrapper}>
                   <TextInput
                     style={styles.input}
                     placeholder='Contact email...'
+                    value={data.contact_email}
                     onChangeText={value => handleEmail('contact_email', value)}
                     placeholderTextColor={'rgba(0, 0, 0, 0.4);'}
                     fontWeight={'bold'}
@@ -103,28 +117,11 @@ const AddContact = ({ navigation }) => {
                     <Text style={styles.textButton}>Confirm</Text>
                   </TouchableOpacity>
                 </View>
-              </View>
-            ) : pages === 'success' ? (
-              <View style={styles.container}>
-                <View style={styles.bodySuccess}>
-                  <View>
-                    <Text>Contact added</Text>
-                  </View>
-                  <AntDesign name="contacts" size={40} color="White" />
-                  <View>
-                    <Text >Successfully added {data.alias} to your contact list</Text>
-                  </View>
-                  <View>
-                    <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
-                      <Text>Continue</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
+              </Animatable.View>
             ) : null
         }
       </View>
-    </View>
+    </Animatable.View>
   )
 }
 
@@ -162,6 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   bodySuccess: {
+    flex: 1,
     backgroundColor: '#38046C',
     justifyContent: 'center',
     alignItems: 'center'
@@ -179,7 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   input: {
-    fontWeight: 600,
+    fontWeight: '600',
     fontSize: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#d4d4d4',
@@ -203,6 +201,27 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: 'white',
+    fontWeight: 'bold'
+  },
+  headerSuccess: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: '800'
+  },
+  textSuccess: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '600'
+  },
+  buttonSuccess: {
+    width: '90%',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 10
+  },
+  textButtonSuccess: {
+    color: '#38046C',
     fontWeight: 'bold'
   }
 })
