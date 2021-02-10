@@ -25,6 +25,8 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
+import Clipboard from 'expo-clipboard';
+
 const AddMoney = ({ navigation, route }) => {
   const [code, setCode] = React.useState(false);
   const [transfer, setTransfer] = React.useState(false);
@@ -35,6 +37,7 @@ const AddMoney = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const loggedUser = useSelector((state) => state.user);
+  let cvuInfo = useSelector((state) => state.user.info.account.cvu);
   const [user, setUser] = useState({});
   const [index, setIndex] = useState(0);
   const [valid, setValid] = useState(false);
@@ -106,6 +109,11 @@ const AddMoney = ({ navigation, route }) => {
   useEffect(() => {
     dispatch(getUserInfo(loggedUser.username));
   }, []);
+
+  const copyToClipboard = () => {
+    Clipboard.setString(cvuInfo.toString())
+    alert('Copy to clipboard')
+  }
 
   console.log("user", user)
   console.log("loggedUser", loggedUser)
@@ -300,7 +308,7 @@ const AddMoney = ({ navigation, route }) => {
                 </Text>
                 <View style={{flexDirection: "row", paddingTop: 38}}>
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={styles.copyButton}>
+                  <TouchableOpacity style={styles.copyButton} onPress={copyToClipboard}>
                   <View style={{paddingRight: 5}}>
                         <Feather name="copy" size={20} color="#38046C" />
                       </View>
