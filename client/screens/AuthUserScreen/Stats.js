@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getLinealUserStats, getUserStats } from "../../redux/actions/user";
+const { formatDate } = require("date-utils-2020");
 
 const screenWidth = Dimensions.get("window").width;
 import {
@@ -95,22 +96,89 @@ const Stats = () => {
     fontSize: 16,
   };
 
-  useEffect(() => {
-    dispatch(getLinealUserStats(loggedUser.info.account.cvu, "2021-02-07", "2024-02-08"))
+  const lastWeek = () => {
+    let dateTo = new Date();
+    let dateFrom = new Date();
+    dateFrom.setDate(dateFrom.getDate() - 8);
     dispatch(
-      getUserStats(loggedUser.info.account.cvu, "2021-02-07", "2024-02-08")
+      getUserStats(
+        loggedUser.info.account.cvu,
+        formatDate(dateFrom, "yyyy-MM-dd"),
+        formatDate(dateTo, "yyyy-MM-dd")
+      )
+    );
+    dispatch(
+      getLinealUserStats(
+        loggedUser.info.account.cvu,
+        formatDate(dateFrom, "yyyy-MM-dd"),
+        formatDate(dateTo, "yyyy-MM-dd")
+      )
+    );
+  };
+
+  const lastMonth = () => {
+    let dateTo = new Date();
+    let dateFrom = new Date();
+    dateFrom.setDate(dateFrom.getDate() - 40);
+    dispatch(
+      getUserStats(
+        loggedUser.info.account.cvu,
+        formatDate(dateFrom, "yyyy-MM-dd"),
+        formatDate(dateTo, "yyyy-MM-dd")
+      )
+    );
+
+    dispatch(
+      getLinealUserStats(
+        loggedUser.info.account.cvu,
+        formatDate(dateFrom, "yyyy-MM-dd"),
+        formatDate(dateTo, "yyyy-MM-dd")
+      )
+    );
+  };
+
+  const last6Months = () => {
+    let dateTo = new Date();
+    let dateFrom = new Date();
+    dateFrom.setDate(dateFrom.getDate() - 200);
+    dispatch(
+      getUserStats(
+        loggedUser.info.account.cvu,
+        formatDate(dateFrom, "yyyy-MM-dd"),
+        formatDate(dateTo, "yyyy-MM-dd")
+      )
+    );
+    dispatch(
+      getLinealUserStats(
+        loggedUser.info.account.cvu,
+        formatDate(dateFrom, "yyyy-MM-dd"),
+        formatDate(dateTo, "yyyy-MM-dd")
+      )
+    );
+  };
+
+  useEffect(() => {
+    dispatch(
+      getLinealUserStats(
+        loggedUser.info.account.cvu,
+        "2021-01-06",
+        "2021-02-10"
+      )
+    );
+    dispatch(
+      getUserStats(loggedUser.info.account.cvu, "2021-01-06", "2021-02-10")
     );
   }, []);
 
-  
   return (
     <View>
+      
+      <TouchableOpacity onPress={lastWeek}><Text>Last week</Text></TouchableOpacity>
+      <TouchableOpacity onPress={lastMonth}><Text>Last month</Text></TouchableOpacity>
+      <TouchableOpacity onPress={last6Months}><Text>Last 6 months</Text></TouchableOpacity>
 
-
-  
 
       <Text style={labelStyle}>Incomes and expenses</Text>
-      
 
       <PieChart
         data={amountGraphData}
@@ -138,44 +206,48 @@ const Stats = () => {
         absolute={true}
       />
 
-<Text>Bezier Line Chart</Text>
-{loggedUser.linealStats && (
-  <LineChart
-    data={{
-      labels: loggedUser.linealStats && loggedUser.linealStats.map((data) => data.date),
-      datasets: [
-        {
-          data: loggedUser.linealStats && loggedUser.linealStats.map((data) => parseInt(data.amount))
-        }
-      ]
-    }}
-    width={Dimensions.get("window").width} // from react-native
-    height={220}
-    yAxisLabel="$"
-    yAxisInterval={1} // optional, defaults to 1
-    chartConfig={{
-      backgroundColor: "#e2600",
-      backgroundGradientFrom: "#fb8c00",
-      backgroundGradientTo: "#ffa726",
-      decimalPlaces: 2, // optional, defaults to 2dp
-      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      style: {
-        borderRadius: 16
-      },
-      propsForDots: {
-        r: "6",
-        strokeWidth: "2",
-        stroke: "#ffa726"
-      }
-    }}
-    bezierz
-    style={{
-      marginVertical: 8,
-      borderRadius: 16
-    }}
-  />
-)}
+      <Text>Bezier Line Chart</Text>
+      {loggedUser.linealStats && (
+        <LineChart
+          data={{
+            labels:
+              loggedUser.linealStats &&
+              loggedUser.linealStats.map((data) => data.date),
+            datasets: [
+              {
+                data:
+                  loggedUser.linealStats &&
+                  loggedUser.linealStats.map((data) => parseInt(data.amount)),
+              },
+            ],
+          }}
+          width={Dimensions.get("window").width} // from react-native
+          height={220}
+          yAxisLabel="$"
+          yAxisInterval={1} // optional, defaults to 1
+          chartConfig={{
+            backgroundColor: "#e2600",
+            backgroundGradientFrom: "#fb8c00",
+            backgroundGradientTo: "#ffa726",
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "#ffa726",
+            },
+          }}
+          bezierz
+          style={{
+            marginVertical: 8,
+            borderRadius: 16,
+          }}
+        />
+      )}
     </View>
   );
 };

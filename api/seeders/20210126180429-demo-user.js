@@ -197,7 +197,26 @@ module.exports = {
           recoveryToken: "asdfg",
           createdAt: new Date(),
           updatedAt: new Date(),
-        }
+        },
+        {
+          id:121,
+          username: "seedtest",
+          name: "John",
+          surname: "Wick",
+          email: "test@moba.com",
+          address: "Av. Corrientes 444",
+          city: "Buenos Aires",
+          state: "Buenos Aires",
+          dni: "33777111",
+          phone: "54777663",
+          birthdate: "1998-03-12",
+          password: "21a78e1d2a4772603d65c3942e6bbf798f69b90b822c298384326621e3b8a4b1",
+          salt: "9qdBcd7Oe4wAuJy732tmVA==",
+          rol: "admin",
+          recoveryToken: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
