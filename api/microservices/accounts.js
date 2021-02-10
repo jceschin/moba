@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const { Account, User, Transaction, Accounttransaction } = require("../db");
 const { Op } = require("sequelize");
 const cors = require("cors");
+const { formatDate } = require("date-utils-2020");
+let DateGenerator = require("random-date-generator");
 
 // middlewares
 server.use(morgan("dev"));
@@ -124,6 +126,58 @@ server.put("/accounts/recharge/:userCode", (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+
+//card update from cvu
+
+server.put("/accounts/updatecard/:cvu", (req, res) => {
+
+  let startDate = new Date(2027, 12, 12);
+  let endDate = new Date(2029, 12, 12);
+  var randomDate = DateGenerator.getRandomDateInRange(startDate, endDate);
+  card_expiration = formatDate(randomDate, "dd/MM/yy");
+  var card_cvv, card_id;
+
+  const generator = () => {
+    card_id = Math.floor(Math.random() * 900000000000000) + 4000000000000000;
+    card_cvv = Math.floor(Math.random() * 900) + 100;
+  };
+
+  const checker = () => {
+    generator();
+    Account.findOne({
+      where: {
+        [Op.or]: [
+          { card_id: card_id.toString() },
+          { card_cvv: card_cvv.toString() },
+        ],
+      },
+    }).then((acc) => {
+      if (!acc) {
+        console.log("no repitió");
+        return;
+      } else {
+        console.log("repitió");
+        checker();
+      }
+    });
+  };
+
+  checker();
+
+  Account.update({
+     card_id,
+     card_cvv,
+     card_expiration
+    }, {
+      where: { cvu: req.params.cvu },
+    })
+    .then((account) => res.status(200).send(account))
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+});
+
+
 
 server.listen(8004, () => {
   console.log("Server running on 8004");

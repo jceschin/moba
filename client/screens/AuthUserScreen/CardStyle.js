@@ -31,7 +31,7 @@ export default function CreditCard() {
       <View style={{ flexDirection: "row" }}>
         <Text style={s.textTitle}>Virtual Debit Card</Text>
         <View style={s.logoContainer}>
-          <Image style={s.image} source={require("../../assets/MOBA.png")} />
+          <Image style={s.image} source={require("../../resources/images/mobapng.png")} />
         </View>
       </View>
       <View style={{ top: -20 }}>
