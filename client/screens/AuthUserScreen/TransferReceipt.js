@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#521886",
   },
   receiptContainer: {
-    border: "solid",
+    // border: "solid",
     width: 298,
     height: 550,
     marginLeft: "auto",

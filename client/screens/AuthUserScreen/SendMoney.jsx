@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   greeting: {
     color: "white",
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: 'OpenSans_700Bold'
   },
   whiteContainer: {

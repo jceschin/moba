@@ -94,13 +94,7 @@ const Homepage = () => {
   } else {
     return (
       <View style={styles.colorContainer}>
-        <ScrollView
-          contentContainerStyle={
-            transactions
-              ? styles.scrollHeightTransactions
-              : styles.scrollHeightNoTransactions
-          }
-        >
+        <ScrollView contentContainerStyle={transactions ? styles.scrollHeightTransactions : styles.scrollHeightNoTransactions}>
           <View style={styles.mainContainer}>
             <View style={styles.upperContainer}>
               <Text style={styles.accountOwner}>
@@ -130,9 +124,7 @@ const Homepage = () => {
                   </TouchableOpacity>
                 </View>
                 <View>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("Stats")}
-                  >
+                  <TouchableOpacity>
                     <MaterialIcons
                       name="compare-arrows"
                       size={24}
@@ -170,8 +162,6 @@ const Homepage = () => {
   }
 };
 
-
-
 export default Homepage;
 
 const styles = StyleSheet.create({
@@ -183,11 +173,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollHeightTransactions: {
-    height: 2000,
+  scrollHeightTransactions:{
+    height: 2000
   },
-  scrollHeightNoTransactions: {
-    height: "100%",
+  scrollHeightNoTransactions:{
+    height: "100%"
   },
   mainContainer: {
     display: "flex",
