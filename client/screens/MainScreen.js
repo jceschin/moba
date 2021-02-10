@@ -15,7 +15,6 @@ const RootStackScreen = ({ navigation }) => {
         {!user ? (
           <>
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            <Stack.Screen name="AuthUserScreen" component={AuthUserScreen} />
             <Stack.Screen name="AuthScreen" component={AuthScreen} />
           </>
         ) : !user.data.token ? null : (
