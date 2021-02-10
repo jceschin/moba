@@ -4,11 +4,30 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+// Fonts
+import {
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+
 // REDUX
 import { getUserInfo } from '../../redux/actions/user';
 import {deleteContact} from '../../redux/actions/contactActions'
 
 const MyContact = ({ name, surname, phone, username, alias }) => {
+  // Fonts
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const nameInitial = name.slice(0, 1).toUpperCase();
@@ -32,11 +51,23 @@ const MyContact = ({ name, surname, phone, username, alias }) => {
         })}
       >
         <View style={styles.avatar}>
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>{nameInitial} {surnameInitial}</Text>
+          <Text 
+          style={{
+            color: '#000000',
+            fontFamily: 'OpenSans_700Bold',
+            fontSize: 18 
+          }}>
+              {nameInitial} {surnameInitial}
+          </Text>
         </View>
-        <View>
-          <Text style={styles.name}>{alias} ({name} {surname})</Text>
-          <Text style={styles.phone}>{phone}</Text>
+        <View
+          style={{
+            paddingLeft: 5,
+            justifyContent: 'center',
+            height: 48
+          }}
+        >
+          <Text style={styles.name}>{name} {surname}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btndelete} onPress={onDelete}>
@@ -52,6 +83,10 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: "#C4C4C4",
+    borderStyle: "solid",
+    paddingBottom: 5
   },
   container: {
     display: 'flex',
@@ -62,11 +97,10 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: 20,
-    borderRadius: 50,
-    backgroundColor: '#25D681',
-    padding: 10,
-    height: 51,
-    width: 51,
+    backgroundColor: '#E5E5E5',
+    height: 48,
+    width: 45,
+    borderRadius: 11,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -78,8 +112,8 @@ const styles = StyleSheet.create({
   },
   name: {
     color: 'black',
-    fontSize: 16,
-    fontWeight: 'normal',
+    fontSize: 20,
+    fontFamily: 'OpenSans_700Bold',
     textAlign: 'left'
   },
   phone: {
