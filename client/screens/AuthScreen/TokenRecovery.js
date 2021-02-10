@@ -22,7 +22,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const SingleNumInput = ({ changed, id, _ref, _next }) => {
   return (
     <TextInput
@@ -106,7 +106,7 @@ export default function CodeVerification({ navigation, route }) {
   }, [token]);
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen2 />;
   } else {
     return (
       <View style={styles.container}>

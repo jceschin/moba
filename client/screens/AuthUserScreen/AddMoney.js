@@ -24,7 +24,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const AddMoney = ({ navigation, route }) => {
   const [code, setCode] = React.useState(false);
   const [transfer, setTransfer] = React.useState(false);
@@ -111,7 +111,7 @@ const AddMoney = ({ navigation, route }) => {
   console.log("loggedUser", loggedUser)
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen2 />;
   } else {
     return (
       <View style={styles.container}>

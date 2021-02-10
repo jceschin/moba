@@ -24,7 +24,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from 'expo-app-loading';
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const LoginScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -109,7 +109,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   if(!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen2 />
   }
   else {
   return (
@@ -326,8 +326,8 @@ const styles = StyleSheet.create({
   },
   image: {
     /* margintTop: 207, */
-    height: 30,
-    width: 113,
+    height: 156,
+    width: 304,
   },
   errorMsg: {
     color: "#CC1833",

@@ -22,7 +22,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const UsernameRecovery = ({ navigation }) => {
   var username = useSelector((store) => store.email.username);
   console.log(username);
@@ -146,7 +146,7 @@ const UsernameRecovery = ({ navigation }) => {
   }, [username]);
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen2 />;
   } else {
     return (
       <View style={styles.container}>

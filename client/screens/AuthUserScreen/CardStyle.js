@@ -19,7 +19,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 export default function CreditCard() {
   const [user, setUser] = useState([]);
   const { eye, setEye, toggle, setToggle } = React.useContext(Context);
@@ -35,7 +35,7 @@ export default function CreditCard() {
   useEffect(() => {}, [loggedUser.info]);
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen2 />;
   } else {
     return (
       <>
