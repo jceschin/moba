@@ -11,7 +11,7 @@ export default class LandingPage extends Component {
     componentDidMount(){
 
         setTimeout( () => {
-            this.goToScreen('HomeScreen')
+            this.goToScreen('AuthScreen')
         }, 5000, this)
     }
 

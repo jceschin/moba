@@ -13,7 +13,7 @@ require("./microservices/contacts.js");
 require("./microservices/statistics.js");
 require("./microservices/whatsapp.js");
 
-conn.sync({ force: false })
+conn.sync({ force: true })
 .then(() => {
    gateway()
    .load(path.join(__dirname, 'config'))
