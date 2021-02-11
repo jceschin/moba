@@ -78,7 +78,9 @@ const SendMoneySuccess = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.buttonContinue}
-        onPress={() => navigation.navigate("HomePage")}
+        onPress={() => {
+          dispatch(clearLastTransaction())
+          navigation.navigate("HomePage")}}
       >
         <Text style={styles.btnContent}>Continue</Text>
       </TouchableOpacity>

@@ -38,8 +38,7 @@ const SendMoneyError = () => {
     dispatch(
       getUserTransactions(loggedUser.username, loggedUser.data.data.token)
     );
-    dispatch(clearLastTransaction());
-  }, [lastTransaction]);
+  }, []);
   return (
     <View style={styles.colorContainer}>
       <View style={styles.contentContainer}>
@@ -69,7 +68,9 @@ const SendMoneyError = () => {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.goBack()}
+        onPress={() => {
+          dispatch(clearLastTransaction())
+          navigation.goBack()}}
       >
         <Text style={styles.btnContent}>Try Again</Text>
       </TouchableOpacity>

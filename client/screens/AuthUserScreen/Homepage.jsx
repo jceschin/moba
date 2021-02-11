@@ -13,7 +13,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserInfo } from "../../redux/actions/user";
-import { getUserTransactions } from "../../redux/actions/transactionActions";
+import { clearLastTransaction, getUserTransactions } from "../../redux/actions/transactionActions";
 
 // Fonts
 import {
@@ -127,7 +127,7 @@ const Homepage = () => {
                   </TouchableOpacity>
                 </View>
                 <View>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate("Stats")}>
                     <MaterialIcons
                       name="compare-arrows"
                       size={24}
