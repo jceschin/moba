@@ -24,7 +24,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from 'expo-app-loading';
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const LoginScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -109,7 +109,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   if(!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen2 />
   }
   else {
   return (
@@ -120,7 +120,7 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.containerImg}>
             <Image
               style={styles.image}
-              source={require("../../assets/MOBA.png")}
+              source={require("../../resources/images/mobapng.png")}
             />
             <Text style={styles.textContainerImg}>
               Your finances simple and fast.
@@ -247,9 +247,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 5,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-    paddingVertical: 30,
+    backgroundColor: "#fff"
   },
   header: {
     flex: 1,
@@ -328,8 +326,8 @@ const styles = StyleSheet.create({
   },
   image: {
     /* margintTop: 207, */
-    height: 30,
-    width: 113,
+    height: 156,
+    width: 304,
   },
   errorMsg: {
     color: "#CC1833",

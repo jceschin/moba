@@ -220,6 +220,7 @@ const Stats = ({ navigation }) => {
         </View>
         <View style={styles.lineChartContainer}>
           {(loggedUser.linealStats && loggedUser.linealStats.length) ? (
+
             <LineChart
               data={{
                 labels: loggedUser.linealStats.map((data) => data.date),
@@ -357,6 +358,7 @@ const Stats = ({ navigation }) => {
               $
             </Text>
             {(amountGraphData && amountGraphData.length) ? (
+
               <PieChart
                 data={amountGraphData}
                 width={screenWidth}
@@ -372,6 +374,7 @@ const Stats = ({ navigation }) => {
               <Text>No movements</Text>
             )}
             {(typeGraphData && typeGraphData.length) ? (
+
               <PieChart
                 data={typeGraphData}
                 width={screenWidth}

@@ -14,6 +14,7 @@ import AddMoney from "./AddMoney";
 import Stats from './Stats'
 
 import AddContact from "./AddContact";
+import EditContact from "./EditContact";
 const Stack = createStackNavigator();
 
 export const Context = React.createContext({
@@ -35,6 +36,7 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="MyAccount" component={MyAccount} />
           <Stack.Screen name="AccountNumber" component={AccountNumber} />
           <Stack.Screen name="MyContacts" component={MyContacts} />
+          <Stack.Screen name="EditContact" component={EditContact} />
           <Stack.Screen name="AddContact" component={AddContact} />
           <Stack.Screen name="MyContact" component={MyContact} />
           <Stack.Screen name="SendMoney" component={SendMoney} />

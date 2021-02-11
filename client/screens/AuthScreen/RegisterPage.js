@@ -18,6 +18,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from 'expo-app-loading';
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 // REDUX
 import { useDispatch } from "react-redux";
 import { createNewUser } from "../../redux/actions/user";
@@ -345,7 +346,7 @@ const RegisterPage = ({ navigation, route }) => {
   };
 
   if(!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen2 />
   }
   else{
   return (
