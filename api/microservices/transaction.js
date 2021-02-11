@@ -219,7 +219,7 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
       Transaction.findAll({
         include: [{ model: Account, include: [{ model: User }] }],
         where: { number: { [Op.or]: [numberTrans] }, status: "confirmed" },
-        order: [["number", "DESC"]],
+        order: [["createdAt", "DESC"]],
       })
         .then((data) => {
           var sorted = data.map((dat, i) => {
