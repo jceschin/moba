@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="337de4ea-b4a0-409f-bfb3-2dc1039925a8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/screens/AuthUserScreen/TransferReceipt.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/AuthUserScreen/TransferReceipt.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,11 +36,11 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="101" y="227" width="1648" height="853" key="AVDManager" timestamp="1613012854015">
+    <state x="101" y="227" width="1648" height="853" key="AVDManager" timestamp="1613051343108">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="160" y="127" width="1648" height="853" key="AVDManager/72.27.1848.1053/1920.0.3840.2160@72.27.1848.1053" timestamp="1613010811490" />
-    <state x="101" y="227" width="1648" height="853" key="AVDManager/72.27.1848.1053@72.27.1848.1053" timestamp="1613012854015" />
+    <state x="101" y="227" width="1648" height="853" key="AVDManager/72.27.1848.1053@72.27.1848.1053" timestamp="1613051343108" />
     <state x="101" y="227" width="1648" height="853" key="AVDManager/72.27.5688.2133@72.27.5688.2133" timestamp="1613010739401" />
   </component>
 </project>
