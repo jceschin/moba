@@ -53,7 +53,7 @@ export default function CreditCard() {
             <View style={s.logoContainer}>
               <Image
                 style={s.image}
-                source={require("../../assets/MOBA.png")}
+                source={require("../../resources/images/mobapng.png")}
               />
             </View>
           </View>

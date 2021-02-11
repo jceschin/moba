@@ -13,7 +13,7 @@ import {
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { updatePassword, clearPass, cleanEmailOrUsername } from '../../redux/actions/emailActions'
+import { updatePassword, clearPass, cleanEmailOrUsername, clearToken } from '../../redux/actions/emailActions'
 import {
   useFonts,
   OpenSans_300Light,
@@ -26,7 +26,9 @@ import AppLoading from 'expo-app-loading';
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const FormNewPassword = ({ navigation }) => {
   const dispatch = useDispatch();
-  const emailToken = useSelector((store) => store.email.emailOrUsername[0].emailToken);
+  const emailToken = useSelector(
+    (store) => store.email.emailOrUsername[0] && store.email.emailOrUsername[0].emailToken
+  );
   const pass = useSelector((store) => store.email.pass)
   const [data, setData] = useState({
     password: "",
@@ -127,7 +129,7 @@ const FormNewPassword = ({ navigation }) => {
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <ScrollView>
           <Text style={styles.textRecover}>
-            Insert your email and password to help us to recover your username
+            Insert your new password
           </Text>
           <View
             style={{
@@ -139,7 +141,7 @@ const FormNewPassword = ({ navigation }) => {
             }}
           >
             <TextInput
-              placeholder="Enter your new password"
+              placeholder="New password"
               placeholderTextColor="#D3D0D0"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.textInputPassword}

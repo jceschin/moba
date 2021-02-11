@@ -8,6 +8,7 @@ import {
   TextInput,
   StatusBar,
   Alert,
+  Keyboard
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
@@ -89,7 +90,7 @@ export default function CodeVerification({ navigation, route }) {
       if (verify[0].isvalid === true) {
         navigation.navigate("RegisterPage", { email: mailAndCode.email });
       } else {
-        alert("InvalidCode");
+        Alert.alert("Invalid Code");
       }
     }
   }, [verify]);
@@ -161,6 +162,7 @@ export default function CodeVerification({ navigation, route }) {
                   id={"E"}
                   _ref={pin5}
                   _next={null}
+                  onSubmitEdittin={Keyboard.dismiss}
                 />
               </View>
 

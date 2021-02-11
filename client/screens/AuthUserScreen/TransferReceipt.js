@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {
   View,
   Text,
@@ -6,9 +6,10 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
-  Image
+  Image,
+  Share
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import {
   useFonts,
@@ -19,9 +20,9 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import { useNavigation } from "@react-navigation/native";
-
+import {captureRef} from 'react-native-view-shot'
 const TransferReceipt = ({ route }) => {
-
+const viewRef = useRef()
   // Fonts
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -36,6 +37,17 @@ const TransferReceipt = ({ route }) => {
   const loggedUser = useSelector((state) => state.user);
   const destinatary = useSelector((state) => state.contacts.selectedContact);
 
+  const shareReceipt = async () => {
+    try {
+      const uri = await captureRef(viewRef,{
+        format: "png",
+        quality: 0.7
+        })
+        await Share.share({url: uri})
+    } catch(err){
+      console.log(err)
+    }
+  }
   return (
     <View style={styles.colorContainer}>
       <ScrollView>
@@ -46,8 +58,11 @@ const TransferReceipt = ({ route }) => {
           <View style={styles.welcomeView}>
             <Text style={styles.text_header}>Successful transfer</Text>
           </View>
+          <TouchableOpacity onPress ={shareReceipt}>
+          <Feather name="share" size={20} color="white" style={{right:10}}/>
+          </TouchableOpacity>
         </View>
-        <View style={styles.whiteContainer}>
+        <View style={styles.whiteContainer} ref={viewRef}>
           <View style={styles.transferContainer}>
             <View style={styles.transferHeader}>
               <Text style={styles.transferTitle}> Transfer Receipt</Text>
@@ -89,7 +104,7 @@ const TransferReceipt = ({ route }) => {
               </Text>
             </View>
 
-            <View style={{alignItems: 'right'}}>
+            <View>
               <Image
                 style={styles.image}
                 source={require("../../resources/images/mobapng.png")}
