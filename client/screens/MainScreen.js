@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import AuthScreen from "./AuthScreen/AuthScreen";
 import AuthUserScreen from "./AuthUserScreen/AuthUserScreen";
 import HomeScreen from "./HomeScreen/HomeScreen";
+import { apiEndpoint } from "../const";
 
 const Stack = createStackNavigator();
 

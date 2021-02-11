@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 12,
     flexDirection: "row",
-    marginBottom: 12,
+    marginBottom: 12
   },
   welcomeView: {
     flex: 1,
@@ -389,8 +389,8 @@ const styles = StyleSheet.create({
   },
   text_header: {
     color: "#fff",
-    fontFamily: "OpenSans_700Bold",
-    fontSize: 24,
+    fontFamily: "OpenSans_800ExtraBold",
+    fontSize: 18,
   },
   textRecover: {
     fontFamily: "OpenSans_600SemiBold",
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#521886",
-    marginTop: 267,
+    marginTop: 240,
   },
   textInputAmount: {
     fontSize: 34,
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 18,
     fontFamily: "OpenSans_800ExtraBold",
-    color: "#fff",
+    color: "#fff"
   },
   accountRechargeCode: {
     color: "#38046C",
