@@ -59,7 +59,7 @@ const ForgotOptions = ({ navigation }) => {
             <MaterialIcons
               name="keyboard-arrow-right"
               size={24}
-              color="rgba(255, 255, 255, 0.60)"
+              color="white"
               style={{ marginLeft: 64 }}
             />
           </View>
@@ -73,7 +73,7 @@ const ForgotOptions = ({ navigation }) => {
             <MaterialIcons
               name="keyboard-arrow-right"
               size={24}
-              color="rgba(255, 255, 255, 0.60)"
+              color="white"
               style={{ marginLeft: 64 }}
             />
           </View>
@@ -132,24 +132,20 @@ const styles = StyleSheet.create({
   usernameRecovery: {
     flexDirection: "row",
     marginTop: 142,
-    backgroundColor: "rgba(82, 24, 134, 0.5)",
+    backgroundColor: "#521886",
     height: 49,
     width: 332,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#521886",
     justifyContent: "center",
     alignItems: "center",
   },
   passwordRecovery: {
     flexDirection: "row",
     marginTop: 48,
-    backgroundColor: "rgba(82, 24, 134, 0.5)",
+    backgroundColor: "#521886",
     height: 49,
     width: 332,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#521886",
     justifyContent: "center",
     alignItems: "center",
   },
