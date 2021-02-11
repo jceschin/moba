@@ -11,7 +11,6 @@ const RootStackScreen = ({ navigation }) => {
     <>
       <Stack.Navigator headerMode="none">
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="SplashScreen2" component={SplashScreen2} />
       </Stack.Navigator>
     </>
   );

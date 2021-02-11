@@ -25,7 +25,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-import SplashScreen2 from "../HomeScreen/SplashScreen2";
+import SplashScreen from "../HomeScreen/SplashScreen";
 const SingleNumInput = ({ changed, id, _ref, _next }) => {
   return (
     <TextInput
