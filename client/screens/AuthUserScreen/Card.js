@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    top: 40,
+    top: 40
   },
   mainContainer: {
     display: "flex",
@@ -149,14 +149,15 @@ const styles = StyleSheet.create({
     height: 464,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    paddingHorizontal: 10
   },
   bottomContainer: {
     borderWidth: 1,
     borderColor: "rgba(167, 167, 167, 0.83)",
     borderStyle: "solid",
     top: 26,
-    width: 375,
-    left: 51,
+    // width: 375,
+    // left: 51,
     height: 69,
     borderRadius: 10,
   },
@@ -187,9 +188,9 @@ const styles = StyleSheet.create({
     borderColor: "#CBC8C8",
     borderStyle: "solid",
     top: 52,
-    width: 375,
+    // width: 375,
     height: 214,
-    left: 51,
+    // left: 51,
     borderRadius: 10,
   },
   copyName: {
