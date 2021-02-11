@@ -103,16 +103,6 @@ const SendMoney = ({ route }) => {
     };
 
     dispatch(addNewTransaction(transferData));
-
-    // axios.post(`http://localhost:8080/transaction`, transferData)
-    //     .then(res => {
-    //         console.log(transferData);
-    //         console.log(res);
-    //         navigation.navigate("SendMoneySuccess");
-    //     })
-    //     .catch(error => {
-    //         navigation.navigate("SendMoneyError");
-    //     })
   }
 
   // Style functions
@@ -276,6 +266,6 @@ const styles = StyleSheet.create({
     marginTop: -40,
     fontSize: 32,
     color: "#168903",
-    opacity: 0,
+    opacity: 0
   },
 });

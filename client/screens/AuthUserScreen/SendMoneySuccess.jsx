@@ -71,13 +71,13 @@ const SendMoneySuccess = () => {
           The transaction has been succesfully completed</Text>
       </View>
       <TouchableOpacity
-        style={styles.button}
+        style={styles.buttonSeeReceipt}
         onPress={() => navigation.navigate("TransferReceipt", {lastTransaction})}
       >
         <Text style={styles.btnContent}>See receipt</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.button}
+        style={styles.buttonContinue}
         onPress={() => navigation.navigate("HomePage")}
       >
         <Text style={styles.btnContent}>Continue</Text>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: 200
   },
-  button: {
+  buttonSeeReceipt: {
     height: 50,
     marginBottom: 20,
     borderRadius: 10,
@@ -109,7 +109,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     marginRight: 18,
     marginLeft: 18,
-    top: 390,
+    top: 360,
+  },
+  buttonContinue: {
+    height: 50,
+    marginBottom: 20,
+    borderRadius: 10,
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    marginRight: 18,
+    marginLeft: 18,
+    top: 365,
   },
   btnContent: {
     textAlign: "center",
