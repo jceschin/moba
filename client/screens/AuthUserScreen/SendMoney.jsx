@@ -153,7 +153,7 @@ const SendMoney = ({ route }) => {
               style={{
                 color: 'white',
                 fontFamily: 'OpenSans_700Bold',
-                fontSize: 18
+                fontSize: 16
               }}
             >  
               {selectedContactNameInitial}
@@ -165,6 +165,7 @@ const SendMoney = ({ route }) => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              height: 45
             }}
           >
             <Text style={styles.name}>
