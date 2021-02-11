@@ -139,9 +139,9 @@ server.put("/update/:alias", (req, res) => {
       contact.update({
         alias: newAlias
       })
-      res.sendStatus(200)
+      res.status(200).send(contact);
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.log("I am an error: " + err))
 });
 
 // DELETE CONTACT by alias
