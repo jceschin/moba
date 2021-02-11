@@ -184,32 +184,6 @@ const Stats = () => {
       <TouchableOpacity onPress={last6Months}>
         <Text>Last 6 months</Text>
       </TouchableOpacity>
-      {(loggedUser.stats && loggedUser.stats.length) ? (
-        <PieChart
-          data={amountGraphData}
-          width={screenWidth}
-          height={230}
-          chartConfig={chartConfig}
-          accessor={"amount"}
-          backgroundColor={"transparent"}
-          paddingLeft={"15"}
-          center={[20, -20]}
-          absolute={true}
-        />
-      ) : <Text>No movements</Text>}
-      {(loggedUser.stats && loggedUser.stats.length) ? (
-        <PieChart
-          data={typeGraphData}
-          width={screenWidth}
-          height={230}
-          chartConfig={chartConfig}
-          accessor={"type"}
-          backgroundColor={"transparent"}
-          paddingLeft={"15"}
-          center={[20, -20]}
-          absolute={true}
-        />
-      ) : null}
       {(loggedUser.linealStats && loggedUser.linealStats.length) ? (
         <LineChart
           data={{
@@ -248,6 +222,34 @@ const Stats = () => {
           }}
         />
       ) : null}
+      {(loggedUser.stats && loggedUser.stats.length) ? (
+        <PieChart
+          data={amountGraphData}
+          width={screenWidth}
+          height={230}
+          chartConfig={chartConfig}
+          accessor={"amount"}
+          backgroundColor={"transparent"}
+          paddingLeft={"15"}
+          center={[20, -20]}
+          absolute={true}
+          hasLegend={false}
+        />
+      ) : <Text>No movements</Text>}
+      {(loggedUser.stats && loggedUser.stats.length) ? (
+        <PieChart
+          data={typeGraphData}
+          width={screenWidth}
+          height={230}
+          chartConfig={chartConfig}
+          accessor={"type"}
+          backgroundColor={"transparent"}
+          paddingLeft={"15"}
+          center={[20, -20]}
+          absolute={true}
+        />
+      ) : null}
+
     </View>
   );
 };

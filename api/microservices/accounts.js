@@ -107,6 +107,7 @@ server.put("/accounts/recharge/:userCode", (req, res) => {
           amount,
           transaction_type: "charge",
           status: "confirmed",
+          transaction_code: Math.floor((Math.random() * 9000) + 1000)
         }).then((tr) => {
           
           Accounttransaction.create({
@@ -118,7 +119,7 @@ server.put("/accounts/recharge/:userCode", (req, res) => {
             status:'confirmed'
           });
 
-          res.send(account);
+          res.send(tr);
         });
       });
     })
