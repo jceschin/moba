@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   Alert,
+  Share
 } from "react-native";
 import { Feather, AntDesign, Fontisto  } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
@@ -62,7 +63,7 @@ const AddMoney = ({ navigation, route }) => {
     if (amountCharge.amount >= 100) {
       setAmount(true);
     } else {
-      alert("The minimum amount to charge is $100");
+      Alert.alert("The minimum amount to charge is $100");
     }
   };
 
@@ -110,9 +111,22 @@ const AddMoney = ({ navigation, route }) => {
     dispatch(getUserInfo(loggedUser.username));
   }, []);
 
+  const shareCvu = async () => {
+    try {
+      const result = await Share.share({
+        message: cvuInfo,
+      },
+      { excludedActivityTypes: [
+        'net.whatsapp.Whatsapp.ShareExtension']
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   const copyToClipboard = () => {
     Clipboard.setString(cvuInfo.toString())
-    alert('Copy to clipboard')
+    Alert.alert('Copy to clipboard')
   }
 
   console.log("user", user)
@@ -322,7 +336,7 @@ const AddMoney = ({ navigation, route }) => {
                 </View>
 
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={styles.shareButton}>
+                  <TouchableOpacity style={styles.shareButton} onPress={shareCvu}>
                   <View style={{paddingRight: 5}}>
                       <Fontisto name="share-a" size={18} color="white" />
                       </View>
