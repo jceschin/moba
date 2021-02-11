@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 24,
+    fontSize: 20,
   },
   textInputUsername: {
     flex: 1,
@@ -350,8 +350,9 @@ const styles = StyleSheet.create({
   textRecover: {
     fontFamily: "OpenSans_700Bold",
     color: "black",
-    fontSize: 20,
-    marginTop: 30,
+    fontSize: 18,
+    marginTop: 10,
+    textAlign: 'center'
   },
   checkView: {
     right: 17,
