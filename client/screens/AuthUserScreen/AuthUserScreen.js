@@ -12,7 +12,7 @@ import SendMoneyError from "./SendMoneyError";
 import Card from "./Card";
 import AddMoney from "./AddMoney";
 import Stats from './Stats'
-
+import TransferReceipt from './TransferReceipt';
 import AddContact from "./AddContact";
 import EditContact from "./EditContact";
 const Stack = createStackNavigator();
@@ -45,6 +45,7 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="AddMoney" component={AddMoney} />
           <Stack.Screen name="Card" component={Card} />
           <Stack.Screen name="Stats" component={Stats} />
+          <Stack.Screen name="TransferReceipt" component={TransferReceipt} />
           
         </Stack.Navigator>
       </Context.Provider>

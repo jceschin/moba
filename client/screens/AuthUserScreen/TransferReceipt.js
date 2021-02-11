@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   Platform,
   StyleSheet,
   ScrollView,
-  StatusBar,
-  Image,
-  Alert,
+  Image
 } from "react-native";
-import * as Animatable from "react-native-animatable";
 import { AntDesign } from "@expo/vector-icons";
-import { useDispatch, useSelector } from "react-redux";
-import { passwordRecovery } from "../../redux/actions/emailActions";
+import { useSelector } from "react-redux";
 import {
   useFonts,
   OpenSans_300Light,
@@ -23,28 +18,11 @@ import {
   OpenSans_700Bold,
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
-import AppLoading from "expo-app-loading";
-import SplashScreen2 from "../HomeScreen/SplashScreen2";
-const PasswordRecovery = ({ navigation }) => {
-  var emailOrUsername = useSelector((store) => store.email.emailOrUsername);
-  console.log(emailOrUsername);
-  const loggedUser = useSelector((state) => state.user);
-  console.log(loggedUser)
-  const destinatary = useSelector((state) => state.contacts.selectedContact);
-  console.log(destinatary)
+import { useNavigation } from "@react-navigation/native";
 
-  const token = useSelector((store) => store.email.token);
+const TransferReceipt = ({ route }) => {
 
-  const dispatch = useDispatch();
-
-  const [data, setData] = useState({
-    usernameOrEmail: "",
-    check_textInputChange: false,
-    secureTextEntry: true,
-    isValidUser: true,
-    isValidPassword: true,
-  });
-
+  // Fonts
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
@@ -53,140 +31,98 @@ const PasswordRecovery = ({ navigation }) => {
     OpenSans_800ExtraBold,
   });
 
-  const [focusUsername, setFocusUsername] = useState(false);
+  const navigation = useNavigation();
+  const lastTransaction = route.params;
+  const loggedUser = useSelector((state) => state.user);
+  const destinatary = useSelector((state) => state.contacts.selectedContact);
 
-  const changeFocusUser = () => {
-    focusUsername === false ? setFocusUsername(true) : false;
-  };
-
-  const textInputChange = (val) => {
-    if (val.length >= 4) {
-      setData({
-        ...data,
-        usernameOrEmail: val,
-        check_textInputChange: true,
-        isValidUser: true,
-      });
-    } else {
-      setData({
-        ...data,
-        usernameOrEmail: val,
-        check_textInputChange: false,
-        isValidUser: false,
-      });
-    }
-  };
-
-  const handleValidUser = (val) => {
-    if (val.trim().length >= 4) {
-      setData({
-        ...data,
-        isValidUser: true,
-      });
-    } else {
-      setData({
-        ...data,
-        isValidUser: false,
-      });
-    }
-  };
-
-
-
-  if (!fontsLoaded) {
-    return <SplashScreen2 />;
-  } else {
-    return (
-      <View style={styles.container}>
+  return (
+    <View style={styles.colorContainer}>
+      <ScrollView>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <AntDesign
-              name="arrowleft"
-              size={20}
-              color="white"
-            />
+            <AntDesign name="arrowleft" size={24} color="white" />
           </TouchableOpacity>
-
           <View style={styles.welcomeView}>
-            <Text style={styles.text_header}>Desde transfer </Text> {/* Colocara acá el cbu */}
+            <Text style={styles.text_header}>Successful transfer</Text>
           </View>
         </View>
-        <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-          <ScrollView>
-            <View style={styles.receiptContainer}>
-            <Text style={styles.textRecover}>
-              Transfer Receipt
-            </Text>
-            <Text style={styles.textRow}>
-              Amount
-            </Text>
-            <Text style={styles.textRowII}>
-              xxxxxxxxx
-            </Text>
-            <br/>
-            <Text style={styles.textRow}>
-              From
-            </Text>
-            <Text style={styles.textRowII}>
-             Nombre persona
-            </Text>
-            <Text style={styles.textRowII}>
-             cbu xxxxxx
-            </Text>
-            <br/>
-            <Text style={styles.textRow}>
-            To
-            </Text>
-            <Text style={styles.textRowII}>
-            Nombre persona
-            </Text>
-            <Text style={styles.textRowII}>
-             cbu xxxx
-            </Text>
-            <br/>
-            <Text style={styles.textRow}>
-              Reason for Wire Transfer
-            </Text>
-            <Text style={styles.textRowII}>
-              Varios
-            </Text>
-            <br/>
-            <Text style={styles.textRow}>
-              Reference Number
-            </Text>
-            <Text style={styles.textRowII}>
-              xxxxxxxxx
-            </Text>
-            <br/>
-            <Text style={styles.textRow}>
-              Transaction Date
-            </Text>
-            <Text style={styles.textRowII}>
-             fecha de transferencia xxxx
-            </Text>
-            <Image style={styles.image} source={require("../../resources/images/mobapng.png")} />
+        <View style={styles.whiteContainer}>
+          <View style={styles.transferContainer}>
+            <View style={styles.transferHeader}>
+              <Text style={styles.transferTitle}> Transfer Receipt</Text>
             </View>
-          </ScrollView>
-        </Animatable.View>
-      </View>
-    );
-  }
+            <View style={styles.data}>
+              <Text style={styles.title}>Amount</Text>
+              <Text style={styles.info}>
+                $ {lastTransaction.lastTransaction.amount}
+              </Text>
+            </View>
+            <View style={styles.data}>
+              <Text style={styles.title}>From</Text>
+              <Text style={styles.info}>
+                {loggedUser.info.name} {loggedUser.info.surname}
+              </Text>
+              <Text style={styles.info}>
+                {loggedUser.info.account.cvu}
+              </Text>
+            </View>
+            <View style={styles.data}>
+              <Text style={styles.title}>To</Text>
+              <Text style={styles.info}>
+                {destinatary.name} {destinatary.surname}
+              </Text>
+              <Text style={styles.info}>
+                {destinatary.account.cvu}
+              </Text>
+            </View>
+            <View style={styles.data}>
+              <Text style={styles.title}>Transaction number</Text>
+              <Text style={styles.info}>
+                {lastTransaction.lastTransaction.number}
+              </Text>
+            </View>
+            <View style={styles.data}>
+              <Text style={styles.title}>Transaction date</Text>
+              <Text style={styles.info}>
+                {lastTransaction.lastTransaction.createdAt.slice(0, 10)}
+              </Text>
+            </View>
+
+            <View style={{alignItems: 'right'}}>
+              <Image
+                style={styles.image}
+                source={require("../../resources/images/mobapng.png")}
+              />
+            </View>
+          </View>
+        </View>
+
+      <TouchableOpacity
+      style={styles.buttonContinue}
+      onPress={() => navigation.navigate("HomePage")}
+      >
+        <Text style={styles.btnContent}>Continue</Text>
+      </TouchableOpacity>
+      </ScrollView>
+    </View>
+  );
 };
 
-export default PasswordRecovery;
+export default TransferReceipt;
 
 const styles = StyleSheet.create({
-  container: {
+  colorContainer: {
     flex: 1,
-    backgroundColor: "#521886",
+    backgroundColor: "#521886"
   },
-  receiptContainer: {
-    borderStyle: "solid",
-    width: 298,
-    height: 550,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: 146
+  whiteContainer: {
+    marginTop: 24,
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    height: "100%",
+    minHeight: 1000
   },
   header: {
     flex: 1,
@@ -195,75 +131,71 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     flexDirection: "row",
     marginBottom: 12,
+    top: 35
   },
   welcomeView: {
     flex: 1,
-    alignItems: "center"
-  },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 5,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-    marginTop: -60,
     alignItems: "center",
   },
   text_header: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 24,
+    fontSize: 20
   },
-  signIn: {
-    width: "100%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#521886",
+  transferContainer: {
+    borderWidth: 1,
+    borderColor: "#000000",
+    borderStyle: "solid",
+    top: 60,
+    height: 450,
+    marginLeft: 50,
+    marginRight: 50,
   },
-  textSign: {
-    fontSize: 18,
-    fontFamily: "OpenSans_800ExtraBold",
+  transferHeader: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#000000",
+    borderStyle: "solid",
   },
-  containerImg: {
-    alignItems: "center",
-  },
-  errorMsg: {
-    color: "#CC1833",
-    fontSize: 15,
-    fontFamily: "OpenSans_600SemiBold",
-    paddingLeft: 7,
-    marginTop: 5
-  },
-  textRecover: {
+  transferTitle: {
+    color: "#000000",
     fontFamily: "OpenSans_700Bold",
-    color: "black",
     fontSize: 18,
-    marginTop: 30,
-    textAlign: "center"
+    textAlign: 'center'
   },
-  textRow: {
-    fontFamily: "OpenSans_600SemiBold",
-    fontSize: 14,
-    color: "#515151",
-    paddingLeft: 6
-  },
-  textRowII: {
-    fontFamily: "OpenSans_700Bold",
-    color: "black",
-    fontSize: 14,
-    paddingLeft: 6
+  data: {
+    marginHorizontal: 15,
+    marginVertical: 10
   },
   image: {
     flex: 1,
     width: 152,
-    height: 37,
-    marginLeft: 5
+    height: 37
   },
-  checkView: {
-    right: 17,
-    top: -8
-  }
+  title: {
+    color: "#515151",
+    fontFamily: "OpenSans_600SemiBold",
+    fontSize: 14
+  },
+  info: {
+    color: "#000000",
+    fontFamily: "OpenSans_700Bold",
+    fontSize: 14
+  },
+  buttonContinue: {
+    height: 50,
+    marginBottom: 20,
+    borderRadius: 10,
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    marginRight: 18,
+    marginLeft: 18,
+    top: 365,
+  },
+  btnContent: {
+    textAlign: "center",
+    color: "#521886",
+    fontSize: 20,
+    fontFamily: 'OpenSans_700Bold'
+  },
 });
