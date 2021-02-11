@@ -219,7 +219,7 @@ const LoginScreen = ({ navigation }) => {
             <View style={{flexDirection: "row"}}>
             <Text
               style={{
-                marginTop: 149,
+                marginTop: 90,
                 fontSize: 16,
                 color: "rgba(0, 0, 0, 0.35)",
                 fontFamily: "OpenSans_400Regular",
@@ -229,7 +229,7 @@ const LoginScreen = ({ navigation }) => {
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}>
               <Text
-                style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 149}}
+                style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 90}}
               >
                 Create an account
               </Text>
