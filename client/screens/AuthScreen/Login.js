@@ -25,6 +25,7 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from 'expo-app-loading';
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
+
 const LoginScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -252,8 +253,8 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingHorizontal: 10,
+    paddingBottom: 20,
     flexDirection: "row",
   },
   action: {
@@ -348,7 +349,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 5,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 30,
     alignItems: "center",
   },
