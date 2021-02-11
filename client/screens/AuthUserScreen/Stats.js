@@ -68,7 +68,6 @@ const Stats = ({ navigation }) => {
           color: "#521886",
           legendFontColor: "rgba(0, 0, 0, 0.81)",
           legendFontSize: 15,
-          legendFontFamily: "OpenSans_700Bold",
         },
         {
           name: "Expenses",
@@ -76,7 +75,6 @@ const Stats = ({ navigation }) => {
           color: "#7a24c7",
           legendFontColor: "rgba(0, 0, 0, 0.81)",
           legendFontSize: 15,
-          legendFontFamily: "OpenSans_700Bold",
         },
       ];
 
@@ -87,7 +85,6 @@ const Stats = ({ navigation }) => {
           color: "#521886",
           legendFontColor: "rgba(0, 0, 0, 0.81)",
           legendFontSize: 15,
-          legendFontFamily: "OpenSans_700Bold",
         },
         {
           name: "Receives",
@@ -95,7 +92,6 @@ const Stats = ({ navigation }) => {
           color: "#7a24c7",
           legendFontColor: "rgba(0, 0, 0, 0.81)",
           legendFontSize: 15,
-          legendFontFamily: "OpenSans_700Bold",
         },
         {
           name: "Recharges",
@@ -103,7 +99,6 @@ const Stats = ({ navigation }) => {
           color: "#2a0c45",
           legendFontColor: "rgba(0, 0, 0, 0.81)",
           legendFontSize: 15,
-          legendFontFamily: "OpenSans_700Bold",
         },
       ];
     }
@@ -124,7 +119,7 @@ const Stats = ({ navigation }) => {
     let dateTo = new Date();
     let dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 8);
-    dateTo.setDate(dateTo.getDate() + 1)
+    dateTo.setDate(dateTo.getDate() + 1);
     setPickDate("lastWeek");
     dispatch(
       getUserStats(
@@ -146,7 +141,7 @@ const Stats = ({ navigation }) => {
     let dateTo = new Date();
     let dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 40);
-    dateTo.setDate(dateTo.getDate() + 1)
+    dateTo.setDate(dateTo.getDate() + 1);
     setPickDate("lastMonth");
     dispatch(
       getUserStats(
@@ -168,7 +163,7 @@ const Stats = ({ navigation }) => {
   const last6Months = () => {
     let dateTo = new Date();
     let dateFrom = new Date();
-    dateTo.setDate(dateTo.getDate() + 1)
+    dateTo.setDate(dateTo.getDate() + 1);
     setPickDate("last6Months");
     dateFrom.setDate(dateFrom.getDate() - 200);
     dispatch(
@@ -219,8 +214,7 @@ const Stats = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.lineChartContainer}>
-          {(loggedUser.linealStats && loggedUser.linealStats.length) ? (
-
+          {loggedUser.linealStats && loggedUser.linealStats.length ? (
             <LineChart
               data={{
                 labels: loggedUser.linealStats.map((data) => data.date),
@@ -346,7 +340,7 @@ const Stats = ({ navigation }) => {
             >
               $
             </Text>
-             <Text
+            <Text
               style={{
                 position: "absolute",
                 top: 109,
@@ -357,8 +351,7 @@ const Stats = ({ navigation }) => {
             >
               $
             </Text>
-            {(amountGraphData && amountGraphData.length) ? (
-
+            {amountGraphData && amountGraphData.length ? (
               <PieChart
                 data={amountGraphData}
                 width={screenWidth}
@@ -373,8 +366,7 @@ const Stats = ({ navigation }) => {
             ) : (
               <Text>No movements</Text>
             )}
-            {(typeGraphData && typeGraphData.length) ? (
-
+            {typeGraphData && typeGraphData.length ? (
               <PieChart
                 data={typeGraphData}
                 width={screenWidth}

@@ -18,113 +18,102 @@ import { useNavigation } from "@react-navigation/native";
 import { logoutUserAction } from "../../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import {apiEndpoint} from '../../const'
-import { Entypo } from '@expo/vector-icons';
+import { apiEndpoint } from "../../const";
+import { Entypo } from "@expo/vector-icons";
+import HomeNavbar from "./HomeNavbar";
+import {
+  useFonts,
+  OpenSans_300Light,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
+} from "@expo-google-fonts/open-sans";
+import AppLoading from "expo-app-loading";
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 
 const MyAccount = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
-
+  let [fontsLoaded] = useFonts({
+    OpenSans_300Light,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
+  });
   useEffect(() => {
     getUser(loggedUser.username);
   }, []);
 
   async function getUser(username) {
     let response = await axios.get(`http://${apiEndpoint}/users/${username}`);
-
     setUser(response.data);
   }
 
-  return (
-    <View style={styles.colorContainer}>
-      <ScrollView>
-        <View style={styles.header}>
-          <TouchableOpacity
-            // style={{ position: "absolute" }}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name="arrow-left" size={24} color="white" />
-          </TouchableOpacity>
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <Text style={styles.greeting}>Hello {user.name}!</Text>
-          </View>
-        </View>
-        <View style={styles.whiteContainer}>
-          <Text style={styles.accountTag}>Account</Text>
-          <View style={styles.options}>
-            <View style={styles.option}>
-              <MaterialCommunityIcons name="credit-card" size={24} color="black" />
-              <TouchableOpacity onPress={() => navigation.navigate('Card')}>
-                <Text style={styles.optionName}>Card</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <Entypo name="plus" size={24} color="black"/>
-              <TouchableOpacity onPress={() => navigation.navigate('AddMoney')}>
-                <Text style={styles.optionName}>Add Money</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <FontAwesome name="long-arrow-right" size={24} color="black"/>
-              <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
-                <Text style={styles.optionName}>Send Money</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <MaterialIcons name="compare-arrows" size={24} color="black"/>
-              <TouchableOpacity onPress={() => navigation.navigate('Stats')}>
-                <Text style={styles.optionName}>Statistics</Text>
-              </TouchableOpacity  >
-            </View>
-            <View style={styles.option}>
-              <AntDesign name="contacts" size={24} color="black" />
-              <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
-                <Text style={styles.optionName}>Contacts</Text>
-              </TouchableOpacity>
+  if (!fontsLoaded) {
+    return <SplashScreen2 />;
+  } else {
+    return (
+      <View style={styles.colorContainer}>
+        <ScrollView contentContainerStyle={{ height: "100%" }}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              // style={{ position: "absolute" }}
+              onPress={() => navigation.goBack()}
+            >
+              <Feather name="arrow-left" size={20} color="white" />
+            </TouchableOpacity>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.greeting}>Hello {user.name}!</Text>
             </View>
           </View>
-
-          <Text style={styles.settingsTag}>Account Settings</Text>
-          <View style={styles.options}>
+          <View style={styles.whiteContainer}>
+            <Text style={styles.accountTag}>Account</Text>
             <View style={styles.option}>
-              <MaterialCommunityIcons
-                name="account-settings-outline"
-                size={24}
-                color="black"
-              />
+              <View style={styles.optionContactUs}>
+                <FontAwesome
+                  name="phone"
+                  size={24}
+                  color="white"
+                  style={{ top: 8, left: 9 }}
+                />
+              </View>
               <TouchableOpacity>
-                <Text style={styles.optionName}>Profile</Text>
+                <Text style={[styles.optionName, {top:7}]}>Contact Us</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.option}>
-              <Feather name="help-circle" size={24} color="black" />
-              <TouchableOpacity>
-                <Text style={styles.optionName}>Help</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.option}>
-              <MaterialCommunityIcons
-                name="logout-variant"
-                size={24}
-                color="black"
-              />
+              <View style={styles.optionLogout}>
+                <AntDesign
+                  name="poweroff"
+                  size={24}
+                  color="white"
+                  style={{ left: 8, top: 8 }}
+                />
+              </View>
               <TouchableOpacity
                 onPress={() => {
                   dispatch(logoutUserAction());
                 }}
               >
-                <Text style={styles.optionName}>Log Out</Text>
+                <Text style={[styles.optionName, {top: -2}]}>Log Out</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
+        </ScrollView>
+        <HomeNavbar />
+      </View>
+    );
+  }
 };
 
 export default MyAccount;
@@ -133,22 +122,22 @@ const styles = StyleSheet.create({
   colorContainer: {
     flex: 1,
     backgroundColor: "#521886",
-    opacity: 0.9
+    opacity: 0.9,
   },
   header: {
     display: "flex",
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    marginTop: 37
+    marginTop: 37,
   },
   greeting: {
     color: "white",
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: "OpenSans_800ExtraBold"
   },
   whiteContainer: {
-    marginTop: 40,
+    marginTop: 12,
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
@@ -156,7 +145,7 @@ const styles = StyleSheet.create({
   },
   accountTag: {
     fontSize: 18,
-    fontWeight: "normal",
+    fontFamily: "OpenSans_700Bold",
     color: "#A7A7A7",
     marginTop: 40,
     marginBottom: 25,
@@ -172,15 +161,29 @@ const styles = StyleSheet.create({
     paddingRight: 18,
   },
   option: {
-    display: "flex",
     flexDirection: "row",
     marginVertical: 20,
+  },
+  optionLogout: {
+    backgroundColor: "#CC1833",
+    width: 40,
+    height: 40,
+    borderRadius: 11,
+    marginTop: -10,
+    left: 9,
+  },
+  optionContactUs: {
+    backgroundColor: "rgba(82, 24, 134, 1)",
+    width: 40,
+    height: 40,
+    borderRadius: 11,
+    left: 9,
   },
   optionName: {
     color: "black",
     fontSize: 18,
-    fontWeight: "normal",
-    marginLeft: 30,
+    fontFamily: "OpenSans_600SemiBold",
+    marginLeft: 24,
   },
   settingsTag: {
     fontSize: 18,

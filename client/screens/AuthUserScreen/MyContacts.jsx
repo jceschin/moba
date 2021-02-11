@@ -138,35 +138,8 @@ const MyContacts = () => {
                 </Text>
               </View>
             </View>
-            <View style={styles.action}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("EditContact");
-                }}
-                style={{
-                  backgroundColor: "#38046C",
-                  padding: 10,
-                  borderRadius: 10,
-                }}
-              >
-                <AntDesign name="edit" size={24} color="white" />
-              </TouchableOpacity>
-              <View
-                style={{
-                  padding: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontStyle: "normal",
-                    fontFamily: "OpenSans_700Bold",
-                  }}
-                >
-                  Edit Contact
-                </Text>
-              </View>
-            </View>
           </View>
+          
           <View style={styles.whiteContainer}>
             <Text style={styles.contactsTag}>Contacts</Text>
             {!userContacts ? (
