@@ -45,7 +45,6 @@ export function loginStateUser(loginInput) {
         if (json.status === 200) {
           const o = { ...json, username: username };
           console.log(json)
-          alert(apiEndpoint)
           dispatch(loginUser(o));
         } else {
           alert("Login Failed", "Username or Password is incorrect");

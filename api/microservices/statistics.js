@@ -55,7 +55,6 @@ server.get("/statistics/:cvu/:dateFrom/:dateTo", (req, res) => {
       if (!tr.length) {
         return res.send(null);
       }
-      console.log(tr);
       tr.forEach((element) =>
         element.type == "charge"
           ? (statistics.charger =
@@ -193,7 +192,6 @@ server.get("/statistics/lineal/:cvu/:dateFrom/:dateTo", (req, res) => {
       (tr) => tr.createdAt >= month1 && tr.createdAt < month2
     );
     if(month1filter.length){
-      console.log(month1filter)
       let m1 = {}
       m1.amount = month1filter[month1filter.length - 1].new_balance
       m1.date = monthNames[month1.getMonth()]
@@ -262,7 +260,7 @@ server.get("/statistics/lineal/:cvu/:dateFrom/:dateTo", (req, res) => {
       if (!data.length) {
         return res.send(null);
       }
-      if (diffDays < 8 || data.length < 5) {
+      if (diffDays <= 10 || data.length < 5) {
         console.log("ENTRO AL 1RO");
         var last = {
           date: formatDate(data[data.length - 1].createdAt, "dd/MM/yy"),
@@ -279,7 +277,7 @@ server.get("/statistics/lineal/:cvu/:dateFrom/:dateTo", (req, res) => {
         if(!timeline.length){return res.send(null)}
         return res.send(timeline);
       }
-      if (diffDays > 7 && diffDays <= 42) {
+      if (diffDays > 10 && diffDays <= 42) {
         console.log("ENTRO AL 2DO");
         generateWeeks(data);
         if(!weeks.length){return res.send(null)}
