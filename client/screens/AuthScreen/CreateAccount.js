@@ -104,7 +104,7 @@ const CreateAccount = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
           <AntDesign
             name="arrowleft"
             size={20}

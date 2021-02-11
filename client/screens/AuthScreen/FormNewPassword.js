@@ -127,7 +127,7 @@ const FormNewPassword = ({ navigation }) => {
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <ScrollView>
           <Text style={styles.textRecover}>
-            Insert your email and password to help us to recover your username
+            Insert your new password
           </Text>
           <View
             style={{
@@ -139,7 +139,7 @@ const FormNewPassword = ({ navigation }) => {
             }}
           >
             <TextInput
-              placeholder="Enter your new password"
+              placeholder="New password"
               placeholderTextColor="#D3D0D0"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.textInputPassword}

@@ -25,7 +25,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
-import SplashScreen from "../HomeScreen/SplashScreen";
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const SingleNumInput = ({ changed, id, _ref, _next }) => {
   return (
     <TextInput
@@ -89,7 +89,7 @@ export default function CodeVerification({ navigation, route }) {
       if (verify[0].isvalid === true) {
         navigation.navigate("RegisterPage", { email: mailAndCode.email });
       } else {
-        alert("InvalidCode");
+        Alert.alert("Invalid Code");
       }
     }
   }, [verify]);
