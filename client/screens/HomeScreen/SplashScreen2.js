@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { View, StatusBar,  StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable'
 
-export default class SplashScreen extends Component {
+export default class LandingPage extends Component {
 
     goToScreen(routeName){
         this.props.navigation.navigate(routeName)
@@ -11,7 +11,6 @@ export default class SplashScreen extends Component {
     componentDidMount(){
 
         setTimeout( () => {
-            this.goToScreen('AuthScreen')
         }, 5000, this)
     }
 

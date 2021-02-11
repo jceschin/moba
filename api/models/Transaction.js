@@ -24,6 +24,9 @@ module.exports = (sequelize) => {
         transaction_type: {
             type: DataTypes.ENUM("charge", "transfer", "drawback"),
         },
+        transaction_code:{
+            type: DataTypes.STRING
+        },
 
         status: {
             type: DataTypes.ENUM("processing", "cancelled", "confirmed"),

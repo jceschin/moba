@@ -1,11 +1,22 @@
-
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { Feather, Ionicons, AntDesign, MaterialCommunityIcons, Foundation } from "@expo/vector-icons";
+import {
+  Feather,
+  Ionicons,
+  AntDesign,
+  MaterialCommunityIcons,
+  Foundation,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import MyContact from './MyContact';
+import MyContact from "./MyContact";
 
 // Fonts
 import {
@@ -16,14 +27,13 @@ import {
   OpenSans_700Bold,
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 // import AppLoading from "expo-app-loading";
 
 //Redux
-import { getUserInfo } from '../../redux/actions/user'
+import { getUserInfo } from "../../redux/actions/user";
 
 const MyContacts = () => {
-
   // Fonts
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -39,47 +49,54 @@ const MyContacts = () => {
   // const dispatch = useDispatch();
   // console.log(userContacts);
 
-  // useEffect(() => {
+  useEffect(() => {
   //   dispatch(getUserInfo(loggedUser.username))
-  // }, [userContacts])
+  }, [userContacts])
 
-  return (
-    <View style={styles.colorContainer}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            // style={{ position: "absolute" }}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name="arrow-left" size={24} color="white" />
-          </TouchableOpacity>
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <Text style={styles.greeting}>Who do you want to send?</Text>
+  if (!fontsLoaded) {
+    return <SplashScreen2 />;
+  } else {
+    return (
+      <View style={styles.colorContainer}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              // style={{ position: "absolute" }}
+              onPress={() => navigation.goBack()}
+            >
+              <Feather name="arrow-left" size={20} color="white" />
+            </TouchableOpacity>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.greeting}>Who do you want to send?</Text>
+            </View>
           </View>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            top: 40,
-            borderRadius: 15,
-            marginLeft: 18,
-            marginRight: 18,
-            padding: 5,
-            backgroundColor: "white",
-            marginBottom: 40,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5
-          }}
-        >
-          {/* <View style={styles.action}>
+          <View
+            style={{
+              display: "flex",
+              top: 40,
+              borderRadius: 15,
+              marginLeft: 18,
+              marginRight: 18,
+              padding: 5,
+              backgroundColor: "white",
+              marginBottom: 40,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
+          >
+            {/* <View style={styles.action}>
             <TouchableOpacity onPress={() => navigation.navigate('')}
               style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
             >
@@ -94,53 +111,78 @@ const MyContacts = () => {
               }}>New Transfer</Text>
             </View>
           </View> */}
-          <View style={styles.action}>
-            <TouchableOpacity onPress={() => navigation.navigate("AddContact")}
-              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
-            >
-              <Ionicons name="person-add-outline" size={24} color="white" />
-            </TouchableOpacity>
-            <View style={{
-              padding: 10
-            }}>
-              <Text style={{
-                fontStyle: "normal",
-                fontWeight: "bold",
-              }}>New Contact</Text>
-            </View>
-          </View>
-          <View style={styles.action}>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('');
-            }}
-              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
-            >
-              <AntDesign name="edit" size={24} color="white" />
-            </TouchableOpacity>
-            <View style={{
-              padding: 10
-            }}>
-              <Text style={{
-                fontStyle: "normal",
-                fontWeight: "bold",
-              }}>Edit Contact</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.whiteContainer}>
-          <Text style={styles.contactsTag}>Contacts</Text>
-          {
-            !userContacts ? (
-              <View style={{
-                ...StyleSheet.absoluteFill,
-                alignItems: 'center', justifyContent: 'center'
-              }}>
-                <Foundation name="page-search" size={32} color="black" />
-                <Text style={styles.notFound}>Contacts not found, add contacts to send money!</Text>
+            <View style={styles.action}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AddContact")}
+                style={{
+                  backgroundColor: "#38046C",
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+              >
+                <Ionicons name="person-add-outline" size={24} color="white" />
+              </TouchableOpacity>
+              <View
+                style={{
+                  padding: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontStyle: "normal",
+                    fontFamily: "OpenSans_700Bold",
+                  }}
+                >
+                  New Contact
+                </Text>
               </View>
-            )
-            : (
-              userContacts.map(contact => {
+            </View>
+            <View style={styles.action}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("EditContact");
+                }}
+                style={{
+                  backgroundColor: "#38046C",
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+              >
+                <AntDesign name="edit" size={24} color="white" />
+              </TouchableOpacity>
+              <View
+                style={{
+                  padding: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontStyle: "normal",
+                    fontFamily: "OpenSans_700Bold",
+                  }}
+                >
+                  Edit Contact
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.whiteContainer}>
+            <Text style={styles.contactsTag}>Contacts</Text>
+            {!userContacts ? (
+              <View
+                style={{
+                  ...StyleSheet.absoluteFill,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Foundation name="page-search" size={32} color="black" />
+                <Text style={styles.notFound}>
+                  Contacts not found, add contacts to send money!
+                </Text>
+              </View>
+            ) : (
+              userContacts.map((contact) => {
                 return (
                   <MyContact
                     name={contact.contact_name}
@@ -149,14 +191,14 @@ const MyContacts = () => {
                     username={contact.contact_username}
                     alias={contact.alias}
                   />
-                )
+                );
               })
-            )
-          }
-        </View>
-      </ScrollView>
-    </View>
-  );
+            )}
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 };
 
 export default MyContacts;
@@ -180,11 +222,11 @@ const styles = StyleSheet.create({
   greeting: {
     color: "#FFFFFF",
     fontSize: 20,
-    fontFamily: 'OpenSans_800ExtraBold'
+    fontFamily: "OpenSans_800ExtraBold",
   },
   action: {
     flexDirection: "row",
-    padding: 5
+    padding: 5,
   },
   whiteContainer: {
     marginTop: 24,
@@ -192,11 +234,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     height: "100%",
-    minHeight: 1000
+    minHeight: 1000,
   },
   contactsTag: {
     fontSize: 20,
-    fontFamily: 'OpenSans_700Bold',
+    fontFamily: "OpenSans_700Bold",
     color: "#000000",
     marginTop: 12,
     marginBottom: 5,
@@ -208,7 +250,7 @@ const styles = StyleSheet.create({
   },
   notFound: {
     fontSize: 18,
-    padding: 20
+    padding: 20,
   },
   contentContainer: {
     paddingVertical: 20,
@@ -221,7 +263,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -232,25 +274,25 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
     color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
+    fontFamily: "OpenSans_700Bold",
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

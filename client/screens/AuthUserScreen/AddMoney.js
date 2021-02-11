@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   Alert,
+  Share
 } from "react-native";
 import { Feather, AntDesign, Fontisto  } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
@@ -24,6 +25,8 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
+import Clipboard from 'expo-clipboard';
 
 const AddMoney = ({ navigation, route }) => {
   const [code, setCode] = React.useState(false);
@@ -35,6 +38,7 @@ const AddMoney = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const loggedUser = useSelector((state) => state.user);
+  let cvuInfo = useSelector((state) => state.user.info.account.cvu);
   const [user, setUser] = useState({});
   const [index, setIndex] = useState(0);
   const [valid, setValid] = useState(false);
@@ -59,7 +63,7 @@ const AddMoney = ({ navigation, route }) => {
     if (amountCharge.amount >= 100) {
       setAmount(true);
     } else {
-      alert("The minimum amount to charge is $100");
+      Alert.alert("The minimum amount to charge is $100");
     }
   };
 
@@ -107,11 +111,29 @@ const AddMoney = ({ navigation, route }) => {
     dispatch(getUserInfo(loggedUser.username));
   }, []);
 
+  const shareCvu = async () => {
+    try {
+      const result = await Share.share({
+        message: cvuInfo,
+      },
+      { excludedActivityTypes: [
+        'net.whatsapp.Whatsapp.ShareExtension']
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  const copyToClipboard = () => {
+    Clipboard.setString(cvuInfo.toString())
+    Alert.alert('Copy to clipboard')
+  }
+
   console.log("user", user)
   console.log("loggedUser", loggedUser)
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen2 />;
   } else {
     return (
       <View style={styles.container}>
@@ -300,7 +322,7 @@ const AddMoney = ({ navigation, route }) => {
                 </Text>
                 <View style={{flexDirection: "row", paddingTop: 38}}>
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={styles.copyButton}>
+                  <TouchableOpacity style={styles.copyButton} onPress={copyToClipboard}>
                   <View style={{paddingRight: 5}}>
                         <Feather name="copy" size={20} color="#38046C" />
                       </View>
@@ -314,7 +336,7 @@ const AddMoney = ({ navigation, route }) => {
                 </View>
 
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={styles.shareButton}>
+                  <TouchableOpacity style={styles.shareButton} onPress={shareCvu}>
                   <View style={{paddingRight: 5}}>
                       <Fontisto name="share-a" size={18} color="white" />
                       </View>

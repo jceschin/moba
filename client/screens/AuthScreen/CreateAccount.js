@@ -22,7 +22,7 @@ import {
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 import AppLoading from 'expo-app-loading';
-
+import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const CreateAccount = (props) => {
   const dispatch = useDispatch();
   const validateEmail = useSelector((store) => store.email.newEmail);
@@ -99,7 +99,7 @@ const CreateAccount = (props) => {
   };
 
   if(!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen2 />
   } else {
   return (
     <View style={styles.container}>

@@ -50,6 +50,7 @@ server.post("/transaction", (req, res, next) => {
       const transaction = await Transaction.create({
         ...req.body,
         transaction_type: "transfer",
+        transaction_code: Math.floor((Math.random() * 9000) + 1000)
       });
 
       //Create table Accounttransaction
@@ -227,6 +228,7 @@ server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
           var sorted = data.map((dat, i) => {
             var payload = {};
             payload.transactionID = dat.number;
+            payload.transactionCode = dat.transaction_code
             payload.amount = dat.amount;
             payload.description = dat.description;
             payload.date = dat.createdAt;
