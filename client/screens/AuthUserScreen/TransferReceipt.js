@@ -79,7 +79,7 @@ const TransferReceipt = ({ route }) => {
             <View style={styles.data}>
               <Text style={styles.title}>Transaction number</Text>
               <Text style={styles.info}>
-                {lastTransaction.lastTransaction.number}
+                {"000".concat(lastTransaction.lastTransaction.number)}
               </Text>
             </View>
             <View style={styles.data}>

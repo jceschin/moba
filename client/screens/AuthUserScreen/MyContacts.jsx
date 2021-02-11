@@ -44,14 +44,15 @@ const MyContacts = () => {
   });
 
   const navigation = useNavigation();
-  // let loggedUser = useSelector((state) => state.user);
+  let loggedUser = useSelector((state) => state.user);
+  const renderContacts = useSelector((state) => state.contacts.contacts)
   let userContacts = useSelector((state) => state.user.info.contacts);
-  // const dispatch = useDispatch();
+   const dispatch = useDispatch();
   // console.log(userContacts);
 
   useEffect(() => {
-  //   dispatch(getUserInfo(loggedUser.username))
-  }, [userContacts])
+     dispatch(getUserInfo(loggedUser.username))
+  }, [renderContacts])
 
   if (!fontsLoaded) {
     return <SplashScreen2 />;

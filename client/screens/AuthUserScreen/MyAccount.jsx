@@ -58,27 +58,27 @@ const MyAccount = () => {
           <View style={styles.options}>
             <View style={styles.option}>
               <MaterialCommunityIcons name="credit-card" size={24} color="black" />
-              <TouchableOpacity >
+              <TouchableOpacity onPress={() => navigation.navigate('Card')}>
                 <Text style={styles.optionName}>Card</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.option}>
               <Entypo name="plus" size={24} color="black"/>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('AddMoney')}>
                 <Text style={styles.optionName}>Add Money</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.option}>
               <FontAwesome name="long-arrow-right" size={24} color="black"/>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('MyContacts')}>
                 <Text style={styles.optionName}>Send Money</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.option}>
               <MaterialIcons name="compare-arrows" size={24} color="black"/>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Stats')}>
                 <Text style={styles.optionName}>Statistics</Text>
-              </TouchableOpacity>
+              </TouchableOpacity  >
             </View>
             <View style={styles.option}>
               <AntDesign name="contacts" size={24} color="black" />

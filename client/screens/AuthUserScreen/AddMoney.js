@@ -7,9 +7,9 @@ import {
   Image,
   Text,
   Alert,
-  Share
+  Share,
 } from "react-native";
-import { Feather, AntDesign, Fontisto  } from "@expo/vector-icons";
+import { Feather, AntDesign, Fontisto } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import accounting from "accounting-js";
 import { useSelector } from "react-redux";
@@ -26,7 +26,7 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
-import Clipboard from 'expo-clipboard';
+import Clipboard from "expo-clipboard";
 
 const AddMoney = ({ navigation, route }) => {
   const [code, setCode] = React.useState(false);
@@ -100,11 +100,13 @@ const AddMoney = ({ navigation, route }) => {
         amount: amountCharge.amount,
       })
     );
-    alert("The charge to your account has been completed successfully");
-    dispatch(
-      getUserTransactions(loggedUser.username, loggedUser.data.data.token)
-    );
-    navigation.navigate("HomePage");
+    setTimeout(() => {
+      alert("The charge to your account has been completed successfully");
+      dispatch(
+        getUserTransactions(loggedUser.username, loggedUser.data.data.token)
+      );
+      navigation.navigate("HomePage");
+    }, 1000);
   };
 
   useEffect(() => {
@@ -113,24 +115,24 @@ const AddMoney = ({ navigation, route }) => {
 
   const shareCvu = async () => {
     try {
-      const result = await Share.share({
-        message: cvuInfo,
-      },
-      { excludedActivityTypes: [
-        'net.whatsapp.Whatsapp.ShareExtension']
-      });
+      const result = await Share.share(
+        {
+          message: cvuInfo,
+        },
+        { excludedActivityTypes: ["net.whatsapp.Whatsapp.ShareExtension"] }
+      );
     } catch (error) {
       alert(error.message);
     }
-  }
+  };
 
   const copyToClipboard = () => {
-    Clipboard.setString(cvuInfo.toString())
-    Alert.alert('Copy to clipboard')
-  }
+    Clipboard.setString(cvuInfo.toString());
+    Alert.alert("Copy to clipboard");
+  };
 
-  console.log("user", user)
-  console.log("loggedUser", loggedUser)
+  console.log("user", user);
+  console.log("loggedUser", loggedUser);
 
   if (!fontsLoaded) {
     return <SplashScreen2 />;
@@ -314,41 +316,39 @@ const AddMoney = ({ navigation, route }) => {
                   top: 42,
                 }}
               >
-                <Text style={styles.titleAccountNumber}>
-                  Account Number
-                </Text>
+                <Text style={styles.titleAccountNumber}>Account Number</Text>
                 <Text style={styles.textCvu}>
                   {loggedUser.info ? loggedUser.info.account.cvu : null}
                 </Text>
-                <View style={{flexDirection: "row", paddingTop: 38}}>
-                <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={styles.copyButton} onPress={copyToClipboard}>
-                  <View style={{paddingRight: 5}}>
+                <View style={{ flexDirection: "row", paddingTop: 38 }}>
+                  <View
+                    style={{ justifyContent: "center", flexDirection: "row" }}
+                  >
+                    <TouchableOpacity
+                      style={styles.copyButton}
+                      onPress={copyToClipboard}
+                    >
+                      <View style={{ paddingRight: 5 }}>
                         <Feather name="copy" size={20} color="#38046C" />
                       </View>
-                    <Text
-                      style={styles.copyButtonText}
-                    >
-                      
-                      Copy
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                      <Text style={styles.copyButtonText}>Copy</Text>
+                    </TouchableOpacity>
+                  </View>
 
-                <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={styles.shareButton} onPress={shareCvu}>
-                  <View style={{paddingRight: 5}}>
-                      <Fontisto name="share-a" size={18} color="white" />
-                      </View>
-                    <Text
-                      style={styles.shareButtonText}
+                  <View
+                    style={{ justifyContent: "center", flexDirection: "row" }}
+                  >
+                    <TouchableOpacity
+                      style={styles.shareButton}
+                      onPress={shareCvu}
                     >
-                    
-                      Share
-                    </Text>
-                  </TouchableOpacity>
+                      <View style={{ paddingRight: 5 }}>
+                        <Fontisto name="share-a" size={18} color="white" />
+                      </View>
+                      <Text style={styles.shareButtonText}>Share</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
               </View>
             </View>
           ) : null}
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 12,
     flexDirection: "row",
-    marginBottom: 12
+    marginBottom: 12,
   },
   welcomeView: {
     flex: 1,
@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
   imagePagoFacil: {
     width: 90,
     height: 102,
-    marginTop: 29
+    marginTop: 29,
   },
   transferPayment: {
     alignItems: "center",
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     textAlign: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   shareButton: {
     backgroundColor: "rgba(82, 24, 134, 1)",
@@ -451,17 +451,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     textAlign: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  copyButtonText:{
+  copyButtonText: {
     color: "rgba(56, 4, 108, 1)",
     fontSize: 17,
     fontFamily: "OpenSans_600SemiBold",
   },
-  shareButtonText:{
+  shareButtonText: {
     color: "#fff",
     fontSize: 17,
-    fontFamily: "OpenSans_600SemiBold"
+    fontFamily: "OpenSans_600SemiBold",
   },
   continueCharge: {
     width: 379,
@@ -502,15 +502,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "OpenSans_700Bold",
   },
-  titleAccountNumber:{
+  titleAccountNumber: {
     fontFamily: "OpenSans_800ExtraBold",
     fontSize: 18,
-    color: "black"
+    color: "black",
   },
-  textCvu:{
+  textCvu: {
     fontFamily: "OpenSans_400Regular",
     fontSize: 16,
     color: "black",
-    top: 19
-  }
+    top: 19,
+  },
 });
