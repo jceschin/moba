@@ -200,7 +200,7 @@ server.get("/transaction/account/:cvu", Verifytoken, (req, res, next) => {
 
 // Get all confirmed Transaction for account by username, dni or email
 
-server.get("/transaction/users/:dni_email", Verifytoken, (req, res, next) => {
+server.get("/transaction/users/:dni_email", (req, res, next) => {
   User.findOne({
     include: [{ model: Account, include: Transaction }],
     where: {

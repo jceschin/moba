@@ -23,7 +23,11 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from 'expo-app-loading';
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
+import { useNavigation } from "@react-navigation/native";
+
 const CreateAccount = (props) => {
+  
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const validateEmail = useSelector((store) => store.email.newEmail);
   let [fontsLoaded] = useFonts({

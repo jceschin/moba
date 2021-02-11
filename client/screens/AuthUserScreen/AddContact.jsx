@@ -97,7 +97,7 @@ const AddContact = ({ navigation }) => {
               justifyContent: "center",
               alignItems: "center",
               padding: 10,
-              marginTop: 209,
+              marginTop: 215,
             }}
           >
             <TouchableOpacity
@@ -277,7 +277,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontFamily: "OpenSans_600SemiBold",
-    marginTop: 31
+    marginTop: 31,
+    textAlign: 'center'
   },
   buttonSuccess: {
     width: 379,

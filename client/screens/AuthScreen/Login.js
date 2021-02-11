@@ -25,6 +25,7 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from 'expo-app-loading';
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
+
 const LoginScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -218,7 +219,7 @@ const LoginScreen = ({ navigation }) => {
             <View style={{flexDirection: "row"}}>
             <Text
               style={{
-                marginTop: 149,
+                marginTop: 90,
                 fontSize: 16,
                 color: "rgba(0, 0, 0, 0.35)",
                 fontFamily: "OpenSans_400Regular",
@@ -228,7 +229,7 @@ const LoginScreen = ({ navigation }) => {
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}>
               <Text
-                style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 149}}
+                style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 90}}
               >
                 Create an account
               </Text>
@@ -252,8 +253,8 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingHorizontal: 10,
+    paddingBottom: 20,
     flexDirection: "row",
   },
   action: {
@@ -348,7 +349,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 5,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 30,
     alignItems: "center",
   },

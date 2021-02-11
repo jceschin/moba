@@ -227,7 +227,7 @@ const Stats = ({ navigation }) => {
                 ],
               }}
               width={Dimensions.get("window").width}
-              height={220}
+              height={190}
               yAxisLabel="$"
               yAxisInterval={1}
               withInnerLines={true}
@@ -333,7 +333,7 @@ const Stats = ({ navigation }) => {
               style={{
                 position: "absolute",
                 top: 29,
-                left: 320,
+                left: 263,
                 color: "rgba(0, 0, 0, 0.81)",
                 fontSize: 13,
               }}
@@ -344,7 +344,7 @@ const Stats = ({ navigation }) => {
               style={{
                 position: "absolute",
                 top: 109,
-                left: 320,
+                left: 263,
                 color: "rgba(0, 0, 0, 0.81)",
                 fontSize: 13,
               }}
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
   },
   lineChartContainer: {
     alignItems: "center",
-    left: 5,
+    left: 5
   },
   footer: {
     flex: 5,
@@ -407,20 +407,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
     marginTop: 0,
-    alignItems: "center",
+    alignItems: "center"
   },
   rowTime: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   lastWeek: {
-    left: 60,
+    left: 65,
   },
   last6Months: {
-    left: 35,
+    left: 10,
   },
   lastMonth: {
-    left: 50,
+    left: 40,
   },
   colorSelected: {
     color: "#521886",
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     marginTop: 38,
   },
   textFamily: {
-    fontFamily: "OpenSans_600SemiBold",
+    fontFamily: "OpenSans_600SemiBold"
   },
   header: {
     flex: 1,
@@ -454,6 +454,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   pieChartContainer: {
-    marginTop: 40,
+    marginTop: 20,
   },
 });

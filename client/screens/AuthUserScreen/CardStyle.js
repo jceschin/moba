@@ -131,7 +131,7 @@ const s = StyleSheet.create({
     borderRadius: 12,
     width: 380,
     position: "relative",
-    overflow: "hidden",
+    overflow: "hidden"
   },
   textTitle: {
     color: "#C7A8D9",
