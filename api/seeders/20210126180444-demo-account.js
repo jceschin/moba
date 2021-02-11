@@ -127,7 +127,7 @@ module.exports = {
         },
         {
           cvu: "2222226194980634363704",
-          balance: "6000",
+          balance: "12000",
           opening_date: "05/05/20",
           rechargeCode: "43001136",
           card_id: "4143095137322319",

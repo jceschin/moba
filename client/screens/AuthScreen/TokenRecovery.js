@@ -89,18 +89,23 @@ export default function CodeVerification({ navigation, route }) {
   useEffect(() => {
     if (token.length > 0) {
       if (token[0].recoveryToken === "valid token") {
-        dispatch(clearToken());
         navigation.navigate("FormNewPassword");
+        dispatch(clearToken());
+
       }
       if (token[0].recoveryToken === "invalid token") {
         alert("invalid token");
       }
       if (token[0].recoveryToken === "expired token") {
         alert("expired token");
+        dispatch(clearToken());
+
         navigation.navigate("Login");
       }
       if (token[0].recoveryToken === "user not exists") {
         alert("user not exists");
+        dispatch(clearToken());
+
       }
     }
   }, [token]);
