@@ -6,7 +6,7 @@ module.exports = {
       "accounts",
       [
         {
-          cvu: "00001",
+          cvu: "2222227341165174132238",
           balance: "6000",
           opening_date: "10/10/21",
           card_id: "000000005",
@@ -18,7 +18,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          cvu: "00002",
+          cvu: "2222226036280766080577",
           balance: "11000",
           opening_date: "05/05/21",
           card_id: "000000007",
@@ -30,7 +30,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          cvu: "00003",
+          cvu: "2222228580016901869177",
           balance: "6000",
           opening_date: "05/05/21",
           card_id: "000000008",
@@ -42,7 +42,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          cvu: "000033",
+          cvu: "2222225772147102222605",
           balance: "6000",
           opening_date: "05/05/21",
           rechargeCode: "12312",

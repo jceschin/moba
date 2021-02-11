@@ -124,6 +124,7 @@ const Stats = ({ navigation }) => {
     let dateTo = new Date();
     let dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 8);
+    dateTo.setDate(dateTo.getDate() + 1)
     setPickDate("lastWeek");
     dispatch(
       getUserStats(
@@ -145,6 +146,7 @@ const Stats = ({ navigation }) => {
     let dateTo = new Date();
     let dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 40);
+    dateTo.setDate(dateTo.getDate() + 1)
     setPickDate("lastMonth");
     dispatch(
       getUserStats(
@@ -166,6 +168,7 @@ const Stats = ({ navigation }) => {
   const last6Months = () => {
     let dateTo = new Date();
     let dateFrom = new Date();
+    dateTo.setDate(dateTo.getDate() + 1)
     setPickDate("last6Months");
     dateFrom.setDate(dateFrom.getDate() - 200);
     dispatch(
@@ -216,7 +219,8 @@ const Stats = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.lineChartContainer}>
-          {loggedUser.linealStats && loggedUser.linealStats.length ? (
+          {(loggedUser.linealStats && loggedUser.linealStats.length) ? (
+
             <LineChart
               data={{
                 labels: loggedUser.linealStats.map((data) => data.date),
@@ -353,7 +357,8 @@ const Stats = ({ navigation }) => {
             >
               $
             </Text>
-            {loggedUser.stats && loggedUser.stats.length ? (
+            {(amountGraphData && amountGraphData.length) ? (
+
               <PieChart
                 data={amountGraphData}
                 width={screenWidth}
@@ -368,7 +373,8 @@ const Stats = ({ navigation }) => {
             ) : (
               <Text>No movements</Text>
             )}
-            {loggedUser.stats && loggedUser.stats.length ? (
+            {(typeGraphData && typeGraphData.length) ? (
+
               <PieChart
                 data={typeGraphData}
                 width={screenWidth}
