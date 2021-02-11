@@ -518,7 +518,7 @@ const RegisterPage = ({ navigation, route }) => {
                   style={styles.input}
                   onChangeText={(text) => onChangeTextBirthdate(text)}
                   value={data.birthdate}
-                  placeholder="Birthdate"
+                  placeholder="Birthdate MM/DD/YY"
                   placeholderTextColor="rgba(0, 0, 0, 0.4)"
                   /* onFocus={changeFocusOne} */
                 />
@@ -1002,7 +1002,7 @@ const styles = StyleSheet.create({
     color: "#CC1833",
     fontSize: 15,
     fontFamily: "OpenSans_600SemiBold",
-    paddingLeft: 7,
+    paddingLeft: 7, 
   },
   errorMsgPhone: {
     color: "#CC1833",

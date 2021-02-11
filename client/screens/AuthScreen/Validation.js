@@ -8,6 +8,7 @@ import {
   TextInput,
   StatusBar,
   Alert,
+  Keyboard
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
@@ -161,6 +162,7 @@ export default function CodeVerification({ navigation, route }) {
                   id={"E"}
                   _ref={pin5}
                   _next={null}
+                  onSubmitEdittin={Keyboard.dismiss}
                 />
               </View>
 
