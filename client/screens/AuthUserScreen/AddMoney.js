@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_600SemiBold",
     color: "black",
     fontSize: 18,
-    marginTop: 38,
+    marginTop: 90,
   },
   codePayment: {
     alignItems: "center",
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#521886",
-    marginTop: 240,
+    marginTop: 210,
   },
   textInputAmount: {
     fontSize: 34,

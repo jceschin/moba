@@ -153,7 +153,7 @@ const SendMoney = ({ route }) => {
               style={{
                 color: 'white',
                 fontFamily: 'OpenSans_700Bold',
-                fontSize: 16
+                fontSize: 14
               }}
             >  
               {selectedContactNameInitial}

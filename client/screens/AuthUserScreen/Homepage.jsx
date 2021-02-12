@@ -48,16 +48,16 @@ const Homepage = () => {
         if (t.sender === loggedUser.username) {
           data = (
             <Text style={styles.movType}>
-              You send US${t.amount} to {t.receiver}
+              Sent US${t.amount} to {t.receiver}
             </Text>
           );
         } else {
           data =
             t.type === "recharge" ? (
-              <Text style={styles.movType}>You deposit US${t.amount}</Text>
+              <Text style={styles.movType}>You deposited US${t.amount}</Text>
             ) : (
               <Text style={styles.movType}>
-                You received US${t.amount} from {t.sender}
+                Received US${t.amount} from {t.sender}
               </Text>
             );
         }
@@ -189,7 +189,6 @@ const styles = StyleSheet.create({
   },
   movsContainer: {
     top: 70,
-    minHeight: 290,
     backgroundColor: "white",
     height: "100%",
     borderTopLeftRadius: 12,
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
   },
   mov: {
     marginTop: 15,
-    marginBottom: 15,
+    marginBottom: 15
   },
   movDate: {
     fontSize: 18,
@@ -250,19 +249,20 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontFamily: "OpenSans_700Bold",
     color: "black",
+    paddingLeft: 0
   },
   movDateContainer: {
     borderBottomWidth: 1,
     borderBottomColor: "rgba(167, 167, 167, 0.83)",
     borderStyle: "solid",
-    paddingLeft: 18,
-    paddingRight: 18,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   movDetails: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 18,
-    paddingRight: 18,
+    paddingLeft: 10,
+    paddingRight: 10,
     marginTop: 5,
   },
   movType: {

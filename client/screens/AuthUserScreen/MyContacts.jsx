@@ -65,13 +65,12 @@ const MyContacts = () => {
               // style={{ position: "absolute" }}
               onPress={() => navigation.goBack()}
             >
-              <Feather name="arrow-left" size={20} color="white" />
+              <Feather name="arrow-left" size={28} color="white" />
             </TouchableOpacity>
             <View
               style={{
                 flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
+                alignItems: "center"
               }}
             >
               <Text style={styles.greeting}>Who do you want to send?</Text>
@@ -80,7 +79,7 @@ const MyContacts = () => {
           <View
             style={{
               display: "flex",
-              top: 40,
+              top: 20,
               borderRadius: 15,
               marginLeft: 18,
               marginRight: 18,
@@ -97,21 +96,6 @@ const MyContacts = () => {
               elevation: 5,
             }}
           >
-            {/* <View style={styles.action}>
-            <TouchableOpacity onPress={() => navigation.navigate('')}
-              style={{ backgroundColor: "#38046C", padding: 10, borderRadius: 10 }}
-            >
-              <MaterialCommunityIcons name="plus" size={24} color="white" />
-            </TouchableOpacity>
-            <View style={{
-              padding: 10
-            }}>
-              <Text style={{
-                fontStyle: "normal",
-                fontWeight: "bold",
-              }}>New Transfer</Text>
-            </View>
-          </View> */}
             <View style={styles.action}>
               <TouchableOpacity
                 onPress={() => navigation.navigate("AddContact")}
@@ -125,7 +109,7 @@ const MyContacts = () => {
               </TouchableOpacity>
               <View
                 style={{
-                  padding: 10,
+                  padding: 10
                 }}
               >
                 <Text
@@ -191,16 +175,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    top: 24,
+    top: 0,
   },
   greeting: {
     color: "#FFFFFF",
-    fontSize: 20,
-    fontFamily: "OpenSans_800ExtraBold",
+    fontSize: 18,
+    fontFamily: "OpenSans_800ExtraBold"
   },
   action: {
     flexDirection: "row",
-    padding: 5,
+    padding: 5
   },
   whiteContainer: {
     marginTop: 24,
@@ -208,7 +192,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     height: "100%",
-    minHeight: 1000,
+    minHeight: 600
   },
   contactsTag: {
     fontSize: 20,

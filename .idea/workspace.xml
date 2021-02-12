@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="337de4ea-b4a0-409f-bfb3-2dc1039925a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/microservices/transaction.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/microservices/transaction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/screens/AuthScreen/Validation.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/AuthScreen/Validation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/screens/MainScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/MainScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/screens/AuthUserScreen/Card.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/AuthUserScreen/Card.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/screens/AuthUserScreen/CardStyle.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/AuthUserScreen/CardStyle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/screens/AuthUserScreen/Homepage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/AuthUserScreen/Homepage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/screens/AuthUserScreen/SendMoney.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/AuthUserScreen/SendMoney.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/screens/AuthUserScreen/TransferReceipt.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/screens/AuthUserScreen/TransferReceipt.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,9 +41,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="185" y="129" width="1648" height="853" key="AVDManager" timestamp="1613059049523">
-      <screen x="72" y="27" width="1848" height="1053" />
+    <state x="369" y="294" width="1648" height="816" key="AVDManager" timestamp="1613073633078">
+      <screen x="144" y="54" width="3696" height="2106" />
     </state>
+    <state x="369" y="294" width="1648" height="816" key="AVDManager/144.54.3696.2106@144.54.3696.2106" timestamp="1613073633078" />
     <state x="160" y="127" width="1648" height="853" key="AVDManager/72.27.1848.1053/1920.0.3840.2160@72.27.1848.1053" timestamp="1613010811490" />
     <state x="185" y="129" width="1648" height="853" key="AVDManager/72.27.1848.1053@72.27.1848.1053" timestamp="1613059049523" />
     <state x="101" y="227" width="1648" height="853" key="AVDManager/72.27.5688.2133@72.27.5688.2133" timestamp="1613010739401" />
