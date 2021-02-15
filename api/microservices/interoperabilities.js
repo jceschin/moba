@@ -15,10 +15,10 @@ server.use(cors());
 //routes
 
 // PERFORM TRANSACTION WITH OTHER WALLET
-server.post();
+//server.post();
 
 // ASK FOR INFO ABOUT THE TRANSACTION
-server.get();
+//server.get();
 
 
 server.listen(8009, () => {
