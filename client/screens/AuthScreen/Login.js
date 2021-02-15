@@ -10,6 +10,7 @@ import {
   StatusBar,
   Image,
   Alert,
+  Modal,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
@@ -23,10 +24,11 @@ import {
   OpenSans_700Bold,
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
-import AppLoading from 'expo-app-loading';
+import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
 
 const LoginScreen = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
@@ -109,146 +111,212 @@ const LoginScreen = ({ navigation }) => {
     await loginUser(data);
   };
 
-  if(!fontsLoaded){
-    return <SplashScreen2 />
-  }
-  else {
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}></View>
-      <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-        <ScrollView>
-          <View style={styles.containerImg}>
-            <Image
-              style={styles.image}
-              source={require("../../resources/images/mobapng.png")}
-            />
-            <Text style={styles.textContainerImg}>
-              Your finances simple and fast.
-            </Text>
-          </View>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Username"
-              placeholderTextColor="rgba(0, 0, 0, 0.35)"
-              style={styles.textInputUsername}
-              autoCapitalize="none"
-              value={data.username}
-              onChangeText={(val) => textInputChange(val)}
-              onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
-            />
+  const passwordNavigation = () => {
+    navigation.navigate("PasswordRecovery");
+    setModalVisible(false);
+  };
 
-            {data.check_textInputChange ? (
-              <Animatable.View animation="bounceIn" style={styles.checkView}>
-                <AntDesign name="checkcircle" size={21} color="green" />
+  const usernameNavigation = () => {
+    navigation.navigate("UsernameRecovery");
+    setModalVisible(false);
+  };
+
+  if (!fontsLoaded) {
+    return <SplashScreen2 />;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}></View>
+        <Animatable.View animation="fadeInUpBig" style={styles.footer}>
+          <ScrollView>
+            <View style={styles.containerImg}>
+              <Image
+                style={styles.image}
+                source={require("../../resources/images/mobapng.png")}
+              />
+              <Text style={styles.textContainerImg}>
+                Your finances simple and fast.
+              </Text>
+            </View>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Username"
+                placeholderTextColor="rgba(0, 0, 0, 0.35)"
+                style={styles.textInputUsername}
+                autoCapitalize="none"
+                value={data.username}
+                onChangeText={(val) => textInputChange(val)}
+                onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+              />
+
+              {data.check_textInputChange ? (
+                <Animatable.View animation="bounceIn" style={styles.checkView}>
+                  <AntDesign name="checkcircle" size={21} color="green" />
+                </Animatable.View>
+              ) : null}
+            </View>
+
+            {data.isValidUser ? null : (
+              <Animatable.View animation="fadeInLeft" duration={500}>
+                <Text style={styles.errorMsg}>
+                  Username must be 4 characters long
+                </Text>
               </Animatable.View>
-            ) : null}
-          </View>
+            )}
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="rgba(0, 0, 0, 0.35)"
+                secureTextEntry={data.secureTextEntry ? true : false}
+                style={styles.textInputPassword}
+                autoCapitalize="none"
+                value={data.password}
+                onChangeText={(val) => handlePasswordChange(val)}
+              />
 
-          {data.isValidUser ? null : (
-            <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>
-                Username must be 4 characters long
-              </Text>
-            </Animatable.View>
-          )}
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="rgba(0, 0, 0, 0.35)"
-              secureTextEntry={data.secureTextEntry ? true : false}
-              style={styles.textInputPassword}
-              autoCapitalize="none"
-              value={data.password}
-              onChangeText={(val) => handlePasswordChange(val)}
-            />
-
-            <TouchableOpacity
-              onPress={updateSecureTextEntry}
-              style={styles.eyeView}
-            >
-              {data.secureTextEntry ? (
-                <Feather name="eye-off" color="grey" size={21} />
-              ) : (
-                <Feather name="eye" color="grey" size={21} />
-              )}
-            </TouchableOpacity>
-          </View>
-          {data.isValidPassword ? null : (
-            <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>
-                Password must be 8 characters long
-              </Text>
-            </Animatable.View>
-          )}
-
-          <View style={styles.button}>
-            <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
-              <Text
-                style={[
-                  styles.textSign,
-                  {
-                    color: "#fff",
-                  },
-                ]}
+              <TouchableOpacity
+                onPress={updateSecureTextEntry}
+                style={styles.eyeView}
               >
-                Login
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <View style={{flexDirection: "row"}}>
-            <Text
-              style={{
-                marginTop: 12,
-                fontSize: 16,
-                color: "rgba(0, 0, 0, 0.35)",
-                fontFamily: "OpenSans_400Regular",
-              }}
-            >
-              Forgot your login information?{" "}
-              </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("ForgotOptions")}>
+                {data.secureTextEntry ? (
+                  <Feather name="eye-off" color="grey" size={21} />
+                ) : (
+                  <Feather name="eye" color="grey" size={21} />
+                )}
+              </TouchableOpacity>
+            </View>
+            {data.isValidPassword ? null : (
+              <Animatable.View animation="fadeInLeft" duration={500}>
+                <Text style={styles.errorMsg}>
+                  Password must be 8 characters long
+                </Text>
+              </Animatable.View>
+            )}
+
+            <View style={styles.button}>
+              <TouchableOpacity style={styles.signIn} onPress={loginHandle}>
                 <Text
-                  style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 12 }}
+                  style={[
+                    styles.textSign,
+                    {
+                      color: "#fff",
+                    },
+                  ]}
                 >
-                  Help
+                  Login
                 </Text>
               </TouchableOpacity>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    marginTop: 12,
+                    fontSize: 16,
+                    color: "rgba(0, 0, 0, 0.35)",
+                    fontFamily: "OpenSans_400Regular",
+                  }}
+                >
+                  Forgot your login information?{" "}
+                </Text>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <Text
+                    style={{
+                      color: "#521886",
+                      fontFamily: "OpenSans_700Bold",
+                      fontSize: 16,
+                      marginTop: 12,
+                    }}
+                  >
+                    Help
+                  </Text>
+                </TouchableOpacity>
               </View>
-            <View style={{flexDirection: "row"}}>
-            <Text
-              style={{
-                marginTop: 90,
-                fontSize: 16,
-                color: "rgba(0, 0, 0, 0.35)",
-                fontFamily: "OpenSans_400Regular",
-              }}
-            >
-              Not registered yet?{" "}
-              </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}>
-              <Text
-                style={{ color: "#521886", fontFamily: "OpenSans_700Bold", fontSize: 16, marginTop: 90}}
+
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                }}
               >
-                Create an account
-              </Text>
-              </TouchableOpacity>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>How can we help you?</Text>
+
+                    <TouchableOpacity
+                      style={{ ...styles.openButton }}
+                      onPress={usernameNavigation}
+                    >
+                      <Text style={styles.textStyle}>I forgot my username</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{ ...styles.openButton, top: 5 }}
+                      onPress={passwordNavigation}
+                    >
+                      <Text style={styles.textStyle}>I forgot my password</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={{
+                        ...styles.openButton,
+                        backgroundColor: "#521886",
+                        width: 170,
+                        top: 20,
+                      }}
+                      onPress={() => {
+                        setModalVisible(!modalVisible);
+                      }}
+                    >
+                      <Text style={{ ...styles.textStyle, color: "white" }}>
+                        Close
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    marginTop: 90,
+                    fontSize: 16,
+                    color: "rgba(0, 0, 0, 0.35)",
+                    fontFamily: "OpenSans_400Regular",
+                  }}
+                >
+                  Not registered yet?{" "}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CreateAccount")}
+                >
+                  <Text
+                    style={{
+                      color: "#521886",
+                      fontFamily: "OpenSans_700Bold",
+                      fontSize: 16,
+                      marginTop: 90,
+                    }}
+                  >
+                    Create an account
+                  </Text>
+                </TouchableOpacity>
               </View>
-          </View>
-        </ScrollView>
-      </Animatable.View>
-    </View>
-  );
+            </View>
+          </ScrollView>
+        </Animatable.View>
+      </View>
+    );
+  }
 };
-}
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 5,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   header: {
     flex: 1,
@@ -352,5 +420,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 30,
     alignItems: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "white",
+  },
+  textStyle: {
+    color: "#521886",
+    fontFamily: "OpenSans_700Bold",
+    textAlign: "center",
+    fontSize: 16
+  },
+  modalText: {
+    marginBottom: 15,
+    fontSize: 18,
+    textAlign: "center",
+    fontFamily: "OpenSans_700Bold",
   },
 });
