@@ -35,6 +35,9 @@ apiEndpoints:
   whatsapp:
     host: ${LOCAL_IP:-localhost}
     paths: ["/whatsapp", "/whatsapp/*"]
+  interoperabilities:
+    host: ${LOCAL_IP:-localhost}
+    paths: ["/interoperabilities", "/interoperabilities/*"]
 
 ##################################################################################################
 serviceEndpoints:
@@ -56,6 +59,8 @@ serviceEndpoints:
     url: "http://${LOCAL_IP:-localhost}:8008"
   whatsappService:
     url: "http://${LOCAL_IP:-localhost}:8007"
+  interoperabilitiesService:
+    url: "http://${LOCAL_IP:-localhost}:8009"
 ##################################################################################################
 policies:
   - basic-auth
@@ -189,4 +194,17 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: statisticsService
+              changeOrigin: true
+##################################################################################################
+  interoperabilitiesPipeline:
+    apiEndpoints:
+      - interoperabilities
+    policies:
+      - log:
+          - action:
+              message: "local_ip ===> ${LOCAL_IP:-localhost}"
+      - proxy:
+          - action:
+              serviceEndpoint: interoperabilitiesService
+              stripPath: true
               changeOrigin: true
