@@ -23,7 +23,7 @@ server.get("/get/:user", (req, res) => {
   User.findOne({
 
     include: [{ model: Contact, as: 'contacts' }],
-    where: { username: user }
+    where: { username: user.toLowerCase() }
   })
     .then((user) => {
       if (!user) { return res.sendStatus(404) }

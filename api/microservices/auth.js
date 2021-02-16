@@ -32,7 +32,7 @@ passport.use(
       console.log("LOGIN CALLED");
       User.findOne({
         where: {
-          username,
+          username: username.toLowerCase(),
         },
       })
         .then((user) => {
