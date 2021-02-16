@@ -5,6 +5,8 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
@@ -114,6 +116,7 @@ export default function CodeVerification({ navigation, route }) {
     return <SplashScreen2 />;
   } else {
     return (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -204,6 +207,7 @@ export default function CodeVerification({ navigation, route }) {
           </Formik>
         </Animatable.View>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

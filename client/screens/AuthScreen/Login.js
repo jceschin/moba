@@ -11,6 +11,8 @@ import {
   Image,
   Alert,
   Modal,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
@@ -125,6 +127,7 @@ const LoginScreen = ({ navigation }) => {
     return <SplashScreen2 />;
   } else {
     return (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.header}></View>
         <Animatable.View animation="fadeInUpBig" style={styles.footer}>
@@ -307,6 +310,7 @@ const LoginScreen = ({ navigation }) => {
           </ScrollView>
         </Animatable.View>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 };
