@@ -99,7 +99,7 @@ const RegisterPage = ({ navigation, route }) => {
   const handleConfirm = (date) => {
     setData({
       ...data,
-      birthdate: moment(date).format("DD/MM/YYYY").split("T")[0],
+      birthdate: moment(date).format("MM/DD/YYYY").split("T")[0],
     });
     hideDatePicker();
   };
@@ -114,7 +114,7 @@ const RegisterPage = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    setPages("second");
+    setPages("first");
   }, []);
 
   useEffect(() => {
@@ -167,9 +167,9 @@ const RegisterPage = ({ navigation, route }) => {
   };
 
   const validateDate = (date) => {
-    const re = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-    return re.test(date)
-  }
+    const re = /^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)[0-9]{2}$/
+    return re.test(date);
+  };
 
   const onChangeTextUsername = (val) => {
     if (val.length >= 4) {
@@ -313,24 +313,8 @@ const RegisterPage = ({ navigation, route }) => {
     }
   };
 
-  const onChangeTextBirthdate = (val) => {
-    if (validateDate(val))
-      setData({
-        ...data,
-        birthdate: val,
-        isValidBirthdate: true,
-      });
-    else {
-      setData({
-        ...data,
-        birthdate: val,
-        isValidBirthdate: false,
-      });
-    }
-  };
 
-  console.log(data.birthdate)
-  console.log("birthdate", data.isValidBirthdate)
+  console.log("birthdate", data.birthdate);
 
   /*   const textInputChange = (text) => {
     if (text.length === 2) {
@@ -412,7 +396,7 @@ const RegisterPage = ({ navigation, route }) => {
 
   const buttonSecondPage = () => {
     if (
-      data.isValidBirthdate === true &&
+      data.birthdate &&
       data.isValidPhone === true &&
       data.isValidDni === true
     ) {
@@ -433,7 +417,6 @@ const RegisterPage = ({ navigation, route }) => {
       Alert.alert("You need to fill all the fields to continue");
     }
   };
-
 
   if (!fontsLoaded) {
     return <SplashScreen2 />;
@@ -566,12 +549,17 @@ const RegisterPage = ({ navigation, route }) => {
                   <TextInputMask
                     type={"datetime"}
                     options={{
-                      format: "DD/MM/YYYY",
+                      format: "MM/DD/YYYY",
                     }}
-                    placeholder="Birthdate MM/DD/YY"
+                    placeholder="Birthdate MM/DD/YYYY"
                     placeholderTextColor="rgba(0, 0, 0, 0.4)"
                     value={data.birthdate}
-                    onChangeText={(text) => onChangeTextBirthdate(text)}
+                    onChangeText={(text) => {
+                      setData({
+                        ...data, 
+                        birthdate: text,
+                      });
+                    }}
                     style={styles.input}
                     onFocus={() => setFocus("birthdate")}
                     maxLength={10}
@@ -595,15 +583,7 @@ const RegisterPage = ({ navigation, route }) => {
                     onCancel={hideDatePicker}
                   />
                 </View>
-                {data.isValidBirthdate ? null : (
-                  <Animatable.View animation="fadeInLeft" duration={500}>
-                    <Text style={styles.errorMsg}>
-                      Insert a valid date
-                    </Text>
-                  </Animatable.View>
-                )}
-
-
+                
                 <View
                   style={[
                     focus === "phone"
