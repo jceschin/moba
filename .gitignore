@@ -5,8 +5,6 @@ package-lock.jsonnode_modules/
 jspm_packages/
 node_modules
 package-lock.json
-/package.json
-package.json
 api/config/config.json
 # dependencies
 /node_modules
