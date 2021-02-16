@@ -8,6 +8,8 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
@@ -149,6 +151,7 @@ const UsernameRecovery = ({ navigation }) => {
     return <SplashScreen2 />;
   } else {
     return (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -260,6 +263,7 @@ const UsernameRecovery = ({ navigation }) => {
           </ScrollView>
         </Animatable.View>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 };

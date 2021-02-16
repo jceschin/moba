@@ -5,6 +5,8 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
@@ -111,6 +113,7 @@ const SendMoney = ({ route }) => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={styles.colorContainer}>
       <View style={styles.header}>
         <TouchableOpacity
@@ -181,6 +184,7 @@ const SendMoney = ({ route }) => {
         </TouchableOpacity>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

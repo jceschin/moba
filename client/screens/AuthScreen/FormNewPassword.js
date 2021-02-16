@@ -9,11 +9,18 @@ import {
   ScrollView,
   StatusBar,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { updatePassword, clearPass, cleanEmailOrUsername, clearToken } from '../../redux/actions/emailActions'
+import {
+  updatePassword,
+  clearPass,
+  cleanEmailOrUsername,
+  clearToken,
+} from "../../redux/actions/emailActions";
 import {
   useFonts,
   OpenSans_300Light,
@@ -22,14 +29,16 @@ import {
   OpenSans_700Bold,
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
-import AppLoading from 'expo-app-loading';
+import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
 const FormNewPassword = ({ navigation }) => {
   const dispatch = useDispatch();
   const emailToken = useSelector(
-    (store) => store.email.emailOrUsername[0] && store.email.emailOrUsername[0].emailToken
+    (store) =>
+      store.email.emailOrUsername[0] &&
+      store.email.emailOrUsername[0].emailToken
   );
-  const pass = useSelector((store) => store.email.pass)
+  const pass = useSelector((store) => store.email.pass);
   const [data, setData] = useState({
     password: "",
     check_textInputChange: false,
@@ -45,11 +54,11 @@ const FormNewPassword = ({ navigation }) => {
     OpenSans_700Bold,
     OpenSans_800ExtraBold,
   });
- 
+
   const validatePassword = (password) => {
-    const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
-    return re.test(password)
-  }
+    const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+    return re.test(password);
+  };
 
   const handlePasswordChange = (val) => {
     if (validatePassword(val.trim())) {
@@ -75,121 +84,118 @@ const FormNewPassword = ({ navigation }) => {
   };
 
   const mailAndPass = {
-		dataUser: emailToken,
-		password: data.password
-	}
+    dataUser: emailToken,
+    password: data.password,
+  };
 
   const confirmPassword = () => {
-     dispatch(updatePassword(mailAndPass));
-     Alert.alert("Password changed succesfully")
-     navigation.navigate("Login")
-   };
+    dispatch(updatePassword(mailAndPass));
+    Alert.alert("Password changed succesfully");
+    navigation.navigate("Login");
+  };
 
-   useEffect(() => {
-
-    if(pass.length > 0){
-      if(pass[0].changePassword === 'Password changed succesfully'){
+  useEffect(() => {
+    if (pass.length > 0) {
+      if (pass[0].changePassword === "Password changed succesfully") {
         dispatch(clearPass());
-        dispatch (cleanEmailOrUsername());
-        navigation.navigate('Login')
-      } 
-        if (pass[0].changePassword === 'user not exists'){
-      alert('user not exists')
-      dispatch(clearPass());
-          }
-      };
-    
-   }, [pass]);
+        dispatch(cleanEmailOrUsername());
+        navigation.navigate("Login");
+      }
+      if (pass[0].changePassword === "user not exists") {
+        alert("user not exists");
+        dispatch(clearPass());
+      }
+    }
+  }, [pass]);
 
-   const changeFocusPassword = () => {
+  const changeFocusPassword = () => {
     if (focusPassword === false) {
       setFocusPassword(true);
     }
   };
 
-   if(!fontsLoaded){
-    return <SplashScreen2 />
-  }
-  else {
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <AntDesign
-            name="arrowleft"
-            size={20}
-            color="white"
-          />
-        </TouchableOpacity>
-
-        <View style={styles.welcomeView}>
-          <Text style={styles.text_header}>New Password</Text>
-        </View>
-      </View>
-      <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-        <ScrollView>
-          <Text style={styles.textRecover}>
-            Insert your new password
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              borderBottomWidth: 1,
-              borderBottomColor:
-                focusPassword === false ? "#f2f2f2" : "#521886",
-              paddingBottom: 5,
-            }}
-          >
-            <TextInput
-              placeholder="New password"
-              placeholderTextColor="#D3D0D0"
-              secureTextEntry={data.secureTextEntry ? true : false}
-              style={styles.textInputPassword}
-              autoCapitalize="none"
-              value={data.password}
-              onChangeText={(val) => handlePasswordChange(val)}
-              onFocus={changeFocusPassword}
-            />
-
-            <TouchableOpacity onPress={updateSecureTextEntry} style={styles.eyeView}>
-              {data.secureTextEntry ? (
-                <Feather name="eye-off" color="grey" size={22} />
-              ) : (
-                <Feather name="eye" color="grey" size={22} />
-              )}
+  if (!fontsLoaded) {
+    return <SplashScreen2 />;
+  } else {
+    return (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <AntDesign name="arrowleft" size={20} color="white" />
             </TouchableOpacity>
-          </View>
-          {data.isValidPassword ? null : (
-            <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>
-              Your new password must contain at least 1 uppercase, 1 number and 8 characters
-              </Text>
-            </Animatable.View>
-          )}
 
-          <View style={styles.button}>
-            <TouchableOpacity
-              style={styles.signIn}
-              onPress={() => confirmPassword()}
-            >
-              <Text
-                style={[
-                  styles.textSign,
-                  {
-                    color: "#fff",
-                  },
-                ]}
+            <View style={styles.welcomeView}>
+              <Text style={styles.text_header}>New Password</Text>
+            </View>
+          </View>
+          <Animatable.View animation="fadeInUpBig" style={styles.footer}>
+            <ScrollView>
+              <Text style={styles.textRecover}>Insert your new password</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderBottomColor:
+                    focusPassword === false ? "#f2f2f2" : "#521886",
+                  paddingBottom: 5,
+                }}
               >
-                Confirm
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </Animatable.View>
-    </View>
-  );
+                <TextInput
+                  placeholder="New password"
+                  placeholderTextColor="#D3D0D0"
+                  secureTextEntry={data.secureTextEntry ? true : false}
+                  style={styles.textInputPassword}
+                  autoCapitalize="none"
+                  value={data.password}
+                  onChangeText={(val) => handlePasswordChange(val)}
+                  onFocus={changeFocusPassword}
+                />
+
+                <TouchableOpacity
+                  onPress={updateSecureTextEntry}
+                  style={styles.eyeView}
+                >
+                  {data.secureTextEntry ? (
+                    <Feather name="eye-off" color="grey" size={22} />
+                  ) : (
+                    <Feather name="eye" color="grey" size={22} />
+                  )}
+                </TouchableOpacity>
+              </View>
+              {data.isValidPassword ? null : (
+                <Animatable.View animation="fadeInLeft" duration={500}>
+                  <Text style={styles.errorMsg}>
+                    Your new password must contain at least 1 uppercase, 1
+                    number and 8 characters
+                  </Text>
+                </Animatable.View>
+              )}
+
+              <View style={styles.button}>
+                <TouchableOpacity
+                  style={styles.signIn}
+                  onPress={() => confirmPassword()}
+                >
+                  <Text
+                    style={[
+                      styles.textSign,
+                      {
+                        color: "#fff",
+                      },
+                    ]}
+                  >
+                    Confirm
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </Animatable.View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
 };
-}
 export default FormNewPassword;
 
 const styles = StyleSheet.create({
@@ -207,7 +213,7 @@ const styles = StyleSheet.create({
   },
   welcomeView: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   footer: {
     flex: Platform.OS === "ios" ? 3 : 5,
@@ -262,6 +268,6 @@ const styles = StyleSheet.create({
   },
   eyeView: {
     right: 17,
-    top: 48
+    top: 48,
   },
-  });
+});
