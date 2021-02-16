@@ -2,7 +2,7 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
-const { User, Account, Transaction, Accounttransaction } = require("../db");
+const { User, Account, Transaction, Accounttransaction, Unregistered } = require("../db");
 
 const server = express();
 
@@ -20,40 +20,32 @@ server.use(morgan("dev"));
 const cors = require("cors");
 server.use(cors());
 
-// Create Transaction
-
 server.post("/transaction", (req, res, next) => {
-  console.log(req.body);
-  if (
-    typeof parseInt(req.body.amount) !== "number" ||
-    parseInt(req.body.amount) <= 0
-  ) {
+
+  if ( typeof parseInt(req.body.amount) !== "number" || parseInt(req.body.amount) <= 0) {
     return res.sendStatus(400);
   }
-  (async function () {
+
+  else (async function () {
+
     try {
-      //Account sender
+
+      //Find Account Sender
       const balance_sender = await Account.findOne({
         where: {
           cvu: req.body.cvu_sender,
         },
       });
 
-      //Account receiver
-      const balance_receiver = await Account.findOne({
-        where: {
-          cvu: req.body.cvu_receiver,
-        },
-      });
-
-      //Create transaction
+      //Create Transaction
       const transaction = await Transaction.create({
-        ...req.body,
+        description: req.body.description,
+        amount: req.body.amount,
         transaction_type: "transfer",
         transaction_code: Math.floor((Math.random() * 9000) + 1000)
       });
 
-      //Create table Accounttransaction
+      //Create Accounttransaction sender
       const sender = await Accounttransaction.create({
         cvu: req.body.cvu_sender,
         number: transaction.number,
@@ -62,107 +54,200 @@ server.post("/transaction", (req, res, next) => {
         new_balance: balance_sender.dataValues.balance,
       });
 
-      const receiver = await Accounttransaction.create({
-        cvu: req.body.cvu_receiver,
-        number: transaction.number,
-        type: "receiver",
-        old_balance: balance_receiver.dataValues.balance,
-        new_balance: balance_receiver.dataValues.balance,
-      });
+      if( !(/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(req.body.cvu_receiver)) ){
 
-      //Balance check
-      if (balance_sender.dataValues.balance >= parseInt(req.body.amount)) {
-        //Update balance sender
-        const new_balance_sender = await Account.update(
-          {
-            balance: balance_sender.dataValues.balance - req.body.amount,
+        //Find Account receiver
+        const balance_receiver = await Account.findOne({
+          where: {
+            cvu: req.body.cvu_receiver,
           },
+        }); 
 
-          {
-            where: { cvu: req.body.cvu_sender },
-          }
-        );
+        //Create Accounttransaction receiver
+        const receiver = await Accounttransaction.create({
+          cvu: req.body.cvu_receiver,
+          number: transaction.number,
+          type: "receiver",
+          old_balance: balance_receiver.dataValues.balance,
+          new_balance: balance_receiver.dataValues.balance,
+        });
 
-        //Update Accounttransaction sender
-        const upAccounttransactionSender = await Accounttransaction.update(
-          {
-            new_balance: balance_sender.dataValues.balance - req.body.amount,
-            status: 'confirmed'
-          },
-
-          {
-            where: {
-              cvu: req.body.cvu_sender,
-              number: transaction.number,
+        if (balance_sender.dataValues.balance >= parseInt(req.body.amount)) {
+          //Update balance sender
+          const new_balance_sender = await Account.update(
+            {
+              balance: balance_sender.dataValues.balance - req.body.amount,
             },
-          }
-        );
-
-        //Update balancer receiver
-        const new_balance_receiver = await Account.update(
-          {
-            balance:
-              parseFloat(req.body.amount) +
-              parseFloat(balance_receiver.dataValues.balance),
-          },
-
-          {
-            where: { cvu: req.body.cvu_receiver },
-          }
-        );
-
-        //Update Accounttransaction reseiver
-        const upAccounttransactionreseiver = await Accounttransaction.update(
-          {
-            new_balance:
-              parseFloat(req.body.amount) +
-              parseFloat(balance_receiver.dataValues.balance),
-              status:'confirmed'
-          },
-
-          {
-            where: {
-              cvu: req.body.cvu_receiver,
-              number: transaction.number,
+  
+            {
+              where: { cvu: req.body.cvu_sender },
+            }
+          );
+  
+          //Update Accounttransaction sender
+          const upAccounttransactionSender = await Accounttransaction.update(
+            {
+              new_balance: balance_sender.dataValues.balance - req.body.amount,
+              status: 'confirmed'
             },
-          }
-        );
+  
+            {
+              where: {
+                cvu: req.body.cvu_sender,
+                number: transaction.number,
+              },
+            }
+          );
+  
+          //Update balancer receiver
+          const new_balance_receiver = await Account.update(
+            {
+              balance:
+                parseFloat(req.body.amount) +
+                parseFloat(balance_receiver.dataValues.balance),
+            },
+  
+            {
+              where: { cvu: req.body.cvu_receiver },
+            }
+          );
+  
+          //Update Accounttransaction reseiver
+          const upAccounttransactionreseiver = await Accounttransaction.update(
+            {
+              new_balance:
+                parseFloat(req.body.amount) +
+                parseFloat(balance_receiver.dataValues.balance),
+                status:'confirmed'
+            },
+  
+            {
+              where: {
+                cvu: req.body.cvu_receiver,
+                number: transaction.number,
+              },
+            }
+          );
+  
+          //Confirmed transaction
+          const transactionConfirmed = await Transaction.update(
+            {
+              status: "confirmed",
+            },
+  
+            {
+              where: { number: transaction.number },
+            }
+          );
+  
+          res
+            .status(201)
+            .json({ ...transaction.dataValues, status: "confirmed" });
+        }
+        else {
+          //Cancelled transaction
+          const transactionFail = await Transaction.update(
+            {
+              status: "cancelled",
+            },
+  
+            {
+              where: { number: transaction.number },
+            }
+          );
+  
+          res
+            .status(201)
+            .json({ ...transaction.dataValues, status: "cancelled" });
+        }
 
-        //Confirmed transaction
-        const transactionConfirmed = await Transaction.update(
-          {
-            status: "confirmed",
-          },
-
-          {
-            where: { number: transaction.number },
-          }
-        );
-
-        res
-          .status(201)
-          .json({ ...transaction.dataValues, status: "confirmed" });
-      } else {
-        //Cancelled transaction
-        const transactionFail = await Transaction.update(
-          {
-            status: "cancelled",
-          },
-
-          {
-            where: { number: transaction.number },
-          }
-        );
-
-        res
-          .status(201)
-          .json({ ...transaction.dataValues, status: "cancelled" });
       }
-    } catch (err) {
-      res.status(404).send(err);
-    }
+      else if( /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(req.body.cvu_receiver) ){
+        
+        //Create Unregistered
+        const  unregistered = await Unregistered.create({
+          email: req.body.cvu_receiver,
+          transactionNumber: transaction.number,
+        })
+
+        if (balance_sender.dataValues.balance >= parseInt(req.body.amount)) {
+          //Update balance sender
+          const new_balance_sender = await Account.update(
+            {
+              balance: balance_sender.dataValues.balance - req.body.amount,
+            },
+  
+            {
+              where: { cvu: req.body.cvu_sender },
+            }
+          );
+  
+          //Update Accounttransaction sender
+          const upAccounttransactionSender = await Accounttransaction.update(
+            {
+              new_balance: balance_sender.dataValues.balance - req.body.amount,
+              status: 'confirmed'
+            },
+  
+            {
+              where: {
+                cvu: req.body.cvu_sender,
+                number: transaction.number,
+              },
+            }
+          );
+
+          //Confirmed transaction
+          const transactionConfirmed = await Transaction.update(
+            {
+              status: "confirmed",
+            },
+  
+            {
+              where: { number: transaction.number },
+            }
+          );
+  
+          res
+            .status(201)
+            .json({ ...transaction.dataValues, status: "confirmed" });
+        }
+        else {
+
+          //Cancelled Unregistered 
+          const unregisteredFail = await Unregistered.update(
+            {
+              status: "cancelled",
+            },
+  
+            {
+              where: { transactionNumber: transaction.number },
+            }
+          );
+
+          //Cancelled transaction
+          const transactionFail = await Transaction.update(
+            {
+              status: "cancelled",
+            },
+  
+            {
+              where: { number: transaction.number },
+            }
+          );
+  
+          res
+            .status(201)
+            .json({ ...transaction.dataValues, status: "cancelled" });
+        }
+
+
+      }
+
+    } catch (err) { res.status(404).send(err); }
   })();
-});
+
+})
 
 // Get specific Transaction for number
 

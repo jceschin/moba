@@ -1,7 +1,7 @@
 const express = require("express");
 const server = express();
 var morgan = require("morgan");
-const { User, Account } = require("../db");
+const { User, Account, Unregistered, Accounttransaction, Transaction } = require("../db");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const passport = require("passport");
@@ -60,6 +60,7 @@ server.post("/auth/singup", (req, res, next) => {
   var randomDate = DateGenerator.getRandomDateInRange(startDate, endDate);
   card_expiration = formatDate(randomDate, "dd/MM/yy");
   var cvu, card_cvv, card_id, rechargeCode;
+  var new_balance = 0;
 
   const generator = () => {
     rechargeCode = Math.floor(Math.random() * 90000000) + 10000000;
@@ -104,14 +105,74 @@ server.post("/auth/singup", (req, res, next) => {
         userId: user.dataValues.id,
         rechargeCode,
         opening_date: formatDate(new Date(), "yyyy/MM/dd hh:mm:ss"),
-      }).then((acc) => {
-        res.status(200).send(acc);
-      });
+      })
+      .then((acc) => {
+       return Unregistered.findAll({
+          include: [Transaction],
+      
+          where: {
+            email: req.body.email,
+            status: "pending"
+          },
+        })
+      })
+      .then((trans) => {
+
+        if(trans !== []){
+
+          trans.map(function(tran) { 
+            new_balance +=  parseFloat(tran.dataValues.transaction.dataValues.amount)
+     
+            //Create Accounttransaction sender
+            Accounttransaction.create({
+               cvu: cvu,
+               number: tran.dataValues.transaction.dataValues.number,
+               type: "receiver",
+               old_balance: new_balance - tran.dataValues.transaction.dataValues.amount,
+               new_balance: new_balance,
+               status: "confirmed"
+             });
+     
+             //Update Balance Account
+     
+             Account.update(
+               {balance: new_balance},
+               {where: { cvu: cvu }}
+             );
+           
+          })
+
+          //update Unregistered
+          Unregistered.update(
+            {status: "confirmed"},
+            {where: 
+              {
+                email: req.body.email,
+                status: "pending"
+              },
+            }
+          );
+          
+        }
+        
+      })
+      .then((acc2) => {
+  
+       return  Account.findOne({where: {cvu: cvu,}})
+
+      })
+      .then((acc3) => {
+
+        res.status(200).send({ ...acc3.dataValues, balance: new_balance })
+  
+      })
+      
     })
 
     .catch((err) => {
-      console.log(err);
+
       res.status(404).send(err);
+
     });
 });
 
