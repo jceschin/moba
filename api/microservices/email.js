@@ -148,7 +148,7 @@ server.post('/findUserName', (req, res) => {
  
   User.findOne({
     where: {
-      email: mail, // tiene que encontrar el password antes
+      email: mail.toLowerCase(), // tiene que encontrar el password antes
     },
   }).then((user) => {
     if(!user){
@@ -227,7 +227,7 @@ server.post("/recovery/sendtoken", (req, res) => {
 
   //send mail
   User.findOne({
-    where: { [Op.or]: [{ email: dataUser }, { username: dataUser }] },
+    where: { [Op.or]: [{ email: dataUser.toLowerCase() }, { username: dataUser.toLowerCase() }] },
   }).then((user) => {
     if (!user) {
       return res.json([{
@@ -257,7 +257,7 @@ server.post('/recovery/verifytoken', (req,res) => {
   console.log(parseInt(token))
   if(!dataUser || !token){return res.sendStatus(400)}
   User.findOne({
-    where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}
+    where:{[Op.or] :[{ email: dataUser.toLowerCase() }, { username: dataUser.toLowerCase() }]}
   })
   .then((user) => {
 
@@ -292,7 +292,7 @@ server.put('/recovery/changepassword', (req,res) => {
     }])
   }
   User.findOne({
-    where:{[Op.or] :[{ email: dataUser }, { username: dataUser }]}
+    where:{[Op.or] :[{ email: dataUser.toLowerCase() }, { username: dataUser.toLowerCase() }]}
   })
   .then((user) => {
     if(!user){
