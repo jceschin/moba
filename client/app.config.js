@@ -5,6 +5,7 @@ export default ({ config }) => {
       ...config,
       extra: {
         LOCAL_IP: process.env.LOCAL_IP,
+        HEROKU_IP: process.env.XXX
       },
     };
   };

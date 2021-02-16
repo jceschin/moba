@@ -546,6 +546,7 @@ const RegisterPage = ({ navigation, route }) => {
                   placeholder="Birthdate"
                   placeholderTextColor="rgba(0, 0, 0, 0.4)"
                   onFocus={showDatePicker}
+                  //onChangeText={(text) => onChangeTextBirthdate(text)}
                 />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
