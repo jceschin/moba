@@ -92,9 +92,14 @@ server.post("/auth/singup", (req, res, next) => {
     });
   };
 
-
   checker();
-  User.create(req.body)
+  var dataUser = {
+    ...req.body,
+    username: req.body.username.toLowerCase(),
+    email: req.body.email.toLowerCase(),
+    birthdate: new Date(req.body.birthdate)
+  };
+  User.create(dataUser)
     .then((user) => {
       Account.create({
         cvu,

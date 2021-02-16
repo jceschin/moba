@@ -41,11 +41,11 @@ server.post("/add", (req, res) => {
     return res.status(405).send('Missing parameters')
   }
   var firstUser = User.findOne({
-    where: { username: user_username },
+    where: { username: user_username.toLowerCase() },
   });
 
   var secondUser = User.findOne({
-    where: { email: contact_email },
+    where: { email: contact_email.toLowerCase()},
   });
   var loggedUser;
   var futureContact;
@@ -88,7 +88,7 @@ server.post("/add", (req, res) => {
               }
               //creating the contact
               Contact.create({
-                alias: alias || futureContact.username,
+                alias: alias.toLowerCase() || futureContact.username,
                 contact_username: futureContact.username,
                 contact_name: futureContact.name,
                 contact_surname: futureContact.surname,

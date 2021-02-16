@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  Button,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { AntDesign, Feather } from "@expo/vector-icons";
@@ -23,6 +24,9 @@ import SplashScreen2 from "../HomeScreen/SplashScreen2";
 // REDUX
 import { useDispatch } from "react-redux";
 import { createNewUser } from "../../redux/actions/user";
+import { cleanVerify } from "../../redux/actions/emailActions";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+const { formatDate } = require("date-utils-2020");
 
 const RegisterPage = ({ navigation, route }) => {
   const { handleSubmit, control, errors } = useForm();
@@ -71,6 +75,7 @@ const RegisterPage = ({ navigation, route }) => {
   const [focusThree, setFocusThree] = useState(false);
 
   useEffect(() => {
+    dispatch(cleanVerify());
     setPages("first");
   }, []);
 
@@ -388,6 +393,27 @@ const RegisterPage = ({ navigation, route }) => {
     }
   };
 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirmDate = (date) => {
+    setData({
+      ...data,
+      birthdate: formatDate(date, "yyyy/MM/dd"),
+      check_textInputChangeBirthdate: true,
+      isValidCity: true,
+    });
+    console.warn("birthdate", data.birthdate);
+    hideDatePicker();
+  };
+
   if (!fontsLoaded) {
     return <SplashScreen2 />;
   } else {
@@ -516,11 +542,16 @@ const RegisterPage = ({ navigation, route }) => {
               >
                 <TextInput
                   style={styles.input}
-                  onChangeText={(text) => onChangeTextBirthdate(text)}
                   value={data.birthdate}
-                  placeholder="Birthdate MM/DD/YY"
+                  placeholder="Birthdate"
                   placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  /* onFocus={changeFocusOne} */
+                  onFocus={showDatePicker}
+                />
+                <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
+                  mode="date"
+                  onConfirm={handleConfirmDate}
+                  onCancel={hideDatePicker}
                 />
                 {data.check_textInputChangeBirthdate ? (
                   <Animatable.View
@@ -1002,7 +1033,7 @@ const styles = StyleSheet.create({
     color: "#CC1833",
     fontSize: 15,
     fontFamily: "OpenSans_600SemiBold",
-    paddingLeft: 7, 
+    paddingLeft: 7,
   },
   errorMsgPhone: {
     color: "#CC1833",
