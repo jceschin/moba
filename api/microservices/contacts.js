@@ -130,12 +130,13 @@ server.post("/contacts", (req, res) => {
 // UPDATE CONTACT by alias
 server.put("/update/:alias", (req, res) => {
   var newAlias = req.body.newAlias;
-  Contact.findOne({
+  Contact.findOne(req.body, {
     where:{
       alias: req.params.alias
     }
   })
     .then((contact) => {
+      console.log(contact)
       contact.update({
         alias: newAlias
       })
