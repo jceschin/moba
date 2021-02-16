@@ -240,7 +240,7 @@ const Stats = ({ navigation }) => {
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {
-                  borderRadius: 16,
+                  borderRadius: 16
                 },
                 propsForDots: {
                   r: "6",
@@ -251,7 +251,7 @@ const Stats = ({ navigation }) => {
               bezier
               style={{
                 marginVertical: 8,
-                borderRadius: 16,
+                borderRadius: 16
               }}
             />
           ) : null}

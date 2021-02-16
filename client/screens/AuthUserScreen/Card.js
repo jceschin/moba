@@ -116,10 +116,10 @@ export default function Card() {
                 <Feather name="copy" size={28} color="black" style={{ left: 6, top: 5 }} onPress={() => { copyToClipboard() }} />
                 <Text style={styles.textCopyCardNumber}>Copy Card Number</Text>
               </View>
-              <View style={styles.reportCard}>
+              {/* <View style={styles.reportCard}>
                 <Entypo name="lock" size={28} color="black" style={{ left: 6, top: 5 }} />
                 <Text style={styles.textReportCard}>Report Card</Text>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     top: 52,
     // width: 375,
-    height: 214,
+    height: 158,
     // left: 51,
     borderRadius: 10,
   },

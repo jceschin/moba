@@ -183,9 +183,10 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   image: {
-    flex: 1,
-    width: 152,
-    height: 37
+    width: 168,
+    height: 77,
+    top: -20,
+    left: 120
   },
   title: {
     color: "#515151",

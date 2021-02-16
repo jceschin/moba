@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
@@ -79,7 +81,12 @@ const AddContact = ({ navigation }) => {
           >
             <Text style={styles.headerSuccess}>Contact added</Text>
           </View>
-          <AntDesign name="contacts" size={104} color="white" style={{marginTop: 21}}/>
+          <AntDesign
+            name="contacts"
+            size={104}
+            color="white"
+            style={{ marginTop: 21 }}
+          />
           <View
             style={{
               justifyContent: "center",
@@ -116,73 +123,77 @@ const AddContact = ({ navigation }) => {
     return <SplashScreen2 />;
   } else {
     return (
-      <Animatable.View animation="slideInRight" style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Feather name="arrow-left" size={20} color="white" />
-          </TouchableOpacity>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>Add Contact</Text>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <Animatable.View animation="slideInRight" style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Feather name="arrow-left" size={28} color="white" />
+            </TouchableOpacity>
+            <View style={styles.titleWrapper}>
+              <Text style={styles.title}>Add Contact</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.body}>
-          {pages === "first" ? (
-            <Animatable.View animation="slideInRight" style={styles.section}>
-              <View style={styles.Wrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Add an alias"
-                  value={data.alias}
-                  onChangeText={(value) => handleInput("alias", value)}
-                  placeholderTextColor={"rgba(0, 0, 0, 0.4);"}
-                  fontWeight={"OpenSans_700Bold"}
-                />
-              </View>
-              <View style={styles.buttonWrapper}>
-                <TouchableOpacity
-                  disabled={!disable}
-                  style={[
-                    styles.buttonConfirm,
-                    disable === false
-                      ? styles.buttonDisable
-                      : styles.buttonAble,
-                  ]}
-                  onPress={() => setPages("second")}
-                >
-                  <Text style={styles.textButton}>Continue</Text>
-                </TouchableOpacity>
-              </View>
-            </Animatable.View>
-          ) : pages === "second" ? (
-            <Animatable.View animation="slideInRight" style={styles.section}>
-              <View style={styles.Wrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Now insert the email"
-                  value={data.contact_email}
-                  onChangeText={(value) => handleEmail("contact_email", value)}
-                  placeholderTextColor={"rgba(0, 0, 0, 0.4);"}
-                  fontWeight={"OpenSans_700Bold"}
-                />
-              </View>
-              <View style={styles.buttonWrapper}>
-                <TouchableOpacity
-                  disabled={!disable}
-                  style={[
-                    styles.buttonConfirm,
-                    disable === false
-                      ? styles.buttonDisable
-                      : styles.buttonAble,
-                  ]}
-                  onPress={submitData}
-                >
-                  <Text style={styles.textButton}>Confirm</Text>
-                </TouchableOpacity>
-              </View>
-            </Animatable.View>
-          ) : null}
-        </View>
-      </Animatable.View>
+          <View style={styles.body}>
+            {pages === "first" ? (
+              <Animatable.View animation="slideInRight" style={styles.section}>
+                <View style={styles.Wrapper}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Add an alias"
+                    value={data.alias}
+                    onChangeText={(value) => handleInput("alias", value)}
+                    placeholderTextColor={"rgba(0, 0, 0, 0.4);"}
+                    fontWeight={"OpenSans_700Bold"}
+                  />
+                </View>
+                <View style={styles.buttonWrapper}>
+                  <TouchableOpacity
+                    disabled={!disable}
+                    style={[
+                      styles.buttonConfirm,
+                      disable === false
+                        ? styles.buttonDisable
+                        : styles.buttonAble,
+                    ]}
+                    onPress={() => setPages("second")}
+                  >
+                    <Text style={styles.textButton}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+              </Animatable.View>
+            ) : pages === "second" ? (
+              <Animatable.View animation="slideInRight" style={styles.section}>
+                <View style={styles.Wrapper}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Now insert the email"
+                    value={data.contact_email}
+                    onChangeText={(value) =>
+                      handleEmail("contact_email", value)
+                    }
+                    placeholderTextColor={"rgba(0, 0, 0, 0.4);"}
+                    fontWeight={"OpenSans_700Bold"}
+                  />
+                </View>
+                <View style={styles.buttonWrapper}>
+                  <TouchableOpacity
+                    disabled={!disable}
+                    style={[
+                      styles.buttonConfirm,
+                      disable === false
+                        ? styles.buttonDisable
+                        : styles.buttonAble,
+                    ]}
+                    onPress={submitData}
+                  >
+                    <Text style={styles.textButton}>Confirm</Text>
+                  </TouchableOpacity>
+                </View>
+              </Animatable.View>
+            ) : null}
+          </View>
+        </Animatable.View>
+      </TouchableWithoutFeedback>
     );
   }
 };
@@ -209,7 +220,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 24,
+    fontSize: 18,
   },
   body: {
     flex: 5,
@@ -244,12 +255,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#d4d4d4",
     padding: 5,
-    color: "black"
+    color: "black",
   },
   buttonWrapper: {
     width: 379,
     height: 53,
-    marginTop: 306
+    marginTop: 306,
   },
   buttonAble: {
     backgroundColor: "#521886",
@@ -265,20 +276,20 @@ const styles = StyleSheet.create({
   textButton: {
     color: "white",
     fontFamily: "OpenSans_800ExtraBold",
-    fontSize: 18
+    fontSize: 18,
   },
   headerSuccess: {
     color: "white",
     fontSize: 24,
     fontFamily: "OpenSans_800ExtraBold",
-    marginTop: 208
+    marginTop: 208,
   },
   textSuccess: {
     color: "white",
     fontSize: 18,
     fontFamily: "OpenSans_600SemiBold",
     marginTop: 31,
-    textAlign: 'center'
+    textAlign: "center",
   },
   buttonSuccess: {
     width: 379,
@@ -286,11 +297,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     padding: 10,
-    height: 53
+    height: 53,
   },
   textButtonSuccess: {
     color: "#521886",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 20
+    fontSize: 20,
   },
 });

@@ -23,7 +23,7 @@ server.get("/get/:user", (req, res) => {
   User.findOne({
 
     include: [{ model: Contact, as: 'contacts' }],
-    where: { username: user }
+    where: { username: user.toLowerCase() }
   })
     .then((user) => {
       if (!user) { return res.sendStatus(404) }
@@ -41,11 +41,11 @@ server.post("/add", (req, res) => {
     return res.status(405).send('Missing parameters')
   }
   var firstUser = User.findOne({
-    where: { username: user_username },
+    where: { username: user_username.toLowerCase() },
   });
 
   var secondUser = User.findOne({
-    where: { email: contact_email },
+    where: { email: contact_email.toLowerCase()},
   });
   var loggedUser;
   var futureContact;
@@ -88,7 +88,7 @@ server.post("/add", (req, res) => {
               }
               //creating the contact
               Contact.create({
-                alias: alias || futureContact.username,
+                alias: alias.toLowerCase() || futureContact.username,
                 contact_username: futureContact.username,
                 contact_name: futureContact.name,
                 contact_surname: futureContact.surname,
@@ -130,12 +130,13 @@ server.post("/contacts", (req, res) => {
 // UPDATE CONTACT by alias
 server.put("/update/:alias", (req, res) => {
   var newAlias = req.body.newAlias;
-  Contact.findOne({
+  Contact.findOne(req.body, {
     where:{
       alias: req.params.alias
     }
   })
     .then((contact) => {
+      console.log(contact)
       contact.update({
         alias: newAlias
       })

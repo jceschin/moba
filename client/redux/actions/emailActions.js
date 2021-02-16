@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {apiEndpoint} from '../../const'
-import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken, typeUpdatePassword, typeClearPass, typeClearToken, typecleanEmailOrUsername, typecleanUsername } from "../types/emailTypes"
+import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken, typeUpdatePassword, typeClearPass, typeClearToken, typecleanEmailOrUsername, typecleanUsername, typeClearVerify } from "../types/emailTypes"
 
 //:::::Enviar email con código de validación
 export const enviarEmail = (state) => async(dispatch) => {
@@ -98,4 +98,10 @@ export const  cleanUsername = () => {
     return (dispatch) => {
         dispatch (typecleanUsername())
     };
+}
+
+export const cleanVerify = () => {
+    return(dispatch) => {
+        dispatch(typeClearVerify())
+    }
 }

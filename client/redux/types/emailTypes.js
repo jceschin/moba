@@ -8,6 +8,9 @@ export const CLEAR_PASS = 'CLEAR_PASS';
 export const CLEAR_TOKEN = 'CLEAR_TOKEN';
 export const CLEAN_EMAILORUSERNAME = 'CLEAN_EMAILORUSERNAME';
 export const CLEAN_USERNAME = 'CLEAN_USERNAME';
+export const CLEAR_VERIFY = 'CLEAR_VERIFY';
+
+
 
 export const validarEmail = (res) => {
   return {
@@ -76,5 +79,11 @@ export const typecleanUsername = () => {
   return {
     type: CLEAN_USERNAME,
     payload: []
+  };
+}
+
+export const typeClearVerify = () => {
+  return {
+    type: CLEAR_VERIFY,
   };
 }

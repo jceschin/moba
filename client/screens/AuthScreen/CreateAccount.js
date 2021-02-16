@@ -7,6 +7,8 @@ import {
   View,
   StatusBar,
   ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from "react-native-animatable";
@@ -51,7 +53,7 @@ const CreateAccount = (props) => {
 
   const handleChangeText = (name, value) => {
     setstate({ ...state, [name]: value });
-    if (valideEmail(value)) {
+    if (valideEmail(value.trim())) {
       setstate({
         ...state,
         email: value,
@@ -106,6 +108,8 @@ const CreateAccount = (props) => {
     return <SplashScreen2 />
   } else {
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
@@ -151,6 +155,7 @@ const CreateAccount = (props) => {
               onChangeText={(value) => handleChangeText("email", value)}
               onEndEditing={(e) => handleValidEmail(e.nativeEvent.text)}
               onFocus={changeFocusEmail}
+              autoCapitalize="none"
             />
 
             {state.check_textInputChange ? (
@@ -188,6 +193,7 @@ const CreateAccount = (props) => {
         </ScrollView>
       </Animatable.View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 }

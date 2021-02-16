@@ -11,7 +11,7 @@ import { LogBox } from 'react-native';
 
 export default function App() {
   const Drawer = createDrawerNavigator();
-  LogBox.ignoreAllLogs();
+  //LogBox.ignoreAllLogs();
   return (
     <Provider store={reduxStore}>
       <PersistGate persistor={persistedStore} loading={null}>

@@ -8,6 +8,8 @@ import {
   Text,
   Alert,
   Share,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import { Feather, AntDesign, Fontisto } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
@@ -138,6 +140,7 @@ const AddMoney = ({ navigation, route }) => {
     return <SplashScreen2 />;
   } else {
     return (
+      
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
@@ -211,6 +214,7 @@ const AddMoney = ({ navigation, route }) => {
               />
             </View>
           </View>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View
             style={{
               alignItems: "center",
@@ -253,6 +257,7 @@ const AddMoney = ({ navigation, route }) => {
               </View>
             ) : null}
           </View>
+          </TouchableWithoutFeedback>
           {code === false && transfer === false && amount === true ? (
             <View styles={styles.codePayment}>
               <View style={{ alignItems: "center" }}>
@@ -396,7 +401,7 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_600SemiBold",
     color: "black",
     fontSize: 18,
-    marginTop: 38,
+    marginTop: 90,
   },
   codePayment: {
     alignItems: "center",
@@ -471,7 +476,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#521886",
-    marginTop: 240,
+    marginTop: 210,
   },
   textInputAmount: {
     fontSize: 34,

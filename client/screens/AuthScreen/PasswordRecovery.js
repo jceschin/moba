@@ -10,6 +10,8 @@ import {
   StatusBar,
   Image,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { AntDesign } from "@expo/vector-icons";
@@ -104,6 +106,7 @@ const PasswordRecovery = ({ navigation }) => {
     return <SplashScreen2 />;
   } else {
     return (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -182,6 +185,7 @@ const PasswordRecovery = ({ navigation }) => {
           </ScrollView>
         </Animatable.View>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 };

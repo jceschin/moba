@@ -291,8 +291,8 @@ server.get("/transaction/users/:dni_email", (req, res, next) => {
     where: {
       [Op.or]: [
         { dni: req.params.dni_email },
-        { email: req.params.dni_email },
-        { username: req.params.dni_email },
+        { email: req.params.dni_email.toLowerCase() },
+        { username: req.params.dni_email.toLowerCase() },
       ],
     },
   })

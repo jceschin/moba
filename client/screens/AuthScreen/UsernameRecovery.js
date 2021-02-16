@@ -8,6 +8,8 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Feather, AntDesign } from "@expo/vector-icons";
@@ -149,16 +151,13 @@ const UsernameRecovery = ({ navigation }) => {
     return <SplashScreen2 />;
   } else {
     return (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("ForgotOptions")}
+            onPress={() => navigation.goBack()}
           >
-            <AntDesign
-              name="arrowleft"
-              size={20}
-              color="white"
-            />
+            <AntDesign name="arrowleft" size={20} color="white" />
           </TouchableOpacity>
 
           <View style={styles.welcomeView}>
@@ -264,6 +263,7 @@ const UsernameRecovery = ({ navigation }) => {
           </ScrollView>
         </Animatable.View>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 };
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
   },
   welcomeView: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   footer: {
     flex: Platform.OS === "ios" ? 3 : 5,
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 18,
     marginTop: 10,
-    textAlign: 'center'
+    textAlign: "center",
   },
   checkView: {
     right: 17,

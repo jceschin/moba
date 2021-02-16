@@ -7,9 +7,12 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  Modal,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   useFonts,
   OpenSans_300Light,
@@ -18,16 +21,17 @@ import {
   OpenSans_700Bold,
   OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
-import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
 // REDUX
 import { useDispatch } from "react-redux";
 import { createNewUser } from "../../redux/actions/user";
+import moment from "moment";
+import { TextInputMask } from "react-native-masked-text";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const RegisterPage = ({ navigation, route }) => {
   const { handleSubmit, control, errors } = useForm();
   const dispatch = useDispatch();
-
   const [data, setData] = useState({
     username: "",
     name: "",
@@ -50,29 +54,20 @@ const RegisterPage = ({ navigation, route }) => {
     check_textInputChangeDni: false,
     check_textInputChangePhone: false,
     secureTextEntry: true,
-    isValidUsername: true,
-    isValidPassword: true,
-    isValidConfirmPassword: true,
-    isValidName: true,
-    isValidSurname: true,
-    isValidState: true,
-    isValidCity: true,
-    isValidAddress: true,
-    isValidPhone: true,
-    isValidDni: true,
-    isValidBirthdate: true,
+    isValidUsername: false,
+    isValidPassword: false,
+    isValidConfirmPassword: false,
+    isValidName: false,
+    isValidSurname: false,
+    isValidState: false,
+    isValidCity: false,
+    isValidAddress: false,
+    isValidPhone: false,
+    isValidDni: false,
+    isValidBirthdate: false,
     secureTextEntryPassword: true,
     secureTextEntryConfirmPassword: true,
   });
-
-  const [pages, setPages] = useState("");
-  const [focusOne, setFocusOne] = useState(false);
-  const [focusTwo, setFocusTwo] = useState(false);
-  const [focusThree, setFocusThree] = useState(false);
-
-  useEffect(() => {
-    setPages("first");
-  }, []);
 
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -82,61 +77,99 @@ const RegisterPage = ({ navigation, route }) => {
     OpenSans_800ExtraBold,
   });
 
+  const [pages, setPages] = useState("");
+  const [focus, setFocus] = useState("");
+  const [date, setDate] = useState(new Date().toISOString());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
   const [disableFirst, setDisableFirst] = useState(false);
   const [disableSecond, setDisableSecond] = useState(false);
   const [disableThird, setDisableThird] = useState(false);
+  const [disabledSubmit, setDisabledSubmit] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    setData({
+      ...data,
+      birthdate: moment(date).format("MM/DD/YYYY").split("T")[0],
+    });
+    hideDatePicker();
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
+  useEffect(() => {
+    setPages("first");
+  }, []);
+
+  useEffect(() => {
+    if (
+      data.isValidUsername === true &&
+      data.isValidName === true &&
+      data.isValidSurname === true
+    ) {
+      setDisableFirst(true);
+    } else {
+      setDisableFirst(false);
+    }
+  });
+
+  useEffect(() => {
+    if (
+      data.birthdate &&
+      data.isValidPhone === true &&
+      data.isValidDni === true
+    ) {
+      setDisableSecond(true);
+    } else {
+      setDisableSecond(false);
+    }
+  });
+
+  useEffect(() => {
+    if (
+      data.isValidState === true &&
+      data.isValidCity === true &&
+      data.isValidAddress === true
+    ) {
+      setDisableThird(true);
+    } else {
+      setDisableThird(false);
+    }
+  });
+
+  useEffect(() => {
+    if (data.isValidPassword === true && data.isValidConfirmPassword === true) {
+      setDisabledSubmit(true);
+    } else {
+      setDisabledSubmit(false);
+    }
+  });
 
   const validatePassword = (password) => {
     const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     return re.test(password);
   };
-  /*  const changeFocusOne = () => {
-    if (focusOne === false) {
-      setFocusOne(true);
-    }
-    if (focusTwo === true) {
-      setFocusTwo(false);
-    }
-    if (focusThree === true) {
-      setFocusThree(false);
-    }
-  };
 
-  const changeFocusTwo = () => {
-    if (focusOne === true) {
-      setFocusOne(false);
-    }
-    if (focusTwo === false) {
-      setFocusTwo(true);
-    }
-    if (focusThree === true) {
-      setFocusThree(false);
-    }
+  const validateDate = (date) => {
+    const re = /^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)[0-9]{2}$/
+    return re.test(date);
   };
-
-  const changeFocusThree = () => {
-    if (focusOne === true) {
-      setFocusOne(false);
-    }
-    if (focusTwo === true) {
-      setFocusTwo(false);
-    }
-    if (focusThree === false) {
-      setFocusThree(true);
-    }
-  };
-
-  const changeFocusState = () => {
-    if (focusOne === true) {
-      setFocusOne(false);
-    }
-    if (focusTwo === true) {
-      setFocusTwo(false);
-    }
-    if (focusThree === true) {
-      setFocusThree(false);
-    }
-  } */
 
   const onChangeTextUsername = (val) => {
     if (val.length >= 4) {
@@ -280,23 +313,17 @@ const RegisterPage = ({ navigation, route }) => {
     }
   };
 
-  const onChangeTextBirthdate = (val) => {
-    if (val.length > 1) {
-      setData({
-        ...data,
-        birthdate: val,
-        check_textInputChangeBirthdate: true,
-        isValidCity: true,
-      });
-    } else {
-      setData({
-        ...data,
-        birthdate: val,
-        check_textInputChangeBirthdate: false,
-        isValidCity: false,
-      });
+
+  console.log("birthdate", data.birthdate);
+
+  /*   const textInputChange = (text) => {
+    if (text.length === 2) {
+      text += "/";
+    } else if (text.length === 5) {
+      text += "/";
     }
-  };
+    setData({ ...data, birthdate: text });
+  }; */
 
   const handlePassword = (val) => {
     if (validatePassword(val.trim())) {
@@ -360,7 +387,6 @@ const RegisterPage = ({ navigation, route }) => {
       data.isValidName === true &&
       data.isValidSurname === true
     ) {
-      setDisableFirst(true);
       setPages("second");
     } else {
       setDisableFirst(false);
@@ -369,21 +395,25 @@ const RegisterPage = ({ navigation, route }) => {
   };
 
   const buttonSecondPage = () => {
-    if (data.phone && data.state && data.birthdate) {
-      setDisableSecond(true);
+    if (
+      data.birthdate &&
+      data.isValidPhone === true &&
+      data.isValidDni === true
+    ) {
       setPages("third");
     } else {
-      setDisableSecond(false);
       Alert.alert("You need to fill all the fields to continue");
     }
   };
 
   const buttonThirdPage = () => {
-    if (data.city && data.address && data.dni) {
-      setDisableThird(true);
+    if (
+      data.isValidState === true &&
+      data.isValidCity === true &&
+      data.isValidAddress === true
+    ) {
       setPages("fourth");
     } else {
-      setDisableThird(false);
       Alert.alert("You need to fill all the fields to continue");
     }
   };
@@ -392,415 +422,463 @@ const RegisterPage = ({ navigation, route }) => {
     return <SplashScreen2 />;
   } else {
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <AntDesign name="arrowleft" size={20} color="white" />
-          </TouchableOpacity>
-        </View>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <AntDesign name="arrowleft" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
 
-        <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-          {pages === "first" ? (
-            <>
-              <Text style={styles.title}>First Step</Text>
+          <Animatable.View animation="fadeInUpBig" style={styles.footer}>
+            {pages === "first" ? (
+              <>
+                <Text style={styles.title}>First Step</Text>
 
-              <View
-                style={[
-                  focusOne === false
-                    ? styles.inputcontainerOne
-                    : styles.inputcontainerOneFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextUsername(text)}
-                  value={data.username}
-                  placeholder="Username"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  maxLength={40}
-                  /* onFocus={changeFocusOne} */
-                />
-                {data.check_textInputChangeUsername ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
-                  >
-                    <AntDesign name="checkcircle" size={21} color="green" />
-                  </Animatable.View>
-                ) : null}
-              </View>
-
-              {data.isValidUsername ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsgUsername}>
-                    Username must be at least 4 characters
-                  </Text>
-                </Animatable.View>
-              )}
-
-              <View
-                style={[
-                  focusTwo === false
-                    ? styles.inputcontainerTwo
-                    : styles.inputcontainerTwoFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextName(text)}
-                  value={data.name}
-                  placeholder="Firstname"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  maxLength={20}
-                  /* onFocus={changeFocusTwo} */
-                />
-                {data.check_textInputChangeName ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
-                  >
-                    <AntDesign name="checkcircle" size={21} color="green" />
-                  </Animatable.View>
-                ) : null}
-              </View>
-
-              <View
-                style={[
-                  focusThree === false
-                    ? styles.inputcontainerThree
-                    : styles.inputcontainerThreeFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextSurname(text)}
-                  value={data.surname}
-                  placeholder="Lastname"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  maxLength={20}
-                  /* onFocus={changeFocusThree} */
-                />
-                {data.check_textInputChangeSurname ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
-                  >
-                    <AntDesign name="checkcircle" size={21} color="green" />
-                  </Animatable.View>
-                ) : null}
-              </View>
-              <View style={styles.buttoncontainer}>
-                <TouchableOpacity
-                  disabled={disableFirst}
+                <View
                   style={[
-                    styles.button,
-                    disableFirst === false
-                      ? styles.buttonDisable
-                      : styles.buttonAble,
+                    focus === "username"
+                      ? styles.inputcontainerOneFocus
+                      : styles.inputcontainerOne,
                   ]}
-                  onPress={buttonFirstPage}
                 >
-                  <Text style={styles.btncontent}>Continue</Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          ) : pages === "second" ? (
-            <>
-              <Text style={styles.title}>Keep telling us about you</Text>
-              <View
-                style={[
-                  focusOne === false
-                    ? styles.inputcontainerOne
-                    : styles.inputcontainerOneFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextBirthdate(text)}
-                  value={data.birthdate}
-                  placeholder="Birthdate MM/DD/YY"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  /* onFocus={changeFocusOne} */
-                />
-                {data.check_textInputChangeBirthdate ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
-                  >
-                    <AntDesign name="checkcircle" size={21} color="green" />
-                  </Animatable.View>
-                ) : null}
-              </View>
-              <View
-                style={[
-                  focusTwo === false
-                    ? styles.inputcontainerTwo
-                    : styles.inputcontainerTwoFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextPhone(text)}
-                  value={data.phone}
-                  keyboardType="number-pad"
-                  placeholder="Phone Number"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  maxLength={15}
-                  /* onFocus={changeFocusTwo} */
-                />
-                {data.check_textInputChangePhone ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
-                  >
-                    <AntDesign name="checkcircle" size={21} color="green" />
-                  </Animatable.View>
-                ) : null}
-              </View>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => onChangeTextUsername(text)}
+                    value={data.username}
+                    autoCapitalize="none"
+                    placeholder="Username"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    maxLength={40}
+                    onFocus={() => setFocus("username")}
+                  />
+                  {data.check_textInputChangeUsername ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
 
-              {data.isValidPhone ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsgPhone}>
-                    Phone number must be numbers and contain at least 8 digits
-                  </Text>
-                </Animatable.View>
-              )}
-
-              <View
-                style={[
-                  focusThree === false
-                    ? styles.inputcontainerThree
-                    : styles.inputcontainerThreeFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextState(text)}
-                  value={data.state}
-                  placeholder="State"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  /* onFocus={changeFocusThree} */
-                />
-                {data.check_textInputChangeState ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
-                  >
-                    <AntDesign name="checkcircle" size={21} color="green" />
+                {data.isValidUsername ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsgUsername}>
+                      Username must be at least 4 characters
+                    </Text>
                   </Animatable.View>
-                ) : null}
-              </View>
-              {data.isValidState ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsg}>Insert a valid state</Text>
-                </Animatable.View>
-              )}
-              <View style={styles.buttoncontainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={buttonSecondPage}
-                  disabled={disableSecond}
+                )}
+
+                <View
+                  style={[
+                    focus === "name"
+                      ? styles.inputcontainerTwoFocus
+                      : styles.inputcontainerTwo,
+                  ]}
                 >
-                  <Text style={styles.btncontent}>Continue</Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          ) : pages === "third" ? (
-            <>
-              <Text style={styles.title}>Where do you live?</Text>
-              <View
-                style={[
-                  focusOne === false
-                    ? styles.inputcontainerOne
-                    : styles.inputcontainerOneFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextCity(text)}
-                  value={data.city}
-                  placeholder="City"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  /* onFocus={changeFocusOne} */
-                />
-                {data.check_textInputChangeCity ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => onChangeTextName(text)}
+                    value={data.name}
+                    placeholder="Firstname"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    maxLength={20}
+                    onFocus={() => setFocus("name")}
+                  />
+                  {data.check_textInputChangeName ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
+
+                <View
+                  style={[
+                    focus === "surname"
+                      ? styles.inputcontainerThreeFocus
+                      : styles.inputcontainerThree,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => onChangeTextSurname(text)}
+                    value={data.surname}
+                    placeholder="Lastname"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    maxLength={20}
+                    onFocus={() => setFocus("surname")}
+                  />
+                  {data.check_textInputChangeSurname ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
+                <View style={styles.buttoncontainer}>
+                  <TouchableOpacity
+                    disabled={!disableFirst}
+                    style={[
+                      styles.button,
+                      disableFirst === false
+                        ? styles.buttonDisable
+                        : styles.buttonAble,
+                    ]}
+                    onPress={buttonFirstPage}
                   >
-                    <AntDesign name="checkcircle" size={21} color="green" />
+                    <Text style={styles.btncontent}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : pages === "second" ? (
+              <>
+                <Text style={styles.title}>Keep telling us about you</Text>
+                <View
+                  style={[
+                    focus === "birthdate"
+                      ? styles.inputcontainerOneFocus
+                      : styles.inputcontainerOne,
+                  ]}
+                >
+                  <TextInputMask
+                    type={"datetime"}
+                    options={{
+                      format: "MM/DD/YYYY",
+                    }}
+                    placeholder="Birthdate MM/DD/YYYY"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    value={data.birthdate}
+                    onChangeText={(text) => {
+                      setData({
+                        ...data, 
+                        birthdate: text,
+                      });
+                    }}
+                    style={styles.input}
+                    onFocus={() => setFocus("birthdate")}
+                    maxLength={10}
+                  />
+
+                  <TouchableOpacity onPress={showDatePicker}>
+                    <View style={styles.checkView}>
+                      <MaterialCommunityIcons
+                        name="calendar-month"
+                        size={24}
+                        color="black"
+                      />
+                    </View>
+                  </TouchableOpacity>
+
+                  <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode={mode}
+                    value={date}
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                  />
+                </View>
+                
+                <View
+                  style={[
+                    focus === "phone"
+                      ? styles.inputcontainerTwoFocus
+                      : styles.inputcontainerTwo,
+                  ]}
+                >
+                  <TextInputMask
+                    type={"cel-phone"}
+                    options={{
+                      maskType: "BRL",
+                      withDDD: true,
+                      dddMask: "(99) ",
+                    }}
+                    value={data.phone}
+                    onChangeText={(text) => onChangeTextPhone(text)}
+                    style={styles.input}
+                    placeholder="Phone Number"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    onFocus={() => setFocus("phone")}
+                  />
+                  {data.check_textInputChangePhone ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
+
+                {data.isValidPhone ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsgPhone}>
+                      Phone number must be numbers and contain at least 8 digits
+                    </Text>
                   </Animatable.View>
-                ) : null}
-              </View>
-              {data.isValidCity ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsg}>Insert a valid city</Text>
-                </Animatable.View>
-              )}
-              <View
-                style={[
-                  focusTwo === false
-                    ? styles.inputcontainerTwo
-                    : styles.inputcontainerTwoFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextAddress(text)}
-                  value={data.address}
-                  placeholder="Address"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  /* onFocus={changeFocusTwo} */
-                />
-                {data.check_textInputChangeAddress ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
+                )}
+                <View
+                  style={[
+                    focus === "dni"
+                      ? styles.inputcontainerThreeFocus
+                      : styles.inputcontainerThree,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.input}
+                    keyboardType={"phone-pad"}
+                    onChangeText={(text) => onChangeTextDni(text)}
+                    value={data.dni}
+                    placeholder="DNI"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    maxLength={8}
+                    onFocus={() => setFocus("dni")}
+                  />
+                  {data.check_textInputChangeDni ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
+                {data.isValidDni ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>
+                      DNI must contain 8 digits
+                    </Text>
+                  </Animatable.View>
+                )}
+
+                <View style={styles.buttoncontainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.button,
+                      disableSecond === false
+                        ? styles.buttonDisable
+                        : styles.buttonAble,
+                    ]}
+                    onPress={buttonSecondPage}
+                    disabled={!disableSecond}
                   >
-                    <AntDesign name="checkcircle" size={21} color="green" />
+                    <Text style={styles.btncontent}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : pages === "third" ? (
+              <>
+                <Text style={styles.title}>Where do you live?</Text>
+                <View
+                  style={[
+                    focus === "state"
+                      ? styles.inputcontainerThreeFocus
+                      : styles.inputcontainerThree,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => onChangeTextState(text)}
+                    value={data.state}
+                    placeholder="State"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    onFocus={() => setFocus("state")}
+                  />
+                  {data.check_textInputChangeState ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
+                {data.isValidState ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Insert a valid state</Text>
                   </Animatable.View>
-                ) : null}
-              </View>
-              {data.isValidPhone ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsg}>Insert a valid address</Text>
-                </Animatable.View>
-              )}
+                )}
+                <View
+                  style={[
+                    focus === "city"
+                      ? styles.inputcontainerOneFocus
+                      : styles.inputcontainerOne,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => onChangeTextCity(text)}
+                    value={data.city}
+                    placeholder="City"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    onFocus={() => setFocus("city")}
+                  />
+                  {data.check_textInputChangeCity ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
+                {data.isValidCity ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Insert a valid city</Text>
+                  </Animatable.View>
+                )}
+                <View
+                  style={[
+                    focus === "address"
+                      ? styles.inputcontainerTwoFocus
+                      : styles.inputcontainerTwo,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => onChangeTextAddress(text)}
+                    value={data.address}
+                    placeholder="Address"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    onFocus={() => setFocus("address")}
+                  />
+                  {data.check_textInputChangeAddress ? (
+                    <Animatable.View
+                      animation="bounceIn"
+                      style={styles.checkView}
+                    >
+                      <AntDesign name="checkcircle" size={21} color="green" />
+                    </Animatable.View>
+                  ) : null}
+                </View>
+                {data.isValidPhone ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Insert a valid address</Text>
+                  </Animatable.View>
+                )}
 
-              <View
-                style={[
-                  focusThree === false
-                    ? styles.inputcontainerThree
-                    : styles.inputcontainerThreeFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => onChangeTextDni(text)}
-                  value={data.dni}
-                  placeholder="DNI"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  maxLength={8}
-                  /* onFocus={changeFocusThree} */
-                />
-                {data.check_textInputChangeDni ? (
-                  <Animatable.View
-                    animation="bounceIn"
-                    style={styles.checkView}
+                <View style={styles.buttoncontainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.button,
+                      disableThird === false
+                        ? styles.buttonDisable
+                        : styles.buttonAble,
+                    ]}
+                    onPress={buttonThirdPage}
+                    disabled={!disableThird}
                   >
-                    <AntDesign name="checkcircle" size={21} color="green" />
+                    <Text style={styles.btncontent}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : pages === "fourth" ? (
+              <>
+                <Text style={styles.title}>And last but not least</Text>
+                <View
+                  style={[
+                    focus === "password"
+                      ? styles.inputcontainerPasswordFocus
+                      : styles.inputcontainerPassword,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => handlePassword(text)}
+                    value={data.password}
+                    textContentType="password"
+                    placeholder="Password"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    maxLength={40}
+                    secureTextEntry={
+                      data.secureTextEntryPassword ? true : false
+                    }
+                    onFocus={() => setFocus("password")}
+                  />
+                  <TouchableOpacity
+                    onPress={updateSecureTextEntryPassword}
+                    style={styles.eyeView}
+                  >
+                    {data.secureTextEntryPassword ? (
+                      <Feather name="eye-off" color="grey" size={22} />
+                    ) : (
+                      <Feather name="eye" color="grey" size={22} />
+                    )}
+                  </TouchableOpacity>
+                </View>
+
+                {data.isValidPassword ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsgPassword}>
+                      Password must contain at least 1 uppercase, 1 number and 8
+                      characters
+                    </Text>
                   </Animatable.View>
-                ) : null}
-              </View>
-              {data.isValidPhone ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsg}>DNI must contain 8 digits</Text>
-                </Animatable.View>
-              )}
+                )}
 
-              <View style={styles.buttoncontainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={buttonThirdPage}
-                  disabled={disableThird}
+                <View
+                  style={[
+                    focus === "confirmPassword"
+                      ? styles.inputcontainerConfirmPasswordFocus
+                      : styles.inputcontainerConfirmPassword,
+                  ]}
                 >
-                  <Text style={styles.btncontent}>Continue</Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          ) : pages === "fourth" ? (
-            <>
-              <Text style={styles.title}>And last but not least</Text>
-              <View
-                style={[
-                  focusOne === false
-                    ? styles.inputcontainerPassword
-                    : styles.inputcontainerPasswordFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => handlePassword(text)}
-                  value={data.password}
-                  textContentType="password"
-                  placeholder="Password"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  maxLength={40}
-                  secureTextEntry={data.secureTextEntryPassword ? true : false}
-                  /* onFocus={changeFocusOne} */
-                />
-                <TouchableOpacity
-                  onPress={updateSecureTextEntryPassword}
-                  style={styles.eyeView}
-                >
-                  {data.secureTextEntryPassword ? (
-                    <Feather name="eye-off" color="grey" size={22} />
-                  ) : (
-                    <Feather name="eye" color="grey" size={22} />
-                  )}
-                </TouchableOpacity>
-              </View>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => handlePasswordConfirm(text)}
+                    value={data.confirmPassword}
+                    textContentType="password"
+                    placeholder="Confirm Password"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    maxLength={40}
+                    secureTextEntry={
+                      data.secureTextEntryConfirmPassword ? true : false
+                    }
+                    onFocus={() => setFocus("confirmPassword")}
+                  />
+                  <TouchableOpacity
+                    onPress={updateSecureTextEntryConfirmPassword}
+                    style={styles.eyeView}
+                  >
+                    {data.secureTextEntryConfirmPassword ? (
+                      <Feather name="eye-off" color="grey" size={22} />
+                    ) : (
+                      <Feather name="eye" color="grey" size={22} />
+                    )}
+                  </TouchableOpacity>
+                </View>
+                {data.isValidConfirmPassword ? null : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>
+                      Passwords must be the same
+                    </Text>
+                  </Animatable.View>
+                )}
 
-              {data.isValidPassword ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsgPassword}>
-                    Password must contain at least 1 uppercase, 1 number and 8
-                    characters
-                  </Text>
-                </Animatable.View>
-              )}
-
-              <View
-                style={[
-                  focusTwo === false
-                    ? styles.inputcontainerConfirmPassword
-                    : styles.inputcontainerConfirmPasswordFocus,
-                ]}
-              >
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => handlePasswordConfirm(text)}
-                  value={data.confirmPassword}
-                  textContentType="password"
-                  placeholder="Confirm Password"
-                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                  maxLength={40}
-                  secureTextEntry={
-                    data.secureTextEntryConfirmPassword ? true : false
-                  }
-                  /* onFocus={changeFocusTwo} */
-                />
-                <TouchableOpacity
-                  onPress={updateSecureTextEntryConfirmPassword}
-                  style={styles.eyeView}
-                >
-                  {data.secureTextEntryConfirmPassword ? (
-                    <Feather name="eye-off" color="grey" size={22} />
-                  ) : (
-                    <Feather name="eye" color="grey" size={22} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              {data.isValidConfirmPassword ? null : (
-                <Animatable.View animation="fadeInLeft" duration={500}>
-                  <Text style={styles.errorMsg}>
-                    Passwords must be the same
-                  </Text>
-                </Animatable.View>
-              )}
-
-              <View style={styles.buttoncontainer}>
-                <TouchableOpacity
-                  style={styles.buttonSubmit}
-                  onPress={handleSubmit(onSubmit)}
-                >
-                  <Text style={styles.btncontent}>Confirm</Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          ) : null}
-        </Animatable.View>
-      </View>
+                <View style={styles.buttoncontainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.buttonSubmit,
+                      disabledSubmit === false
+                        ? styles.buttonDisable
+                        : styles.buttonAble,
+                    ]}
+                    disabled={!disabledSubmit}
+                    onPress={handleSubmit(onSubmit)}
+                  >
+                    <Text style={styles.btncontent}>Confirm</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : null}
+          </Animatable.View>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 };
@@ -1002,7 +1080,7 @@ const styles = StyleSheet.create({
     color: "#CC1833",
     fontSize: 15,
     fontFamily: "OpenSans_600SemiBold",
-    paddingLeft: 7, 
+    paddingLeft: 7,
   },
   errorMsgPhone: {
     color: "#CC1833",
@@ -1030,5 +1108,50 @@ const styles = StyleSheet.create({
   },
   eyeView: {
     right: 2,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    // alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "white",
+  },
+  textStyle: {
+    color: "#521886",
+    fontFamily: "OpenSans_700Bold",
+    textAlign: "center",
+    fontSize: 16,
+  },
+  modalText: {
+    marginBottom: 15,
+    fontSize: 18,
+    textAlign: "center",
+    fontFamily: "OpenSans_700Bold",
+  },
+  textInputStype: {
+    height: 50,
+    width: "100%",
+    borderColor: "gray",
+    borderWidth: 1,
   },
 });
