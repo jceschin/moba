@@ -2,7 +2,7 @@ import { ADD_TRANSACTION, GET_USER_TRANSACTIONS, CLEAR_LAST_TRANSACTION } from "
 
 const initialState = {
     transactions: [],
-    lastTransaction: null
+    lastTransaction: 0
 };
 
 export function transactionsReducer(state = initialState, action) {
@@ -20,7 +20,7 @@ export function transactionsReducer(state = initialState, action) {
         case CLEAR_LAST_TRANSACTION:
             return{
                 ...state,
-                lastTransaction: null
+                lastTransaction: 0
             }
         default:
             return state;

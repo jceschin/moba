@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import accounting from "accounting-js";
+import { mailToSender, mailToReciever } from "../../redux/actions/emailActions";
 
 // Fonts
 import {
@@ -50,7 +51,12 @@ const SendMoney = ({ route }) => {
   const lastTransfer = useSelector(
     (state) => state.transactions.lastTransaction
   );
-
+  const sender = useSelector((state) => state.user.info.email);
+  const reciever = useSelector((state) => state.contacts.selectedContact.email);
+  const amount = useSelector((state) => state.transactions.lastTransaction.amount );
+  const senderUsername = useSelector((state) => state.user.info.username );
+  const recieverUsername = useSelector((state) => state.contacts.selectedContact.username )
+  console.log( recieverUsername)
   // Params
   const {
     selectedContactUsername,
@@ -92,9 +98,31 @@ const SendMoney = ({ route }) => {
     }
   };
 
+  const remitente = {
+    email: sender,
+    amount: amount,
+    recieverUsername: recieverUsername,
+    senderUsername: senderUsername,
+  };
+  console.log(remitente)
+  const destinatario = {
+    email: reciever,
+    amount: amount,
+    senderUsername: senderUsername,
+    recieverUsername: recieverUsername
+  };
+
+
   const onSubmit = () => {
     makeTransfer();
   };
+
+  useEffect(() => {
+    if(amount > 0){
+      dispatch(mailToSender(remitente));
+      dispatch(mailToReciever(destinatario));
+    }
+  }, [amount]);
 
   function makeTransfer() {
     let transferData = {

@@ -10,6 +10,8 @@ import {
   CLEAN_EMAILORUSERNAME,
   CLEAN_USERNAME,
   CLEAR_VERIFY,
+  MAIL_TO_SENDER,
+  MAIL_TO_RECIEVER,
 } from "../types/emailTypes";
 
 const initialState = {
@@ -78,6 +80,15 @@ export function emailReducer(state = initialState, action) {
         ...state,
         verify: [],
       };
+    case MAIL_TO_SENDER:
+        return {
+          ...state,
+        };
+     case MAIL_TO_RECIEVER:
+          return {
+            ...state,
+          };
+        
 
     default:
       return state;

@@ -9,7 +9,8 @@ export const CLEAR_TOKEN = 'CLEAR_TOKEN';
 export const CLEAN_EMAILORUSERNAME = 'CLEAN_EMAILORUSERNAME';
 export const CLEAN_USERNAME = 'CLEAN_USERNAME';
 export const CLEAR_VERIFY = 'CLEAR_VERIFY';
-
+export const MAIL_TO_RECIEVER = "MAIL_TO_RECIEVER"
+export const MAIL_TO_SENDER = "MAIL_TO_SENDER"
 
 
 export const validarEmail = (res) => {
@@ -85,5 +86,17 @@ export const typecleanUsername = () => {
 export const typeClearVerify = () => {
   return {
     type: CLEAR_VERIFY,
+  };
+}
+
+export const typemailToSender = () => {
+  return {
+    type: MAIL_TO_SENDER,
+  };
+}
+
+export const typemailToReciever = () => {
+  return {
+    type: MAIL_TO_RECIEVER,
   };
 }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {apiEndpoint} from '../../const'
-import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken, typeUpdatePassword, typeClearPass, typeClearToken, typecleanEmailOrUsername, typecleanUsername, typeClearVerify } from "../types/emailTypes"
+import { validarEmail, typeVerifyEmail, typeUsernameRecovery, typePasswordRecovery, typeVerifyToken, typeUpdatePassword, typeClearPass, typeClearToken, typecleanEmailOrUsername, typecleanUsername, typeClearVerify,  typemailToSender, typemailToReciever } from "../types/emailTypes"
 
 //:::::Enviar email con código de validación
 export const enviarEmail = (state) => async(dispatch) => {
@@ -8,7 +8,29 @@ export const enviarEmail = (state) => async(dispatch) => {
         const result = await axios.post(`http://${apiEndpoint}/email/send-email`, state);
 
         dispatch(validarEmail(result.data));
+        console.log(result.data)
      
+    } catch (error) {
+        console.log(error)
+    };
+};
+
+//:::::Enviar email al sender
+export const mailToSender = (remitente) => async(dispatch) => {
+    try {
+        const result = await axios.post(`http://${apiEndpoint}/email/send-email-sender`, remitente);
+        dispatch (typemailToSender(result.data));
+        console.log(remitente)
+    } catch (error) {
+        console.log(error)
+    };
+};
+
+//:::::Enviar email al reciever
+export const mailToReciever = (destinatario) => async(dispatch) => {
+    try {
+        const result = await axios.post(`http://${apiEndpoint}/email/send-email-reciever`, destinatario);
+        dispatch (typemailToReciever(result.data));
     } catch (error) {
         console.log(error)
     };
