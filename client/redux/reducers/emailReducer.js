@@ -10,7 +10,9 @@ import {
   CLEAN_EMAILORUSERNAME,
   CLEAN_USERNAME,
   CLEAR_VERIFY,
-  EMAIL_TRANSFER_INVITATION
+  EMAIL_TRANSFER_INVITATION,
+  MAIL_TO_SENDER,
+  MAIL_TO_RECIEVER,
 } from "../types/emailTypes";
 
 const initialState = {
@@ -85,6 +87,14 @@ export function emailReducer(state = initialState, action) {
         ...state,
         unregistered: action.payload
       };
+      case MAIL_TO_SENDER:
+        return {
+          ...state,
+        };
+     case MAIL_TO_RECIEVER:
+          return {
+            ...state,
+          };
 
     default:
       return state;

@@ -13,6 +13,8 @@ import {
   typecleanUsername,
   typeClearVerify,
   emailTransferInvitation,
+  typemailToSender,
+  typemailToReciever,
 } from "../types/emailTypes";
 
 //:::::Enviar email con código de validación
@@ -119,6 +121,28 @@ export const sendEmailToRegister = (url) => {
       });
   };
 };
+
+//:::::Enviar email al sender
+export const mailToSender = (remitente) => async(dispatch) => {
+  try {
+      const result = await axios.post(`http://${apiEndpoint}/email/send-email-sender`, remitente);
+      dispatch (typemailToSender(result.data));
+      console.log(remitente)
+  } catch (error) {
+      console.log(error)
+  };
+};
+
+//:::::Enviar email al reciever
+export const mailToReciever = (destinatario) => async(dispatch) => {
+  try {
+      const result = await axios.post(`http://${apiEndpoint}/email/send-email-reciever`, destinatario);
+      dispatch (typemailToReciever(result.data));
+  } catch (error) {
+      console.log(error)
+  };
+};
+
 
 export const clearPass = () => {
   return (dispatch) => {
