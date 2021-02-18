@@ -44,9 +44,9 @@ const MyAccount = () => {
     OpenSans_700Bold,
     OpenSans_800ExtraBold,
   });
-  useEffect(() => {
+  /* useEffect(() => {
     getUser(loggedUser.username);
-  }, []);
+  }, []); */
 
   async function getUser(username) {
     let response = await axios.get(`http://${apiEndpoint}/users/${username}`);
@@ -88,18 +88,44 @@ const MyAccount = () => {
                 />
               </View>
               <TouchableOpacity>
-                <Text style={[styles.optionName, {top:7}]}>Contact Us</Text>
+                <Text style={[styles.optionName, { top: 7, right: 2 }]}>
+                  Contact Us
+                </Text>
               </TouchableOpacity>
             </View>
-            <View style={[styles.option, {top: -6}]}>
+            <View style={[styles.option, { top: -20 }]}>
               <View style={styles.optionContactUs}>
-              <MaterialIcons name="mobile-friendly" size={24} color="white" style={{top: 8, left: 7}} />
+                <MaterialIcons
+                  name="verified-user"
+                  size={24}
+                  color="white"
+                  style={{ top: 8, left: 7 }}
+                />
               </View>
-              <TouchableOpacity onPress={() => navigation.navigate("SendInvitation")}>
-                <Text style={[styles.optionName, {top:7}]}>Invite a friend</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("EditProfile")}
+              >
+                <Text style={[styles.optionName, { top: 7 }]}>Profile</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.option}>
+            <View style={[styles.option, { top: -40 }]}>
+              <View style={styles.optionContactUs}>
+                <MaterialIcons
+                  name="mobile-friendly"
+                  size={24}
+                  color="white"
+                  style={{ top: 8, left: 7 }}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("SendInvitation")}
+              >
+                <Text style={[styles.optionName, { top: 7 }]}>
+                  Invite a friend
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.option, { top: -50 }]}>
               <View style={styles.optionLogout}>
                 <AntDesign
                   name="poweroff"
@@ -113,10 +139,9 @@ const MyAccount = () => {
                   dispatch(logoutUserAction());
                 }}
               >
-                <Text style={[styles.optionName, {top: -2}]}>Log Out</Text>
+                <Text style={[styles.optionName, { top: -2 }]}>Log Out</Text>
               </TouchableOpacity>
             </View>
-            
           </View>
         </ScrollView>
         <HomeNavbar />
@@ -143,7 +168,7 @@ const styles = StyleSheet.create({
   greeting: {
     color: "white",
     fontSize: 24,
-    fontFamily: "OpenSans_800ExtraBold"
+    fontFamily: "OpenSans_800ExtraBold",
   },
   whiteContainer: {
     marginTop: 12,

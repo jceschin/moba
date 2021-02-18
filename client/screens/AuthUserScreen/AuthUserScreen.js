@@ -11,19 +11,20 @@ import SendMoneySuccess from "./SendMoneySuccess";
 import SendMoneyError from "./SendMoneyError";
 import Card from "./Card";
 import AddMoney from "./AddMoney";
-import Stats from './Stats'
-import TransferReceipt from './TransferReceipt';
+import Stats from "./Stats";
+import TransferReceipt from "./TransferReceipt";
 import AddContact from "./AddContact";
 import EditContact from "./EditContact";
-import SendInvitation from './SendInvitation'
-import SendMoneyUnregistered from "./SendMoneyUnregistered"
+import SendInvitation from "./SendInvitation";
+import SendMoneyUnregistered from "./SendMoneyUnregistered";
+import EditProfile from "./EditProfile";
 const Stack = createStackNavigator();
 
 export const Context = React.createContext({
   eye: null,
-  setEye: () => { },
+  setEye: () => {},
   toggle: null,
-  setToggle: () => { },
+  setToggle: () => {},
 });
 
 const RootStackScreen = ({ navigation }) => {
@@ -33,7 +34,6 @@ const RootStackScreen = ({ navigation }) => {
     <>
       <Context.Provider value={{ eye, setEye, toggle, setToggle }}>
         <Stack.Navigator headerMode="none">
-        
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
           <Stack.Screen name="MyAccount" component={MyAccount} />
@@ -50,7 +50,8 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="Stats" component={Stats} />
           <Stack.Screen name="TransferReceipt" component={TransferReceipt} />
           <Stack.Screen name="SendInvitation" component={SendInvitation} />
-          <Stack.Screen name="SendMoneyUnregistered" component={SendMoneyUnregistered} />
+          <Stack.Screen name="SendMoneyUnregistered" component={SendMoneyUnregistered}/>
+          <Stack.Screen name="EditProfile" component={EditProfile} />
         </Stack.Navigator>
       </Context.Provider>
     </>

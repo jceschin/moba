@@ -425,7 +425,7 @@ const RegisterPage = ({ navigation, route }) => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Validation")}>
               <AntDesign name="arrowleft" size={20} color="white" />
             </TouchableOpacity>
           </View>

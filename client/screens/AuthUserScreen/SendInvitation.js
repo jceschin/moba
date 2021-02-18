@@ -10,6 +10,7 @@ import {
   FlatList,
   ActivityIndicator,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { Feather, AntDesign, Ionicons, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -29,12 +30,15 @@ import SplashScreen2 from "../HomeScreen/SplashScreen2";
 import * as Linking from "expo-linking";
 import * as Contacts from "expo-contacts";
 import MyContact from "./MyContact";
+import * as SMS from "expo-sms";
+
 
 const SendInvitation = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.user);
-
+  const [contactNumber, setContactNumber] = useState("");
+  const [selectedContact, setSelectedContact] = useState("")
   const [data, setData] = useState({
     contacts: [],
     loading: false,
@@ -48,9 +52,6 @@ const SendInvitation = () => {
     OpenSans_700Bold,
     OpenSans_800ExtraBold,
   });
-  /* useEffect(() => {
-    getUser(loggedUser.username);
-  }, []); */
 
   const loadContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
@@ -65,20 +66,28 @@ const SendInvitation = () => {
     setData({
       contacts: data,
       inMemoryContacts: data,
-      loading: false, 
+      loading: false,
     });
   };
-  console.log("loading", data.loading);
+
   useEffect(() => {
-    setData({ loading: true });
     loadContacts();
   }, []);
 
-  /* console.log("contacts", data.contacts); */
- 
-  async function getUser(username) {
-    let response = await axios.get(`http://${apiEndpoint}/users/${username}`);
-    setUser(response.data);
+  const sendMessage = async () => {
+    const { result } = await SMS.sendSMSAsync(
+      contactNumber,
+      `Hi! Try MOBA, is the best banking app ever! http://${apiEndpoint}/email/redirect`,
+    );
+    console.log("result", result);
+  };
+
+  const sendWhatsapp = () => {
+    const message = <a href="whatsapp://send?text=The text to share!" data-action="share/whatsapp/share"></a>
+    const urlMessage = `http://${apiEndpoint}/email/redirect`
+    Linking.openURL(
+      `https://wa.me/?text=${urlMessage}` 
+    );
   }
 
   let redirectUrl = Linking.createURL(
@@ -107,17 +116,18 @@ const SendInvitation = () => {
   const searchContacts = (value) => {
     const filteredContacts = !data.inMemoryContacts
       ? null
-      : data.inMemoryContacts.filter((contact) => { 
+      : data.inMemoryContacts.filter((contact) => {
           let contactLowercase = contact.name.toLowerCase();
 
           let searchTermLowercase = value.toLowerCase();
- 
+
           return contactLowercase.indexOf(searchTermLowercase) > -1;
         });
     setData({ ...data, contacts: filteredContacts });
   };
 
-  console.log("in memory", data.contacts);
+  console.log("contact number", contactNumber);
+
   if (!fontsLoaded) {
     return <SplashScreen2 />;
   } else {
@@ -126,17 +136,23 @@ const SendInvitation = () => {
         <View style={styles.header}>
           <TouchableOpacity
             // style={{ position: "absolute" }}
-            onPress={shareUrl}
-          >
-            <Feather name="arrow-left" size={20} color="white" style={{top:21}}/>
+             onPress={() => navigation.navigate("MyAccount")}>
+            <Feather
+              name="arrow-left"
+              size={20}
+              color="white"
+              style={{ top: 21 }}
+            />
           </TouchableOpacity>
-          <View 
+          <View
             style={{
               flex: 1,
               alignItems: "center",
             }}
           >
-            <Text style={styles.greeting}>Invite your friends to MOBA family!</Text>
+            <Text style={styles.greeting}>
+              Invite your friends to MOBA family!
+            </Text>
           </View>
         </View>
 
@@ -162,7 +178,7 @@ const SendInvitation = () => {
                   color: "black",
                   fontFamily: "OpenSans_700Bold",
                   left: 20,
-                  width: "100%"
+                  width: "100%",
                 }}
                 onChangeText={(value) => searchContacts(value)}
               />
@@ -181,41 +197,50 @@ const SendInvitation = () => {
             ) : (
               contactsSorted.map((contact) => {
                 return (
-                  <View style={styles.wrapper}>
-                    <View style={styles.avatar}>
-                      <Text
+                  <TouchableOpacity
+                    onPress={ () => {
+                      setContactNumber(contact.phoneNumbers[0].digits);
+                      /* sendMessage(); */
+                      /* sendWhatsapp(); */
+                    }}
+                  >
+                    <View style={styles.wrapper}>
+                      <View style={styles.avatar}>
+                        <Text
+                          style={{
+                            color: "white",
+                            fontFamily: "OpenSans_700Bold",
+                            fontSize: 18,
+                          }}
+                        >
+                          {contact.name.slice(0, 1).toUpperCase()}
+                        </Text>
+                      </View>
+                      <View
                         style={{
-                          color: "white",
-                          fontFamily: "OpenSans_700Bold",
-                          fontSize: 18,
+                          justifyContent: "center",
+                          height: 70,
                         }}
                       >
-                        {contact.name.slice(0, 1).toUpperCase()}
-                      </Text>
+                        <Text style={[styles.textList, { fontSize: 18 }]}>
+                          {contact.name}
+                        </Text>
+
+                        <Text
+                          style={[
+                            styles.textList,
+                            { color: "rgba(0, 0, 0, 0.4)" },
+                          ]}
+                        >
+                          {!contact.phoneNumbers
+                            ? null
+                            : contact.phoneNumbers.map(
+                                (numbers) => numbers.digits
+                              )}
+                        </Text>
+                      </View>
                     </View>
-                    <View
-                      style={{
-                        justifyContent: "center",
-                        height: 70,
-                      }}
-                    >
-                      <Text style={[styles.textList, { fontSize: 18 }]}>
-                        {contact.name}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.textList,
-                          { color: "rgba(0, 0, 0, 0.4)" },
-                        ]}
-                      >
-                        {!contact.phoneNumbers
-                          ? null
-                          : contact.phoneNumbers.map(
-                              (numbers) => numbers.digits
-                            )}
-                      </Text>
-                    </View>
-                  </View>
+                  </TouchableOpacity>
                 );
               })
             )}
