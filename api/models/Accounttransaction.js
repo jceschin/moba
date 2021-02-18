@@ -20,8 +20,8 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         interoperation:{
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
+            type: DataTypes.STRING,
+            defaultValue: null,
         },
 
         old_balance: {

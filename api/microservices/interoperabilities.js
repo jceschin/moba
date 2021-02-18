@@ -35,8 +35,8 @@ server.get("/:cvu", (req, res) => {
     }
     trData = tr.data;
     Account.findOne({
-      include:[{model:User}],
-      where: { cvu: tr.data.cvu_receiver},
+      include: [{ model: User }],
+      where: { cvu: tr.data.cvu_receiver },
     })
       .then((acc) => {
         if (!acc) {
@@ -48,15 +48,17 @@ server.get("/:cvu", (req, res) => {
           });
           return res.status(404).send("Invalid cvu");
         }
-        console.log(acc)
+        console.log(acc);
         acc.balance = parseInt(acc.balance) + parseInt(trData.amount);
         acc.save().then((acc) => {
           console.log(acc.balance);
           account = acc;
+          const user = `${account.user.dataValues.name} ${account.user.dataValues.surname}`;
           Transaction.create({
             amount: trData.amount,
             transaction_type: "transfer",
             status: "confirmed",
+            interoperation: true,
           }).then((tr) => {
             Accounttransaction.create({
               cvu: account.cvu,
@@ -65,16 +67,17 @@ server.get("/:cvu", (req, res) => {
               old_balance: parseInt(acc.balance) - parseInt(trData.amount),
               new_balance: acc.balance,
               status: "confirmed",
-              interoperation: true
+              interoperation: trData.name_sender,
             }).then(() => {
-              axios.post("https://intermoba.herokuapp.com/changestatus", {
-                cvu: account.cvu,
-                status: "confirmed",
-                id: trData.id,
-              });
+              axios
+                .post("https://intermoba.herokuapp.com/changestatus", {
+                  user,
+                  cvu: account.cvu,
+                  status: "confirmed",
+                  id: trData.id,
+                })
+                .then((tr) => res.send(tr.data));
             });
-
-            res.send(tr);
           });
         });
       })
@@ -86,6 +89,7 @@ server.get("/:cvu", (req, res) => {
 server.post("/send/:cvu", (req, res) => {
   const { cvu } = req.params;
   const { amount, description, contactId } = req.body;
+  var transf;
   if (!amount || typeof parseInt(amount) !== "number" || parseInt(amount) < 0) {
     return res.status(400).send("Invalid amount");
   }
@@ -98,6 +102,7 @@ server.post("/send/:cvu", (req, res) => {
       if (!transf.data) {
         return res.send("Somebody went wrong.");
       }
+      transf = transf.data;
       Account.findOne({
         where: { cvu: contactId },
       })
@@ -114,6 +119,7 @@ server.post("/send/:cvu", (req, res) => {
               transaction_type: "transfer",
               status: "confirmed",
               description,
+              interoperation: true,
             }).then((tr) => {
               Accounttransaction.create({
                 cvu: account.cvu,
@@ -122,7 +128,7 @@ server.post("/send/:cvu", (req, res) => {
                 old_balance: parseInt(acc.balance) + parseInt(amount),
                 new_balance: acc.balance,
                 status: "confirmed",
-                interoperation: true
+                interoperation: transf.name,
               });
 
               res.send(tr);

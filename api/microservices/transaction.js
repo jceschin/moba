@@ -318,11 +318,26 @@ server.get("/transaction/users/:dni_email", (req, res, next) => {
             payload.description = dat.description;
             payload.date = dat.createdAt;
             if (dat.transaction_type == "transfer") {
-              payload.type = "transfer";
-              payload[dat.accounts[0].accounttransaction.type] =
-                dat.accounts[0].user.username;
-              payload[dat.accounts[1].accounttransaction.type] =
-                dat.accounts[1].user.username;
+              if(!dat.interoperation){
+                payload.type = "transfer";
+                payload[dat.accounts[0].accounttransaction.type] =
+                  dat.accounts[0].user.username;
+                payload[dat.accounts[1].accounttransaction.type] =
+                  dat.accounts[1].user.username;
+              }
+              else{
+                var interop = dat.accounts[0]
+                console.log('interop', interop)
+                payload.type = "interoperation"
+                if(interop.accounttransaction.type === 'receiver'){
+                  payload.sender = interop.accounttransaction.interoperation
+                  payload.receiver = interop.user.username
+                }
+                else{
+                  payload.sender = interop.user.username
+                  payload.receiver = interop.accounttransaction.interoperation
+                }
+              }
             } else {
               payload.type = "recharge";
             }
