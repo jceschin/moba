@@ -13,8 +13,12 @@ import { FontAwesome } from "@expo/vector-icons";
 import HomeNavbar from "./HomeNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserInfo } from "../../redux/actions/user";
-import { clearLastTransaction, getUserTransactions } from "../../redux/actions/transactionActions";
-
+import {
+  checkInterappTransactions,
+  clearLastTransaction,
+  getUserTransactions,
+} from "../../redux/actions/transactionActions";
+import { Ionicons } from "@expo/vector-icons";
 // Fonts
 import {
   useFonts,
@@ -45,10 +49,14 @@ const Homepage = () => {
     if (transactions.length > 0) {
       var sortedTransactions = transactions.map((t) => {
         var data;
+
         if (t.sender === loggedUser.username) {
           data = (
             <Text style={styles.movType}>
               Sent US${t.amount} to {t.receiver}
+              {t.type === "interoperation" && (
+                <Text>{"\n"}(Bank Tree user)</Text>
+              )}
             </Text>
           );
         } else {
@@ -58,6 +66,9 @@ const Homepage = () => {
             ) : (
               <Text style={styles.movType}>
                 Received US${t.amount} from {t.sender}
+                {t.type === "interoperation" && (
+                  <Text>{"\n"}(Bank Tree user)</Text>
+                )}
               </Text>
             );
         }
@@ -97,7 +108,13 @@ const Homepage = () => {
   } else {
     return (
       <View style={styles.colorContainer}>
-        <ScrollView contentContainerStyle={transactions ? styles.scrollHeightTransactions : styles.scrollHeightNoTransactions}>
+        <ScrollView
+          contentContainerStyle={
+            transactions
+              ? styles.scrollHeightTransactions
+              : styles.scrollHeightNoTransactions
+          }
+        >
           <View style={styles.mainContainer}>
             <View style={styles.upperContainer}>
               <Text style={styles.accountOwner}>
@@ -127,7 +144,9 @@ const Homepage = () => {
                   </TouchableOpacity>
                 </View>
                 <View>
-                  <TouchableOpacity onPress={() => navigation.navigate("Stats")}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Stats")}
+                  >
                     <MaterialIcons
                       name="compare-arrows"
                       size={24}
@@ -155,6 +174,19 @@ const Homepage = () => {
 
             <View style={styles.movsContainer}>
               <Text style={styles.movsHeader}>Last Movements</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  dispatch(
+                    checkInterappTransactions(
+                      loggedUser.info.account.cvu,
+                      loggedUser.username,
+                      loggedUser.data.data.token
+                    )
+                  )
+                }
+              >
+                <Ionicons name="refresh" size={24} color="black" />
+              </TouchableOpacity>
               {transactions && renderTransactions()}
             </View>
           </View>
@@ -176,11 +208,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollHeightTransactions:{
-    height: 2000
+  scrollHeightTransactions: {
+    height: 2000,
   },
-  scrollHeightNoTransactions:{
-    height: "100%"
+  scrollHeightNoTransactions: {
+    height: "100%",
   },
   mainContainer: {
     display: "flex",
@@ -241,7 +273,7 @@ const styles = StyleSheet.create({
   },
   mov: {
     marginTop: 15,
-    marginBottom: 15
+    marginBottom: 15,
   },
   movDate: {
     fontSize: 18,
@@ -249,7 +281,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontFamily: "OpenSans_700Bold",
     color: "black",
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   movDateContainer: {
     borderBottomWidth: 1,
