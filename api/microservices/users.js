@@ -74,7 +74,7 @@ server.get("/users/:dni_email", (req, res) => {
 
 // Update Users from dni
 
-server.put("/users/:dni", Verifytoken, (req, res) => {
+server.put("/users/:dni", /* Verifytoken,  */(req, res) => {
   User.update(
     req.body,
 
