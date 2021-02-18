@@ -26,9 +26,7 @@ server.use(cors());
 
 server.get("/statistics/:cvu/:dateFrom/:dateTo", (req, res) => {
   let dateFrom = req.params.dateFrom;
-  let dateTo =
-    req.params.dateTo.substring(0, req.params.dateTo.length - 1) +
-    (parseInt(req.params.dateTo[req.params.dateTo.length - 1]) + 1);
+  let dateTo = req.params.dateTo
 
   let statistics = {
     charger: 0,
@@ -89,12 +87,12 @@ server.get("/statistics/:cvu/:dateFrom/:dateTo", (req, res) => {
 //get stats for a lineal graph
 server.get("/statistics/lineal/:cvu/:dateFrom/:dateTo", (req, res) => {
   let dateFrom = req.params.dateFrom;
-  let dateTo =
-    req.params.dateTo.substring(0, req.params.dateTo.length - 1) +
-    (parseInt(req.params.dateTo[req.params.dateTo.length - 1]) + 1);
+  let dateTo = req.params.dateTo
+
 
   let formatDateFrom = new Date(dateFrom);
   let formatDateTo = new Date(dateTo);
+
   const diffTime = Math.abs(formatDateTo - formatDateFrom);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   console.log(diffDays);
