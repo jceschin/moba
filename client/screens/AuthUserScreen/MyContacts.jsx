@@ -14,6 +14,7 @@ import {
   AntDesign,
   MaterialCommunityIcons,
   Foundation,
+  FontAwesome5
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from "./MyContact";
@@ -73,7 +74,7 @@ const MyContacts = () => {
                 alignItems: "center"
               }}
             >
-              <Text style={styles.greeting}>Who do you want to send?</Text>
+              <Text style={styles.greeting}>Who do you want to send money?</Text>
             </View>
           </View>
           <View
@@ -98,15 +99,20 @@ const MyContacts = () => {
           >
             <View style={styles.action}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("AddContact")}
+                onPress={() => navigation.navigate("SendMoneyUnregistered")}
                 style={{
                   backgroundColor: "#38046C",
                   padding: 10,
                   borderRadius: 10,
+                  height: 45, 
+                  width: 50,
+                  alignItems: "center",
+                  justifyContent: "center"
                 }}
               >
-                <Ionicons name="person-add-outline" size={24} color="white" />
+                <FontAwesome5 name="money-bill" size={20} color="white" />
               </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("SendMoneyUnregistered")}>
               <View
                 style={{
                   padding: 10
@@ -114,13 +120,46 @@ const MyContacts = () => {
               >
                 <Text
                   style={{
-                    fontStyle: "normal",
+                    fontSize: "14",
+                    fontFamily: "OpenSans_700Bold",
+                  }}
+                >
+                  New Transfer 
+                </Text>
+              </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.action}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AddContact")}
+                style={{
+                  backgroundColor: "#38046C",
+                  padding: 10,
+                  borderRadius: 10,
+                  height: 45, 
+                  width: 50,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <Ionicons name="person-add-outline" size={24} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("AddContact")}>
+              <View
+                style={{
+                  padding: 10
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: "14",
                     fontFamily: "OpenSans_700Bold",
                   }}
                 >
                   New Contact
                 </Text>
               </View>
+              </TouchableOpacity>
             </View>
           </View>
           
@@ -179,7 +218,7 @@ const styles = StyleSheet.create({
   },
   greeting: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "OpenSans_800ExtraBold"
   },
   action: {
@@ -209,6 +248,7 @@ const styles = StyleSheet.create({
   notFound: {
     fontSize: 18,
     padding: 20,
+    color: "black"
   },
   contentContainer: {
     paddingVertical: 20,

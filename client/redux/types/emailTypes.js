@@ -9,6 +9,7 @@ export const CLEAR_TOKEN = 'CLEAR_TOKEN';
 export const CLEAN_EMAILORUSERNAME = 'CLEAN_EMAILORUSERNAME';
 export const CLEAN_USERNAME = 'CLEAN_USERNAME';
 export const CLEAR_VERIFY = 'CLEAR_VERIFY';
+export const EMAIL_TRANSFER_INVITATION = "EMAIL_TRANSFER_INVITATION"
 
 
 
@@ -87,3 +88,11 @@ export const typeClearVerify = () => {
     type: CLEAR_VERIFY,
   };
 }
+
+export const emailTransferInvitation = () => {
+  return {
+    type: EMAIL_TRANSFER_INVITATION,
+    payload: []
+  };
+}
+

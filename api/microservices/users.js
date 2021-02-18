@@ -32,7 +32,7 @@ server.use((req, res, next) => {
 
 //Get all Users
 
-server.get("/users", Verifytoken, isAdmin, (req, res) => {
+server.get("/users", Verifytoken, /* isAdmin,  */(req, res) => {
   User.findAll({
     include: [Account],
   })

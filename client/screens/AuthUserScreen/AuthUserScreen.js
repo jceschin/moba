@@ -15,6 +15,8 @@ import Stats from './Stats'
 import TransferReceipt from './TransferReceipt';
 import AddContact from "./AddContact";
 import EditContact from "./EditContact";
+import SendInvitation from './SendInvitation'
+import SendMoneyUnregistered from "./SendMoneyUnregistered"
 const Stack = createStackNavigator();
 
 export const Context = React.createContext({
@@ -31,6 +33,7 @@ const RootStackScreen = ({ navigation }) => {
     <>
       <Context.Provider value={{ eye, setEye, toggle, setToggle }}>
         <Stack.Navigator headerMode="none">
+        
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
           <Stack.Screen name="MyAccount" component={MyAccount} />
@@ -46,7 +49,8 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="Card" component={Card} />
           <Stack.Screen name="Stats" component={Stats} />
           <Stack.Screen name="TransferReceipt" component={TransferReceipt} />
-          
+          <Stack.Screen name="SendInvitation" component={SendInvitation} />
+          <Stack.Screen name="SendMoneyUnregistered" component={SendMoneyUnregistered} />
         </Stack.Navigator>
       </Context.Provider>
     </>
