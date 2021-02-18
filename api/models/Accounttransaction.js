@@ -15,9 +15,13 @@ module.exports = (sequelize) => {
         },
 
         type: {
-            type: DataTypes.ENUM("sender", "receiver", "charge"),
+            type: DataTypes.ENUM("sender", "receiver", "charge",),
             defaultValue: "charge",
             allowNull: false
+        },
+        interoperation:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         },
 
         old_balance: {

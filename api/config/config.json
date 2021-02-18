@@ -1,8 +1,8 @@
 {
   "development": {
 
-    "username": "postgres",
-    "password": "1234", 
+    "username": "facu",
+    "password": "2966", 
     "database": "mobadb",
     "host": "127.0.0.1", 
     "dialect": "postgres"
