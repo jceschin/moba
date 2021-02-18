@@ -183,13 +183,7 @@ const Stats = ({ navigation }) => {
   };
 
   useEffect(() => {
-    dispatch(
-      getLinealUserStats(
-        loggedUser.info.account.cvu,
-        "2021-01-06",
-        "2021-02-10"
-      )
-    );
+    lastMonth()
     dispatch(
       getUserStats(loggedUser.info.account.cvu, "2021-01-06", "2021-02-10")
     );

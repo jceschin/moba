@@ -32,6 +32,16 @@ export function getUserTransactions(username, token) {
   };
 }
 
+//Check interapp's transactions
+export function checkInterappTransactions(cvu, username, token){
+  return (dispatch) => {
+    return axios.get(`http://${apiEndpoint}/interoperabilities/${cvu}`).then((data) => {
+      console.log(data)
+      return dispatch(getUserTransactions(username,token))
+    })
+  }
+}
+
 export function clearLastTransaction() {
   return async (dispatch) => {
     dispatch(clearTransaction());
