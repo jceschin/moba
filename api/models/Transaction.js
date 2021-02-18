@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
 
         status: {
             type: DataTypes.ENUM("processing", "cancelled", "confirmed"),
+        },
+        interoperation:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     })
 };
