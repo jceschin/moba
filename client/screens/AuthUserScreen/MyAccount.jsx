@@ -91,6 +91,14 @@ const MyAccount = () => {
                 <Text style={[styles.optionName, {top:7}]}>Contact Us</Text>
               </TouchableOpacity>
             </View>
+            <View style={[styles.option, {top: -6}]}>
+              <View style={styles.optionContactUs}>
+              <MaterialIcons name="mobile-friendly" size={24} color="white" style={{top: 8, left: 7}} />
+              </View>
+              <TouchableOpacity onPress={() => navigation.navigate("SendInvitation")}>
+                <Text style={[styles.optionName, {top:7}]}>Invite a friend</Text>
+              </TouchableOpacity>
+            </View>
             <View style={styles.option}>
               <View style={styles.optionLogout}>
                 <AntDesign
@@ -108,6 +116,7 @@ const MyAccount = () => {
                 <Text style={[styles.optionName, {top: -2}]}>Log Out</Text>
               </TouchableOpacity>
             </View>
+            
           </View>
         </ScrollView>
         <HomeNavbar />
