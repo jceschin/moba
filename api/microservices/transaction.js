@@ -327,7 +327,6 @@ server.get("/transaction/users/:dni_email", (req, res, next) => {
               }
               else{
                 var interop = dat.accounts[0]
-                console.log('interop', interop)
                 payload.type = "interoperation"
                 if(interop.accounttransaction.type === 'receiver'){
                   payload.sender = interop.accounttransaction.interoperation
