@@ -18,6 +18,7 @@ import EditContact from "./EditContact";
 import SendInvitation from "./SendInvitation";
 import SendMoneyUnregistered from "./SendMoneyUnregistered";
 import EditProfile from "./EditProfile";
+import TransferTreeBank from './TransferTreeBank'
 const Stack = createStackNavigator();
 
 export const Context = React.createContext({
@@ -25,14 +26,17 @@ export const Context = React.createContext({
   setEye: () => {},
   toggle: null,
   setToggle: () => {},
+  colorIcon: null,
+  seColorIcon: () => {}
 });
 
 const RootStackScreen = ({ navigation }) => {
   const [eye, setEye] = React.useState(false);
   const [toggle, setToggle] = React.useState(false);
+  const [colorIcon, setColorIcon] = React.useState("");
   return (
     <>
-      <Context.Provider value={{ eye, setEye, toggle, setToggle }}>
+      <Context.Provider value={{ eye, setEye, toggle, setToggle, colorIcon, setColorIcon }}>
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
@@ -52,6 +56,7 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="SendInvitation" component={SendInvitation} />
           <Stack.Screen name="SendMoneyUnregistered" component={SendMoneyUnregistered}/>
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="TransferTreeBank" component={TransferTreeBank} />
         </Stack.Navigator>
       </Context.Provider>
     </>

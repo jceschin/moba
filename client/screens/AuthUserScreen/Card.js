@@ -1,11 +1,6 @@
-import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity
-} from "react-native";
-import Clipboard from 'expo-clipboard';
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, Switch } from "react-native";
+import Clipboard from "expo-clipboard";
 import { useSelector } from "react-redux";
 import { Ionicons, Fontisto, Feather, Entypo } from "@expo/vector-icons";
 import CreditCard from "./CardStyle";
@@ -21,33 +16,44 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
+
 export default function Card() {
-  const { eye, setEye, toggle, setToggle } = React.useContext(Context);
+  const { eye, setEye, toggle, setToggle, setColorIcon } = React.useContext(
+    Context
+  );
+  const [disabled, setDisabled] = useState(false);
   let cardInfo = useSelector((state) => state.user.info.account.card_id);
   let userInfo = useSelector((state) => state.user.info);
-
-  const userName = userInfo.name.concat(' ', userInfo.surname);
+  const userName = userInfo.name.concat(" ", userInfo.surname);
 
   const copyToClipboard = () => {
-    Clipboard.setString(cardInfo.toString())
-    alert('Copy to clipboard')
-  }
+    Clipboard.setString(cardInfo.toString());
+    alert("Copy to clipboard");
+  };
 
   const copyUsernameToClipboard = () => {
-    Clipboard.setString(userName.toString())
-    alert('Copy to clipboard')
-  }
+    Clipboard.setString(userName.toString());
+    alert("Copy to clipboard");
+  };
 
   const handleToggle = () => {
     toggle === false
       ? setToggle(true)
       : toggle === true
-        ? setToggle(false)
-        : null;
+      ? setToggle(false)
+      : null;
   };
 
   const handleEye = () => {
     eye === false ? setEye(true) : eye === true ? setEye(false) : null;
+  };
+
+  const setDisableButtons = () => {
+    if (toggle === false) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   };
 
   let [fontsLoaded] = useFonts({
@@ -58,8 +64,12 @@ export default function Card() {
     OpenSans_800ExtraBold,
   });
 
-  if(!fontsLoaded){
-    return <SplashScreen2 />
+  React.useEffect(() => {
+    setColorIcon("creditCard");
+  }, []);
+
+  if (!fontsLoaded) {
+    return <SplashScreen2 />;
   } else {
     return (
       <View style={styles.mainContainer}>
@@ -75,47 +85,74 @@ export default function Card() {
               <View style={styles.eyeIcon}>
                 <TouchableOpacity onPress={handleEye}>
                   {toggle === true ? (
-                    <Ionicons name="eye-sharp" size={28} color="black" style={{ left: 7, top: 5 }} />
+                    <Ionicons
+                      name="eye-sharp"
+                      size={28}
+                      color="black"
+                      style={{ left: 7, top: 5 }}
+                    />
                   ) : (
-                      <Ionicons name="eye-off-sharp" size={28} color="black" style={{ left: 7, top: 5 }} />
-                    )}
+                    <Ionicons
+                      name="eye-off-sharp"
+                      size={28}
+                      color="black"
+                      style={{ left: 7, top: 5 }}
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
               <View style={styles.movsHeader}>
-                <Text style={{ fontSize: 18, fontFamily: "OpenSans_700Bold", right: 4 }}>See Card Info</Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "OpenSans_700Bold",
+                    right: 4,
+                  }}
+                >
+                  See Card Info
+                </Text>
               </View>
               <View style={styles.toggleButton}>
-                <TouchableOpacity onPress={handleToggle}>
-                  {toggle === true ? (
-                    <Fontisto
-                      name="toggle-on"
-                      size={31}
-                      color="#499174"
-                      style={{ right: 15 }}
-                    />
-                  ) : (
-                      <Fontisto
-                        name="toggle-off"
-                        size={31}
-                        color="black"
-                        style={{ right: 15 }}
-                      />
-                    )}
-                </TouchableOpacity>
+                <Switch value={toggle} onValueChange={handleToggle} />
               </View>
             </View>
           </View>
 
           <View style={styles.subBottomContainer}>
             <View style={styles.iconsColumn}>
-              <View style={styles.copyName}>
-                <Feather name="copy" size={28} color="black" style={{ left: 6, top: 5 }} onPress={() => { copyUsernameToClipboard() }} />
-                <Text style={styles.textCopyCardName}>Copy Name</Text>
-              </View>
-              <View style={styles.copyNumberCard}>
-                <Feather name="copy" size={28} color="black" style={{ left: 6, top: 5 }} onPress={() => { copyToClipboard() }} />
-                <Text style={styles.textCopyCardNumber}>Copy Card Number</Text>
-              </View>
+              <TouchableOpacity
+                onPress={copyUsernameToClipboard}
+                disabled={toggle === false ? true : false}
+                style={{top: 29}}
+              >
+                <View style={styles.copyName}>
+                  <Feather
+                    name="copy"
+                    size={28}
+                    color="black"
+                    style={{ left: 6, top: 5 }}
+                  />
+                  <Text style={[styles.textCopyCardName, {color: toggle === false ? "rgba(167, 167, 167, 0.83)" : "black"}]}>Copy Name</Text>
+                </View>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                onPress={copyToClipboard}
+                disabled={toggle === false ? true : false}
+                style={{top: 44}}
+              >
+                <View style={styles.copyNumberCard}>
+                  <Feather
+                    name="copy"
+                    size={28}
+                    color="black"
+                    style={{ left: 6, top: 5 }}
+                  />
+                  <Text style={[styles.textCopyCardNumber, {color: toggle === false ? "rgba(167, 167, 167, 0.83)" : "black"}]}>
+                    Copy Card Number
+                  </Text>
+                </View>
+              </TouchableOpacity>
               {/* <View style={styles.reportCard}>
                 <Entypo name="lock" size={28} color="black" style={{ left: 6, top: 5 }} />
                 <Text style={styles.textReportCard}>Report Card</Text>
@@ -134,14 +171,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    top: 40
+    top: 40,
   },
   mainContainer: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     backgroundColor: "rgba(125, 79, 167, 0.46)",
-    flex: 1
+    flex: 1,
   },
   movsContainer: {
     top: 70,
@@ -149,7 +186,7 @@ const styles = StyleSheet.create({
     height: 464,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   bottomContainer: {
     borderWidth: 1,
@@ -169,7 +206,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(229, 229, 229, 1)",
     width: 40,
     height: 40,
-    borderRadius: 11
+    borderRadius: 11,
   },
   iconsRow: {
     flex: 2,
@@ -181,7 +218,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   toggleButton: {
-    left: 185,
+    left: 130,
   },
   subBottomContainer: {
     borderWidth: 1,
@@ -195,12 +232,12 @@ const styles = StyleSheet.create({
   },
   copyName: {
     left: 23,
-    top: 29,
+    /* top: 29, */
     flexDirection: "row",
     backgroundColor: "rgba(229, 229, 229, 1)",
     width: 40,
     height: 40,
-    borderRadius: 11
+    borderRadius: 11,
   },
   iconCopyView: {
     backgroundColor: "rgba(229, 229, 229, 1)",
@@ -209,12 +246,18 @@ const styles = StyleSheet.create({
   },
   copyNumberCard: {
     left: 23,
-    top: 44,
+    /* top: 64, */
     flexDirection: "row",
     backgroundColor: "rgba(229, 229, 229, 1)",
     width: 40,
     height: 40,
-    borderRadius: 11
+    borderRadius: 11,
+  },
+  colorNotDisabled:{
+    color: "black"
+  },
+  colorDisabled:{
+    color: "rgba(167, 167, 167, 0.83)",
   },
   reportCard: {
     left: 23,
@@ -223,7 +266,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(229, 229, 229, 1)",
     width: 40,
     height: 40,
-    borderRadius: 11
+    borderRadius: 11,
   },
   textCopyCardName: {
     marginLeft: 14,
@@ -231,7 +274,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     width: 113,
     left: 8,
-    fontFamily: "OpenSans_700Bold"
+    fontFamily: "OpenSans_700Bold",
   },
   textCopyCardNumber: {
     marginLeft: 14,
@@ -239,7 +282,7 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     width: 179,
     left: 8,
-    fontFamily: "OpenSans_700Bold"
+    fontFamily: "OpenSans_700Bold",
   },
   textReportCard: {
     marginLeft: 14,
@@ -247,9 +290,9 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     width: 113,
     left: 8,
-    fontFamily: "OpenSans_700Bold"
+    fontFamily: "OpenSans_700Bold",
   },
   upperContainer: {
-    height: 267
-  }
+    height: 267,
+  },
 });

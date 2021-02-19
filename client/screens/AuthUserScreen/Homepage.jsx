@@ -30,6 +30,8 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
+import { Context } from "./AuthUserScreen";
+
 const Homepage = () => {
   // Fonts
   let [fontsLoaded] = useFonts({
@@ -39,11 +41,11 @@ const Homepage = () => {
     OpenSans_700Bold,
     OpenSans_800ExtraBold,
   });
-
   const navigation = useNavigation();
   const loggedUser = useSelector((state) => state.user);
   const transactions = useSelector((state) => state.user.transactions);
   const dispatch = useDispatch();
+  const { setColorIcon } = React.useContext(Context);
 
   const renderTransactions = () => {
     if (transactions.length > 0) {
@@ -101,6 +103,10 @@ const Homepage = () => {
     );
     dispatch(getUserInfo(loggedUser.username));
   }, [transactions && transactions.length]);
+
+  useEffect(() => {
+    setColorIcon("homePage")
+  },[]) 
 
   //
   if (!fontsLoaded) {
