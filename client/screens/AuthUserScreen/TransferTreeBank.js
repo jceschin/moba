@@ -10,6 +10,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -25,6 +26,7 @@ import SplashScreen2 from "../HomeScreen/SplashScreen2";
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import accounting from "accounting-js";
+import { sendInterappTransaction } from "../../redux/actions/transactionActions";
 
 const RegisterPage = ({ navigation, route }) => {
   const { handleSubmit, control, errors } = useForm();
@@ -33,7 +35,7 @@ const RegisterPage = ({ navigation, route }) => {
   const [data, setData] = useState({
     amount: 0,
     description: "",
-    contactId: "",
+    cvuReceiver: "",
     cvuSender: loggedUser.info.account.cvu,
   });
 
@@ -52,15 +54,7 @@ const RegisterPage = ({ navigation, route }) => {
     return accounting.formatMoney(parseFloat(value));
   };
 
-  useEffect(() => {
-    if (lastTransfer) {
-      if (lastTransfer.status === "confirmed") {
-        navigation.navigate("SendMoneySuccess");
-      } else {
-        navigation.navigate("SendMoneyError");
-      }
-    }
-  }, [lastTransfer]);
+
 
   const lastTransfer = useSelector(
     (state) => state.transactions.lastTransaction
@@ -71,7 +65,7 @@ const RegisterPage = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    if (data.amount && data.description && data.contactId) {
+    if (data.amount && data.description && data.cvuReceiver) {
       setDisableFirst(true);
     } else {
       setDisableFirst(false);
@@ -107,31 +101,37 @@ const RegisterPage = ({ navigation, route }) => {
     }
   };
 
-  const onChangeContactId = (val) => {
+
+
+  const onChangecvuReceiver = (val) => {
     if (val.length >= 1) {
       setData({
         ...data,
-        contactId: val,
+        cvuReceiver: val,
       });
     } else {
       setData({
         ...data,
-        contactId: val,
+        cvuReceiver: val,
       });
     }
   };
 
   const onSubmit = () => {
-    if (!data.amount && !data.description && !data.contactId) {
+    if (!data.amount && !data.description && !data.cvuReceiver) {
       Alert.alert("You need to fill all the fields");
     } else {
-      /* dispatch(createNewUser({ ...data, email: route.params.email })); */
-      navigation.navigate("SendMoneySuccess");
+      const payload = {
+        contactId:data.cvuSender,
+        amount: data.amount,
+        description: data.description
+      }
+      dispatch(sendInterappTransaction(data.cvuReceiver, payload))
     }
   };
 
   const buttonFirstPage = () => {
-    if (data.amount && data.description && data.contactId) {
+    if (data.amount && data.description && data.cvuReceiver) {
       setPages("second");
     } else {
       setDisableFirst(false);
@@ -139,12 +139,25 @@ const RegisterPage = ({ navigation, route }) => {
     }
   };
 
+  useEffect(() => {
+    if (lastTransfer) {
+      console.log('tree', lastTransfer)
+
+      if (lastTransfer.status === "confirmed") {
+        navigation.navigate("SendMoneySuccess");
+      } else {
+        navigation.navigate("SendMoneyError");
+      }
+    }
+  }, [lastTransfer]);
+
   if (!fontsLoaded) {
     return <SplashScreen2 />;
   } else {
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
+          <ScrollView>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.navigate("MyContacts")}>
               <AntDesign name="arrowleft" size={24} color="white" />
@@ -156,11 +169,30 @@ const RegisterPage = ({ navigation, route }) => {
 
             <View
               style={[
+                focus === "cvuReceiver"
+                  ? styles.inputcontainerTwoFocus
+                  : styles.inputcontainerTwo,
+              ]}
+            >
+              <TextInput
+                style={styles.input}
+                onChangeText={(text) => onChangecvuReceiver(text)}
+                value={data.cvuReceiver}
+                placeholder="Insert the Tree Bank user CVU"
+                placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                maxLength={22}
+                onFocus={() => setFocus("cvuReceiver")}
+              />
+            </View>
+
+            <View
+              style={[
                 focus === "amount"
                   ? styles.inputcontainerOneFocus
                   : styles.inputcontainerOne,
               ]}
             >
+              
               <TextInput
                 style={styles.textInputAmount}
                 autoCapitalize="none"
@@ -177,23 +209,6 @@ const RegisterPage = ({ navigation, route }) => {
               />
             </View>
 
-            <View
-              style={[
-                focus === "contactId"
-                  ? styles.inputcontainerTwoFocus
-                  : styles.inputcontainerTwo,
-              ]}
-            >
-              <TextInput
-                style={styles.input}
-                onChangeText={(text) => onChangeContactId(text)}
-                value={data.contactId}
-                placeholder="Insert the contact to transfer"
-                placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                maxLength={20}
-                onFocus={() => setFocus("contactId")}
-              />
-            </View>
 
             <View
               style={[
@@ -228,6 +243,7 @@ const RegisterPage = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
           </Animatable.View>
+          </ScrollView>
         </View>
       </TouchableWithoutFeedback>
     );

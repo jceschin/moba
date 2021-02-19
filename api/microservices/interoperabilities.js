@@ -89,7 +89,9 @@ server.get("/:cvu", (req, res) => {
 server.post("/send/:cvu", (req, res) => {
   const { cvu } = req.params;
   const { amount, description, contactId } = req.body;
+  console.log(req.body)
   var transf;
+  var mobatransf
   if (!amount || typeof parseInt(amount) !== "number" || parseInt(amount) < 0) {
     return res.status(400).send("Invalid amount");
   }
@@ -121,6 +123,7 @@ server.post("/send/:cvu", (req, res) => {
               description,
               interoperation: true,
             }).then((tr) => {
+              mobatransf = tr 
               Accounttransaction.create({
                 cvu: account.cvu,
                 number: tr.dataValues.number,
@@ -129,9 +132,11 @@ server.post("/send/:cvu", (req, res) => {
                 new_balance: acc.balance,
                 status: "confirmed",
                 interoperation: transf.name,
-              });
+              }).then((acctrans) => {
+                let payload = {...tr.dataValues, treename:transf.name, description: transf.description, cvu}
+                res.send(payload)
+              })
 
-              res.send(tr);
             });
           });
         })

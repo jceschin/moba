@@ -135,7 +135,7 @@ const MyContacts = () => {
                 >
                   <Text
                     style={{
-                      fontSize: "14",
+                      fontSize: 14,
                       fontFamily: "OpenSans_700Bold",
                     }}
                   >
@@ -236,7 +236,7 @@ const MyContacts = () => {
                 >
                   <Text
                     style={{
-                      fontSize: "14",
+                      fontSize: 14,
                       fontFamily: "OpenSans_700Bold",
                     }}
                   >

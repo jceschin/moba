@@ -85,10 +85,10 @@ const viewRef = useRef()
             <View style={styles.data}>
               <Text style={styles.title}>To</Text>
               <Text style={styles.info}>
-                {destinatary.name} {destinatary.surname}
+                {lastTransaction.lastTransaction.treename ? lastTransaction.lastTransaction.treename  : `${destinatary.name} ${destinatary.surname}`} 
               </Text>
               <Text style={styles.info}>
-                {destinatary.account.cvu}
+                {lastTransaction.lastTransaction.treename ? lastTransaction.lastTransaction.cvu : destinatary.account.cvu}
               </Text>
             </View>
             <View style={styles.data}>

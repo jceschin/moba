@@ -53,7 +53,7 @@ const SendMoney = ({ route }) => {
   const sender = useSelector((state) => state.user.info.email);
   const reciever = useSelector((state) => state.contacts.selectedContact.email);
   const amount = useSelector(
-    (state) => state.transactions.lastTransaction.amount
+    (state) => state.transactions.lastTransaction && state.transactions.lastTransaction.amount
   );
   const senderUsername = useSelector((state) => state.user.info.username);
   const recieverUsername = useSelector(

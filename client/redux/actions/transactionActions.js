@@ -1,6 +1,10 @@
 import axios from "axios";
-import { addTransaction, getTransactions, clearTransaction } from "../types/transactionTypes";
-import {apiEndpoint} from '../../const'
+import {
+  addTransaction,
+  getTransactions,
+  clearTransaction,
+} from "../types/transactionTypes";
+import { apiEndpoint } from "../../const";
 
 export function addNewTransaction(transferData) {
   return async (dispatch) => {
@@ -33,13 +37,28 @@ export function getUserTransactions(username, token) {
 }
 
 //Check interapp's transactions
-export function checkInterappTransactions(cvu, username, token){
+export function checkInterappTransactions(cvu, username, token) {
   return (dispatch) => {
-    return axios.get(`http://${apiEndpoint}/interoperabilities/${cvu}`).then((data) => {
-      console.log(data)
-      return dispatch(getUserTransactions(username,token))
-    })
-  }
+    return axios
+      .get(`http://${apiEndpoint}/interoperabilities/${cvu}`)
+      .then((data) => {
+        console.log(data);
+        return dispatch(getUserTransactions(username, token));
+      });
+  };
+}
+
+//Send money to other app
+export function sendInterappTransaction(cvu, body) {
+  console.log(cvu, body);
+  return (dispatch) => {
+    return axios
+      .post(`http://${apiEndpoint}/interoperabilities/send/${cvu}`, body)
+      .then((transfer) => {
+        transfer.data && dispatch(addTransaction(transfer.data));
+      })
+      .catch((err) => console.log(err));
+  };
 }
 
 export function clearLastTransaction() {
