@@ -54,8 +54,6 @@ const RegisterPage = ({ navigation, route }) => {
     return accounting.formatMoney(parseFloat(value));
   };
 
-
-
   const lastTransfer = useSelector(
     (state) => state.transactions.lastTransaction
   );
@@ -101,8 +99,6 @@ const RegisterPage = ({ navigation, route }) => {
     }
   };
 
-
-
   const onChangecvuReceiver = (val) => {
     if (val.length >= 1) {
       setData({
@@ -122,11 +118,11 @@ const RegisterPage = ({ navigation, route }) => {
       Alert.alert("You need to fill all the fields");
     } else {
       const payload = {
-        contactId:data.cvuSender,
+        contactId: data.cvuSender,
         amount: data.amount,
-        description: data.description
-      }
-      dispatch(sendInterappTransaction(data.cvuReceiver, payload))
+        description: data.description,
+      };
+      dispatch(sendInterappTransaction(data.cvuReceiver, payload));
     }
   };
 
@@ -141,10 +137,12 @@ const RegisterPage = ({ navigation, route }) => {
 
   useEffect(() => {
     if (lastTransfer) {
-      console.log('tree', lastTransfer)
+      console.log("tree", lastTransfer);
 
       if (lastTransfer.status === "confirmed") {
         navigation.navigate("SendMoneySuccess");
+      } else if (lastTransfer.status === "invalid") {
+        Alert.alert("Invalid CVU");
       } else {
         navigation.navigate("SendMoneyError");
       }
@@ -158,91 +156,91 @@ const RegisterPage = ({ navigation, route }) => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <ScrollView>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.navigate("MyContacts")}>
-              <AntDesign name="arrowleft" size={24} color="white" />
-            </TouchableOpacity>
-          </View>
-
-          <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-            <Text style={styles.title}>Transfer to another bank</Text>
-
-            <View
-              style={[
-                focus === "cvuReceiver"
-                  ? styles.inputcontainerTwoFocus
-                  : styles.inputcontainerTwo,
-              ]}
-            >
-              <TextInput
-                style={styles.input}
-                onChangeText={(text) => onChangecvuReceiver(text)}
-                value={data.cvuReceiver}
-                placeholder="Insert the Tree Bank user CVU"
-                placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                maxLength={22}
-                onFocus={() => setFocus("cvuReceiver")}
-              />
-            </View>
-
-            <View
-              style={[
-                focus === "amount"
-                  ? styles.inputcontainerOneFocus
-                  : styles.inputcontainerOne,
-              ]}
-            >
-              
-              <TextInput
-                style={styles.textInputAmount}
-                autoCapitalize="none"
-                value={formatValue(data.amount)}
-                onFocus={() => setFocus("amount")}
-              />
-              <TextInput
-                style={styles.textInputAmountHide}
-                autoCapitalize="none"
-                onChangeText={(val) => onChangeAmount(val)}
-                value={data.amount}
-                placeholder="0"
-                onFocus={() => setFocus("amount")}
-              />
-            </View>
-
-
-            <View
-              style={[
-                focus === "description"
-                  ? styles.inputcontainerThreeFocus
-                  : styles.inputcontainerThree,
-              ]}
-            >
-              <TextInput
-                style={styles.input}
-                onChangeText={(text) => onChangeDescription(text)}
-                value={data.description}
-                placeholder="Add a description"
-                placeholderTextColor="rgba(0, 0, 0, 0.4)"
-                maxLength={20}
-                onFocus={() => setFocus("description")}
-              />
-            </View>
-
-            <View style={styles.buttoncontainer}>
+            <View style={styles.header}>
               <TouchableOpacity
-                disabled={!disableFirst}
-                style={[
-                  styles.button,
-                  disableFirst === false
-                    ? styles.buttonDisable
-                    : styles.buttonAble,
-                ]}
-                onPress={onSubmit}
+                onPress={() => navigation.navigate("MyContacts")}
               >
-                <Text style={styles.btncontent}>Confirm</Text>
+                <AntDesign name="arrowleft" size={24} color="white" />
               </TouchableOpacity>
             </View>
-          </Animatable.View>
+
+            <Animatable.View animation="fadeInUpBig" style={styles.footer}>
+              <Text style={styles.title}>Transfer to another bank</Text>
+
+              <View
+                style={[
+                  focus === "cvuReceiver"
+                    ? styles.inputcontainerTwoFocus
+                    : styles.inputcontainerTwo,
+                ]}
+              >
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(text) => onChangecvuReceiver(text)}
+                  value={data.cvuReceiver}
+                  placeholder="Insert the Tree Bank user CVU"
+                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                  maxLength={22}
+                  onFocus={() => setFocus("cvuReceiver")}
+                />
+              </View>
+
+              <View
+                style={[
+                  focus === "amount"
+                    ? styles.inputcontainerOneFocus
+                    : styles.inputcontainerOne,
+                ]}
+              >
+                <TextInput
+                  style={styles.textInputAmount}
+                  autoCapitalize="none"
+                  value={formatValue(data.amount)}
+                  onFocus={() => setFocus("amount")}
+                />
+                <TextInput
+                  style={styles.textInputAmountHide}
+                  autoCapitalize="none"
+                  onChangeText={(val) => onChangeAmount(val)}
+                  value={data.amount}
+                  placeholder="0"
+                  onFocus={() => setFocus("amount")}
+                />
+              </View>
+
+              <View
+                style={[
+                  focus === "description"
+                    ? styles.inputcontainerThreeFocus
+                    : styles.inputcontainerThree,
+                ]}
+              >
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(text) => onChangeDescription(text)}
+                  value={data.description}
+                  placeholder="Add a description"
+                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                  maxLength={20}
+                  onFocus={() => setFocus("description")}
+                />
+              </View>
+
+              <View style={styles.buttoncontainer}>
+                <TouchableOpacity
+                  disabled={!disableFirst}
+                  style={[
+                    styles.button,
+                    disableFirst === false
+                      ? styles.buttonDisable
+                      : styles.buttonAble,
+                  ]}
+                  onPress={onSubmit}
+                >
+                  <Text style={styles.btncontent}>Confirm</Text>
+                </TouchableOpacity>
+              </View>
+            </Animatable.View>
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
