@@ -31,6 +31,7 @@ import {
 } from "@expo-google-fonts/open-sans";
 import AppLoading from "expo-app-loading";
 import SplashScreen2 from "../HomeScreen/SplashScreen2";
+import { Context } from "./AuthUserScreen";
 
 const MyAccount = () => {
   const navigation = useNavigation();
@@ -44,14 +45,19 @@ const MyAccount = () => {
     OpenSans_700Bold,
     OpenSans_800ExtraBold,
   });
-  /* useEffect(() => {
+  const { setColorIcon } = React.useContext(Context);
+  useEffect(() => {
     getUser(loggedUser.username);
-  }, []); */
+  }, []);
 
   async function getUser(username) {
     let response = await axios.get(`http://${apiEndpoint}/users/${username}`);
     setUser(response.data);
   }
+
+  useEffect(() => {
+    setColorIcon("more")
+  },[])
 
   if (!fontsLoaded) {
     return <SplashScreen2 />;

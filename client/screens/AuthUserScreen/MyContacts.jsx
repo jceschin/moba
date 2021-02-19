@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Modal,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,7 +15,7 @@ import {
   AntDesign,
   MaterialCommunityIcons,
   Foundation,
-  FontAwesome5
+  FontAwesome5,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MyContact from "./MyContact";
@@ -45,15 +46,26 @@ const MyContacts = () => {
   });
 
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
   let loggedUser = useSelector((state) => state.user);
-  const renderContacts = useSelector((state) => state.contacts.contacts)
+  const renderContacts = useSelector((state) => state.contacts.contacts);
   let userContacts = useSelector((state) => state.user.info.contacts);
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // console.log(userContacts);
 
   useEffect(() => {
-     dispatch(getUserInfo(loggedUser.username))
-  }, [renderContacts])
+    dispatch(getUserInfo(loggedUser.username));
+  }, [renderContacts]);
+
+  const unregisteredContactNavigation = () => {
+    navigation.navigate("SendMoneyUnregistered");
+    setModalVisible(false);
+  };
+
+  const transferTreeBankNavigation = () => {
+    navigation.navigate("TransferTreeBank");
+    setModalVisible(false);
+  };
 
   if (!fontsLoaded) {
     return <SplashScreen2 />;
@@ -71,10 +83,12 @@ const MyContacts = () => {
             <View
               style={{
                 flex: 1,
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
-              <Text style={styles.greeting}>Who do you want to send money?</Text>
+              <Text style={styles.greeting}>
+                Who do you want to send money?
+              </Text>
             </View>
           </View>
           <View
@@ -99,34 +113,101 @@ const MyContacts = () => {
           >
             <View style={styles.action}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("SendMoneyUnregistered")}
+                onPress={() => setModalVisible(true)}
                 style={{
                   backgroundColor: "#38046C",
                   padding: 10,
                   borderRadius: 10,
-                  height: 45, 
+                  height: 45,
                   width: 50,
                   alignItems: "center",
-                  justifyContent: "center"
+                  justifyContent: "center",
                 }}
               >
                 <FontAwesome5 name="money-bill" size={20} color="white" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("SendMoneyUnregistered")}>
-              <View
-                style={{
-                  padding: 10
-                }}
-              >
-                <Text
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <View
                   style={{
-                    fontSize: "14",
-                    fontFamily: "OpenSans_700Bold",
+                    padding: 10,
                   }}
                 >
-                  New Transfer 
-                </Text>
-              </View>
+                  <Text
+                    style={{
+                      fontSize: "14",
+                      fontFamily: "OpenSans_700Bold",
+                    }}
+                  >
+                    New Transfer
+                  </Text>
+
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                      Alert.alert("Modal has been closed.");
+                    }}
+                  >
+                    <View style={styles.centeredView}>
+                      <View style={styles.modalView}>
+                        <TouchableOpacity
+                          style={{
+                            ...styles.openButton,
+                            flexDirection: "column",
+                            alignItems: "center",
+                            top: 120
+                          }}
+                          onPress={unregisteredContactNavigation}
+                        >
+                          <FontAwesome5
+                            name="user-circle"
+                            size={64}
+                            color="white"
+                          />
+                          <Text style={[styles.textStyle, {top: 20, width: 200}]}>
+                            Transfer to an unregistered contact
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            ...styles.openButton,
+                            top: 50,
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
+                          onPress={transferTreeBankNavigation}
+                        >
+                          <MaterialCommunityIcons
+                            name="bank-transfer"
+                            size={84}
+                            color="white"
+                            style={{ left: 12 }}
+                          />
+                          <Text style={[styles.textStyle, {top: 5}]}>
+                            Transfer to another bank
+                          </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          style={{
+                            ...styles.openButton,
+                            backgroundColor: "white",
+                            width: 300,
+                            top: 20,
+                          }}
+                          onPress={() => {
+                            setModalVisible(!modalVisible);
+                          }}
+                        >
+                          <Text style={{ ...styles.textStyle, color:"#521886", fontSize: 20}}>
+                            Close
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </Modal>
+                </View>
               </TouchableOpacity>
             </View>
             <View style={styles.action}>
@@ -136,33 +217,35 @@ const MyContacts = () => {
                   backgroundColor: "#38046C",
                   padding: 10,
                   borderRadius: 10,
-                  height: 45, 
+                  height: 45,
                   width: 50,
                   alignItems: "center",
-                  justifyContent: "center"
+                  justifyContent: "center",
                 }}
               >
                 <Ionicons name="person-add-outline" size={24} color="white" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("AddContact")}>
-              <View
-                style={{
-                  padding: 10
-                }}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AddContact")}
               >
-                <Text
+                <View
                   style={{
-                    fontSize: "14",
-                    fontFamily: "OpenSans_700Bold",
+                    padding: 10,
                   }}
                 >
-                  New Contact
-                </Text>
-              </View>
+                  <Text
+                    style={{
+                      fontSize: "14",
+                      fontFamily: "OpenSans_700Bold",
+                    }}
+                  >
+                    New Contact
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
-          
+
           <View style={styles.whiteContainer}>
             <Text style={styles.contactsTag}>Contacts</Text>
             {!userContacts ? (
@@ -219,11 +302,11 @@ const styles = StyleSheet.create({
   greeting: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontFamily: "OpenSans_800ExtraBold"
+    fontFamily: "OpenSans_800ExtraBold",
   },
   action: {
     flexDirection: "row",
-    padding: 5
+    padding: 5,
   },
   whiteContainer: {
     marginTop: 24,
@@ -231,7 +314,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     height: "100%",
-    minHeight: 600
+    minHeight: 600,
   },
   contactsTag: {
     fontSize: 20,
@@ -248,7 +331,7 @@ const styles = StyleSheet.create({
   notFound: {
     fontSize: 18,
     padding: 20,
-    color: "black"
+    color: "black",
   },
   contentContainer: {
     paddingVertical: 20,
@@ -261,7 +344,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    /* marginTop: 22, */
   },
   modalView: {
     margin: 20,
@@ -277,20 +360,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    width: 500,
+    height: 900,
+    justifyContent: "space-around",
+    backgroundColor: "#521886"
   },
   openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
+    backgroundColor: "#521886",
   },
   textStyle: {
     color: "white",
     fontFamily: "OpenSans_700Bold",
     textAlign: "center",
+    fontSize: 18,
   },
   modalText: {
     marginBottom: 15,
+    fontSize: 18,
     textAlign: "center",
+    fontFamily: "OpenSans_700Bold",
   },
 });

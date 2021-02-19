@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
@@ -34,7 +34,6 @@ import {
 } from "../../redux/actions/transactionActions";
 
 const SendMoney = ({ route }) => {
-
   // Fonts
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -53,10 +52,14 @@ const SendMoney = ({ route }) => {
   );
   const sender = useSelector((state) => state.user.info.email);
   const reciever = useSelector((state) => state.contacts.selectedContact.email);
-  const amount = useSelector((state) => state.transactions.lastTransaction.amount );
-  const senderUsername = useSelector((state) => state.user.info.username );
-  const recieverUsername = useSelector((state) => state.contacts.selectedContact.username )
-  console.log( recieverUsername)
+  const amount = useSelector(
+    (state) => state.transactions.lastTransaction.amount
+  );
+  const senderUsername = useSelector((state) => state.user.info.username);
+  const recieverUsername = useSelector(
+    (state) => state.contacts.selectedContact.username
+  );
+  console.log(recieverUsername);
 
   // Params
   const {
@@ -84,8 +87,7 @@ const SendMoney = ({ route }) => {
     if (lastTransfer) {
       if (lastTransfer.status === "confirmed") {
         navigation.navigate("SendMoneySuccess");
-      }
-      else{
+      } else {
         navigation.navigate("SendMoneyError");
       }
     }
@@ -105,21 +107,20 @@ const SendMoney = ({ route }) => {
     recieverUsername: recieverUsername,
     senderUsername: senderUsername,
   };
-  console.log(remitente)
+  console.log(remitente);
   const destinatario = {
     email: reciever,
     amount: amount,
     senderUsername: senderUsername,
-    recieverUsername: recieverUsername
+    recieverUsername: recieverUsername,
   };
-
 
   const onSubmit = () => {
     makeTransfer();
   };
 
   useEffect(() => {
-    if(amount > 0){
+    if (amount > 0) {
       dispatch(mailToSender(remitente));
       dispatch(mailToReciever(destinatario));
     }
@@ -143,76 +144,85 @@ const SendMoney = ({ route }) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <View style={styles.colorContainer}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          // style={{ position: "absolute" }}
-          onPress={() => navigation.goBack()}
-        >
-          <Feather name="arrow-left" size={24} color="white" />
-        </TouchableOpacity>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={styles.greeting}>Send money</Text>
-        </View>
-      </View>
-      <View style={styles.whiteContainer}>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            borderBottomColor: "#C4C4C4",
-            borderStyle: "solid",
-            marginLeft: 100,
-            marginRight: 100
-          }}
-        >
-          <TextInput
-            style={styles.textInputAmount}
-            autoCapitalize="none"
-            value={formatValue(transferAmount.amount)}
-          />
-          <TextInput
-            style={styles.textInputAmountHide}
-            autoCapitalize="none"
-            onChangeText={(val) => textInputChange(val)}
-            value={transferAmount.amount}
-          />
-        </View>
-        <View style={styles.contact}>
-          <View style={styles.avatar}>
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: 'OpenSans_700Bold',
-                fontSize: 14
-              }}
-            >  
-              {selectedContactNameInitial}
-              {selectedContactSurnameInitial}
-            </Text>
+      <View style={styles.colorContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            // style={{ position: "absolute" }}
+            onPress={() => navigation.goBack()}
+          >
+            <Feather name="arrow-left" size={24} color="white" />
+          </TouchableOpacity>
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <Text style={styles.greeting}>Send money</Text>
           </View>
+        </View>
+        <View style={styles.whiteContainer}>
           <View
             style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              height: 45
+              borderBottomWidth: 1,
+              borderBottomColor: "#C4C4C4",
+              borderStyle: "solid",
+              marginLeft: 100,
+              marginRight: 100,
             }}
           >
-            <Text style={styles.name}>
-              {destinatary.name} {destinatary.surname}
-            </Text>
+            <TextInput
+              style={styles.textInputAmount}
+              autoCapitalize="none"
+              value={formatValue(transferAmount.amount)}
+            />
+            <TextInput
+              style={styles.textInputAmountHide}
+              autoCapitalize="none"
+              onChangeText={(val) => textInputChange(val)}
+              value={transferAmount.amount}
+            />
           </View>
+          <View style={styles.contact}>
+            <View style={styles.avatar}>
+              <Text
+                style={{
+                  color: "white",
+                  fontFamily: "OpenSans_700Bold",
+                  fontSize: 14,
+                }}
+              >
+                {selectedContactNameInitial}
+                {selectedContactSurnameInitial}
+              </Text>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                height: 45,
+              }}
+            >
+              <Text style={styles.name}>
+                {destinatary.name} {destinatary.surname}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              {
+                backgroundColor:
+                  transferAmount.amount <= 0
+                    ? "rgba(82, 24, 134, 0.56)"
+                    : "#521886",
+              },
+            ]}
+            onPress={handleSubmit(onSubmit)}
+            disabled={transferAmount.amount <= 0 ? true : false}
+          >
+            <Text style={styles.btnContent}>Confirm</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text style={styles.btnContent}>Confirm</Text>
-        </TouchableOpacity>
       </View>
-    </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -233,12 +243,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    top: 24
+    top: 24,
   },
   greeting: {
     color: "white",
     fontSize: 24,
-    fontFamily: 'OpenSans_700Bold'
+    fontFamily: "OpenSans_700Bold",
   },
   whiteContainer: {
     top: 50,
@@ -276,7 +286,7 @@ const styles = StyleSheet.create({
   name: {
     color: "black",
     fontSize: 18,
-    fontFamily: 'OpenSans_600SemiBold'
+    fontFamily: "OpenSans_600SemiBold",
   },
   contact: {
     display: "flex",
@@ -292,7 +302,7 @@ const styles = StyleSheet.create({
     marginTop: 80,
     fontSize: 40,
     color: "#499174",
-    fontFamily: 'OpenSans_700Bold'
+    fontFamily: "OpenSans_700Bold",
   },
   textInputAmountHide: {
     height: 40,
@@ -300,6 +310,6 @@ const styles = StyleSheet.create({
     marginTop: -40,
     fontSize: 32,
     color: "#168903",
-    opacity: 0
+    opacity: 0,
   },
 });

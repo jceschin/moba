@@ -9,7 +9,7 @@ import {
   Alert,
   Share,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { Feather, AntDesign, Fontisto } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
@@ -44,7 +44,7 @@ const AddMoney = ({ navigation, route }) => {
   const [user, setUser] = useState({});
   const [index, setIndex] = useState(0);
   const [valid, setValid] = useState(false);
-
+  const [disabled, setDisabled] = useState(false);
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
@@ -65,11 +65,12 @@ const AddMoney = ({ navigation, route }) => {
     if (amountCharge.amount >= 100) {
       setAmount(true);
     } else {
-      Alert.alert("The minimum amount to charge is $100");
+      Alert.alert("Min amount is $100");
     }
   };
 
   console.log("amount", amountCharge.amount);
+  console.log("setamount", setAmount)
 
   const textInputChange = (val) => {
     if (val.length >= 1) {
@@ -133,14 +134,10 @@ const AddMoney = ({ navigation, route }) => {
     Alert.alert("Copy to clipboard");
   };
 
-  console.log("user", user);
-  console.log("loggedUser", loggedUser);
-
   if (!fontsLoaded) {
     return <SplashScreen2 />;
   } else {
     return (
-      
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
@@ -215,48 +212,57 @@ const AddMoney = ({ navigation, route }) => {
             </View>
           </View>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <View
-            style={{
-              alignItems: "center",
-              textAlign: "center",
-              justifyContent: "center",
-            }}
-          >
-            {code === false && transfer === false && amount === false ? (
-              <View style={styles.amountView}>
-                <Text style={styles.textRecover}>
-                  How much you want to charge?
-                  {"\n"}
-                  The minimum amount is{" "}
-                  <Text style={{ color: "rgba(73, 145, 116, 1)" }}>$100</Text>
-                </Text>
+            <View
+              style={{
+                alignItems: "center",
+                textAlign: "center",
+                justifyContent: "center",
+              }}
+            >
+              {code === false && transfer === false && amount === false ? (
+                <View style={styles.amountView}>
+                  <Text style={styles.textRecover}>
+                    How much you want to charge?
+                    {"\n"}
+                    The minimum amount is{" "}
+                    <Text style={{ color: "rgba(73, 145, 116, 1)" }}>$100</Text>
+                  </Text>
 
-                <TextInput
-                  style={[
-                    styles.textInputAmount,
-                    valid === false
-                      ? styles.textInputColorInvalid
-                      : styles.textInputColorValid,
-                  ]}
-                  autoCapitalize="none"
-                  value={formatValue(amountCharge.amount)}
-                />
-                <TextInput
-                  style={styles.textInputAmountHide}
-                  autoCapitalize="none"
-                  value={amountCharge.amount}
-                  onChangeText={(val) => textInputChange(val)}
-                />
+                  <TextInput
+                    style={[
+                      styles.textInputAmount,
+                      valid === false
+                        ? styles.textInputColorInvalid
+                        : styles.textInputColorValid,
+                    ]}
+                    autoCapitalize="none"
+                    value={formatValue(amountCharge.amount)}
+                  />
+                  <TextInput
+                    style={styles.textInputAmountHide}
+                    autoCapitalize="none"
+                    value={amountCharge.amount}
+                    onChangeText={(val) => textInputChange(val)}
+                  />
 
-                <TouchableOpacity
-                  style={styles.continueCharge}
-                  onPress={amountScreen}
-                >
-                  <Text style={styles.textButton}>Continue</Text>
-                </TouchableOpacity>
-              </View>
-            ) : null}
-          </View>
+                  <TouchableOpacity
+                    style={[
+                      styles.continueCharge,
+                      {
+                        backgroundColor:
+                          amountCharge.amount < 100
+                            ? "rgba(82, 24, 134, 0.56)"
+                            : "#521886",
+                      },
+                    ]}
+                    onPress={amountScreen}
+                    disabled={amountCharge.amount >= 100 ? false : true}
+                  >
+                    <Text style={styles.textButton}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+            </View>
           </TouchableWithoutFeedback>
           {code === false && transfer === false && amount === true ? (
             <View styles={styles.codePayment}>
@@ -376,7 +382,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 12,
     flexDirection: "row",
-    marginBottom: 12
+    marginBottom: 12,
   },
   welcomeView: {
     flex: 1,
@@ -475,7 +481,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#521886",
     marginTop: 210,
   },
   textInputAmount: {
@@ -500,7 +505,7 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 18,
     fontFamily: "OpenSans_800ExtraBold",
-    color: "#fff"
+    color: "#fff",
   },
   accountRechargeCode: {
     color: "#38046C",
