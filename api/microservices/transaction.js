@@ -372,6 +372,171 @@ server.put("/transaction/status/:status", Verifytoken, (req, res, next) => {
     });
 });
 
+//get Transaction for receipt
+
+server.get("/transaction/receipt/:cvu", Verifytoken, (req, res, next) => {
+
+
+  (async function () {
+ 
+     try {
+
+      let email_sender, fullName_sender; 
+
+      const user = await Account.findOne({
+        include: [User],
+    
+        where: {
+          cvu: req.params.cvu,
+        },
+      })
+
+      email_sender= user.dataValues.user.dataValues.email;
+      fullName_sender= user.dataValues.user.dataValues.name + " " + user.dataValues.user.dataValues.surname;
+
+      const transaction = await Accounttransaction.findAll({
+        where: {
+          cvu: req.params.cvu,
+        },
+      })
+
+
+     const arr = transaction.map(async trans => {
+
+        const receiver= await Transaction.findAll
+        
+        ({
+          
+          include: [
+            {
+              model: Account,
+              include: [User],
+              where: {
+                cvu: {
+                  [Op.ne]: req.params.cvu
+                }
+              },
+            },
+          ],
+          where: {
+            number: trans.dataValues.number,
+          },
+        }) 
+
+        return receiver
+    
+      })
+
+      const result = await Promise.all(arr)
+
+      /* const arr3 =  result.map(async function (res) {
+
+        if(res[0].dataValues.accounts[0].dataValues.accounttransaction.type == "receiver")
+        {
+           
+          let receipt = {
+
+            transactionNumber: "",
+            amount: 0,
+            fullName_receiver: "",
+            cvu_receiver: "",
+            email_receiver: "",
+            fullName_sender,
+            cvu_sender: req.params.cvu,
+            email_sender,
+            date: ""
+          }
+
+          receipt.cvu_receiver = res[0].dataValues.accounts[0].dataValues.accounttransaction.cvu;
+
+          receipt.date = res[0].dataValues.accounts[0].dataValues.accounttransaction.createdAt;
+
+          receipt.fullName_receiver = res[0].dataValues.accounts[0].dataValues.user.dataValues.name + " " + res[0].dataValues.accounts[0].dataValues.user.dataValues.surname;
+
+          receipt.email_receiver = res[0].dataValues.accounts[0].dataValues.user.dataValues.email;
+
+          receipt.transactionNumber = res[0].dataValues.number;
+
+          receipt.amount = res[0].dataValues.amount;
+
+          return receipt
+
+        }  
+
+      }) */
+
+
+      res.send(result)
+ 
+     } catch (err) { res.status(404).send(err); }
+   })();
+ 
+})
+
+//get Transaction for receipt by cvu sender and number transaction 
+
+
+server.get("/transaction/receipt/:cvu/:number", Verifytoken, (req, res, next) => {
+
+  (async function () {
+ 
+     try {
+
+      let email_sender, fullName_sender; 
+
+      const user = await Account.findOne({
+        include: [User],
+    
+        where: {
+          cvu: req.params.cvu,
+        },
+      })
+
+      email_sender= user.dataValues.user.dataValues.email;
+      fullName_sender= user.dataValues.user.dataValues.name + " " + user.dataValues.user.dataValues.surname;
+
+      const receiver= await Transaction.findAll ({
+
+        include: [
+          {
+            model: Account,
+            include: [User],
+            where: {
+              cvu: {
+                [Op.ne]: req.params.cvu
+              }
+            },
+          },
+        ],
+        where: {
+          number: req.params.number,
+        },
+      }) 
+
+      var receipt = {
+
+        transactionNumber: req.params.number,
+        amount: receiver[0].dataValues.amount,
+        fullName_receiver: receiver[0].dataValues.accounts[0].dataValues.user.dataValues.name + " " + receiver[0].dataValues.accounts[0].dataValues.user.dataValues.surname,
+        cvu_receiver: receiver[0].dataValues.accounts[0].dataValues.accounttransaction.cvu,
+        email_receiver: receiver[0].dataValues.accounts[0].dataValues.user.dataValues.email,
+        fullName_sender,
+        cvu_sender: req.params.cvu,
+        email_sender,
+        date: receiver[0].dataValues.accounts[0].dataValues.accounttransaction.createdAt
+      }
+
+      console.log(receiver[0].dataValues)
+
+      res.send(receipt)
+
+ 
+     } catch (err) { res.status(404).send(err); }
+   })();
+ 
+})
+
+
 server.listen(8001, () => {
   console.log("Transaction running on 8001");
 });
