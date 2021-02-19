@@ -41,7 +41,6 @@ const RootStackScreen = ({ navigation }) => {
         value={{ eye, setEye, toggle, setToggle, colorIcon, setColorIcon }}
       >
         <Stack.Navigator headerMode="none">
-          <Stack.Screen name="Contactus" component={Contactus} />
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="HomeNavbar" component={HomeNavbar} />
           <Stack.Screen name="MyAccount" component={MyAccount} />
@@ -58,6 +57,7 @@ const RootStackScreen = ({ navigation }) => {
           <Stack.Screen name="Stats" component={Stats} />
           <Stack.Screen name="TransferReceipt" component={TransferReceipt} />
           <Stack.Screen name="SendInvitation" component={SendInvitation} />
+          <Stack.Screen name="Contactus" component={Contactus} />
           <Stack.Screen
             name="SendMoneyUnregistered"
             component={SendMoneyUnregistered}
