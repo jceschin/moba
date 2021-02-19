@@ -40,7 +40,7 @@ const EditUser = ({ navigation }) => {
   const [data, setData] = useState({
     activeSections: [],
     collapsed: true,
-    multipleSelect: true,
+    multipleSelect: false,
   });
   const [personalData, setPersonalData] = useState({
     username: loggedUser.username,
@@ -697,7 +697,7 @@ const EditUser = ({ navigation }) => {
         <Animatable.View animation="slideInRight" style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.navigate("MyAccount")}>
-              <Feather name="arrow-left" size={28} color="white" />
+              <Feather name="arrow-left" size={24} color="white" />
             </TouchableOpacity>
             <View style={styles.titleWrapper}>
               <Text style={styles.title}>Account Info</Text>
@@ -711,7 +711,7 @@ const EditUser = ({ navigation }) => {
                     fontSize: 30,
                     fontFamily: "OpenSans_700Bold",
                     width: 280,
-                    marginTop: 60,
+                    marginTop: 30,
                   }}
                 >
                   {loggedUser.info.name + " " + loggedUser.info.surname}
@@ -764,10 +764,11 @@ const EditUser = ({ navigation }) => {
                     width: 300,
                     height: 50,
                     backgroundColor: "#521886",
-                    marginTop: 100,
+                    top: 400,
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: 10,
+                    position: "absolute"
                   }}
                   onPress={submitData}
                 >
@@ -778,10 +779,11 @@ const EditUser = ({ navigation }) => {
                       fontFamily: "OpenSans_700Bold",
                     }}
                   >
-                    Submit
+                    Confirm Changes
                   </Text>
                 </TouchableOpacity>
               </Animatable.View>
+            
             </ScrollView>
           </View>
         </Animatable.View>
@@ -796,7 +798,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#521886",
-    paddingTop: 55,
   },
   header: {
     flex: 1,
@@ -822,7 +823,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 30,
-    marginTop: -60,
+    marginTop: -70,
     alignItems: "center",
   },
   bodySuccess: {
@@ -832,7 +833,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   section: {
-    marginTop: 80,
+    marginTop: 60,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -55,7 +55,7 @@ const SendMoneyUnregistered = ({ navigation }) => {
 
   useEffect(() => {
     setPages("first");
-    alert("You can send money to unregistered users too! Try it!");
+    alert("If you send money to an user who is not registered in our app, we going to send him a link to download our app! Try it!");
   }, []);
 
   useEffect(() => {
@@ -174,6 +174,7 @@ const SendMoneyUnregistered = ({ navigation }) => {
                     borderStyle: "solid",
                     marginLeft: 100,
                     marginRight: 100,
+                    marginTop: 100
                   }}
                 >
                   <TextInput
@@ -220,6 +221,7 @@ const SendMoneyUnregistered = ({ navigation }) => {
                     style={{
                       ...styles.buttonConfirm,
                       backgroundColor: "#521886",
+                      top: 10
                     }}
                     onPress={submitData}
                   >
@@ -295,7 +297,7 @@ const styles = StyleSheet.create({
     color: "black",
   },
   buttonWrapper: {
-    width: 379,
+    width: 300,
     height: 53,
     marginTop: 306,
   },

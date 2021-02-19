@@ -112,8 +112,9 @@ const PasswordRecovery = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <AntDesign
               name="arrowleft"
-              size={20}
+              size={24}
               color="white"
+              style={{top: Platform.OS === "ios" ? 10 : 0}}
             />
           </TouchableOpacity>
 
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   footer: {
-    flex: Platform.OS === "ios" ? 3 : 5,
+    flex: Platform.OS === "ios" ? 5 : 5,
     backgroundColor: "#fff",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -222,7 +223,8 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 24,
+    fontSize: 20,
+    top: Platform.OS === "ios" ? 10 : 0
   },
   textInputUsername: {
     flex: 1,
@@ -235,6 +237,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     marginTop: 342,
+    width: 300
   },
   signIn: {
     width: "100%",

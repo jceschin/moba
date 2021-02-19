@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  Platform,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getLinealUserStats, getUserStats } from "../../redux/actions/user";
@@ -200,7 +201,7 @@ const Stats = ({ navigation }) => {
       <View style={styles.mainContainer}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
-            <AntDesign name="arrowleft" size={24} color="white" />
+            <AntDesign name="arrowleft" size={24} color="white" style={{top: Platform.OS === "ios" ? 20 : 0}}/>
           </TouchableOpacity>
 
           <View style={styles.welcomeView}>
@@ -257,7 +258,7 @@ const Stats = ({ navigation }) => {
                 borderBottomColor:
                   pickDate === "lastWeek" ? "#521886" : "#C4C4C4",
                 borderBottomWidth: 2,
-                width: 170,
+                width: Platform.OS === "ios" ? 160: 170,
                 right: 0,
               }}
             >
@@ -279,7 +280,7 @@ const Stats = ({ navigation }) => {
                 borderBottomColor:
                   pickDate === "lastMonth" ? "#521886" : "#C4C4C4",
                 borderBottomWidth: 2,
-                width: 170,
+                width: Platform.OS === "ios" ? 140: 170,
                 right: 0,
               }}
             >
@@ -302,7 +303,7 @@ const Stats = ({ navigation }) => {
                   pickDate === "last6Months" ? "#521886" : "#C4C4C4",
                 borderBottomWidth: 2,
                 width: 170,
-                right: 0,
+                right: Platform.OS === "ios" ? 10: 0,
               }}
             >
               <TouchableOpacity
@@ -326,8 +327,8 @@ const Stats = ({ navigation }) => {
             <Text
               style={{
                 position: "absolute",
-                top: 29,
-                left: 263,
+                top: Platform.OS === "ios" ? 31 : 29,
+                left: Platform.OS === "ios" ? 251 : 263,
                 color: "rgba(0, 0, 0, 0.81)",
                 fontSize: 13,
               }}
@@ -337,8 +338,8 @@ const Stats = ({ navigation }) => {
             <Text
               style={{
                 position: "absolute",
-                top: 109,
-                left: 263,
+                top: Platform.OS === "ios" ? 111 : 109,
+                left: Platform.OS === "ios" ? 251 : 263,
                 color: "rgba(0, 0, 0, 0.81)",
                 fontSize: 13,
               }}
@@ -408,13 +409,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   lastWeek: {
-    left: 65,
+    left: Platform.OS === "ios" ? 70: 65,
   },
   last6Months: {
-    left: 10,
+    left: Platform.OS === "ios" ? 19: 10,
   },
   lastMonth: {
-    left: 40,
+    left: Platform.OS === "ios" ? 30: 40,
   },
   colorSelected: {
     color: "#521886",
@@ -426,6 +427,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
     fontSize: 24,
+    top: Platform.OS === "ios" ? 20 : 0
   },
   textRecover: {
     fontFamily: "OpenSans_600SemiBold",

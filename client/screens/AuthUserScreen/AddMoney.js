@@ -241,6 +241,7 @@ const AddMoney = ({ navigation, route }) => {
                   <TextInput
                     style={styles.textInputAmountHide}
                     autoCapitalize="none"
+                    placeholder= "0"
                     value={amountCharge.amount}
                     onChangeText={(val) => textInputChange(val)}
                   />
@@ -407,13 +408,13 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_600SemiBold",
     color: "black",
     fontSize: 18,
-    marginTop: 90,
+    marginTop: 60,
   },
   codePayment: {
     alignItems: "center",
   },
   confirmCharge: {
-    width: 379,
+    width: 300,
     marginBottom: 47,
     height: 50,
     borderRadius: 10,
@@ -475,13 +476,13 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_600SemiBold",
   },
   continueCharge: {
-    width: 379,
+    width: 300,
     marginBottom: 47,
     height: 50,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 210,
+    marginTop: 110,
   },
   textInputAmount: {
     fontSize: 34,
@@ -495,8 +496,8 @@ const styles = StyleSheet.create({
   },
   textInputAmountHide: {
     color: "#168903",
-    fontSize: 34,
-    marginTop: -32,
+    fontSize: 124,
+    top: -82,
     opacity: 0,
   },
   amountView: {

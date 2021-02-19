@@ -122,8 +122,9 @@ export default function CodeVerification({ navigation, route }) {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <AntDesign
               name="arrowleft"
-              size={20}
+              size={24}
               color="white"
+              style={{top: Platform.OS === "ios" ? 10 : 0}}
             />
           </TouchableOpacity>
 
@@ -263,7 +264,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   buttons: {
-    width: 379,
+    width: 300,
     marginBottom: 47,
     height: 50,
     borderRadius: 10,
@@ -321,7 +322,8 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 24
+    fontSize: 20,
+    top: Platform.OS === "ios" ? 10 : 0
   },
   validateTextButton: {
     fontSize: 18,

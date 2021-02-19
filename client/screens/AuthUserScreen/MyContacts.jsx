@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  Platform
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -78,7 +79,7 @@ const MyContacts = () => {
               // style={{ position: "absolute" }}
               onPress={() => navigation.goBack()}
             >
-              <Feather name="arrow-left" size={28} color="white" />
+              <Feather name="arrow-left" size={24} color="white" />
             </TouchableOpacity>
             <View
               style={{
@@ -289,15 +290,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#521886",
     opacity: 0.9,
   },
-  container: {
-    flex: 1,
-  },
   header: {
     display: "flex",
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    top: 0,
+    marginTop: Platform.OS === "ios" ? 40: 10,
   },
   greeting: {
     color: "#FFFFFF",

@@ -407,7 +407,7 @@ server.post("/send-email-sender", (req, res) => {
     subject: "Transfer Confirmation - Moba",
     html: `<h3>This is a message from Moba Team:</h3>
     </br>
-     <h4>Dear ${senderUsername} you have sent US$${" "}${amount} to ${recieverUsername}.
+     <h4>Dear ${senderUsername} you have sent $${" "}${amount} to ${recieverUsername}.
      You could get your transfer receipt by login into de app.</h4>
      </br>
      <h4>This is an automatically generated message. Please don't reply it.</h4>`
@@ -444,7 +444,7 @@ server.post("/send-email-reciever", (req, res) => {
     subject: "Transfer Confirmation - Moba",
     html: `<h3>This is a message from Moba Team:</h3>
     </br>
-     <h4>Dear ${recieverUsername} you have received US$${" "}${amount} from ${senderUsername}. 
+     <h4>Dear ${recieverUsername} you have received $${" "}${amount} from ${senderUsername}. 
      You could check it by login into de app.</h4>
      </br>
      <h4>This is an automatically generated message. Please don't reply it.</h4>`

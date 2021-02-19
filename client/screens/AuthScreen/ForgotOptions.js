@@ -40,7 +40,7 @@ const ForgotOptions = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <AntDesign
               name="arrowleft"
-              size={20}
+              size={24}
               color="white"
             />
           </TouchableOpacity>

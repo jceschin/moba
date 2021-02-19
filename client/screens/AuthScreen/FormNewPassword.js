@@ -122,7 +122,7 @@ const FormNewPassword = ({ navigation }) => {
         <View style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <AntDesign name="arrowleft" size={20} color="white" />
+              <AntDesign name="arrowleft" size={24} color="white" style={{top: Platform.OS === "ios" ? 10 : 0}}/>
             </TouchableOpacity>
 
             <View style={styles.welcomeView}>
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footer: {
-    flex: Platform.OS === "ios" ? 3 : 5,
+    flex: Platform.OS === "ios" ? 5 : 5,
     backgroundColor: "#fff",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -228,7 +228,8 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 24,
+    fontSize: 20,
+    top: Platform.OS === "ios" ? 10 : 0
   },
   textInputPassword: {
     flex: 1,
@@ -241,6 +242,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     marginTop: 309,
+    width: 300
   },
   signIn: {
     width: "100%",
