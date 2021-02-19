@@ -426,7 +426,7 @@ const RegisterPage = ({ navigation, route }) => {
         <View style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.navigate("Validation")}>
-              <AntDesign name="arrowleft" size={20} color="white" />
+              <AntDesign name="arrowleft" size={24} color="white" />
             </TouchableOpacity>
           </View>
 
@@ -677,8 +677,8 @@ const RegisterPage = ({ navigation, route }) => {
                 <View
                   style={[
                     focus === "state"
-                      ? styles.inputcontainerThreeFocus
-                      : styles.inputcontainerThree,
+                      ? styles.inputcontainerOneFocus 
+                      : styles.inputcontainerOne,
                   ]}
                 >
                   <TextInput
@@ -706,8 +706,8 @@ const RegisterPage = ({ navigation, route }) => {
                 <View
                   style={[
                     focus === "city"
-                      ? styles.inputcontainerOneFocus
-                      : styles.inputcontainerOne,
+                      ? styles.inputcontainerTwoFocus
+                      : styles.inputcontainerTwo,
                   ]}
                 >
                   <TextInput
@@ -735,8 +735,8 @@ const RegisterPage = ({ navigation, route }) => {
                 <View
                   style={[
                     focus === "address"
-                      ? styles.inputcontainerTwoFocus
-                      : styles.inputcontainerTwo,
+                      ? styles.inputcontainerThreeFocus 
+                      : styles.inputcontainerThree,
                   ]}
                 >
                   <TextInput
@@ -1030,7 +1030,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    width: 379,
+    width: 300,
     marginTop: 100,
     backgroundColor: "#521886",
   },
@@ -1045,7 +1045,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    width: 379,
+    width: 300,
     marginTop: 160,
     backgroundColor: "#521886",
   },

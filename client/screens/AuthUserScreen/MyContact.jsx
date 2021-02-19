@@ -57,7 +57,7 @@ const MyContact = ({ name, surname, phone, username, alias }) => {
             fontFamily: 'OpenSans_700Bold',
             fontSize: 18 
           }}>
-              {nameInitial} {surnameInitial}
+              {nameInitial}{surnameInitial}
           </Text>
         </View>
         <View

@@ -157,7 +157,7 @@ const UsernameRecovery = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name="arrowleft" size={20} color="white" />
+            <AntDesign name="arrowleft" size={24} color="white" style={{top: Platform.OS === "ios" ? 10 : 0}}/>
           </TouchableOpacity>
 
           <View style={styles.welcomeView}>
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footer: {
-    flex: Platform.OS === "ios" ? 3 : 5,
+    flex: Platform.OS === "ios" ? 5 : 5,
     backgroundColor: "#fff",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -301,6 +301,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
     fontSize: 20,
+    top: Platform.OS === "ios" ? 10 : 0
   },
   textInputUsername: {
     flex: 1,
@@ -355,11 +356,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   checkView: {
-    right: 17,
-    top: -8,
+    right: Platform.OS === "ios" ? 0 : 17,
+    top: Platform.OS === "ios" ? 0 : -8,
   },
   eyeView: {
-    right: 17,
-    top: 38,
+    right: Platform.OS === "ios" ? 0 : 17,
+    top: Platform.OS === "ios" ? 45 : 38,
   },
 });

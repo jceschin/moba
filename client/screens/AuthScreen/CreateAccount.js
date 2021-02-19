@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from "react-native-animatable";
@@ -115,8 +116,9 @@ const CreateAccount = (props) => {
         <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
           <AntDesign
             name="arrowleft"
-            size={20}
+            size={24}
             color="white"
+            style={{top: Platform.OS === "ios" ? 10 : 0}}
           />
         </TouchableOpacity>
 
@@ -251,17 +253,19 @@ const styles = StyleSheet.create({
     marginTop: 241,
   },
   buttons: {
-    width: "100%",
+    width: 300,
     height: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
     backgroundColor: "#521886",
+    top: Platform.OS === "ios" ? 100 : 0
   },
   btncontent: {
     fontSize: 18,
     fontFamily: "OpenSans_800ExtraBold",
-    color: "#fff"
+    color: "#fff",
+    
   },
   container: {
     flex: 1,
@@ -293,7 +297,8 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 24,
+    fontSize: 20,
+    top: Platform.OS === "ios" ? 10 : 0
   },
   textInputEmail: {
     flex: 1,
@@ -315,7 +320,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   checkView: {
-    right: 17,
-    top: -8,
+    right: Platform.OS === "ios" ? 0 : 17,
+    top: Platform.OS === "ios" ? -5 : -8,
   },
 });

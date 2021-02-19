@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  Share
+  Share,
 } from "react-native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
@@ -53,17 +53,17 @@ const viewRef = useRef()
       <ScrollView>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <AntDesign name="arrowleft" size={24} color="white" />
+            <AntDesign name="arrowleft" size={24} color="white" style={{top: Platform.OS === "ios" ? 10 : 0 }}/>
           </TouchableOpacity>
           <View style={styles.welcomeView}>
             <Text style={styles.text_header}>Successful transfer</Text>
           </View>
           <TouchableOpacity onPress ={shareReceipt}>
-          <Feather name="share" size={20} color="white" style={{right:10}}/>
+          <Feather name="share" size={20} color="white" style={{right:10, top: Platform.OS === "ios" ? 8 : 0 }}/>
           </TouchableOpacity>
         </View>
-        <View style={styles.whiteContainer} ref={viewRef}>
-          <View style={styles.transferContainer}>
+        <View style={styles.whiteContainer}>
+          <View style={styles.transferContainer} ref={viewRef}>
             <View style={styles.transferHeader}>
               <Text style={styles.transferTitle}> Transfer Receipt</Text>
             </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     minHeight: 1000
   },
   header: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
     paddingHorizontal: 20,
     paddingBottom: 12,
@@ -155,7 +155,8 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontFamily: "OpenSans_700Bold",
-    fontSize: 20
+    fontSize: 20,
+    top: Platform.OS === "ios" ? 10 : 0 
   },
   transferContainer: {
     borderWidth: 1,

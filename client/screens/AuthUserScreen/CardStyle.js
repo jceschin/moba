@@ -129,7 +129,7 @@ const s = StyleSheet.create({
     padding: 24,
     paddingTop: 40,
     borderRadius: 12,
-    width: 380,
+    width: 350,
     position: "relative",
     overflow: "hidden"
   },

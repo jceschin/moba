@@ -150,7 +150,7 @@ const SendMoney = ({ route }) => {
             // style={{ position: "absolute" }}
             onPress={() => navigation.goBack()}
           >
-            <Feather name="arrow-left" size={24} color="white" />
+            <Feather name="arrow-left" size={24} color="white" style={{top: Platform.OS === "ios" ? 11 : 0}}/>
           </TouchableOpacity>
           <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -166,6 +166,7 @@ const SendMoney = ({ route }) => {
               borderStyle: "solid",
               marginLeft: 100,
               marginRight: 100,
+              marginTop: Platform.OS === "ios" ? 100 : 0 
             }}
           >
             <TextInput
@@ -243,12 +244,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    top: 24,
+    top: Platform.OS === "ios" ? 40 : 24,
   },
   greeting: {
     color: "white",
     fontSize: 24,
     fontFamily: "OpenSans_700Bold",
+    top: Platform.OS === "ios" ? 8 : 0
   },
   whiteContainer: {
     top: 50,
@@ -256,6 +258,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     height: "100%",
+    alignItems: "center"
   },
   button: {
     height: 50,
@@ -266,6 +269,7 @@ const styles = StyleSheet.create({
     marginRight: 18,
     marginLeft: 18,
     top: 315,
+    width: 300
   },
   btnContent: {
     textAlign: "center",
@@ -299,7 +303,7 @@ const styles = StyleSheet.create({
   textInputAmount: {
     height: 40,
     textAlign: "center",
-    marginTop: 80,
+    marginTop: Platform.OS === "ios" ? 100 : 80,
     fontSize: 40,
     color: "#499174",
     fontFamily: "OpenSans_700Bold",

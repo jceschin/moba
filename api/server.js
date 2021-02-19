@@ -14,7 +14,7 @@ require("./microservices/statistics.js");
 require("./microservices/whatsapp.js");
 require("./microservices/interoperabilities.js");
 
-conn.sync({ force: true })
+conn.sync({ force: false })
 .then(() => {
    gateway()
    .load(path.join(__dirname, 'config'))

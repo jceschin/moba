@@ -127,7 +127,7 @@ const AddContact = ({ navigation }) => {
         <Animatable.View animation="slideInRight" style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Feather name="arrow-left" size={28} color="white" />
+              <Feather name="arrow-left" size={24} color="white" />
             </TouchableOpacity>
             <View style={styles.titleWrapper}>
               <Text style={styles.title}>Add Contact</Text>
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     color: "black",
   },
   buttonWrapper: {
-    width: 379,
+    width: 300,
     height: 53,
     marginTop: 306,
   },

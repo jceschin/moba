@@ -147,7 +147,7 @@ const RegisterPage = ({ navigation, route }) => {
         <View style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.navigate("MyContacts")}>
-              <AntDesign name="arrowleft" size={20} color="white" />
+              <AntDesign name="arrowleft" size={24} color="white" />
             </TouchableOpacity>
           </View>
 

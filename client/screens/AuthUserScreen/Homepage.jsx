@@ -5,6 +5,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
@@ -55,7 +56,7 @@ const Homepage = () => {
         if (t.sender === loggedUser.username) {
           data = (
             <Text style={styles.movType}>
-              Sent US${t.amount} to {t.receiver}
+              Sent ${t.amount} to {t.receiver}
               {t.type === "interoperation" && (
                 <Text>{"\n"}(Bank Tree user)</Text>
               )}
@@ -64,10 +65,10 @@ const Homepage = () => {
         } else {
           data =
             t.type === "recharge" ? (
-              <Text style={styles.movType}>You deposited US${t.amount}</Text>
+              <Text style={styles.movType}>You deposited ${t.amount}</Text>
             ) : (
               <Text style={styles.movType}>
-                Received US${t.amount} from {t.sender}
+                Received ${t.amount} from {t.sender}
                 {t.type === "interoperation" && (
                   <Text>{"\n"}(Bank Tree user)</Text>
                 )}
@@ -82,9 +83,9 @@ const Homepage = () => {
             <View style={styles.movDetails}>
               {data}
               {t.sender === loggedUser.username ? (
-                <Text style={styles.movAmount}>− US${t.amount}</Text>
+                <Text style={styles.movAmount}>− ${t.amount}</Text>
               ) : (
-                <Text style={styles.movAmount}>US${t.amount}</Text>
+                <Text style={styles.movAmount}>${t.amount}</Text>
               )}
             </View>
           </View>
@@ -105,8 +106,8 @@ const Homepage = () => {
   }, [transactions && transactions.length]);
 
   useEffect(() => {
-    setColorIcon("homePage")
-  },[]) 
+    setColorIcon("homePage");
+  }, []);
 
   //
   if (!fontsLoaded) {
@@ -130,10 +131,10 @@ const Homepage = () => {
               <Text style={styles.balanceTag}>Balance</Text>
               {loggedUser.info && loggedUser.info.account ? (
                 <Text style={styles.balance}>
-                  US$ {loggedUser.info.account.balance}
+                  $ {loggedUser.info.account.balance}
                 </Text>
               ) : (
-                <Text style={styles.balance}>US$ 0</Text>
+                <Text style={styles.balance}>$ 0</Text>
               )}
               <View style={styles.options}>
                 <View>
@@ -179,20 +180,22 @@ const Homepage = () => {
             </View>
 
             <View style={styles.movsContainer}>
-              <Text style={styles.movsHeader}>Last Movements</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  dispatch(
-                    checkInterappTransactions(
-                      loggedUser.info.account.cvu,
-                      loggedUser.username,
-                      loggedUser.data.data.token
+              <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                <Text style={[styles.movsHeader, {top: -10}]}>Last Movements</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    dispatch(
+                      checkInterappTransactions(
+                        loggedUser.info.account.cvu,
+                        loggedUser.username,
+                        loggedUser.data.data.token
+                      )
                     )
-                  )
-                }
-              >
-                <Ionicons name="refresh" size={24} color="black" />
-              </TouchableOpacity>
+                  }
+                >
+                  <Ionicons name="refresh" size={18} color="black" style={{top: 0, left: 10}}/>
+                </TouchableOpacity>
+              </View>
               {transactions && renderTransactions()}
             </View>
           </View>
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
   accountOwner: {
     fontSize: 36,
     textAlign: "center",
-    marginTop: 31,
+    marginTop: Platform.OS === "ios" ? 60 : 31,
     fontFamily: "OpenSans_800ExtraBold",
     color: "white",
   },

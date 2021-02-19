@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Switch } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Switch, Platform } from "react-native";
 import Clipboard from "expo-clipboard";
 import { useSelector } from "react-redux";
 import { Ionicons, Fontisto, Feather, Entypo } from "@expo/vector-icons";
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     height: 464,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: Platform.OS === "ios" ? 20 : 10,
   },
   bottomContainer: {
     borderWidth: 1,
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     top: 26,
     // width: 375,
-    // left: 51,
+    right: Platform.OS === "ios" ? 2: 0,
     height: 69,
     borderRadius: 10,
   },
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   toggleButton: {
-    left: 130,
+    left: 100,
   },
   subBottomContainer: {
     borderWidth: 1,
@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
     top: 52,
     // width: 375,
     height: 158,
+    right: Platform.OS === "ios" ? 2: 0,
     // left: 51,
     borderRadius: 10,
   },

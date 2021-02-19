@@ -265,7 +265,7 @@ const LoginScreen = ({ navigation }) => {
                       style={{
                         ...styles.openButton,
                         backgroundColor: "#521886",
-                        width: 170,
+                        width: 200,
                         top: 20,
                       }}
                       onPress={() => {
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(141, 138, 138, 0.54)",
     paddingBottom: 5,
-    width: 359,
+    width: 300,
     height: 52,
     borderRadius: 10,
     backgroundColor: "rgba(83, 83, 83, 0.06)",

@@ -11,8 +11,14 @@ import {
   ActivityIndicator,
   SafeAreaView,
   Alert,
+  Modal,
 } from "react-native";
-import { Feather, AntDesign, Ionicons, Foundation } from "@expo/vector-icons";
+import {
+  Feather,
+  AntDesign,
+  MaterialIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -32,13 +38,12 @@ import * as Contacts from "expo-contacts";
 import MyContact from "./MyContact";
 import * as SMS from "expo-sms";
 
-
 const SendInvitation = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.user);
   const [contactNumber, setContactNumber] = useState("");
-  const [selectedContact, setSelectedContact] = useState("")
+  const [selectedContact, setSelectedContact] = useState("");
   const [data, setData] = useState({
     contacts: [],
     loading: false,
@@ -52,6 +57,7 @@ const SendInvitation = () => {
     OpenSans_700Bold,
     OpenSans_800ExtraBold,
   });
+  const [modalVisible, setModalVisible] = useState(false);
 
   const loadContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
@@ -77,18 +83,20 @@ const SendInvitation = () => {
   const sendMessage = async () => {
     const { result } = await SMS.sendSMSAsync(
       contactNumber,
-      `Hi! Try MOBA, is the best banking app ever! http://${apiEndpoint}/email/redirect`,
+      `Hi! Try MOBA, is the best banking app ever! http://${apiEndpoint}/email/redirect`
     );
     console.log("result", result);
   };
 
   const sendWhatsapp = () => {
-    const message = <a href="whatsapp://send?text=The text to share!" data-action="share/whatsapp/share"></a>
-    const urlMessage = `http://${apiEndpoint}/email/redirect`
+    const url = "whatsapp://send?phone=+XXXXXXXXXXX";
+    const urlMessage = `http://${apiEndpoint}/email/redirect`;
     Linking.openURL(
-      `https://wa.me/?text=${urlMessage}` 
+      "whatsapp://send?text=" +
+        `Hi! Try MOBA, is the best banking app ever! http://${apiEndpoint}/email/redirect` +
+        `&phone=${contactNumber}`
     );
-  }
+  };
 
   let redirectUrl = Linking.createURL(
     "exp://wg-qka.community.app.exp.direct:80"
@@ -136,10 +144,11 @@ const SendInvitation = () => {
         <View style={styles.header}>
           <TouchableOpacity
             // style={{ position: "absolute" }}
-             onPress={() => navigation.navigate("MyAccount")}>
+            onPress={() => navigation.navigate("MyAccount")}
+          >
             <Feather
               name="arrow-left"
-              size={20}
+              size={24}
               color="white"
               style={{ top: 21 }}
             />
@@ -198,10 +207,9 @@ const SendInvitation = () => {
               contactsSorted.map((contact) => {
                 return (
                   <TouchableOpacity
-                    onPress={ () => {
+                    onPress={() => {
+                      setModalVisible(true);
                       setContactNumber(contact.phoneNumbers[0].digits);
-                      /* sendMessage(); */
-                      /* sendWhatsapp(); */
                     }}
                   >
                     <View style={styles.wrapper}>
@@ -239,6 +247,90 @@ const SendInvitation = () => {
                               )}
                         </Text>
                       </View>
+
+                      <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                          Alert.alert("Modal has been closed.");
+                        }}
+                      >
+                        <View style={styles.centeredView}>
+                          <View style={styles.modalView}>
+                            <TouchableOpacity
+                              style={{
+                                ...styles.openButton,
+                                flexDirection: "row",
+                                backgroundColor: "#fff",
+                                width: 280,
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                              onPress={sendMessage}
+                            >
+                              <Text
+                                style={[styles.textStyle, { color: "#521886" }]}
+                              >
+                                Send invitation via SMS
+                              </Text>
+                              <MaterialIcons
+                                name="textsms"
+                                size={24}
+                                color="#521886"
+                                style={{ paddingLeft: 10 }}
+                              />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              style={{
+                                ...styles.openButton,
+                                flexDirection: "row",
+                                marginTop: 20,
+                                backgroundColor: "#fff",
+                                width: 280,
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                              onPress={sendWhatsapp}
+                            >
+                              <Text
+                                style={[styles.textStyle, { color: "#521886" }]}
+                              >
+                                Send invitation via Whatsapp
+                              </Text>
+                              <Ionicons
+                                name="md-logo-whatsapp"
+                                size={24}
+                                color="#521886"
+                                style={{ paddingLeft: 5 }}
+                              />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                              style={{
+                                ...styles.openButton,
+                                backgroundColor: "#fff",
+                                width: 280,
+                                top: 20,
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                              onPress={() => {
+                                setModalVisible(!modalVisible);
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  ...styles.textStyle,
+                                  color: "#521886",
+                                }}
+                              >
+                                Close
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
                     </View>
                   </TouchableOpacity>
                 );
@@ -273,7 +365,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontFamily: "OpenSans_800ExtraBold",
-    top: 20,
+    top: 22,
   },
   action: {
     flexDirection: "row",
@@ -318,7 +410,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "#521886",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -330,6 +422,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    width: 400,
+    marginTop: 570,
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -370,5 +464,23 @@ const styles = StyleSheet.create({
     borderRadius: 11,
     justifyContent: "center",
     alignItems: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  openButton: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "white",
+  },
+  textStyle: {
+    color: "#521886",
+    fontFamily: "OpenSans_700Bold",
+    textAlign: "center",
+    fontSize: 16,
   },
 });

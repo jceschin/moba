@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -56,8 +57,8 @@ const MyAccount = () => {
   }
 
   useEffect(() => {
-    setColorIcon("more")
-  },[])
+    setColorIcon("more");
+  }, []);
 
   if (!fontsLoaded) {
     return <SplashScreen2 />;
@@ -70,7 +71,7 @@ const MyAccount = () => {
               // style={{ position: "absolute" }}
               onPress={() => navigation.goBack()}
             >
-              <Feather name="arrow-left" size={20} color="white" />
+              <Feather name="arrow-left" size={24} color="white" style={{top: 10}}/>
             </TouchableOpacity>
             <View
               style={{
@@ -84,6 +85,17 @@ const MyAccount = () => {
           </View>
           <View style={styles.whiteContainer}>
             <Text style={styles.accountTag}>Account</Text>
+            {Platform.OS === "ios" ? (
+              <View
+                style={{
+                  backgroundColor: "#A7A7A7",
+                  width: 400,
+                  height: 2,
+                  top: -30,
+                  marginBottom: -20
+                }}
+              />
+            ) : null}
             <View style={styles.option}>
               <View style={styles.optionContactUs}>
                 <FontAwesome
@@ -93,7 +105,7 @@ const MyAccount = () => {
                   style={{ top: 8, left: 9 }}
                 />
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Contactus")}>
                 <Text style={[styles.optionName, { top: 7, right: 2 }]}>
                   Contact Us
                 </Text>
@@ -169,12 +181,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 18,
     marginRight: 18,
-    marginTop: 37,
+    marginTop: 40,
   },
   greeting: {
     color: "white",
-    fontSize: 24,
+    fontSize: 22,
     fontFamily: "OpenSans_800ExtraBold",
+    top: 10
   },
   whiteContainer: {
     marginTop: 12,
