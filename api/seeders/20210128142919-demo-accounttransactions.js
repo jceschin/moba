@@ -257,6 +257,52 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          cvu: "2222226194980634363704",
+          number: 9995,
+          type: "sender",
+          old_balance:12000,
+          new_balance:9000,
+          status:'confirmed',
+          createdAt: new Date('02/15/21'),
+          updatedAt: new Date('02/15/21')
+        },
+        {
+          cvu: "2222227341165174132238",
+          number: 9995,
+          type: "receiver",
+          status:'confirmed',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          cvu: "2222226194980634363704",
+          number: 9996,
+          type: "receiver",
+          old_balance:9000,
+          new_balance:10000,
+          status:'confirmed',
+          createdAt: new Date('02/16/21'),
+          updatedAt: new Date('02/16/21')
+        },
+        {
+          cvu: "2222224782446182320646",
+          number: 9996,
+          type: "sender",
+          status:'confirmed',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          cvu: "2222226194980634363704",
+          number: 9997,
+          type: "charge",
+          old_balance:10000,
+          new_balance:12000,
+          status:'confirmed',
+          createdAt: new Date('02/18/21'),
+          updatedAt: new Date('02/18/21'),
+        },
       ],
       {}
     );

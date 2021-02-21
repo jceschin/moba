@@ -209,7 +209,7 @@ const SendInvitation = () => {
                   <TouchableOpacity
                     onPress={() => {
                       setModalVisible(true);
-                      setContactNumber(contact.phoneNumbers[0].digits);
+                      setContactNumber(contact.phoneNumbers[0].digits || contact.phoneNumbers[0].number);
                     }}
                   >
                     <View style={styles.wrapper}>

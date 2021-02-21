@@ -154,6 +154,36 @@ module.exports = {
       createdAt: new Date('02/08/21'),
       updatedAt: new Date('02/08/21')
     },
+
+    {
+      number: 9995,
+      amount: 3000,
+      description: '$3000 to John',
+      transaction_type: 'transfer',
+      status: 'confirmed',
+      createdAt: new Date('02/15/21'),
+      updatedAt: new Date('02/15/21')
+    },
+
+    {
+      number: 9996,
+      amount: 3000,
+      description: '$1000 from Camila',
+      transaction_type: 'transfer',
+      status: 'confirmed',
+      createdAt: new Date('02/16/21'),
+      updatedAt: new Date('02/16/21')
+    },
+
+    {
+      number: 9997,
+      amount: 2000,
+      description: 'charge',
+      transaction_type: 'charge',
+      status: 'confirmed',
+      createdAt: new Date('02/18/21'),
+      updatedAt: new Date('02/18/21')
+    },
   
   ], {});
 
