@@ -1,12 +1,11 @@
 http:
-  port: 8080
+  port: ${PORT:-8080}
 admin:
   port: 9876
   host: ${LOCAL_IP:-localhost}
 ##################################################################################################
 apiEndpoints:
   api:
-    host: ${LOCAL_IP:-localhost}
     paths: "/ip"
   auth:
     paths: ["/auth/", "/auth/*"]
@@ -41,6 +40,8 @@ apiEndpoints:
 
 ##################################################################################################
 serviceEndpoints:
+  apiService:
+    url: "https://httpbin.org/"
   usersService:
     url: "http://${LOCAL_IP:-localhost}:8000"
   transactionService:
@@ -75,6 +76,15 @@ policies:
   - request-transformer
 pipelines:
   ##################################################################################################
+  apiPipeline:
+    apiEndpoints:
+      - api
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: apiService
+              changeOrigin: true
+##################################################################################################
   usersPipeline:
     apiEndpoints:
       - users
