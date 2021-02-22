@@ -16,6 +16,8 @@ const { Verifytoken, isAdmin } = require("../middlewares");
 
 const cors = require("cors");
 
+require("dotenv").config();
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
@@ -99,8 +101,8 @@ server.post("/users/logout", (req, res) => {
   });
 });
 
-server.listen(8000, () => {
-  console.log("Users microservice running on 8000");
+server.listen(process.env.PORT || 8000, () => {
+  console.log(`Users microservice running on ${process.env.PORT || 8000}`);
 });
 
 module.exports = server;

@@ -36,7 +36,7 @@
     "sequelize-cli": "^6.2.0"
   },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon microservices/users.js",
     "seeds": "npx sequelize-cli db:seed:all"
   }
 }
