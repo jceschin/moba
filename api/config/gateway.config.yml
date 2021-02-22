@@ -11,7 +11,6 @@ apiEndpoints:
     paths: ["/auth/", "/auth/*"]
   users:
     methods: "GET,POST,PUT,PATCH,DELETE"
-    host: ${LOCAL_IP:-localhost}
     paths: ["/users", "/users/*"]
   account:
     host: ${LOCAL_IP:-localhost}
@@ -43,7 +42,7 @@ serviceEndpoints:
   apiService:
     url: "https://httpbin.org/"
   usersService:
-    url: "http://${LOCAL_IP:-localhost}:8000"
+    url: "https://usersmoba.herokuapp.com/"
   transactionService:
     url: "http://${LOCAL_IP:-localhost}:8001"
   authService:
