@@ -1,1 +1,1 @@
-Welcome to # MOBA!
+Welcome to MOBA!
