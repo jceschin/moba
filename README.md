@@ -1,2 +1,1 @@
-# moba
-under construction
+Welcome to # MOBA!
