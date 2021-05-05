@@ -12,11 +12,11 @@ In addition to having interoperability with TreeBank(external wallet)
 ## Features Video <g-emoji class="g-emoji" alias="movie_camera" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f3a5.png">🎥</g-emoji> 
 
 [![Watch the video](https://img.youtube.com/vi/4FDrBEQPp98/hqdefault.jpg)](https://www.youtube.com/watch?v=4FDrBEQPp98)
-
+<!--- 
 ## Images <g-emoji class="g-emoji" alias="framed_picture" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f5bc.png">🖼️</g-emoji>
 
 Here i will put photos
-
+--->
 ### Programming Language <g-emoji class="g-emoji" alias="tongue" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f445.png">👅</g-emoji>
 
 - JavaScript
