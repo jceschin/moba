@@ -44,7 +44,7 @@ Here i will put photos
 
 ### Blog <g-emoji class="g-emoji" alias="memo" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png">📝</g-emoji>
 
-> Note about our work in the project [Here](https://blog.soyhenry.com/la-billetera-virtual-que-programaron-estudiantes-de-henry/)
+> Interview about our work in the project [Here](https://blog.soyhenry.com/la-billetera-virtual-que-programaron-estudiantes-de-henry/)
 
 ![MobaTeam](mobaTeam.png)
 
