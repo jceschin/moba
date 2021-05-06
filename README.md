@@ -13,9 +13,9 @@ In addition to having interoperability with TreeBank(external wallet)
 
 [![Watch the video](https://img.youtube.com/vi/4FDrBEQPp98/hqdefault.jpg)](https://www.youtube.com/watch?v=4FDrBEQPp98)
 
-## Images <g-emoji class="g-emoji" alias="framed_picture" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f5bc.png">🖼️</g-emoji>
+## Images(Figma) <g-emoji class="g-emoji" alias="framed_picture" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f5bc.png">🖼️</g-emoji>
 
-![img1](moba1.png)![img2](moba2.png)![img3](moba3.png)![img4](moba4.png)![img5](moba5.png)
+![img1](moba1.png)![img2](moba2.png)
 
 ### Programming Language <g-emoji class="g-emoji" alias="tongue" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f445.png">👅</g-emoji>
 
@@ -41,6 +41,7 @@ In addition to having interoperability with TreeBank(external wallet)
 - Formik
 - Axios
 - Async Storage
+- Figma
 
 ### Blog <g-emoji class="g-emoji" alias="memo" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png">📝</g-emoji>
 
